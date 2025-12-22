@@ -1,8 +1,0 @@
-{
-  "name": "cloudflare",
-  "description": "Plugin that includes Skills for building AI agents and MCP servers on the Cloudflare developer platform",
-  "version": "1.0.0",
-  "author": {
-    "name": "Cloudflare"
-  }
-}
