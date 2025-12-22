@@ -9,11 +9,11 @@
     {
       "name": "cloudflare-skills",
       "description": "Collection of skills for building AI agents and MCP servers on Cloudflare",
-      "source": "../",
+      "source": "./",
       "strict": false,
       "skills": [
-        "../building-ai-agent-on-cloudflare",
-        "../building-mcp-server-on-cloudflare"
+        "./building-ai-agent-on-cloudflare",
+        "./building-mcp-server-on-cloudflare"
       ]
     }
   ]
