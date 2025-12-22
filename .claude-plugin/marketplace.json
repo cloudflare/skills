@@ -1,0 +1,20 @@
+{
+  "name": "cloudflare",
+  "version": "1.0.0",
+  "description": "Plugin that includes Skills for building AI agents and MCP servers on the Cloudflare developer platform",
+  "owner": {
+    "name": "Cloudflare"
+  },
+  "plugins": [
+    {
+      "name": "cloudflare-skills",
+      "description": "Collection of skills for building AI agents and MCP servers on Cloudflare",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./building-ai-agent-on-cloudflare",
+        "./building-mcp-server-on-cloudflare"
+      ]
+    }
+  ]
+}
