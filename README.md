@@ -1,50 +1,34 @@
-# Cloudflare Skills for Claude
+# Cloudflare Skills
 
-A collection of Claude Skills for building on the Cloudflare developer platform.
+A collection of [Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills) for building on Cloudflare, Workers, the Agents SDK, and the wider Cloudflare Developer Platform.
+
+## Installing Skills
+
+These skills work with any agent that supports the Agent Skills standard, including Claude Code, OpenCode, OpenAI Codex, and Pi.
+
+Copy the skill directories you need to the appropriate location for your agent:
+
+| Agent | Skill Directory | Docs |
+|-------|-----------------|------|
+| Claude Code | `~/.claude/skills/` | [docs](https://code.claude.com/docs/en/skills) |
+| OpenCode | `~/.config/opencode/skill/` | [docs](https://opencode.ai/docs/skills/) |
+| OpenAI Codex | `~/.codex/skills/` | [docs](https://developers.openai.com/codex/skills/) |
+| Pi | `~/.pi/agent/skills/` | [docs](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent#skills) |
 
 ## Skills
 
-### building-mcp-server-on-cloudflare
-
-Build remote Model Context Protocol (MCP) servers on Cloudflare with tools, OAuth authentication, and production deployment.
-
-**Triggers:** "build MCP server", "create MCP tools", "remote MCP", "deploy MCP", "OAuth to MCP", "MCP authentication"
-
-**Contents:**
-- `SKILL.md` - Core guide for building MCP servers
-- `references/examples.md` - Official templates and boilerplates
-- `references/oauth-setup.md` - Security and OAuth configuration
-- `references/troubleshooting.md` - Common issues and fixes
-
-### building-ai-agent-on-cloudflare
-
-Build AI agents using the Cloudflare Agents SDK with state management, real-time WebSockets, scheduled tasks, and tool integration.
-
-**Triggers:** "build an agent", "AI agent", "chat agent", "stateful agent", "Agents SDK", "real-time AI", "WebSocket AI"
-
-**Contents:**
-- `SKILL.md` - Core guide for building agents
-- `references/examples.md` - Official templates and reference implementations
-- `references/agent-patterns.md` - Tool calling, RAG, multi-agent orchestration
-- `references/state-patterns.md` - State management strategies
-- `references/troubleshooting.md` - Common issues and fixes
+| Skill | Useful for | Directory |
+|-------|------------|-----------|
+| agents-sdk | Building stateful AI agents with state, scheduling, RPC, MCP servers, email, and streaming chat | `agents-sdk/` |
+| durable-objects | Stateful coordination (chat rooms, games, booking), RPC, SQLite, alarms, WebSockets | `durable-objects/` |
+| wrangler | Deploying and managing Workers, KV, R2, D1, Vectorize, Queues, Workflows | `wrangler/` |
+| web-perf | Auditing Core Web Vitals (FCP, LCP, TBT, CLS), render-blocking resources, network chains | `web-perf/` |
+| building-mcp-server-on-cloudflare | Building remote MCP servers with tools, OAuth, and deployment | `building-mcp-server-on-cloudflare/` |
+| building-ai-agent-on-cloudflare | Building AI agents with state, WebSockets, and tool integration | `building-ai-agent-on-cloudflare/` |
 
 ## Usage
 
-These skills are designed for use with Claude. When a user's request matches the trigger phrases, Claude will use the relevant skill to provide accurate, up-to-date guidance for building on Cloudflare.
-
-## Structure
-
-Each skill follows the standard layout:
-
-```
-skill-name/
-├── SKILL.md              # Main skill file with YAML frontmatter
-└── references/           # Supporting documentation
-    ├── examples.md
-    ├── patterns.md
-    └── troubleshooting.md
-```
+When a request matches a skill's triggers, the agent loads and applies the relevant skill to provide accurate, up-to-date guidance.
 
 ## Resources
 
