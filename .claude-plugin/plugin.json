@@ -4,14 +4,5 @@
   "version": "1.0.0",
   "owner": {
     "name": "Cloudflare"
-  },
-  "skills": [
-    "./agents-sdk",
-    "./building-ai-agent-on-cloudflare",
-    "./building-mcp-server-on-cloudflare",
-    "./cloudflare",
-    "./durable-objects",
-    "./web-perf",
-    "./wrangler"
-  ]
+  }
 }
