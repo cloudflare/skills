@@ -1,0 +1,15 @@
+{
+  "$schema": "https://code.claude.com/schemas/marketplace.json",
+  "name": "cloudflare",
+  "owner": {
+    "name": "Cloudflare",
+    "url": "https://workers.cloudflare.com"
+  },
+  "plugins": [
+    {
+      "name": "cloudflare",
+      "source": "./",
+      "description": "Skills for the Cloudflare developer platform"
+    }
+  ]
+}

@@ -2,11 +2,29 @@
 
 A collection of [Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills) for building on Cloudflare, Workers, the Agents SDK, and the wider Cloudflare Developer Platform.
 
-## Installing Skills
+## Installing
 
 These skills work with any agent that supports the Agent Skills standard, including Claude Code, OpenCode, OpenAI Codex, and Pi.
 
-Copy the skill directories you need to the appropriate location for your agent:
+### Claude Code
+
+Install using the [plugin marketplace](https://code.claude.com/docs/en/discover-plugins#add-from-github):
+
+```
+/plugin marketplace add cloudflare/skills
+```
+
+### npx skills
+
+Install using the [`npx skills`](https://skills.sh) CLI:
+
+```
+npx skills add https://github.com/cloudflare/skills
+```
+
+### Clone / Copy
+
+Clone this repo and copy the skill folders into the appropriate directory for your agent:
 
 | Agent | Skill Directory | Docs |
 |-------|-----------------|------|

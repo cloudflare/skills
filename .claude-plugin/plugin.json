@@ -1,8 +1,17 @@
 {
   "name": "cloudflare",
-  "description": "Plugin that includes Skills for building AI agents and MCP servers on the Cloudflare developer platform",
+  "description": "Skills for the Cloudflare developer platform: Workers, Durable Objects, Agents SDK, MCP servers, Wrangler CLI, and web performance",
   "version": "1.0.0",
-  "author": {
+  "owner": {
     "name": "Cloudflare"
-  }
+  },
+  "skills": [
+    "./agents-sdk",
+    "./building-ai-agent-on-cloudflare",
+    "./building-mcp-server-on-cloudflare",
+    "./cloudflare",
+    "./durable-objects",
+    "./web-perf",
+    "./wrangler"
+  ]
 }
