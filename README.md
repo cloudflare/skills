@@ -19,6 +19,7 @@ Copy the skill directories you need to the appropriate location for your agent:
 
 | Skill | Useful for | Directory |
 |-------|------------|-----------|
+| cloudflare | Comprehensive platform skill covering Workers, Pages, storage (KV, D1, R2), AI (Workers AI, Vectorize, Agents SDK), networking (Tunnel, Spectrum), security (WAF, DDoS), and IaC (Terraform, Pulumi) | `cloudflare/` |
 | agents-sdk | Building stateful AI agents with state, scheduling, RPC, MCP servers, email, and streaming chat | `agents-sdk/` |
 | durable-objects | Stateful coordination (chat rooms, games, booking), RPC, SQLite, alarms, WebSockets | `durable-objects/` |
 | wrangler | Deploying and managing Workers, KV, R2, D1, Vectorize, Queues, Workflows | `wrangler/` |
