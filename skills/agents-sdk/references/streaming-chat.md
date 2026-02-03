@@ -1,5 +1,7 @@
 # Streaming Chat with AIChatAgent
 
+Fetch `docs/resumable-streaming.md` and `docs/client-sdk.md` from `https://github.com/cloudflare/agents/tree/main/docs` for complete documentation.
+
 `AIChatAgent` provides streaming chat with automatic message persistence and resumable streams.
 
 ## Basic Chat Agent

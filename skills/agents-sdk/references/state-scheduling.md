@@ -1,8 +1,10 @@
-# State, Scheduling & Queues
+# State & Scheduling
+
+Fetch `docs/state.md` and `docs/scheduling.md` from `https://github.com/cloudflare/agents/tree/main/docs` for complete documentation.
 
 ## State Management
 
-State persists automatically to SQLite and broadcasts to connected clients.
+State persists to SQLite and broadcasts to connected clients automatically.
 
 ### Define Typed State
 
@@ -10,47 +12,46 @@ State persists automatically to SQLite and broadcasts to connected clients.
 type State = { 
   count: number;
   items: string[];
-  lastUpdated: Date;
 };
 
 export class MyAgent extends Agent<Env, State> {
-  initialState: State = { 
-    count: 0, 
-    items: [],
-    lastUpdated: new Date()
-  };
+  initialState: State = { count: 0, items: [] };
 }
 ```
 
-### Read and Update State
+### Read and Update
 
 ```typescript
-// Read (lazy-loaded from SQLite on first access)
+// Read (lazy-loaded from SQLite)
 const count = this.state.count;
 
-// Update (persists to SQLite, broadcasts to clients)
-this.setState({ 
-  ...this.state, 
-  count: this.state.count + 1 
-});
+// Write (sync, persists, broadcasts)
+this.setState({ count: this.state.count + 1 });
 ```
 
-### React to State Changes
+### Validation Hook
+
+`validateStateChange()` runs synchronously before state persists. Throw to reject the update.
 
 ```typescript
-onStateUpdate(state: State, source: Connection | "server") {
-  if (source !== "server") {
-    // Client updated state via WebSocket
-    console.log("Client update:", state);
+validateStateChange(nextState: State, source: Connection | "server") {
+  if (nextState.count < 0) {
+    throw new Error("Count cannot be negative");
   }
 }
 ```
 
-### Client-Side State Sync (React)
+### Execution Order
+
+1. `validateStateChange(nextState, source)` - sync, gating
+2. State persisted to SQLite
+3. State broadcast to connected clients
+4. `onStateUpdate(nextState, source)` - async via `ctx.waitUntil`, non-gating
+
+### Client-Side Sync (React)
 
 ```tsx
 import { useAgent } from "agents/react";
-import { useState } from "react";
 
 function App() {
   const [state, setLocalState] = useState<State>({ count: 0 });
@@ -61,97 +62,10 @@ function App() {
     onStateUpdate: (newState) => setLocalState(newState)
   });
 
-  const increment = () => {
-    agent.setState({ ...state, count: state.count + 1 });
-  };
-
-  return <button onClick={increment}>Count: {state.count}</button>;
+  return <button onClick={() => agent.setState({ count: state.count + 1 })}>
+    Count: {state.count}
+  </button>;
 }
-```
-
-The `onStateUpdate` callback receives state changes from the server. Use local React state to store and render the synced state.
-
-## Scheduling
-
-Schedule methods to run at specific times using `this.schedule()`.
-
-### Schedule Types
-
-```typescript
-// At specific Date
-await this.schedule(new Date("2025-12-25T00:00:00Z"), "sendGreeting", { to: "user" });
-
-// Delay in seconds
-await this.schedule(60, "checkStatus", { id: "abc123" }); // 1 minute
-
-// Cron expression (recurring)
-await this.schedule("0 * * * *", "hourlyCleanup", {}); // Every hour
-await this.schedule("0 9 * * 1-5", "weekdayReport", {}); // 9am weekdays
-```
-
-### Schedule Handler
-
-```typescript
-export class MyAgent extends Agent<Env, State> {
-  async sendGreeting(payload: { to: string }, schedule: Schedule) {
-    console.log(`Sending greeting to ${payload.to}`);
-    // Cron schedules automatically reschedule; one-time schedules are deleted
-  }
-}
-```
-
-### Manage Schedules
-
-```typescript
-// Get all schedules
-const schedules = this.getSchedules();
-
-// Get by type
-const crons = this.getSchedules({ type: "cron" });
-
-// Get by time range
-const upcoming = this.getSchedules({ 
-  timeRange: { start: new Date(), end: nextWeek } 
-});
-
-// Cancel
-await this.cancelSchedule(schedule.id);
-```
-
-## Task Queue
-
-Process tasks sequentially with automatic dequeue on success.
-
-### Queue a Task
-
-```typescript
-await this.queue("processItem", { itemId: "123", priority: "high" });
-```
-
-### Queue Handler
-
-```typescript
-async processItem(payload: { itemId: string }, queueItem: QueueItem) {
-  const item = await fetchItem(payload.itemId);
-  await processItem(item);
-  // Task automatically dequeued on success
-}
-```
-
-### Queue Operations
-
-```typescript
-// Manual dequeue
-await this.dequeue(queueItem.id);
-
-// Dequeue all
-await this.dequeueAll();
-
-// Dequeue by callback
-await this.dequeueAllByCallback("processItem");
-
-// Query queue
-const pending = await this.getQueues("priority", "high");
 ```
 
 ## SQL API
@@ -168,7 +82,7 @@ this.sql`
   )
 `;
 
-// Insert with params
+// Insert
 this.sql`INSERT INTO items (id, name) VALUES (${id}, ${name})`;
 
 // Query with types
@@ -177,31 +91,73 @@ const items = this.sql<{ id: string; name: string }>`
 `;
 ```
 
+## Scheduling
+
+### Schedule Types
+
+| Mode | Syntax | Use Case |
+|------|--------|----------|
+| Delay | `this.schedule(60, ...)` | Run in 60 seconds |
+| Date | `this.schedule(new Date(...), ...)` | Run at specific time |
+| Cron | `this.schedule("0 8 * * *", ...)` | Recurring schedule |
+| Interval | `this.scheduleEvery(30, ...)` | Fixed interval (every 30s) |
+
+### Examples
+
+```typescript
+// Delay (seconds)
+await this.schedule(60, "checkStatus", { id: "abc123" });
+
+// Specific date
+await this.schedule(new Date("2025-12-25T00:00:00Z"), "sendGreeting", { to: "user" });
+
+// Cron (recurring)
+await this.schedule("0 9 * * 1-5", "weekdayReport", {});
+
+// Fixed interval (every 30 seconds, overlap prevention built-in)
+await this.scheduleEvery(30, "pollUpdates");
+await this.scheduleEvery(300, "syncData", { source: "api" });
+```
+
+### Handler
+
+```typescript
+async sendGreeting(payload: { to: string }, schedule: Schedule) {
+  console.log(`Sending greeting to ${payload.to}`);
+  // Cron schedules auto-reschedule; one-time schedules are deleted
+}
+```
+
+### Manage Schedules
+
+```typescript
+const schedules = this.getSchedules();
+const crons = this.getSchedules({ type: "cron" });
+await this.cancelSchedule(schedule.id);
+```
+
 ## Lifecycle Callbacks
 
 ```typescript
 export class MyAgent extends Agent<Env, State> {
-  // Called when agent starts (after hibernation or first create)
   async onStart() {
-    console.log("Agent started:", this.name);
+    // Agent started or woke from hibernation
   }
 
-  // WebSocket connected
   onConnect(conn: Connection, ctx: ConnectionContext) {
-    console.log("Client connected:", conn.id);
+    // WebSocket connected
   }
 
-  // WebSocket message (non-RPC)
   onMessage(conn: Connection, message: WSMessage) {
-    console.log("Received:", message);
+    // WebSocket message (non-RPC)
   }
 
-  // State changed
-  onStateUpdate(state: State, source: Connection | "server") {}
+  onStateUpdate(state: State, source: Connection | "server") {
+    // State changed (async, non-blocking)
+  }
 
-  // Error handler
   onError(error: unknown) {
-    console.error("Agent error:", error);
+    // Error handler
     throw error; // Re-throw to propagate
   }
 }

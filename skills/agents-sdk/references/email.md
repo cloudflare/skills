@@ -1,8 +1,12 @@
 # Email Handling
 
-Agents can receive and reply to emails via Cloudflare Email Routing.
+Fetch `docs/email.md` from `https://github.com/cloudflare/agents/tree/main/docs` for complete documentation.
 
-## Wrangler Config
+## Overview
+
+Agents receive and reply to emails via Cloudflare Email Routing.
+
+## Wrangler Configuration
 
 ```jsonc
 {
@@ -16,60 +20,35 @@ Agents can receive and reply to emails via Cloudflare Email Routing.
 }
 ```
 
-Configure Email Routing in Cloudflare dashboard to forward to your Worker.
-
-## Implement onEmail
+## Basic Email Handler
 
 ```typescript
-import { Agent, AgentEmail } from "agents";
+import { Agent } from "agents";
+import { type AgentEmail } from "agents/email";
 import PostalMime from "postal-mime";
 
-type State = { emails: Array<{ from: string; subject: string; text: string; timestamp: Date }> };
-
 export class EmailAgent extends Agent<Env, State> {
-  initialState: State = { emails: [] };
-
   async onEmail(email: AgentEmail) {
-    console.log("From:", email.from);
-    console.log("To:", email.to);
-    console.log("Subject:", email.headers.get("subject"));
-
-    // Get raw email content
     const raw = await email.getRaw();
-
-    // Parse with postal-mime
     const parsed = await PostalMime.parse(raw);
 
-    // Update state
-    this.setState({
-      emails: [...this.state.emails, {
-        from: email.from,
-        subject: parsed.subject ?? "",
-        text: parsed.text ?? "",
-        timestamp: new Date()
-      }]
-    });
+    console.log("From:", email.from);
+    console.log("Subject:", parsed.subject);
 
-    // Reply
     await this.replyToEmail(email, {
       fromName: "My Agent",
-      subject: `Re: ${email.headers.get("subject")}`,
-      body: "Thanks for your email! I'll process it shortly.",
-      contentType: "text/plain"
+      subject: `Re: ${parsed.subject}`,
+      body: "Thanks for your email!"
     });
   }
 }
 ```
 
-**Install postal-mime for parsing:**
-```bash
-npm install postal-mime
-```
-
-## Route Emails to Agent
+## Routing Emails
 
 ```typescript
-import { routeAgentRequest, routeAgentEmail, createAddressBasedEmailResolver } from "agents";
+import { routeAgentRequest, routeAgentEmail } from "agents";
+import { createAddressBasedEmailResolver } from "agents/email";
 
 export default {
   async email(message, env) {
@@ -84,36 +63,84 @@ export default {
 };
 ```
 
-## Custom Email Resolvers
+## Resolvers
 
-### Header-Based Resolver
+### Address-Based (Inbound Mail)
 
-Routes based on X-Agent headers in replies:
+Routes based on recipient address:
 
 ```typescript
-import { createHeaderBasedEmailResolver } from "agents";
+import { createAddressBasedEmailResolver } from "agents/email";
 
-await routeAgentEmail(message, env, {
-  resolver: createHeaderBasedEmailResolver()
+const resolver = createAddressBasedEmailResolver("EmailAgent");
+// support@example.com → EmailAgent, instance "support"
+// NotificationAgent+user123@example.com → NotificationAgent, instance "user123"
+```
+
+### Secure Reply (Reply Flows)
+
+Verifies replies are authentic using HMAC-SHA256 signatures:
+
+```typescript
+import { createSecureReplyEmailResolver } from "agents/email";
+
+const resolver = createSecureReplyEmailResolver(env.EMAIL_SECRET, {
+  maxAge: 7 * 24 * 60 * 60, // 7 days (default: 30 days)
+  onInvalidSignature: (email, reason) => {
+    console.warn(`Invalid signature from ${email.from}: ${reason}`);
+  }
 });
 ```
 
-### Custom Resolver
+Sign outbound emails to enable secure reply routing:
 
 ```typescript
-const customResolver = async (email, env) => {
-  // Parse recipient to determine agent
-  const [localPart] = email.to.split("@");
-  
-  if (localPart.startsWith("support-")) {
-    return {
-      agentName: "SupportAgent",
-      agentId: localPart.replace("support-", "")
-    };
-  }
-  
-  return null; // Don't route
-};
+await this.replyToEmail(email, {
+  fromName: "My Agent",
+  body: "Thanks!",
+  secret: this.env.EMAIL_SECRET  // Signs headers for secure reply routing
+});
+```
 
-await routeAgentEmail(message, env, { resolver: customResolver });
+### Catch-All (Single Instance)
+
+Routes all emails to one agent instance:
+
+```typescript
+import { createCatchAllEmailResolver } from "agents/email";
+
+const resolver = createCatchAllEmailResolver("EmailAgent", "default");
+```
+
+### Combining Resolvers
+
+```typescript
+async email(message, env) {
+  const secureReply = createSecureReplyEmailResolver(env.EMAIL_SECRET);
+  const addressBased = createAddressBasedEmailResolver("EmailAgent");
+
+  await routeAgentEmail(message, env, {
+    resolver: async (email, env) => {
+      // Try secure reply first
+      const result = await secureReply(email, env);
+      if (result) return result;
+      // Fall back to address-based
+      return addressBased(email, env);
+    }
+  });
+}
+```
+
+## Utilities
+
+```typescript
+import { isAutoReplyEmail } from "agents/email";
+
+async onEmail(email: AgentEmail) {
+  if (isAutoReplyEmail(email.headers)) {
+    // Skip auto-replies (vacation, out-of-office, etc.)
+    return;
+  }
+  // Process email...
+}
 ```

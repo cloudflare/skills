@@ -1,5 +1,7 @@
 # MCP Server Integration
 
+Fetch `docs/mcp-client.md` and `docs/mcp-servers.md` from `https://github.com/cloudflare/agents/tree/main/docs` for complete documentation.
+
 Agents include a multi-server MCP client for connecting to external MCP servers.
 
 ## Add an MCP Server
@@ -10,12 +12,11 @@ import { Agent, callable } from "agents";
 export class MyAgent extends Agent<Env, State> {
   @callable()
   async addServer(name: string, url: string) {
-    const result = await this.addMcpServer(
-      name,
-      url,
-      "https://my-worker.workers.dev",  // callback host for OAuth
-      "agents"                            // routing prefix
-    );
+    // Options-based API (recommended)
+    const result = await this.addMcpServer(name, url, {
+      callbackHost: "https://my-worker.workers.dev",
+      transport: { headers: { Authorization: "Bearer ..." } }
+    });
 
     if (result.state === "authenticating") {
       // OAuth required - redirect user to result.authUrl
