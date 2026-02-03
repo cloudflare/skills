@@ -42,8 +42,13 @@ The Agents SDK provides:
 - **Streaming chat** - `AIChatAgent` with resumable streams
 - **React hooks** - `useAgent`, `useAgentChat` for client apps
 
-## Installation
+## FIRST: Verify Installation
 
+```bash
+npm ls agents  # Should show agents package
+```
+
+If not installed:
 ```bash
 npm install agents
 ```
