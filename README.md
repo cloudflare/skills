@@ -34,7 +34,7 @@ Clone this repo and copy the skill folders into the appropriate directory for yo
 |-------|-----------------|------|
 | Claude Code | `~/.claude/skills/` | [docs](https://code.claude.com/docs/en/skills) |
 | Cursor | `~/.cursor/skills/` | [docs](https://cursor.com/docs/context/skills) |
-| OpenCode | `~/.config/opencode/skill/` | [docs](https://opencode.ai/docs/skills/) |
+| OpenCode | `~/.config/opencode/skills/` | [docs](https://opencode.ai/docs/skills/) |
 | OpenAI Codex | `~/.codex/skills/` | [docs](https://developers.openai.com/codex/skills/) |
 | Pi | `~/.pi/agent/skills/` | [docs](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent#skills) |
 
