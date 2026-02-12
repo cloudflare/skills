@@ -97,7 +97,7 @@ mkdir -p /tmp/workers-types-latest && \
 | Destructuring `ctx` (`const { waitUntil } = ctx`) | Loses `this` binding — throws "Illegal invocation" at runtime |
 | `any` on `Env` or handler params | Defeats type safety for all binding access |
 | `as unknown as T` double-cast | Hides real type incompatibilities — fix the design |
-| `implements DurableObject` (instead of `extends`) | Legacy — loses `this.ctx`, `this.env` from base class |
+| `implements` on platform base classes (instead of `extends`) | Legacy — loses `this.ctx`, `this.env`. Applies to DurableObject, WorkerEntrypoint, Workflow |
 | `env.X` inside platform base class | Should be `this.env.X` in classes extending DurableObject, WorkerEntrypoint, etc. |
 
 ## Review Workflow

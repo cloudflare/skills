@@ -2,7 +2,7 @@
 
 Each rule has an imperative summary, what to check, the correct pattern, and an anti-pattern where applicable. Code examples are plain TypeScript — no MDX components.
 
-When a rule involves config fields or API signatures that may evolve, a **Retrieve** callout reminds you to check the latest docs or types before flagging.
+When a rule involves config fields or API signatures that may evolve, a **Retrieve** callout reminds you to check the latest docs or types before flagging. All doc paths are relative to `https://developers.cloudflare.com`.
 
 ---
 
@@ -12,7 +12,7 @@ When a rule involves config fields or API signatures that may evolve, a **Retrie
 
 Set `compatibility_date` to today on new projects. Update periodically on existing ones to access new APIs and fixes.
 
-**Check**: `compatibility_date` exists and is not more than ~6 months old.
+**Check**: `compatibility_date` exists. Flag if older than 6 months.
 
 ```jsonc
 // wrangler.jsonc
@@ -110,11 +110,12 @@ async fetch(request: Request, env: Env): Promise<Response> {
 
 Correct — concatenate multiple streams:
 ```ts
-async fetch(request: Request, env: Env): Promise<Response> {
+async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
   const urls = ["https://api.example.com/part-1", "https://api.example.com/part-2"];
   const { readable, writable } = new TransformStream();
 
-  const pipeline = (async () => {
+  // Track the pipeline promise — don't let it float
+  ctx.waitUntil((async () => {
     for (const url of urls) {
       const response = await fetch(url);
       if (response.body) {
@@ -122,7 +123,7 @@ async fetch(request: Request, env: Env): Promise<Response> {
       }
     }
     await writable.close();
-  })();
+  })());
 
   return new Response(readable, {
     headers: { "Content-Type": "application/octet-stream" },
@@ -356,6 +357,14 @@ Anti-pattern:
 // Floating promise — result dropped, error swallowed
 fetch("https://api.example.com/webhook", { method: "POST", body: JSON.stringify(data) });
 ```
+
+### Be aware of platform limits
+
+Workers have a 10ms CPU time limit (Bundled) or 30s (Standard/Unbound). Heavy synchronous work — tight loops, large JSON parsing, compute-intensive crypto — can hit the CPU limit and terminate the request.
+
+**Check**: compute-heavy operations that run synchronously. Consider breaking work into smaller chunks, offloading to Queues/Workflows, or using WebAssembly for CPU-intensive tasks.
+
+**Retrieve**: current limits at `/workers/platform/limits/`.
 
 ---
 

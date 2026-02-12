@@ -121,18 +121,15 @@ For executable examples, verify: `name`, `compatibility_date`, `main`. Check the
 
 ## Anti-Patterns to Flag
 
-| Anti-pattern | Why |
-|-------------|-----|
-| `any` on `Env` or handler params | Defeats type safety for all downstream binding access |
-| `as unknown as T` | Hides real type incompatibilities |
-| `@ts-ignore` without explanation | Masks errors silently |
-| `implements DurableObject` (instead of `extends`) | Legacy — loses `this.ctx`, `this.env` from base class |
-| Buffering unbounded data | `await res.text()`, `await res.json()` on streams — memory exhaustion |
-| Hardcoded secrets | Use `env` bindings and `wrangler secret put` |
-| Floating promises | `step.do()`, `fetch()` without `await` — silent bugs |
-| Non-serializable values across boundaries | `Response`, `Error` in step/queue — compiles but fails at runtime |
-| `env.X` inside class body | Should be `this.env.X` in platform base classes |
-| `this.env.X` in module export handler | Should be `env.X` parameter |
+See the full anti-patterns table in `SKILL.md`. The type-specific ones to watch for during review:
+
+- **`any` on `Env` or handler params** — defeats type safety for all downstream binding access
+- **`as unknown as T`** — hides real type incompatibilities; fix the underlying design
+- **`@ts-ignore`/`@ts-expect-error` without explanation** — masks errors silently; require a justifying comment
+- **`implements` instead of `extends` on platform base classes** — legacy pattern; loses `this.ctx`, `this.env`
+- **`env.X` inside class body** — should be `this.env.X` in platform base classes
+- **`this.env.X` in module export handler** — should be `env.X` parameter
+- **Non-serializable values across boundaries** — `Response`, `Error` in step/queue compiles but fails at runtime
 
 ---
 
@@ -155,7 +152,10 @@ Valid: plain objects, arrays, strings, numbers, booleans, null, `ArrayBuffer`, `
 
 1. **Retrieve** — fetch latest workers types, wrangler schema, and best practices page
 2. **Read full files** — not just diffs; context matters for binding access patterns
-3. **Categorize code**: illustrative (concept demo), demonstrative (functional snippet), or executable (standalone)
+3. **Categorize code** — determines what to check:
+   - **Illustrative** (concept demo, comments for most logic): verify correct API names and realistic signatures
+   - **Demonstrative** (functional snippet, would work in context): verify syntax, correct APIs, correct binding access
+   - **Executable** (standalone, runs without modification): verify compiles, runs, includes imports and config
 4. **Check types** — binding access pattern, handler signatures, no `any`, no unsafe casts
 5. **Check config** — compatibility_date, nodejs_compat, observability, secrets, binding-code consistency
 6. **Check patterns** — streaming, floating promises, global state, serialization boundaries
