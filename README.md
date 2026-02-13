@@ -12,6 +12,7 @@ Install using the [plugin marketplace](https://code.claude.com/docs/en/discover-
 
 ```
 /plugin marketplace add cloudflare/skills
+/plugin install cloudflare@cloudflare
 ```
 
 ### Cursor
