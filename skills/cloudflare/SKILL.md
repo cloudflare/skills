@@ -92,6 +92,17 @@ Need media?
 └─ Third-party script management → zaraz/
 ```
 
+### "I need analytics/metrics data"
+
+```
+Need analytics?
+├─ Query across all Cloudflare products (HTTP, Workers, DNS, etc.) → graphql-api/
+├─ Custom high-cardinality metrics from Workers → analytics-engine/
+├─ Client-side (RUM) performance data → web-analytics/
+├─ Workers Logs and real-time debugging → observability/
+└─ Raw logs (Logpush to external tools) → Cloudflare docs
+```
+
 ### "I need infrastructure-as-code"
 
 ```
@@ -178,6 +189,7 @@ Need IaC? → pulumi/ (Pulumi), terraform/ (Terraform), or api/ (REST API)
 | Miniflare | `references/miniflare/` |
 | C3 | `references/c3/` |
 | Observability | `references/observability/` |
+| GraphQL Analytics API | `references/graphql-api/` |
 | Analytics Engine | `references/analytics-engine/` |
 | Web Analytics | `references/web-analytics/` |
 | Sandbox | `references/sandbox/` |
