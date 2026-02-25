@@ -2,7 +2,7 @@
 
 ## Time-Series Queries
 
-### Traffic Over Time (5-Minute Buckets)
+Use time dimension granularity matching your range (see Best Practices below).
 
 ```graphql
 query TrafficTimeSeries($zoneTag: string!, $start: Time!, $end: Time!) {
@@ -11,37 +11,11 @@ query TrafficTimeSeries($zoneTag: string!, $start: Time!, $end: Time!) {
       httpRequestsAdaptiveGroups(
         filter: { datetime_gt: $start, datetime_lt: $end }
         limit: 1000
-        orderBy: [datetimeFiveMinutes_ASC]
+        orderBy: [datetimeFiveMinutes_ASC]  # or datetimeHour_ASC for longer ranges
       ) {
         count
-        dimensions {
-          datetimeFiveMinutes
-        }
-        sum {
-          edgeResponseBytes
-        }
-      }
-    }
-  }
-}
-```
-
-### Hourly Aggregation
-
-Use `datetimeHour` for longer time ranges (days/weeks):
-
-```graphql
-query HourlyTraffic($zoneTag: string!, $start: Time!, $end: Time!) {
-  viewer {
-    zones(filter: { zoneTag: $zoneTag }) {
-      httpRequestsAdaptiveGroups(
-        filter: { datetime_gt: $start, datetime_lt: $end }
-        limit: 500
-        orderBy: [datetimeHour_ASC]
-      ) {
-        count
-        dimensions { datetimeHour }
-        sum { edgeResponseBytes edgeRequestBytes }
+        dimensions { datetimeFiveMinutes }
+        sum { edgeResponseBytes }
         ratio { status4xx status5xx }
       }
     }
@@ -63,65 +37,16 @@ query TopCountries($zoneTag: string!, $start: Time!, $end: Time!) {
         orderBy: [count_DESC]
       ) {
         count
-        dimensions {
-          clientCountryName
-        }
+        dimensions { clientCountryName }
       }
     }
   }
 }
 ```
 
-### Top Paths by Bandwidth
-
-```graphql
-query TopPathsByBandwidth($zoneTag: string!, $start: Time!, $end: Time!) {
-  viewer {
-    zones(filter: { zoneTag: $zoneTag }) {
-      httpRequestsAdaptiveGroups(
-        filter: { datetime_gt: $start, datetime_lt: $end }
-        limit: 20
-        orderBy: [sum_edgeResponseBytes_DESC]
-      ) {
-        count
-        dimensions { clientRequestPath }
-        sum { edgeResponseBytes }
-      }
-    }
-  }
-}
-```
-
-### Top Error Status Codes
-
-```graphql
-query TopErrors($zoneTag: string!, $start: Time!, $end: Time!) {
-  viewer {
-    zones(filter: { zoneTag: $zoneTag }) {
-      httpRequestsAdaptiveGroups(
-        filter: {
-          datetime_gt: $start
-          datetime_lt: $end
-          edgeResponseStatus_geq: 400
-        }
-        limit: 20
-        orderBy: [count_DESC]
-      ) {
-        count
-        dimensions {
-          edgeResponseStatus
-          clientRequestHTTPHost
-          clientRequestPath
-        }
-      }
-    }
-  }
-}
-```
+Use `orderBy: [sum_edgeResponseBytes_DESC]` for top paths by bandwidth. Add `edgeResponseStatus_geq: 400` to the filter for top error status codes.
 
 ## Workers Analytics
-
-### Worker Performance Overview
 
 ```graphql
 query WorkersOverview($accountTag: string!, $start: Time!, $end: Time!) {
@@ -132,78 +57,18 @@ query WorkersOverview($accountTag: string!, $start: Time!, $end: Time!) {
         limit: 100
         orderBy: [sum_requests_DESC]
       ) {
-        sum {
-          requests
-          errors
-          subrequests
-          wallTime
-        }
-        quantiles {
-          cpuTimeP50
-          cpuTimeP99
-          wallTimeP50
-          wallTimeP99
-        }
-        dimensions {
-          scriptName
-        }
-      }
-    }
-  }
-}
-```
-
-### Worker Error Rate Over Time
-
-```graphql
-query WorkerErrorRate($accountTag: string!, $scriptName: string!, $start: Time!, $end: Time!) {
-  viewer {
-    accounts(filter: { accountTag: $accountTag }) {
-      workersInvocationsAdaptive(
-        filter: {
-          datetime_gt: $start
-          datetime_lt: $end
-          scriptName: $scriptName
-        }
-        limit: 500
-        orderBy: [datetimeFiveMinutes_ASC]
-      ) {
-        sum { requests errors }
-        dimensions { datetimeFiveMinutes status }
-      }
-    }
-  }
-}
-```
-
-### Worker CPU Time Distribution
-
-```graphql
-query WorkerCPUDistribution($accountTag: string!, $start: Time!, $end: Time!) {
-  viewer {
-    accounts(filter: { accountTag: $accountTag }) {
-      workersInvocationsAdaptive(
-        filter: { datetime_gt: $start, datetime_lt: $end }
-        limit: 50
-        orderBy: [sum_requests_DESC]
-      ) {
+        sum { requests errors subrequests wallTime }
+        quantiles { cpuTimeP50 cpuTimeP99 wallTimeP50 wallTimeP99 }
         dimensions { scriptName }
-        quantiles {
-          cpuTimeP50
-          cpuTimeP75
-          cpuTimeP95
-          cpuTimeP99
-        }
-        sum { requests }
       }
     }
   }
 }
 ```
+
+Filter by `scriptName` for a specific Worker. Add `datetimeFiveMinutes` dimension + `orderBy: [datetimeFiveMinutes_ASC]` for error rate over time.
 
 ## Firewall / Security
-
-### Recent Firewall Events
 
 ```graphql
 query RecentFirewallEvents($zoneTag: string!, $start: Time!) {
@@ -214,51 +79,17 @@ query RecentFirewallEvents($zoneTag: string!, $start: Time!) {
         limit: 50
         orderBy: [datetime_DESC]
       ) {
-        action
-        source
-        clientIP
-        clientCountryName
-        userAgent
-        clientRequestHTTPHost
-        clientRequestPath
-        ruleId
-        datetime
+        action source clientIP clientCountryName userAgent
+        clientRequestHTTPHost clientRequestPath ruleId datetime
       }
     }
   }
 }
 ```
 
-### Firewall Blocks by Rule Over Time
-
-```graphql
-query FirewallBlocksByRule($zoneTag: string!, $start: Time!, $end: Time!) {
-  viewer {
-    zones(filter: { zoneTag: $zoneTag }) {
-      firewallEventsAdaptiveGroups(
-        filter: {
-          datetime_gt: $start
-          datetime_lt: $end
-          action: "block"
-        }
-        limit: 100
-        orderBy: [count_DESC]
-      ) {
-        count
-        dimensions {
-          ruleId
-          source
-          datetimeHour
-        }
-      }
-    }
-  }
-}
-```
+For aggregated firewall stats, use `firewallEventsAdaptiveGroups` with `action: "block"` filter and group by `ruleId`, `source`, `datetimeHour`.
 
 ## DNS Analytics
-
-### DNS Query Volume Over Time
 
 ```graphql
 query DNSQueryVolume($zoneTag: string!, $start: Time!, $end: Time!) {
@@ -279,107 +110,29 @@ query DNSQueryVolume($zoneTag: string!, $start: Time!, $end: Time!) {
 
 ## Storage Analytics (Account-Scoped)
 
-### R2 Operations
+R2, KV, and D1 use `date` (Date type) filters instead of `datetime` (Time type).
 
 ```graphql
-query R2Operations($accountTag: string!, $start: Date!, $end: Date!) {
-  viewer {
-    accounts(filter: { accountTag: $accountTag }) {
-      r2OperationsAdaptiveGroups(
-        filter: { date_geq: $start, date_leq: $end }
-        limit: 100
-        orderBy: [date_DESC]
-      ) {
-        dimensions {
-          date
-          bucketName
-          actionType
-        }
-        sum { requests }
-      }
-    }
-  }
+# R2 operations
+r2OperationsAdaptiveGroups(filter: { date_geq: $start, date_leq: $end }, limit: 100, orderBy: [date_DESC]) {
+  dimensions { date bucketName actionType }
+  sum { requests }
 }
-```
 
-### KV Operations
-
-```graphql
-query KVOperations($accountTag: string!, $start: Date!, $end: Date!) {
-  viewer {
-    accounts(filter: { accountTag: $accountTag }) {
-      kvOperationsAdaptiveGroups(
-        filter: { date_geq: $start, date_leq: $end }
-        limit: 100
-        orderBy: [date_DESC]
-      ) {
-        sum { requests }
-        dimensions { date actionType }
-      }
-    }
-  }
+# KV operations
+kvOperationsAdaptiveGroups(filter: { date_geq: $start, date_leq: $end }, limit: 100, orderBy: [date_DESC]) {
+  dimensions { date actionType }
+  sum { requests }
 }
-```
 
-### D1 Database Analytics
-
-```graphql
-query D1Analytics($accountTag: string!, $start: Date!, $end: Date!) {
-  viewer {
-    accounts(filter: { accountTag: $accountTag }) {
-      d1AnalyticsAdaptiveGroups(
-        filter: { date_geq: $start, date_leq: $end }
-        limit: 100
-        orderBy: [date_DESC]
-      ) {
-        count
-        dimensions { date databaseId }
-        sum { readQueries writeQueries rowsRead rowsWritten }
-      }
-    }
-  }
+# D1 analytics
+d1AnalyticsAdaptiveGroups(filter: { date_geq: $start, date_leq: $end }, limit: 100, orderBy: [date_DESC]) {
+  dimensions { date databaseId }
+  sum { readQueries writeQueries rowsRead rowsWritten }
 }
 ```
 
 ## Cache Analytics
-
-### Cache Hit Ratio Over Time
-
-```graphql
-query CacheHitRatio($zoneTag: string!, $start: Time!, $end: Time!) {
-  viewer {
-    zones(filter: { zoneTag: $zoneTag }) {
-      # Cached requests
-      cached: httpRequestsAdaptiveGroups(
-        filter: {
-          datetime_gt: $start
-          datetime_lt: $end
-          cacheStatus: "hit"
-        }
-        limit: 500
-        orderBy: [datetimeHour_ASC]
-      ) {
-        count
-        dimensions { datetimeHour }
-      }
-      # Total requests
-      total: httpRequestsAdaptiveGroups(
-        filter: {
-          datetime_gt: $start
-          datetime_lt: $end
-        }
-        limit: 500
-        orderBy: [datetimeHour_ASC]
-      ) {
-        count
-        dimensions { datetimeHour }
-      }
-    }
-  }
-}
-```
-
-### Cache Status Breakdown
 
 ```graphql
 query CacheStatusBreakdown($zoneTag: string!, $start: Time!, $end: Time!) {
@@ -399,39 +152,25 @@ query CacheStatusBreakdown($zoneTag: string!, $start: Time!, $end: Time!) {
 }
 ```
 
+For cache hit ratio over time, use aliases to query the same dataset twice — once with `cacheStatus: "hit"` filter and once without — then compute the ratio client-side.
+
 ## Multi-Dataset Queries
 
-A single request can query multiple datasets. This is efficient because it avoids extra HTTP round-trips:
+A single request can query multiple datasets, avoiding extra HTTP round-trips:
 
 ```graphql
 query DashboardOverview($zoneTag: string!, $start: Time!, $end: Time!) {
   viewer {
     zones(filter: { zoneTag: $zoneTag }) {
-      # HTTP traffic summary
       httpTraffic: httpRequestsAdaptiveGroups(
-        filter: { datetime_gt: $start, datetime_lt: $end }
-        limit: 1
-      ) {
-        count
-        sum { edgeResponseBytes }
-        ratio { status4xx status5xx }
-      }
-      # Firewall summary
+        filter: { datetime_gt: $start, datetime_lt: $end }, limit: 1
+      ) { count  sum { edgeResponseBytes }  ratio { status4xx status5xx } }
       firewallEvents: firewallEventsAdaptiveGroups(
-        filter: { datetime_gt: $start, datetime_lt: $end }
-        limit: 5
-        orderBy: [count_DESC]
-      ) {
-        count
-        dimensions { action source }
-      }
-      # DNS summary
+        filter: { datetime_gt: $start, datetime_lt: $end }, limit: 5, orderBy: [count_DESC]
+      ) { count  dimensions { action source } }
       dnsQueries: dnsAnalyticsAdaptiveGroups(
-        filter: { datetime_gt: $start, datetime_lt: $end }
-        limit: 1
-      ) {
-        count
-      }
+        filter: { datetime_gt: $start, datetime_lt: $end }, limit: 1
+      ) { count }
     }
   }
 }
@@ -439,103 +178,44 @@ query DashboardOverview($zoneTag: string!, $start: Time!, $end: Time!) {
 
 ## AI & Gateway Analytics
 
-### Workers AI Inference Metrics
-
 ```graphql
-query AIInference($accountTag: string!, $start: Time!, $end: Time!) {
-  viewer {
-    accounts(filter: { accountTag: $accountTag }) {
-      aiInferenceAdaptiveGroups(
-        filter: { datetime_gt: $start, datetime_lt: $end }
-        limit: 100
-        orderBy: [datetimeHour_DESC]
-      ) {
-        count
-        sum { totalInputTokens totalOutputTokens totalRequestBytesIn }
-        dimensions { modelId datetimeHour }
-      }
-    }
-  }
+# Workers AI inference
+aiInferenceAdaptiveGroups(
+  filter: { datetime_gt: $start, datetime_lt: $end }, limit: 100, orderBy: [datetimeHour_DESC]
+) {
+  count
+  sum { totalInputTokens totalOutputTokens totalRequestBytesIn }
+  dimensions { modelId datetimeHour }
+}
+
+# AI Gateway requests
+aiGatewayRequestsAdaptiveGroups(
+  filter: { datetime_gt: $start, datetime_lt: $end }, limit: 100, orderBy: [datetimeHour_DESC]
+) {
+  count
+  dimensions { gateway provider model datetimeHour }
+  sum { cachedTokensIn cachedTokensOut uncachedTokensIn uncachedTokensOut }
 }
 ```
 
-### AI Gateway Request Analytics
-
-```graphql
-query AIGatewayRequests($accountTag: string!, $start: Time!, $end: Time!) {
-  viewer {
-    accounts(filter: { accountTag: $accountTag }) {
-      aiGatewayRequestsAdaptiveGroups(
-        filter: { datetime_gt: $start, datetime_lt: $end }
-        limit: 100
-        orderBy: [datetimeHour_DESC]
-      ) {
-        count
-        dimensions { gateway provider model datetimeHour }
-        sum { cachedTokensIn cachedTokensOut uncachedTokensIn uncachedTokensOut }
-      }
-    }
-  }
-}
-```
+Both are account-scoped — nest under `accounts(filter: { accountTag: $accountTag })`.
 
 ## Best Practices
 
-### Always Include Time Filters
+**Always include time filters.** Queries without time filters scan all data and are slow/expensive.
 
-Queries without time filters scan all available data and are slow/expensive:
+**Match time granularity to range:**
 
-```graphql
-# GOOD: bounded time range
-filter: { datetime_gt: "2025-01-01T00:00:00Z", datetime_lt: "2025-01-02T00:00:00Z" }
+| Time Range | Recommended Dimension |
+|------------|----------------------|
+| < 6 hours | `datetimeMinute` or `datetimeFiveMinutes` |
+| 6-48 hours | `datetimeFiveMinutes` or `datetimeFifteenMinutes` |
+| 2-14 days | `datetimeHour` |
+| 14+ days | `date` |
 
-# BAD: no time filter -- will be slow and may hit limits
-filter: { clientCountryName: "US" }
-```
+**Use aliases** for querying the same dataset with different filters in one request.
 
-### Match Time Granularity to Range
-
-| Time Range | Recommended Dimension | Why |
-|------------|----------------------|-----|
-| < 6 hours | `datetimeMinute` or `datetimeFiveMinutes` | High resolution, manageable row count |
-| 6-48 hours | `datetimeFiveMinutes` or `datetimeFifteenMinutes` | Balance of resolution and volume |
-| 2-14 days | `datetimeHour` | Reasonable number of data points |
-| 14+ days | `date` | Prevents limit overflow |
-
-### Use Aliases for Multiple Queries
-
-GraphQL aliases let you query the same dataset multiple times with different filters:
-
-```graphql
-{
-  viewer {
-    zones(filter: { zoneTag: "..." }) {
-      us: httpRequestsAdaptiveGroups(
-        filter: { datetime_gt: "...", clientCountryName: "US" }
-        limit: 1
-      ) { count }
-      gb: httpRequestsAdaptiveGroups(
-        filter: { datetime_gt: "...", clientCountryName: "GB" }
-        limit: 1
-      ) { count }
-    }
-  }
-}
-```
-
-### Request Only What You Need
-
-Select only the fields you need. Requesting all dimensions and all aggregations wastes query budget:
-
-```graphql
-# GOOD: specific fields
-sum { requests errors }
-dimensions { scriptName datetimeHour }
-
-# BAD: requesting everything when you only need request counts
-sum { requests errors subrequests cpuTimeUs wallTime duration responseBodySize clientDisconnects requestDuration }
-dimensions { scriptName scriptTag scriptVersion environmentName status usageModel coloCode dispatchNamespaceName isDispatcher date datetime datetimeMinute datetimeFiveMinutes datetimeFifteenMinutes datetimeHour datetimeSixHours }
-```
+**Request only needed fields.** Extra dimensions and metrics increase query cost.
 
 ## See Also
 
