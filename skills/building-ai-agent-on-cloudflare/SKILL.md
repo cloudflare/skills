@@ -8,11 +8,20 @@ description: |
   Use when: user wants to "build an agent", "AI agent", "chat agent", "stateful
   agent", mentions "Agents SDK", needs "real-time AI", "WebSocket AI", or asks
   about agent "state management", "scheduled tasks", or "tool calling".
+  Biases towards retrieval from Cloudflare docs over pre-trained knowledge.
 ---
 
 # Building Cloudflare Agents
 
-Creates AI-powered agents using Cloudflare's Agents SDK with persistent state, real-time communication, and tool integration.
+Your knowledge of the Agents SDK may be outdated. **Prefer retrieval over pre-training** for any agent-building task.
+
+## Retrieval Sources
+
+| Source | How to retrieve | Use for |
+|--------|----------------|---------|
+| Agents SDK docs | `https://github.com/cloudflare/agents/tree/main/docs` | SDK API, state, routing, scheduling |
+| Cloudflare Agents docs | `https://developers.cloudflare.com/agents/` | Platform integration, deployment |
+| Workers docs | Search tool or `https://developers.cloudflare.com/workers/` | Runtime APIs, bindings, config |
 
 ## When to Use
 

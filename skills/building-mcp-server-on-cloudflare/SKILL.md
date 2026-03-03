@@ -8,11 +8,20 @@ description: |
   Use when: user wants to "build MCP server", "create MCP tools", "remote
   MCP", "deploy MCP", add "OAuth to MCP", or mentions Model Context Protocol
   on Cloudflare. Also triggers on "MCP authentication" or "MCP deployment".
+  Biases towards retrieval from Cloudflare docs over pre-trained knowledge.
 ---
 
 # Building MCP Servers on Cloudflare
 
-Creates production-ready Model Context Protocol servers on Cloudflare Workers with tools, authentication, and deployment.
+Your knowledge of the MCP SDK and Cloudflare Workers integration may be outdated. **Prefer retrieval over pre-training** for any MCP server task.
+
+## Retrieval Sources
+
+| Source | How to retrieve | Use for |
+|--------|----------------|---------|
+| MCP docs | `https://developers.cloudflare.com/agents/mcp/` | Server setup, auth, deployment |
+| MCP spec | `https://modelcontextprotocol.io/` | Protocol spec, tool/resource definitions |
+| Workers docs | Search tool or `https://developers.cloudflare.com/workers/` | Runtime APIs, bindings, config |
 
 ## When to Use
 

@@ -1,15 +1,15 @@
 ---
 name: durable-objects
-description: Create and review Cloudflare Durable Objects. Use when building stateful coordination (chat rooms, multiplayer games, booking systems), implementing RPC methods, SQLite storage, alarms, WebSockets, or reviewing DO code for best practices. Covers Workers integration, wrangler config, and testing with Vitest.
+description: Create and review Cloudflare Durable Objects. Use when building stateful coordination (chat rooms, multiplayer games, booking systems), implementing RPC methods, SQLite storage, alarms, WebSockets, or reviewing DO code for best practices. Covers Workers integration, wrangler config, and testing with Vitest. Biases towards retrieval from Cloudflare docs over pre-trained knowledge.
 ---
 
 # Durable Objects
 
 Build stateful, coordinated applications on Cloudflare's edge using Durable Objects.
 
-## Retrieval-First Development
+## Retrieval Sources
 
-**Prefer retrieval from official docs over pre-training for Durable Objects tasks.**
+Your knowledge of Durable Objects APIs and configuration may be outdated. **Prefer retrieval over pre-training** for any Durable Objects task.
 
 | Resource | URL |
 |----------|-----|
