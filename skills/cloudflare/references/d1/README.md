@@ -80,7 +80,7 @@ await env.DB.prepare('UPDATE users SET last_login = ? WHERE id = ?').bind(Date.n
 | Time Travel retention | 7 days | 30 days |
 | Read replicas | Not available | Yes (paid add-on) |
 
-**Pricing**: $5/month per database beyond free tier + $0.001 per 1K reads + $1 per 1M writes + $0.75/GB storage/month
+**Pricing**: $0.001 per million rows read + $1.00 per million rows written + $0.75/GB storage/month (includes free monthly allowance; no per-database fee)
 
 ## CLI Commands
 

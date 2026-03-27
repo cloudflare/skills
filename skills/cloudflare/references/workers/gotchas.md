@@ -4,7 +4,7 @@
 
 ### "Too much CPU time used"
 
-**Cause:** Worker exceeded CPU time limit (10ms standard, 30ms unbound)  
+**Cause:** Worker exceeded CPU time limit (10ms on Free plan, 30s default / 5min max on Paid)  
 **Solution:** Use `ctx.waitUntil()` for background work, offload heavy compute to Durable Objects, or consider Workers AI for ML workloads
 
 ### "Module-Level State Lost"
@@ -121,12 +121,13 @@ See [frameworks.md](./frameworks.md) for full patterns
 |-------|-------|-------|
 | Request size | 100 MB | Maximum incoming request size |
 | Response size | Unlimited | Supports streaming |
-| CPU time (standard) | 10ms | Standard Workers |
-| CPU time (unbound) | 30ms | Unbound Workers |
-| Subrequests | 10,000 | Per request |
+| CPU time (Free) | 10ms | Free plan |
+| CPU time (Paid) | 30s default / 5min max | Configurable via `limits.cpu_ms` |
+| Subrequests (Free) | 50 | Per invocation |
+| Subrequests (Paid) | 10,000 | Per invocation |
 | KV reads | 1000 | Per request |
-| KV write size | 25 MB | Maximum per write |
-| Environment size | 5 MB | Total size of env bindings |
+| KV value size | 25 MiB | Maximum per key |
+| Environment variable size | 5 KB | Per variable |
 
 ## See Also
 

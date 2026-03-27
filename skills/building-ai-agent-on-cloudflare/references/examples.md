@@ -38,7 +38,7 @@ my-agent/
 │   ├── server.ts     # Agent implementation
 │   ├── tools.ts      # Tool definitions
 │   └── utils.ts      # Helpers
-├── wrangler.toml     # Platform configuration
+├── wrangler.jsonc     # Platform configuration
 └── package.json
 ```
 

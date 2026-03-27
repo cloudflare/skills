@@ -234,39 +234,40 @@ export class MyAgent extends Agent { ... }
 
 ### "Durable Object not found"
 
-Check `wrangler.toml`:
+Check `wrangler.jsonc`:
 
-```toml
-[durable_objects]
-bindings = [{ name = "AGENT", class_name = "MyAgent" }]
-
-[[migrations]]
-tag = "v1"
-new_classes = ["MyAgent"]
+```jsonc
+{
+  "durable_objects": {
+    "bindings": [{ "name": "AGENT", "class_name": "MyAgent" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["MyAgent"] }]
+}
 ```
 
 ### "Migration required"
 
 When adding new Durable Object classes:
 
-```toml
-[[migrations]]
-tag = "v2"  # Increment from previous
-new_classes = ["NewAgentClass"]
-
-# Or for renames
-# renamed_classes = [{ from = "OldName", to = "NewName" }]
+```jsonc
+{
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["MyAgent"] },
+    { "tag": "v2", "new_sqlite_classes": ["NewAgentClass"] }
+  ]
+}
 ```
 
 ## AI Integration Issues
 
 ### "AI binding not found"
 
-Add to `wrangler.toml`:
+Add to `wrangler.jsonc`:
 
-```toml
-[ai]
-binding = "AI"
+```jsonc
+{
+  "ai": { "binding": "AI" }
+}
 ```
 
 ### "Model not found" / "Rate limited"
