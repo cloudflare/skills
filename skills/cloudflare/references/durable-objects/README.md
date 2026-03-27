@@ -167,8 +167,8 @@ npx wrangler deploy           # Deploy + auto-apply migrations
 
 ## Resources
 
-**Docs**: https://developers.cloudflare.com/durable-objects/  
-**API Reference**: https://developers.cloudflare.com/durable-objects/api/  
+**Docs**: https://developers.cloudflare.com/durable-objects/
+**API Reference**: https://developers.cloudflare.com/durable-objects/api/
 **Examples**: https://developers.cloudflare.com/durable-objects/examples/
 
 ## In This Reference
@@ -182,4 +182,3 @@ npx wrangler deploy           # Deploy + auto-apply migrations
 
 - **[DO Storage](../do-storage/README.md)** - SQLite, KV, transactions (detailed storage guide)
 - **[Workers](../workers/README.md)** - Core Workers runtime features
-- **[WebSockets](../websockets/README.md)** - WebSocket APIs and patterns

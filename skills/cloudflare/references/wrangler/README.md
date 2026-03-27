@@ -103,6 +103,7 @@ wrangler tail --status error      # Filter by status
 
 ## In This Reference
 
+- Authentication troubleshooting (`wrangler login`, `wrangler whoami`) is covered in [gotchas.md](./gotchas.md)
 - [configuration.md](./configuration.md) - wrangler.jsonc setup, environments, bindings
 - [api.md](./api.md) - Programmatic API (`startWorker`, `getPlatformProxy`, events)
 - [patterns.md](./patterns.md) - Common workflows and development patterns
@@ -125,7 +126,12 @@ Need to configure something?
 Development not working?
 ├─ Local differs from production → Use `wrangler dev --remote`
 ├─ Bindings not available → gotchas.md §Binding Not Available
-└─ Auth issues → wrangler login
+└─ Auth issues → gotchas.md §Authentication Issues
+
+Authentication issues?
+├─ "Not logged in" / "Unauthorized" → gotchas.md §Authentication Issues
+├─ First time deploying → `wrangler login`
+└─ Confirm active account → `wrangler whoami`
 ```
 
 ## See Also

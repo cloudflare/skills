@@ -69,6 +69,7 @@ This plugin includes [Cloudflare's remote MCP servers](https://developers.cloudf
 
 | Server | Purpose |
 |--------|---------|
+| cloudflare-api | Token-efficient access to the Cloudflare API |
 | cloudflare-docs | Up-to-date Cloudflare documentation and reference |
 | cloudflare-bindings | Build Workers applications with storage, AI, and compute primitives |
 | cloudflare-builds | Manage and get insights into Workers builds |
