@@ -4,7 +4,7 @@ Configuration reference for wrangler.jsonc (recommended).
 
 ## Config Format
 
-**wrangler.jsonc recommended** (v3.91.0+) - provides schema validation.
+**wrangler.jsonc recommended** (Wrangler v4+) - provides schema validation.
 
 ```jsonc
 {
@@ -90,9 +90,9 @@ Deploy: `wrangler deploy --env production`
 // Vectorize
 { "vectorize": [{ "binding": "VECTORS", "index_name": "embeddings" }] }
 
-// Hyperdrive (requires nodejs_compat_v2 for pg/postgres)
+// Hyperdrive (requires nodejs_compat for pg/postgres)
 { "hyperdrive": [{ "binding": "HYPERDRIVE", "id": "hyper-id" }] }
-{ "compatibility_flags": ["nodejs_compat_v2"] }  // For pg/postgres
+{ "compatibility_flags": ["nodejs_compat"] }  // For pg/postgres
 
 // Workers AI
 { "ai": { "binding": "AI" } }

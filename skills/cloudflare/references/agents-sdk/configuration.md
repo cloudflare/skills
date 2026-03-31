@@ -58,11 +58,11 @@ npx wrangler secret put OPENAI_API_KEY
 **Recommended: Use route helpers**
 
 ```typescript
-import { routeAgent } from "agents";
+import { routeAgentRequest } from "agents";
 
 export default {
   fetch(request: Request, env: Env) {
-    return routeAgent(request, env);
+    return routeAgentRequest(request, env);
   }
 }
 ```
@@ -91,7 +91,7 @@ export default {
 **Multi-agent setup:**
 
 ```typescript
-import { routeAgent } from "agents";
+import { routeAgentRequest } from "agents";
 
 export default {
   fetch(request: Request, env: Env) {
@@ -99,10 +99,10 @@ export default {
     
     // Route by path
     if (url.pathname.startsWith("/chat")) {
-      return routeAgent(request, env, "ChatAgent");
+      return routeAgentRequest(request, env, "ChatAgent");
     }
     if (url.pathname.startsWith("/task")) {
-      return routeAgent(request, env, "TaskAgent");
+      return routeAgentRequest(request, env, "TaskAgent");
     }
     
     return new Response("Not found", { status: 404 });
@@ -118,7 +118,7 @@ export default {
 import { routeAgentEmail } from "agents";
 
 export default {
-  fetch: (req: Request, env: Env) => routeAgent(req, env),
+  fetch: (req: Request, env: Env) => routeAgentRequest(req, env),
   email: (message: ForwardableEmailMessage, env: Env) => {
     return routeAgentEmail(message, env);
   }

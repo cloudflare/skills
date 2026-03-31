@@ -26,7 +26,7 @@ await fetch(url, { body: clone.body });
 
 ### "Worker exceeded CPU time"
 
-**Limit:** 10ms (free), 50ms (paid)
+**Limit:** 10ms (free), 30s default / 5min max (paid)
 
 ```javascript
 // ✅ Move slow work to background
@@ -66,7 +66,7 @@ try { ... } catch (e) {
 
 | Resource | Free | Paid |
 |----------|------|------|
-| CPU time | 10ms | 50ms |
+| CPU time | 10ms | 30s (default), 5min (max) |
 | Memory | 128 MB | 128 MB |
 | Subrequests | 50 | 10,000 |
 

@@ -181,7 +181,7 @@ npx wrangler pages dev -- npm run dev
 | Resource | Free | Paid |
 |----------|------|------|
 | **Functions Requests** | 100k/day | Unlimited (metered) |
-| **Function CPU Time** | 10ms/req | 30ms/req (Workers Paid) |
+| **Function CPU Time** | 10ms/req | 30s default, 5min max (Workers Paid) |
 | **Function Memory** | 128MB | 128MB |
 | **Script Size** | 1MB compressed | 10MB compressed |
 | **Deployments** | 500/month | 5,000/month |

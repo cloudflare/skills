@@ -194,11 +194,15 @@ export class RAGAgent extends Agent<Env, State> {
 Coordinate multiple specialized agents:
 
 ```typescript
+import { Agent, Connection, getAgentByName } from "agents";
+
 interface Env {
-  RESEARCHER: DurableObjectNamespace;
-  WRITER: DurableObjectNamespace;
-  REVIEWER: DurableObjectNamespace;
+  ResearcherAgent: DurableObjectNamespace;
+  WriterAgent: DurableObjectNamespace;
+  ReviewerAgent: DurableObjectNamespace;
 }
+
+// --- Orchestrator: coordinates the pipeline via RPC ---
 
 export class OrchestratorAgent extends Agent<Env, State> {
   async onMessage(connection: Connection, message: string) {
@@ -208,29 +212,30 @@ export class OrchestratorAgent extends Agent<Env, State> {
       connection.send(JSON.stringify({ type: "status", step: "researching" }));
 
       // Step 1: Research agent gathers information
-      const researchResult = await this.callAgent(
-        this.env.RESEARCHER,
-        data.topic,
-        { action: "research", topic: data.topic }
-      );
+      const researcher = await getAgentByName(this.env.ResearcherAgent, data.topic);
+      const researchResult = await researcher.processTask({
+        action: "research",
+        topic: data.topic,
+      });
 
       connection.send(JSON.stringify({ type: "status", step: "writing" }));
 
       // Step 2: Writer agent creates draft
-      const draftResult = await this.callAgent(
-        this.env.WRITER,
-        data.topic,
-        { action: "write", research: researchResult, topic: data.topic }
-      );
+      const writer = await getAgentByName(this.env.WriterAgent, data.topic);
+      const draftResult = await writer.processTask({
+        action: "write",
+        research: researchResult,
+        topic: data.topic,
+      });
 
       connection.send(JSON.stringify({ type: "status", step: "reviewing" }));
 
       // Step 3: Reviewer agent improves draft
-      const finalResult = await this.callAgent(
-        this.env.REVIEWER,
-        data.topic,
-        { action: "review", draft: draftResult }
-      );
+      const reviewer = await getAgentByName(this.env.ReviewerAgent, data.topic);
+      const finalResult = await reviewer.processTask({
+        action: "review",
+        draft: draftResult,
+      });
 
       connection.send(JSON.stringify({
         type: "complete",
@@ -238,21 +243,38 @@ export class OrchestratorAgent extends Agent<Env, State> {
       }));
     }
   }
+}
 
-  private async callAgent(
-    namespace: DurableObjectNamespace,
-    id: string,
-    payload: any
-  ): Promise<string> {
-    const agentId = namespace.idFromName(id);
-    const agent = namespace.get(agentId);
+// --- Sub-agents: each exposes an RPC method instead of HTTP routes ---
 
-    const response = await agent.fetch("http://agent/task", {
-      method: "POST",
-      body: JSON.stringify(payload),
-    });
+export class ResearcherAgent extends Agent<Env, {}> {
+  async processTask(payload: { action: string; topic: string }): Promise<string> {
+    // Perform research using AI, external APIs, etc.
+    const result = await this.generateResearch(payload.topic);
+    return result;
+  }
 
-    return response.text();
+  private async generateResearch(topic: string): Promise<string> {
+    // ... research implementation ...
+    return `Research results for ${topic}`;
+  }
+}
+
+export class WriterAgent extends Agent<Env, {}> {
+  async processTask(payload: {
+    action: string;
+    research: string;
+    topic: string;
+  }): Promise<string> {
+    // Generate a draft article from the research
+    return `Draft article on ${payload.topic} based on research`;
+  }
+}
+
+export class ReviewerAgent extends Agent<Env, {}> {
+  async processTask(payload: { action: string; draft: string }): Promise<string> {
+    // Review and improve the draft
+    return `Reviewed and improved: ${payload.draft}`;
   }
 }
 ```

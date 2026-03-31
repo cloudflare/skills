@@ -168,7 +168,7 @@ export default {
 | Limit | Free | Paid | Notes |
 |-------|------|------|-------|
 | Triggers per Worker | 3 | Unlimited | Maximum cron schedules per Worker |
-| CPU time | 10ms | 50ms | May need `ctx.waitUntil()` or Workflows |
+| CPU time | 10ms | 30s (<1hr interval), 15min (≥1hr interval) | May need `ctx.waitUntil()` or Workflows |
 | Execution guarantee | At-least-once | At-least-once | Duplicates possible - use idempotency |
 | Propagation delay | Up to 15 minutes | Up to 15 minutes | Time for changes to take effect globally |
 | Min interval | 1 minute | 1 minute | Cannot schedule more frequently |

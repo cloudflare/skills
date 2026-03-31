@@ -51,7 +51,7 @@
 ## Performance Issues
 
 **Problem**: Slow responses or CPU limit errors  
-**Causes**: Functions invoked for static assets; cold starts; 10ms CPU limit; large bundle  
+**Causes**: Functions invoked for static assets; cold starts; 10ms CPU limit (free) / 30s default (paid); large bundle  
 **Solution**: Exclude static via `_routes.json`; optimize hot paths; keep bundle < 1MB
 
 ## Framework-Specific
@@ -185,7 +185,7 @@ console.log('Params:', params);
 | Resource | Free | Paid |
 |----------|------|------|
 | Functions Requests | 100k/day | Unlimited |
-| CPU Time | 10ms/req | 30ms/req |
+| CPU Time | 10ms/req | 30s default, 5min max |
 | Memory | 128MB | 128MB |
 | Script Size | 1MB | 10MB |
 | Subrequests | 50/req | 10,000/req |

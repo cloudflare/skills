@@ -126,7 +126,7 @@ this.server.tool(
 
 ### Tool Timeout
 
-Workers have CPU time limits (10-30ms for free, longer for paid). For long operations:
+Workers have CPU time limits (10ms for free, 30s default / 5min max for paid). For long operations:
 
 ```typescript
 this.server.tool(

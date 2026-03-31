@@ -123,7 +123,7 @@ See [gotchas.md](./gotchas.md#readablestream-can-only-be-consumed-once) for deta
 | Max routing rules | 200 |
 | Max destinations | 200 |
 | CPU time (free tier) | 10ms |
-| CPU time (paid tier) | 50ms |
+| CPU time (paid tier) | 30s (default), 5min (max) |
 
 See [gotchas.md](./gotchas.md#limits-reference) for complete limits table.
 

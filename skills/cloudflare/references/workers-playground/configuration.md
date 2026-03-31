@@ -160,4 +160,4 @@ Same as production Free plan:
 | Request size | 100 MB | Incoming |
 | Response size | Unlimited | Outgoing (streamed) |
 
-**Exceeding CPU time** throws error immediately. Optimize hot paths or upgrade to Paid plan (50ms CPU).
+**Exceeding CPU time** throws error immediately. Optimize hot paths or upgrade to Paid plan (30s default, 5min max CPU).

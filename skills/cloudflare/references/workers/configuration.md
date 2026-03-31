@@ -154,7 +154,7 @@ interface Env {
   "placement": { "mode": "smart" },
   
   // Enable Node.js built-ins (Buffer, process, path, etc.)
-  "compatibility_flags": ["nodejs_compat_v2"],
+  "compatibility_flags": ["nodejs_compat"],
   
   // Observability (10% sampling)
   "observability": { "enabled": true, "head_sampling_rate": 0.1 }
@@ -163,7 +163,7 @@ interface Env {
 
 ### Node.js Compatibility
 
-`nodejs_compat_v2` enables:
+`nodejs_compat` enables:
 - `Buffer`, `process.env`, `path`, `stream`
 - CommonJS `require()` for Node modules
 - `node:` imports (e.g., `import { Buffer } from 'node:buffer'`)

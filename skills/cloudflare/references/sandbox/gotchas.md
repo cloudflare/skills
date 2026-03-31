@@ -173,7 +173,7 @@ Token changes on each expose operation, preventing unauthorized access.
 |-----------|----------------|----------|
 | Container provisioning | 30s | `SANDBOX_INSTANCE_TIMEOUT_MS` |
 | Port readiness | 90s | `SANDBOX_PORT_TIMEOUT_MS` |
-| exec() | 120s | `timeout` option |
+| exec() | None (no default) | `timeout` option |
 | sleepAfter | 10m | `sleepAfter` option |
 
 **Performance**:

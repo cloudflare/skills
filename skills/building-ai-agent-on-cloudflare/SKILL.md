@@ -181,7 +181,7 @@ Clients connect via: `wss://my-agent.workers.dev/agents/MyAgent/session-id`
   "compatibility_date": "2024-12-01",
   "ai": { "binding": "AI" },
   "durable_objects": {
-    "bindings": [{ "name": "AGENT", "class_name": "MyAgent" }]
+    "bindings": [{ "name": "MyAgent", "class_name": "MyAgent" }]
   },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["MyAgent"] }]
 }

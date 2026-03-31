@@ -6,12 +6,12 @@
 Insert/upsert/delete return immediately but vectors aren't queryable for 5-10 seconds.
 
 ### Batch Size Limit
-**Workers API: 500 vectors max per call** (undocumented, silently truncates)
+**Workers API: 1,000 vectors max per call (HTTP API: 5,000).** Silently truncates if exceeded.
 
 ```typescript
-// ✅ Chunk into 500
-for (let i = 0; i < vectors.length; i += 500) {
-  await env.VECTORIZE.upsert(vectors.slice(i, i + 500));
+// ✅ Chunk into 1000 (Workers API limit; HTTP API allows 5000)
+for (let i = 0; i < vectors.length; i += 1000) {
+  await env.VECTORIZE.upsert(vectors.slice(i, i + 1000));
 }
 ```
 
@@ -44,7 +44,7 @@ Cannot change dimensions/metric after creation. Must create new index and migrat
 |----------|-------|
 | Vectors per index | 10,000,000 |
 | Max dimensions | 1536 |
-| Batch upsert (Workers) | **500** |
+| Batch upsert (Workers / HTTP API) | **1,000 / 5,000** |
 | Indexed string metadata | **64 bytes** |
 | Metadata indexes | 10 |
 | Namespaces | 50,000 (paid) / 1,000 (free) |

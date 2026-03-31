@@ -61,7 +61,7 @@ npx wrangler pages deployment tail --status error
 
 | Resource | Free | Paid |
 |----------|------|------|
-| CPU time | 10ms | 50ms |
+| CPU time | 10ms | 30s (default), 5min (max) |
 | Memory | 128 MB | 128 MB |
 | Script size | 10 MB compressed | 10 MB compressed |
 | Env vars | 5 KB per var, 64 max | 5 KB per var, 64 max |

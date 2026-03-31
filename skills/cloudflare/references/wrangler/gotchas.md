@@ -70,7 +70,7 @@ For local DOs in same Worker, `script_name` is optional.
 **Cause:** Missing Node.js compatibility flag
 **Solution:** Some bindings (Hyperdrive with `pg`) require:
 ```jsonc
-{ "compatibility_flags": ["nodejs_compat_v2"] }
+{ "compatibility_flags": ["nodejs_compat"] }
 ```
 
 ### "Workers Assets 404 errors"
@@ -131,7 +131,7 @@ const worker = await startWorker({
 | Workers Assets size | 25 MB | Per deployment |
 | Workers Assets files | 20,000 | Max number of files |
 | Script size (compressed) | 1 MB | Free, 10 MB paid |
-| CPU time | 10-50ms | Free, 50-500ms paid |
+| CPU time | 10ms | Free, 30s default (5min max) paid |
 | Subrequest limit | 50 | Free, 10,000 paid |
 
 ## Troubleshooting
@@ -145,7 +145,7 @@ wrangler whoami
 
 ### Configuration Errors
 ```bash
-wrangler check  # Validate config
+wrangler check startup  # Profile Worker startup time and detect scripts exceeding the startup time limit
 ```
 Use wrangler.jsonc with `$schema` for validation.
 

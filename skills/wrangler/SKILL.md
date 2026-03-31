@@ -34,7 +34,7 @@ npm install -D wrangler@latest
 - **Set `compatibility_date`**: Use a recent date (within 30 days). Check https://developers.cloudflare.com/workers/configuration/compatibility-dates/
 - **Generate types after config changes**: Run `wrangler types` to update TypeScript bindings.
 - **Local dev defaults to local storage**: Bindings use local simulation unless `remote: true`.
-- **Validate config before deploy**: Run `wrangler check` to catch errors early.
+- **Profile Worker startup**: Run `wrangler check startup` to measure startup time and detect scripts that exceed the startup time limit.
 - **Use environments for staging/prod**: Define `env.staging` and `env.production` in config.
 
 ## Quick Start: New Worker
@@ -55,7 +55,7 @@ npx create-cloudflare@latest my-app
 | Deploy to Cloudflare | `wrangler deploy` |
 | Deploy dry run | `wrangler deploy --dry-run` |
 | Generate TypeScript types | `wrangler types` |
-| Validate configuration | `wrangler check` |
+| Profile Worker startup time | `wrangler check startup` |
 | View live logs | `wrangler tail` |
 | Delete Worker | `wrangler delete` |
 | Auth status | `wrangler whoami` |
@@ -83,7 +83,7 @@ npx create-cloudflare@latest my-app
   "name": "my-worker",
   "main": "src/index.ts",
   "compatibility_date": "2026-01-01",
-  "compatibility_flags": ["nodejs_compat_v2"],
+  "compatibility_flags": ["nodejs_compat"],
 
   // Environment variables
   "vars": {
@@ -511,7 +511,7 @@ wrangler hyperdrive delete <HYPERDRIVE_ID>
 
 ```jsonc
 {
-  "compatibility_flags": ["nodejs_compat_v2"],
+  "compatibility_flags": ["nodejs_compat"],
   "hyperdrive": [
     { "binding": "HYPERDRIVE", "id": "<HYPERDRIVE_ID>" }
   ]
@@ -865,7 +865,7 @@ curl http://localhost:8787/__scheduled
 |-------|----------|
 | `command not found: wrangler` | Install: `npm install -D wrangler` |
 | Auth errors | Run `wrangler login` |
-| Config validation errors | Run `wrangler check` |
+| Startup time limit exceeded | Run `wrangler check startup` to profile startup and generate CPU profiles |
 | Type errors after config change | Run `wrangler types` |
 | Local storage not persisting | Check `.wrangler/state` directory |
 | Binding undefined in Worker | Verify binding name matches config exactly |
@@ -876,8 +876,8 @@ curl http://localhost:8787/__scheduled
 # Check auth status
 wrangler whoami
 
-# Validate config
-wrangler check
+# Profile Worker startup time
+wrangler check startup
 
 # View config schema
 wrangler docs configuration

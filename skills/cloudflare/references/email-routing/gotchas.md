@@ -108,7 +108,7 @@ const subj = message.headers.get("subject")?.toLowerCase() || "";
 | Email size | 25 MB | 25 MB |
 | Rules | 200 | 200 |
 | Destinations | 200 | 200 |
-| CPU time | 10ms | 50ms |
+| CPU time | 10ms | 30s (default), 5min (max) |
 | SendEmail | ~100/min | Higher |
 
 ## Debugging

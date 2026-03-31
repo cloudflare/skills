@@ -59,7 +59,7 @@ export default {
 
 **Dockerfile**:
 ```dockerfile
-FROM docker.io/cloudflare/sandbox:latest
+FROM docker.io/cloudflare/sandbox:0.7.0
 RUN pip3 install --no-cache-dir pandas numpy matplotlib
 EXPOSE 8080 3000  # Required for wrangler dev
 ```

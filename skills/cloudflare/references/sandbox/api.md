@@ -105,16 +105,16 @@ const ctx = await sandbox.createCodeContext({
 });
 
 // Execute code with rich outputs
-const result = await ctx.runCode(`
+const result = await sandbox.runCode(`
 import matplotlib.pyplot as plt
 plt.plot(data, [x**2 for x in data])
 plt.savefig('plot.png')
 print(f"Processed {len(data)} points")
-`);
-// Returns: { outputs: [{ type: 'text'|'image'|'html', content }], error }
+`, { context: ctx });
+// Returns: ExecutionResult { code, logs, results: RichOutput[], error, executionCount }
 
 // Context persists variables across runs
-const result2 = await ctx.runCode('print(data[0])');  // Still has 'data'
+const result2 = await sandbox.runCode('print(data[0])', { context: ctx });  // Still has 'data'
 ```
 
 ## WebSocket Connections

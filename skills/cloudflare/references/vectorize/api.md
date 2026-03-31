@@ -41,7 +41,7 @@ await env.VECTORIZE.insert([{ id, values, metadata }]);
 await env.VECTORIZE.upsert([{ id, values, metadata }]);
 ```
 
-**Max 500 vectors per call.** Queryable after 5-10 seconds.
+**Max 1,000 vectors per call (Workers) / 5,000 (HTTP API).** Queryable after 5-10 seconds.
 
 ## Other Operations
 
@@ -79,10 +79,10 @@ Requires metadata index. Filter operators:
 | `returnMetadata: "all"` | 20 | Slower |
 | `returnValues: true` | 20 | Slower |
 
-**Batch operations:** Always batch (500/call) for optimal throughput.
+**Batch operations:** Always batch (1,000/call via Workers, 5,000 via HTTP API) for optimal throughput.
 
 ```typescript
-for (let i = 0; i < vectors.length; i += 500) {
-  await env.VECTORIZE.upsert(vectors.slice(i, i + 500));
+for (let i = 0; i < vectors.length; i += 1000) {
+  await env.VECTORIZE.upsert(vectors.slice(i, i + 1000));
 }
 ```

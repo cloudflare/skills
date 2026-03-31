@@ -74,7 +74,7 @@ curl "http://localhost:8787/__scheduled?cron=*/5+*+*+*+*"
 ## Limits
 
 - **Free:** 3 triggers/worker, 10ms CPU
-- **Paid:** Unlimited triggers, 50ms CPU
+- **Paid:** Unlimited triggers, 30s CPU (<1hr interval) / 15min CPU (≥1hr interval)
 - **Propagation:** 15min global deployment
 - **Timezone:** UTC only
 

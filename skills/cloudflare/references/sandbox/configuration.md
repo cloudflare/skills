@@ -32,14 +32,14 @@ wrangler.jsonc `instance_type`:
 
 **Basic**:
 ```dockerfile
-FROM docker.io/cloudflare/sandbox:latest
+FROM docker.io/cloudflare/sandbox:0.7.0
 RUN pip3 install --no-cache-dir pandas numpy
 EXPOSE 8080  # Required for wrangler dev
 ```
 
 **Scientific**:
 ```dockerfile
-FROM docker.io/cloudflare/sandbox:latest
+FROM docker.io/cloudflare/sandbox:0.7.0
 RUN pip3 install --no-cache-dir \
     jupyter-server ipykernel matplotlib \
     pandas seaborn plotly scipy scikit-learn
@@ -47,7 +47,7 @@ RUN pip3 install --no-cache-dir \
 
 **Node.js**:
 ```dockerfile
-FROM docker.io/cloudflare/sandbox:latest
+FROM docker.io/cloudflare/sandbox:0.7.0
 RUN npm install -g typescript ts-node
 ```
 

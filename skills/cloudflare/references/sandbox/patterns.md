@@ -15,10 +15,10 @@ export default {
     });
     
     // Execute with rich outputs (text, images, HTML)
-    const result = await ctx.runCode(code);
+    const result = await sandbox.runCode(code, { context: ctx });
     
     return Response.json({
-      outputs: result.outputs,  // [{ type: 'text'|'image'|'html', content }]
+      results: result.results,  // RichOutput[] (text, html, png, json, etc.)
       error: result.error,
       success: !result.error
     });
@@ -76,7 +76,7 @@ export default {
 
 **Dockerfile**:
 ```dockerfile
-FROM docker.io/cloudflare/sandbox:latest
+FROM docker.io/cloudflare/sandbox:0.7.0
 RUN npm install -g ws
 EXPOSE 8080
 ```

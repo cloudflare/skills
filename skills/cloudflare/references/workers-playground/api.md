@@ -96,6 +96,6 @@ const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(data
 
 | Resource | Limit |
 |----------|-------|
-| CPU time | 10ms |
+| CPU time | 10ms (Free plan; Paid: 30s default, 5min max) |
 | Subrequests | 50 |
 | Memory | 128 MB |

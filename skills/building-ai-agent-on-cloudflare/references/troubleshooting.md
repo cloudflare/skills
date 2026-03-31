@@ -239,7 +239,7 @@ Check `wrangler.jsonc`:
 ```jsonc
 {
   "durable_objects": {
-    "bindings": [{ "name": "AGENT", "class_name": "MyAgent" }]
+    "bindings": [{ "name": "MyAgent", "class_name": "MyAgent" }]
   },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["MyAgent"] }]
 }

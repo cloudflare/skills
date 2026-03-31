@@ -20,7 +20,7 @@
 ### "Node.js module not found"
 
 **Cause:** Node.js built-ins not available by default  
-**Solution:** Use Workers APIs (e.g., R2 for file storage) or enable Node.js compat with `"compatibility_flags": ["nodejs_compat_v2"]`
+**Solution:** Use Workers APIs (e.g., R2 for file storage) or enable Node.js compat with `"compatibility_flags": ["nodejs_compat"]`
 
 ### "Cannot fetch in global scope"
 
@@ -125,7 +125,7 @@ See [frameworks.md](./frameworks.md) for full patterns
 | CPU time (Paid) | 30s default / 5min max | Configurable via `limits.cpu_ms` |
 | Subrequests (Free) | 50 | Per invocation |
 | Subrequests (Paid) | 10,000 | Per invocation |
-| KV reads | 1000 | Per request |
+| Subrequest operations (KV, R2, Cache API) | 1,000 | Shared across KV reads, R2 ops, Cache API calls per request |
 | KV value size | 25 MiB | Maximum per key |
 | Environment variable size | 5 KB | Per variable |
 
