@@ -142,8 +142,6 @@ env.LOADER.load({
 });
 ```
 
-The `compatibilityDate` on the Dynamic Worker is independent of the loader Worker's date. Set it to match the code you're executing.
-
 ## CLI Commands
 
 ```bash
