@@ -215,6 +215,8 @@ Key exports:
 - `@cloudflare/codemode/ai` — `createCodeTool()` function
 - `@cloudflare/codemode/mcp` — `codeMcpServer()` and `openApiMcpServer()` wrappers
 
+The `DynamicWorkerExecutor` implements the generic [`Executor` interface](https://developers.cloudflare.com/agents/api-reference/codemode/) — you can implement your own `Executor` to run code in a different sandbox (e.g., containers, external services) while reusing `createCodeTool()` and the MCP wrappers.
+
 See the [Code Mode documentation](https://developers.cloudflare.com/agents/api-reference/codemode/) for full API reference.
 
 ### `@cloudflare/shell`

@@ -119,6 +119,7 @@ Check if existing skills should link to the new one:
 - [ ] No broken internal links between the 5 files
 - [ ] SKILL.md decision tree entry distinguishes this from similar products
 - [ ] SKILL.md product index row added in the correct section
+- [ ] README.md includes a retrieval-bias directive (see PR #30 and the existing dynamic-workers/README.md for the pattern)
 - [ ] File structure matches `README.md`, `api.md`, `configuration.md`, `patterns.md`, `gotchas.md` exactly
 
 ## Example: What Was Needed for Dynamic Workers

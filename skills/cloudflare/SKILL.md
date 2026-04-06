@@ -74,6 +74,16 @@ Need AI?
 └─ AI-powered search widget → ai-search/
 ```
 
+### "I need to sandbox untrusted code"
+
+```
+Need to sandbox code?
+├─ One-shot/AI-generated code, fast startup (V8 isolate) → dynamic-workers/
+├─ Multi-tenant platform, customers deploy scripts → workers-for-platforms/
+├─ Full OS, filesystem, long-running processes (container) → sandbox/
+└─ Need both isolation + persistent state → sandbox/ (with R2 mounts)
+```
+
 ### "I need networking/connectivity"
 
 ```

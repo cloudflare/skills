@@ -98,6 +98,16 @@ For Tail Worker setup and the `tails` property, see [api.md — Tail Workers](./
 | Python | `{py: string}` or `.py` string | Significantly slower startup than JS |
 | TypeScript | Requires bundling | Use `@cloudflare/worker-bundler` to compile before loading |
 
+### Non-Code Module Types
+
+You can also include non-code modules in the `modules` object (see [api.md — WorkerCode](./api.md#workercode-object)):
+
+| Type | Syntax | Use |
+|------|--------|-----|
+| `{text: string}` | Importable string value | Config files, templates |
+| `{data: ArrayBuffer}` | Importable binary data | Wasm modules, images |
+| `{json: object}` | Importable JSON-serializable object | Structured config, manifests |
+
 ### TypeScript and npm Dependencies
 
 TypeScript cannot be passed directly to the loader. Use `@cloudflare/worker-bundler` to transpile and resolve dependencies at runtime:
@@ -145,9 +155,11 @@ env.LOADER.load({
 ## CLI Commands
 
 ```bash
-wrangler dev              # Local development
+wrangler dev              # Local development (uses local runtime)
 wrangler deploy           # Deploy loader Worker
 wrangler tail             # Stream real-time logs
 ```
 
 Dynamic Workers are created at runtime — there are no separate deploy or management commands for them.
+
+**Local development**: `wrangler dev` runs the loader Worker locally. Dynamic Workers execute in the local runtime during development. Behavior may differ from production — test with `wrangler deploy` to a staging Worker before relying on production-only features. Check the [official docs](https://developers.cloudflare.com/dynamic-workers/) for current local dev support status.

@@ -67,8 +67,8 @@ env.LOADER.get(`worker-${hash}`, async () => {
 
 ### RPC methods executing in different isolates
 
-**Cause**: There is no guarantee the same ID returns the same isolate across requests. Only stubs returned from the same RPC method call share a session.
-**Solution**: If you need shared state across calls, use `get()` with a stable ID to maintain a warm isolate, or pass state explicitly.
+**Cause**: There is [no guarantee](https://developers.cloudflare.com/dynamic-workers/api-reference/) that two requests go to the same isolate, even with the same `WorkerStub` or the same ID via `get()`. Only stubs returned from the same RPC method call share a session.
+**Solution**: Do not rely on in-memory state persisting across requests. Pass state explicitly (via RPC arguments, Durable Objects, or KV). `get()` with a stable ID improves the *likelihood* of hitting a warm isolate but does not guarantee it.
 
 ## Best Practices
 
@@ -176,5 +176,10 @@ Dynamic Worker-specific limits are not separately documented. Check the [officia
 
 - [Official Docs](https://developers.cloudflare.com/dynamic-workers/)
 - [Getting Started](https://developers.cloudflare.com/dynamic-workers/getting-started/)
+- [Bindings (Cap'n Web)](https://developers.cloudflare.com/dynamic-workers/usage/bindings/)
+- [Egress Control](https://developers.cloudflare.com/dynamic-workers/usage/egress-control/)
+- [Observability](https://developers.cloudflare.com/dynamic-workers/usage/observability/)
+- [Pricing](https://developers.cloudflare.com/dynamic-workers/pricing/)
+- [API Reference](https://developers.cloudflare.com/dynamic-workers/api-reference/)
 - [Blog Post](https://blog.cloudflare.com/dynamic-workers/)
 - [LLM Reference](https://developers.cloudflare.com/dynamic-workers/llms-full.txt)
