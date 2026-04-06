@@ -44,29 +44,34 @@ export default {
 
 Instead of calling tools one at a time, the LLM writes code that calls multiple tools programmatically. This reduces token usage by up to 80%.
 
-Uses the Agents SDK `AIChatAgent` with `DynamicWorkerExecutor` to combine tools into a single `codemode` tool:
+Uses `@cloudflare/codemode` with `DynamicWorkerExecutor` to combine tools into a single `codemode` tool:
 
 ```typescript
-import { AIChatAgent } from "@cloudflare/agents/ai-chat-agent";
-import { DynamicWorkerExecutor } from "@cloudflare/agents/dynamic-worker-executor";
-import { codemode } from "@cloudflare/agents/codemode";
+import { Agent } from "agents";
+import { createCodeTool } from "@cloudflare/codemode/ai";
+import { DynamicWorkerExecutor } from "@cloudflare/codemode";
+import { streamText, convertToModelMessages, stepCountIs } from "ai";
 
-export class MyAgent extends AIChatAgent<Env> {
-  async onChatMessage(onFinish) {
-    const tools = getMyTools(this.sql);
-
-    const result = streamText({
-      model: createWorkersAI({ binding: this.env.AI }),
-      system: "You are a helpful assistant.",
-      messages: this.messages,
-      tools: codemode({
-        tools,
-        executor: new DynamicWorkerExecutor(this.env.LOADER)
-      }),
-      maxSteps: 10
+export class MyAgent extends Agent<Env> {
+  async onChatMessage() {
+    const executor = new DynamicWorkerExecutor({
+      loader: this.env.LOADER
     });
 
-    return result.toTextStreamResponse();
+    const codemode = createCodeTool({
+      tools: getMyTools(this.sql),
+      executor
+    });
+
+    const result = streamText({
+      model,
+      system: "You are a helpful assistant.",
+      messages: await convertToModelMessages(this.state.messages),
+      tools: { codemode },
+      stopWhen: stepCountIs(10)
+    });
+
+    // Stream response back to client...
   }
 }
 ```
@@ -78,74 +83,42 @@ The agent generates a single TypeScript function that chains multiple tool calls
 Collapse any MCP server's tool list into a single `code` tool with `codeMcpServer`:
 
 ```typescript
-import { createMcpHandler } from "@cloudflare/agents/mcp";
-import { codeMcpServer } from "@cloudflare/agents/codemode";
-import { DynamicWorkerExecutor } from "@cloudflare/agents/dynamic-worker-executor";
+import { codeMcpServer } from "@cloudflare/codemode/mcp";
+import { DynamicWorkerExecutor } from "@cloudflare/codemode";
 
-function createUpstreamServer() {
-  // Standard MCP server with multiple tools
-  const server = new McpServer({ name: "my-tools", version: "1.0" });
-  server.tool("add", { a: z.number(), b: z.number() }, ({ a, b }) => ({
-    content: [{ type: "text", text: String(a + b) }]
-  }));
-  // ... more tools
-  return server;
-}
+const executor = new DynamicWorkerExecutor({ loader: env.LOADER });
 
-export default {
-  async fetch(request: Request, env: Env, ctx: ExecutionContext) {
-    const url = new URL(request.url);
-
-    if (url.pathname === "/mcp") {
-      // Raw: exposes all individual tools
-      return createMcpHandler(createUpstreamServer)(request, env, ctx);
-    }
-
-    if (url.pathname === "/codemode") {
-      // Wrapped: single "code" tool that can call all upstream tools
-      return createMcpHandler(() =>
-        codeMcpServer(createUpstreamServer(), new DynamicWorkerExecutor(env.LOADER))
-      )(request, env, ctx);
-    }
-
-    return new Response("Not found", { status: 404 });
-  }
-};
+// Wrap an existing MCP server — all its tools become
+// typed methods the LLM can call from generated code
+const server = await codeMcpServer({ server: upstreamMcp, executor });
 ```
 
 ## OpenAPI Spec → MCP Code Tool
 
-Turn any REST API into a pair of MCP tools (`search` + `execute`) using `openApiMcpServer`:
+Turn any REST API into a pair of MCP tools (`search` + `execute`) using `openApiMcpServer`. The host-side `request` handler keeps authentication out of the sandbox:
 
 ```typescript
-import { openApiMcpServer } from "@cloudflare/agents/codemode";
-import { DynamicWorkerExecutor } from "@cloudflare/agents/dynamic-worker-executor";
+import { openApiMcpServer } from "@cloudflare/codemode/mcp";
+import { DynamicWorkerExecutor } from "@cloudflare/codemode";
 
-let cachedSpec: string | null = null;
+const executor = new DynamicWorkerExecutor({ loader: env.LOADER });
 
-export default {
-  async fetch(request: Request, env: Env, ctx: ExecutionContext) {
-    const token = request.headers.get("Authorization")?.replace("Bearer ", "");
-    if (!token) return new Response("Bearer token required", { status: 401 });
-
-    if (!cachedSpec) {
-      const res = await fetch("https://raw.githubusercontent.com/.../openapi.json");
-      cachedSpec = await res.text();
-    }
-
-    return createMcpHandler(() =>
-      openApiMcpServer({
-        spec: cachedSpec,
-        executor: new DynamicWorkerExecutor(env.LOADER),
-        baseUrl: "https://api.example.com/v4",
-        headers: { Authorization: `Bearer ${token}` }
-      })
-    )(request, env, ctx);
-  }
-};
+const server = openApiMcpServer({
+  spec: openApiSpec,
+  executor,
+  request: async ({ method, path, query, body }) => {
+    // Runs on the host — add auth headers here
+    const res = await fetch(`https://api.example.com${path}`, {
+      method,
+      headers: { Authorization: `Bearer ${token}` },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    return res.json();
+  },
+});
 ```
 
-This pattern keeps credentials on the host side while the sandbox executes API calls without direct token access.
+This approach uses approximately 1,000 tokens regardless of how many API endpoints exist, compared to over 1 million tokens for native MCP tool definitions.
 
 ## Bundled Playground with Warm Caching
 

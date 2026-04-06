@@ -123,11 +123,13 @@ const worker = env.LOADER.load({
 });
 ```
 
-`createWorker()` returns:
+`createWorker()` returns (based on [official examples](https://github.com/cloudflare/agents/tree/main/examples/dynamic-workers-playground)):
 - `mainModule`: Entry point filename
 - `modules`: Bundled module map
 - `wranglerConfig`: Parsed config from the files (if a `wrangler.jsonc` was included)
 - `warnings`: Build warnings
+
+See the [@cloudflare/worker-bundler npm package](https://www.npmjs.com/package/@cloudflare/worker-bundler) for the latest API surface.
 
 ## Compatibility Date and Flags
 

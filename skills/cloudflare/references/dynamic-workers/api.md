@@ -82,7 +82,7 @@ Access a named entrypoint (a named `WorkerEntrypoint` export from the Dynamic Wo
 
 ## Custom Bindings via RPC
 
-Dynamic Workers cannot receive raw bindings (KV, R2, D1) directly. Wrap them in `WorkerEntrypoint` classes and pass as RPC stubs.
+Passing standard Workers bindings (KV, R2, D1, etc.) directly into a Dynamic Worker is [not currently supported](https://developers.cloudflare.com/dynamic-workers/usage/bindings/). Instead, create wrapper RPC interfaces using `WorkerEntrypoint` classes and pass them as stubs. This also lets you narrow scope and filter requests.
 
 ### Define in Loader Worker
 
@@ -206,13 +206,20 @@ const worker = env.LOADER.get("my-worker", async () => {
 
 ### `@cloudflare/codemode`
 
-Simplifies running model-generated code. Provides code normalization and outbound request control. Used internally by `DynamicWorkerExecutor` in the Agents SDK.
+Replace individual tool calls with a single `code()` tool, so LLMs write and execute TypeScript that orchestrates multiple API calls in one pass. Provides `DynamicWorkerExecutor` and `createCodeTool()`.
+
+Key exports:
+- `@cloudflare/codemode` — `DynamicWorkerExecutor` class
+- `@cloudflare/codemode/ai` — `createCodeTool()` function
+- `@cloudflare/codemode/mcp` — `codeMcpServer()` and `openApiMcpServer()` wrappers
+
+See the [Code Mode documentation](https://developers.cloudflare.com/agents/api-reference/codemode/) for full API reference.
 
 ### `@cloudflare/shell`
 
-Virtual filesystem with typed methods (read, write, search, replace, diff). Backed by durable SQLite and R2 storage.
+Give your agent a virtual filesystem inside a Dynamic Worker with persistent storage backed by SQLite and R2.
 
-**Note**: `@cloudflare/codemode` and `@cloudflare/shell` have limited public documentation. Check the latest Cloudflare docs and npm packages for current API surfaces.
+See [npm package](https://www.npmjs.com/package/@cloudflare/shell) for current API surface.
 
 ## Tail Workers (Observability)
 

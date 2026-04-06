@@ -11,7 +11,7 @@ Spin up isolated Workers at runtime to execute code on-demand in secure V8 isola
 | **Runtime** | V8 isolate | V8 isolate | Container (Durable Object) |
 | **When created** | At runtime from code strings | Pre-deployed via API | On first request to DO ID |
 | **Startup** | Milliseconds | Already deployed | 2-3s cold start |
-| **Languages** | JS, Python | JS, Python | Any (Dockerfile) |
+| **Languages** | JS, Python | JS, TS, Python, Rust, Wasm | Any (Dockerfile) |
 | **State** | Ephemeral per invocation | Persistent (deployed script) | Persistent filesystem |
 | **Best for** | One-shot code execution, AI agents | Multi-tenant SaaS platforms | Long-running processes, full OS |
 

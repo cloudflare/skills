@@ -2,7 +2,7 @@
 
 ## Common Errors
 
-### "Worker not found" or empty response
+### Dynamic Worker returns an error or empty response
 
 **Cause**: `mainModule` doesn't match a key in `modules`, or the module doesn't have a default export with `fetch()`.
 **Solution**: Ensure `mainModule` is an exact key in the `modules` object and the code exports a `fetch` handler.
@@ -21,9 +21,9 @@ env.LOADER.load({
 });
 ```
 
-### "fetch() is not allowed" or network error in Dynamic Worker
+### `fetch()` or `connect()` throws an exception in Dynamic Worker
 
-**Cause**: `globalOutbound` is set to `null`, blocking all network access.
+**Cause**: `globalOutbound` is set to `null`, which blocks all outbound network access. Any `fetch()` or `connect()` call will throw.
 **Solution**: If the Dynamic Worker needs network access, either omit `globalOutbound` (inherits parent's access) or provide a gateway `ServiceStub`.
 
 ### Callback returning different code for the same ID
@@ -45,10 +45,10 @@ env.LOADER.get(`worker-${hash}`, async () => {
 });
 ```
 
-### "Cannot access binding" in Dynamic Worker
+### Standard bindings (KV, R2, D1) not working in Dynamic Worker
 
-**Cause**: Passing raw Cloudflare bindings (KV, R2, D1) directly via `env`.
-**Solution**: Dynamic Workers use capability-based security. Wrap bindings in `WorkerEntrypoint` classes and pass as RPC stubs (see [api.md](./api.md)).
+**Cause**: Passing standard Workers bindings directly via `env` is [not currently supported](https://developers.cloudflare.com/dynamic-workers/usage/bindings/). Dynamic Workers use capability-based security via Workers RPC.
+**Solution**: Create a wrapper RPC interface using `WorkerEntrypoint` classes and pass as stubs (see [api.md](./api.md)). This also lets you narrow scope, filter requests, etc.
 
 ### Props not serializable
 
@@ -67,7 +67,7 @@ env.LOADER.get(`worker-${hash}`, async () => {
 
 ### RPC methods executing in different isolates
 
-**Cause**: Each `fetch()` call may execute in a different isolate. Only stubs returned from the same RPC method share a session.
+**Cause**: There is no guarantee the same ID returns the same isolate across requests. Only stubs returned from the same RPC method call share a session.
 **Solution**: If you need shared state across calls, use `get()` with a stable ID to maintain a warm isolate, or pass state explicitly.
 
 ## Best Practices
@@ -105,7 +105,7 @@ Use `globalOutbound: null` unless the Dynamic Worker genuinely needs network acc
 
 ### Cold-start warmup
 
-Call a no-op method on the entrypoint to trigger isolate initialization before the real request:
+You can trigger isolate initialization before the real request by calling a method that forces the isolate to load. This pattern is used in [Cloudflare's playground example](https://github.com/cloudflare/agents/tree/main/examples/dynamic-workers-playground) but is not a documented API:
 
 ```typescript
 const entrypoint = worker.getEntrypoint();
@@ -151,12 +151,17 @@ RPC method calls bill similarly to Durable Objects requests. Returned stubs from
 
 ## Limits
 
-| Resource | Limit |
-|----------|-------|
-| Module size | Standard Workers limits apply |
-| CPU per invocation | Standard Workers limits apply |
-| Subrequests | Standard Workers limits apply |
-| Concurrent isolates | No documented limit |
+Dynamic Workers inherit [Workers platform limits](https://developers.cloudflare.com/workers/platform/limits/):
+
+| Resource | Workers Paid |
+|----------|-------------|
+| CPU time per invocation | 5 min max (configurable, default 30s) |
+| Memory | 128 MB |
+| Worker size | 10 MB |
+| Subrequests per invocation | 10,000 (configurable up to 10M) |
+| Simultaneous outgoing connections | 6 |
+
+Dynamic Worker-specific limits are not separately documented. Check the [official docs](https://developers.cloudflare.com/dynamic-workers/) for any updates.
 
 ## Starter Templates
 
