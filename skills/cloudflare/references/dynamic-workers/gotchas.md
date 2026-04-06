@@ -1,0 +1,175 @@
+# Gotchas & Best Practices
+
+## Common Errors
+
+### "Worker not found" or empty response
+
+**Cause**: `mainModule` doesn't match a key in `modules`, or the module doesn't have a default export with `fetch()`.
+**Solution**: Ensure `mainModule` is an exact key in the `modules` object and the code exports a `fetch` handler.
+
+```typescript
+// ❌ BAD: mainModule doesn't match
+env.LOADER.load({
+  mainModule: "index.js",
+  modules: { "worker.js": code } // Key mismatch
+});
+
+// ✅ GOOD: mainModule matches modules key
+env.LOADER.load({
+  mainModule: "worker.js",
+  modules: { "worker.js": code }
+});
+```
+
+### "fetch() is not allowed" or network error in Dynamic Worker
+
+**Cause**: `globalOutbound` is set to `null`, blocking all network access.
+**Solution**: If the Dynamic Worker needs network access, either omit `globalOutbound` (inherits parent's access) or provide a gateway `ServiceStub`.
+
+### Callback returning different code for the same ID
+
+**Cause**: Using `get(id, callback)` where the callback returns different content across invocations for the same ID.
+**Solution**: The callback must always return identical content for a given ID. Use content-hashed IDs if code varies:
+
+```typescript
+// ❌ BAD: Same ID, potentially different code
+env.LOADER.get("my-worker", async () => {
+  const code = await fetchLatestCode(); // May change!
+  return { modules: { "index.js": code }, /* ... */ };
+});
+
+// ✅ GOOD: ID derived from content hash
+const hash = await hashCode(code);
+env.LOADER.get(`worker-${hash}`, async () => {
+  return { modules: { "index.js": code }, /* ... */ };
+});
+```
+
+### "Cannot access binding" in Dynamic Worker
+
+**Cause**: Passing raw Cloudflare bindings (KV, R2, D1) directly via `env`.
+**Solution**: Dynamic Workers use capability-based security. Wrap bindings in `WorkerEntrypoint` classes and pass as RPC stubs (see [api.md](./api.md)).
+
+### Props not serializable
+
+**Cause**: Passing functions or non-clonable objects via `ctx.props`.
+**Solution**: `ctx.props` values must be structured-clonable (strings, numbers, plain objects, arrays). No functions, classes, or circular references.
+
+### Python code runs slowly
+
+**Cause**: Python isolates have significantly slower startup than JavaScript.
+**Solution**: Use JavaScript or TypeScript (via bundler) for AI-generated code. Reserve Python for cases where it's strictly necessary.
+
+### Tail Worker logs not appearing
+
+**Cause**: Tail Workers run asynchronously after the response is sent. If you return immediately, logs may not have arrived yet.
+**Solution**: Use the Durable Object log session pattern (see [patterns.md](./patterns.md)) to wait for logs before responding, or accept that logs arrive asynchronously.
+
+### RPC methods executing in different isolates
+
+**Cause**: Each `fetch()` call may execute in a different isolate. Only stubs returned from the same RPC method share a session.
+**Solution**: If you need shared state across calls, use `get()` with a stable ID to maintain a warm isolate, or pass state explicitly.
+
+## Best Practices
+
+### Use `load()` for one-shot, `get()` for repeated
+
+```typescript
+// One-shot AI code execution — use load()
+const worker = env.LOADER.load({ /* ... */ });
+
+// App receiving multiple requests — use get() with stable ID
+const worker = env.LOADER.get("app-v1", async () => { /* ... */ });
+```
+
+### Content-hash your worker IDs
+
+Derive IDs from the code content so identical code reuses the same warm isolate:
+
+```typescript
+async function workerId(files: Record<string, string>): Promise<string> {
+  const sorted = Object.entries(files).sort();
+  const digest = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(JSON.stringify(sorted))
+  );
+  return "worker-" + Array.from(new Uint8Array(digest), (b) =>
+    b.toString(16).padStart(2, "0")
+  ).join("").slice(0, 16);
+}
+```
+
+### Block network by default
+
+Use `globalOutbound: null` unless the Dynamic Worker genuinely needs network access. When it does, use a gateway to filter and inject credentials rather than passing raw tokens.
+
+### Cold-start warmup
+
+Call a no-op method on the entrypoint to trigger isolate initialization before the real request:
+
+```typescript
+const entrypoint = worker.getEntrypoint();
+try {
+  await entrypoint.__warmup__?.();
+} catch {
+  // Intentional — the method doesn't exist, but the isolate is now warm
+}
+```
+
+## Pricing
+
+Available on **Workers Paid plan** only.
+
+| Metric | Included | Overage |
+|--------|----------|---------|
+| Dynamic Workers created daily | 1,000/month | $0.002/Worker/day |
+| Requests | 10M/month | $0.30/million |
+| CPU time | 30M ms/month | $0.02/million ms |
+
+**Note**: The "Dynamic Workers created daily" charge is not yet active during beta.
+
+Requests and CPU time are billed as part of your existing Workers plan (not additional charges).
+
+### What counts as a "Dynamic Worker created"?
+
+| Scenario | Count |
+|----------|-------|
+| Same code, same ID, multiple invocations | **1** Dynamic Worker |
+| Same code, different IDs | **1 per ID** |
+| Same ID, different code versions | **1 per version** |
+| No ID (`load()` used) | **1 per invocation** |
+
+**Cost implication**: `load()` is more expensive at scale than `get()` with stable IDs, because every invocation counts as a new Dynamic Worker.
+
+### CPU time
+
+Includes both:
+- **Startup time**: Isolate initialization and code parsing
+- **Execution time**: Active processing (excludes I/O wait)
+
+RPC method calls bill similarly to Durable Objects requests. Returned stubs from the same RPC method share a session (no additional billing).
+
+## Limits
+
+| Resource | Limit |
+|----------|-------|
+| Module size | Standard Workers limits apply |
+| CPU per invocation | Standard Workers limits apply |
+| Subrequests | Standard Workers limits apply |
+| Concurrent isolates | No documented limit |
+
+## Starter Templates
+
+- [Dynamic Workers Starter](https://github.com/cloudflare/agents/tree/main/examples/dynamic-workers) — Minimal `load()` example
+- [Dynamic Workers Playground](https://github.com/cloudflare/agents/tree/main/examples/dynamic-workers-playground) — Full IDE with bundling, caching, and real-time logs
+- [Codemode](https://github.com/cloudflare/agents/tree/main/examples/codemode) — AI agent code execution with tools
+- [Codemode MCP](https://github.com/cloudflare/agents/tree/main/examples/codemode-mcp) — Wrap MCP server into single code tool
+- [Codemode MCP OpenAPI](https://github.com/cloudflare/agents/tree/main/examples/codemode-mcp-openapi) — OpenAPI spec → MCP code tool
+- [Worker Bundler Playground](https://github.com/cloudflare/agents/tree/main/examples/worker-bundler-playground) — AI-generated full-stack apps
+
+## Resources
+
+- [Official Docs](https://developers.cloudflare.com/dynamic-workers/)
+- [Getting Started](https://developers.cloudflare.com/dynamic-workers/getting-started/)
+- [Blog Post](https://blog.cloudflare.com/dynamic-workers/)
+- [LLM Reference](https://developers.cloudflare.com/dynamic-workers/llms-full.txt)

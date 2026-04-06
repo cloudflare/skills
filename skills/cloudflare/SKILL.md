@@ -40,6 +40,7 @@ Need to run code?
 ├─ Long-running multi-step jobs → workflows/
 ├─ Run containers → containers/
 ├─ Multi-tenant (customers deploy code) → workers-for-platforms/
+├─ Execute AI-generated/untrusted code in V8 isolates → dynamic-workers/
 ├─ Scheduled tasks (cron) → cron-triggers/
 ├─ Lightweight edge logic (modify HTTP) → snippets/
 ├─ Process Worker execution events (logs/observability) → tail-workers/
@@ -136,6 +137,7 @@ Need IaC? → pulumi/ (Pulumi), terraform/ (Terraform), or api/ (REST API)
 | Workflows | `references/workflows/` |
 | Containers | `references/containers/` |
 | Workers for Platforms | `references/workers-for-platforms/` |
+| Dynamic Workers | `references/dynamic-workers/` |
 | Cron Triggers | `references/cron-triggers/` |
 | Tail Workers | `references/tail-workers/` |
 | Snippets | `references/snippets/` |
