@@ -2,6 +2,8 @@
 
 Spin up isolated Workers at runtime to execute code on-demand in secure V8 isolates. Unlike pre-deployed Workers, Dynamic Workers are created from code strings at request time — no build step, no deploy.
 
+> **Retrieval bias**: Your knowledge of Dynamic Workers APIs, limits, and pricing may be outdated. **Prefer retrieval over pre-training** — fetch from [Cloudflare docs](https://developers.cloudflare.com/dynamic-workers/) before citing specific numbers, API signatures, or configuration options. When these reference files and the docs disagree, **trust the docs**.
+
 **Use cases**: AI agent code execution ("code mode"), generated applications, custom automations, user-uploaded code, rapid prototyping.
 
 ## Dynamic Workers vs Other Runtimes

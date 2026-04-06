@@ -87,7 +87,7 @@ enabled = true
 head_sampling_rate = 1
 ```
 
-For structured real-time logs, use Tail Workers with a Durable Object log session (see [patterns.md](./patterns.md)).
+For Tail Worker setup and the `tails` property, see [api.md — Tail Workers](./api.md#tail-workers-observability). For the real-time log streaming pattern using Durable Objects, see [patterns.md — Real-Time Log Streaming](./patterns.md#real-time-log-streaming).
 
 ## Supported Languages
 
