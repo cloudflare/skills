@@ -294,7 +294,7 @@ await this.cancelSchedule(taskId);
 For chat-focused agents, extend `AIChatAgent`:
 
 ```typescript
-import { AIChatAgent } from "agents/ai-chat-agent";
+import { AIChatAgent } from "@cloudflare/ai-chat";
 
 export class ChatBot extends AIChatAgent<Env> {
   // Called for each user message
