@@ -5,7 +5,7 @@
 **Server (AIChatAgent):**
 
 ```ts
-import { AIChatAgent } from "agents";
+import { AIChatAgent } from "@cloudflare/ai-chat";
 import { openai } from "@ai-sdk/openai";
 import { tool } from "ai";
 import { z } from "zod";
@@ -39,7 +39,7 @@ export class ChatAgent extends AIChatAgent<Env> {
 
 ```tsx
 import { useAgent } from "agents/react";
-import { useAgentChat } from "agents/ai-react";
+import { useAgentChat } from "@cloudflare/ai-chat/react";
 
 function ChatUI() {
   const agent = useAgent({ agent: "ChatAgent" });

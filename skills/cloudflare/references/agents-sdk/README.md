@@ -27,7 +27,7 @@ Build stateful, globally distributed AI agents with persistent memory, real-time
 
 **AI Chat Agent:**
 ```typescript
-import { AIChatAgent } from "agents";
+import { AIChatAgent } from "@cloudflare/ai-chat";
 import { openai } from "@ai-sdk/openai";
 
 export class ChatAgent extends AIChatAgent<Env> {

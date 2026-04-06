@@ -7,7 +7,7 @@
 For AI chat with auto-streaming, message history, tools, resumable streaming.
 
 ```ts
-import { AIChatAgent } from "agents";
+import { AIChatAgent } from "@cloudflare/ai-chat";
 import { openai } from "@ai-sdk/openai";
 
 export class ChatAgent extends AIChatAgent<Env> {
@@ -174,7 +174,7 @@ const result = await agent.processTask({ text: "Hello" }); // Call @callable met
 // agent.readyState: 0=CONNECTING, 1=OPEN, 2=CLOSING, 3=CLOSED
 
 // useAgentChat() - AI chat UI
-import { useAgentChat } from "agents/ai-react";
+import { useAgentChat } from "@cloudflare/ai-chat/react";
 const agent = useAgent({ agent: "ChatAgent" });
 const { messages, input, handleInputChange, handleSubmit, isLoading, stop, clearHistory } = 
   useAgentChat({ 
