@@ -80,9 +80,11 @@ Access a named entrypoint (a named `WorkerEntrypoint` export from the Dynamic Wo
 
 **`tails`** (ServiceStub[]) — Tail Workers that receive logs and metadata after execution.
 
-## Custom Bindings via RPC
+## Custom Bindings via RPC (Cap'n Web)
 
-Passing standard Workers bindings (KV, R2, D1, etc.) directly into a Dynamic Worker is [not currently supported](https://developers.cloudflare.com/dynamic-workers/usage/bindings/). Instead, create wrapper RPC interfaces using `WorkerEntrypoint` classes and pass them as stubs. This also lets you narrow scope and filter requests.
+Passing standard Workers bindings (KV, R2, D1, etc.) directly into a Dynamic Worker is [not currently supported](https://developers.cloudflare.com/dynamic-workers/usage/bindings/). Instead, create wrapper RPC interfaces using `WorkerEntrypoint` classes and pass them as stubs.
+
+This uses [Cap'n Web](https://developers.cloudflare.com/dynamic-workers/usage/bindings/) (Workers RPC) — a capability-based security model. Objects passed over RPC are stubs: if you haven't received a stub, you can't call the object. There's no global identifier to guess. This is why Dynamic Workers are secure by default — the sandbox can only access what you explicitly grant it, and you can narrow scope, filter requests, or inject credentials at the boundary.
 
 ### Define in Loader Worker
 

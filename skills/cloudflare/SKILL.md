@@ -69,6 +69,7 @@ Need AI?
 ├─ Run inference (LLMs, embeddings, images) → workers-ai/
 ├─ Vector database for RAG/search → vectorize/
 ├─ Build stateful AI agents → agents-sdk/
+├─ Run AI-generated code in a sandbox → dynamic-workers/
 ├─ Gateway for any AI provider (caching, routing) → ai-gateway/
 └─ AI-powered search widget → ai-search/
 ```
