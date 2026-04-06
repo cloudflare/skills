@@ -139,7 +139,7 @@ Requests and CPU time are billed as part of your existing Workers plan (not addi
 | Same ID, different code versions | **1 per version** |
 | No ID (`load()` used) | **1 per invocation** |
 
-**Cost implication**: `load()` is more expensive at scale than `get()` with stable IDs, because every invocation counts as a new Dynamic Worker.
+**Cost implication**: `load()` is more expensive at scale than `get()` with stable IDs, because every invocation counts as a new Dynamic Worker. Example: 10,000 invocations/day of the same code costs `load()` = 10,000 billed workers ($0.002 x 10,000 = $20/day) vs `get("stable-id")` = 1 billed worker ($0.002/day).
 
 ### CPU time
 

@@ -84,6 +84,7 @@ Worker mode?
 ## See Also
 - [workers](../workers/) - Core Workers runtime documentation
 - [durable-objects](../durable-objects/) - Stateful multi-tenant patterns
-- [sandbox](../sandbox/) - Alternative for untrusted code execution
+- [sandbox](../sandbox/) - Alternative for untrusted code execution (containers)
+- [dynamic-workers](../dynamic-workers/) - Alternative for AI/one-shot code execution (V8 isolates, no deploy step)
 - [Reference Architecture: Programmable Platforms](https://developers.cloudflare.com/reference-architecture/diagrams/serverless/programmable-platforms/)
 - [Reference Architecture: AI Vibe Coding Platform](https://developers.cloudflare.com/reference-architecture/diagrams/ai/ai-vibe-coding-platform/)
