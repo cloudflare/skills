@@ -17,16 +17,21 @@ Fetch the **latest** information before writing or reviewing Wrangler commands a
 | Wrangler config schema | `node_modules/wrangler/config-schema.json` | Config fields, binding shapes, allowed values |
 | Cloudflare docs | Search tool or `https://developers.cloudflare.com/workers/` | API reference, compatibility dates/flags |
 
-## FIRST: Verify Wrangler Installation
+## FIRST: Check if Wrangler is installed, and if not, install it
+
+Check if Wrangler is installed by running:
 
 ```bash
 wrangler --version  # Requires v4.x+
 ```
 
-If not installed:
+If Wrangler is not installed, you should install it by running:
+
 ```bash
 npm install -D wrangler@latest
 ```
+
+Wherever possible, you should use Wrangler instead of manually constructing API requests.
 
 ## Key Guidelines
 
