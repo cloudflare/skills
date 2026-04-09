@@ -100,7 +100,7 @@ curl "https://api.cloudflare.com/client/v4/accounts/{account_id}/email/sending/s
   }'
 ```
 
-See [rest-api.md](references/rest-api.md) for Node.js, Python, Go examples, auth setup, and error handling.
+See [rest-api.md](references/rest-api.md) for more examples and error handling.
 
 ## Quick Receive — Email Routing
 
@@ -251,9 +251,9 @@ For `E_RATE_LIMIT_EXCEEDED` and `E_DELIVERY_FAILED`, retry with exponential back
 
 Read the reference that matches your situation. You don't need all of them.
 
-- **[references/sending.md](references/sending.md)** — Workers binding API, `sendBatch()`, attachments, Agents SDK email, React Email templates. Read this if you're building on Workers or Agents SDK.
-- **[references/rest-api.md](references/rest-api.md)** — REST endpoint, authentication, language examples (TypeScript, Python, Go, curl). Read this if your app is NOT on Cloudflare Workers.
-- **[references/routing.md](references/routing.md)** — Inbound email processing, `email()` handler, forwarding, replying, parsing with postal-mime. Read this if you need to receive or process incoming emails.
-- **[references/cli-and-mcp.md](references/cli-and-mcp.md)** — Domain setup, wrangler commands, MCP server tools, scaffolding new projects. Read this if you're setting up Email Service for the first time or managing it from a coding agent.
-- **[references/deliverability.md](references/deliverability.md)** — SPF/DKIM/DMARC, bounce handling, spam avoidance, compliance (CAN-SPAM, GDPR), content best practices. Read this if your emails aren't landing in inboxes or you want to write better emails.
-- **[references/examples.md](references/examples.md)** — Full-stack patterns: signup flows, magic links, support inboxes, AI email agents, R2/Queues/D1 integration. Read this for real-world implementation patterns.
+- **[references/sending.md](references/sending.md)** — Workers binding API, attachments, Agents SDK email. For Workers or Agents SDK.
+- **[references/rest-api.md](references/rest-api.md)** — REST endpoint, curl examples, error handling. For apps NOT on Workers.
+- **[references/routing.md](references/routing.md)** — Inbound `email()` handler, forwarding, replying, parsing. For receiving emails.
+- **[references/cli-and-mcp.md](references/cli-and-mcp.md)** — Domain setup, wrangler commands, MCP tools. For first-time setup.
+- **[references/deliverability.md](references/deliverability.md)** — SPF/DKIM/DMARC, bounces, suppressions, best practices.
+- **[references/examples.md](references/examples.md)** — Full-stack patterns: signup flows, support inboxes, Queues integration.
