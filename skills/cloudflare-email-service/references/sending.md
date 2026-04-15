@@ -21,43 +21,9 @@ For local development, add `"remote": true` so email sends are proxied to the re
 { "send_email": [{ "name": "EMAIL", "remote": true }] }
 ```
 
-Run `npx wrangler types` to auto-generate the `Env` interface with your `EMAIL` binding.
+Run `npx wrangler types` to auto-generate the `Env` interface with your `EMAIL` binding. This produces a `worker-configuration.d.ts` with the real `SendEmail`, `EmailAttachment`, `EmailAddress`, and related types from the workerd runtime. Always use these generated types — do not define them manually.
 
-### TypeScript Interfaces
-
-```typescript
-interface SendEmail {
-  send(message: EmailMessage | EmailMessageBuilder): Promise<EmailSendResult>;
-}
-
-interface EmailMessageBuilder {
-  to: string | string[];                // Max 50 recipients
-  from: string | { email: string; name: string };
-  subject: string;
-  html?: string;
-  text?: string;
-  cc?: string | string[];
-  bcc?: string | string[];
-  replyTo?: string | { email: string; name: string };
-  attachments?: Attachment[];
-  headers?: { [key: string]: string };
-}
-
-interface Attachment {
-  content: string | ArrayBuffer;        // Base64 string or binary
-  filename: string;
-  type: string;                         // MIME type
-  disposition: "attachment" | "inline";
-  contentId?: string;                   // Required for inline
-}
-
-interface EmailSendResult {
-  messageId: string;
-}
-// Errors thrown with .code and .message properties
-```
-
-**Note:** Workers binding uses `email` in the from object. REST API uses `address`. See [rest-api.md](rest-api.md).
+**Note:** Workers binding uses `email` in the from object (`EmailAddress` type). REST API uses `address`. See [rest-api.md](rest-api.md).
 
 ## send()
 
@@ -93,8 +59,28 @@ const response = await env.EMAIL.send({
 
 ## Attachments
 
+**Important:** The Workers binding and REST API handle attachment content differently:
+- **Workers binding:** `content` accepts `string | ArrayBuffer | ArrayBufferView`. Strings are treated as **raw content** (not base64). For text files, pass the raw string. For binary files (images, PDFs), pass an `ArrayBuffer`. Note: `ArrayBuffer` does not work with `"remote": true` in local dev — deploy to test binary attachments.
+- **REST API:** `content` is always a **base64-encoded string**. See [rest-api.md](rest-api.md).
+
 ```typescript
-// File attachment
+// Text file attachment — pass raw string content
+const response = await env.EMAIL.send({
+  to: "customer@example.com",
+  from: "invoices@yourdomain.com",
+  subject: "Your Report",
+  html: "<h1>Report attached</h1>",
+  text: "Report attached.",
+  attachments: [{
+    content: "Name,Amount\nWidget A,100\nWidget B,250", // Raw text, NOT base64
+    filename: "report.csv",
+    type: "text/csv",
+    disposition: "attachment",
+  }],
+});
+
+// Binary file attachment — use ArrayBuffer
+const pdfBytes = await fetchPdfFromSomewhere(); // Returns ArrayBuffer
 const response = await env.EMAIL.send({
   to: "customer@example.com",
   from: "invoices@yourdomain.com",
@@ -102,7 +88,7 @@ const response = await env.EMAIL.send({
   html: "<h1>Invoice attached</h1>",
   text: "Invoice attached.",
   attachments: [{
-    content: "JVBERi0xLjQKJeLjz9MK...", // Base64-encoded PDF
+    content: pdfBytes,
     filename: "invoice-12345.pdf",
     type: "application/pdf",
     disposition: "attachment",
@@ -110,13 +96,14 @@ const response = await env.EMAIL.send({
 });
 
 // Inline image — reference in HTML with cid:<contentId>
+const imageBytes = await fetchImageFromSomewhere(); // Returns ArrayBuffer
 const response = await env.EMAIL.send({
   to: "user@example.com",
   from: "marketing@yourdomain.com",
   subject: "New Product",
   html: '<img src="cid:product-hero" alt="Product" />',
   attachments: [{
-    content: "iVBORw0KGgoAAAANSUhEUgAA...",
+    content: imageBytes,
     filename: "product.png",
     type: "image/png",
     disposition: "inline",
@@ -125,7 +112,7 @@ const response = await env.EMAIL.send({
 });
 ```
 
-Total email size (body + attachments) cannot exceed 25 MiB. Base64 adds ~33% overhead.
+Total email size (body + attachments) cannot exceed 25 MiB.
 
 ## Custom Headers
 
@@ -225,7 +212,31 @@ try {
 }
 ```
 
-See [SKILL.md](../SKILL.md#error-codes) for the full error codes table.
+These error codes are for the **Workers binding** (thrown as Error objects with `.code` and `.message`). The **REST API** returns standard Cloudflare API numeric error codes instead — see [rest-api.md](rest-api.md).
+
+| Error Code | What It Means | What to Do |
+|------------|---------------|------------|
+| `E_VALIDATION_ERROR` | Invalid payload | Check email format, required fields |
+| `E_FIELD_MISSING` | Required field missing | Add `to`, `from`, or `subject` |
+| `E_TOO_MANY_RECIPIENTS` | Combined to/cc/bcc exceeds 50 | Split into multiple sends |
+| `E_SENDER_NOT_VERIFIED` | Domain not onboarded | Run `wrangler email sending enable yourdomain.com` or onboard in Dashboard |
+| `E_RECIPIENT_NOT_ALLOWED` | Recipient not in allowed list | Add to `allowed_destination_addresses` |
+| `E_RECIPIENT_SUPPRESSED` | Address bounced or reported spam | Remove from your list; check suppression list in Dashboard |
+| `E_SENDER_DOMAIN_NOT_AVAILABLE` | Domain not available for sending | Complete domain onboarding |
+| `E_CONTENT_TOO_LARGE` | Content exceeds 25 MiB | Reduce attachments or body |
+| `E_RATE_LIMIT_EXCEEDED` | Rate limit hit | Retry with exponential backoff |
+| `E_DAILY_LIMIT_EXCEEDED` | Daily quota reached | Wait or request limit increase |
+| `E_DELIVERY_FAILED` | SMTP delivery failure | Check recipient address, retry if transient |
+| `E_INTERNAL_SERVER_ERROR` | Service temporarily unavailable | Retry with exponential backoff |
+| `E_HEADER_NOT_ALLOWED` | Header not on whitelist | Use an allowed header; see [headers reference](https://developers.cloudflare.com/email-service/reference/headers/) |
+| `E_HEADER_USE_API_FIELD` | Must use API field instead | Set `From`, `To`, etc. via the dedicated API fields, not `headers` |
+| `E_HEADER_VALUE_INVALID` | Header value is malformed or empty | Fix the value format (e.g., List-Unsubscribe needs angle-bracket URIs) |
+| `E_HEADER_VALUE_TOO_LONG` | Header value exceeds 2,048 bytes | Shorten the header value |
+| `E_HEADER_NAME_INVALID` | Invalid header name | Fix characters or keep under 100 bytes |
+| `E_HEADERS_TOO_LARGE` | Total headers exceed 16 KB | Reduce number or size of custom headers |
+| `E_HEADERS_TOO_MANY` | More than 20 non-X headers | Reduce to 20 or fewer whitelisted headers |
+
+For `E_RATE_LIMIT_EXCEEDED` and `E_DELIVERY_FAILED`, retry with exponential backoff. For validation errors (`E_VALIDATION_ERROR`, `E_FIELD_MISSING`, `E_SENDER_NOT_VERIFIED`), fix the request — retrying won't help.
 
 ## Restricted Bindings
 

@@ -32,12 +32,12 @@ Authorization: Bearer <API_TOKEN>
 | `cc` | string or string[] | No | CC recipients |
 | `bcc` | string or string[] | No | BCC recipients |
 | `reply_to` | string or `{address, name}` | No | **Snake_case**, not camelCase |
-| `attachments` | array | No | File attachments |
+| `attachments` | array | No | File attachments and inline images |
 | `headers` | object | No | Custom email headers |
 
 *At least one of `html` or `text` required. Include both for best deliverability.
 
-**Key differences from Workers binding:** `from` uses `address` (REST) vs `email` (Workers), `reply_to` (REST) vs `replyTo` (Workers), errors use numeric codes (REST) vs string `E_*` codes (Workers).
+**Key differences from Workers binding:** `from` uses `address` (REST) vs `email` (Workers), `reply_to` (REST) vs `replyTo` (Workers), `content_id` (REST) vs `contentId` (Workers) for inline attachments, errors use numeric codes (REST) vs string `E_*` codes (Workers), and responses return delivery status (`delivered`/`permanent_bounces`/`queued`) instead of just `messageId`.
 
 ## Examples
 
@@ -95,6 +95,33 @@ curl "https://api.cloudflare.com/client/v4/accounts/{account_id}/email/sending/s
     ]
   }'
 ```
+
+With inline images (embedded via `cid:` URI):
+
+```bash
+curl "https://api.cloudflare.com/client/v4/accounts/{account_id}/email/sending/send" \
+  --header "Authorization: Bearer <API_TOKEN>" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "to": "user@example.com",
+    "from": "newsletter@yourdomain.com",
+    "subject": "Check this out",
+    "html": "<h1>Hello!</h1><img src=\"cid:logo\">",
+    "attachments": [
+      {
+        "content": "iVBORw0KGgoAAAANSUhEUg...",
+        "filename": "logo.png",
+        "type": "image/png",
+        "disposition": "inline",
+        "content_id": "logo"
+      }
+    ]
+  }'
+```
+
+Attachment fields differ by type:
+- **Regular attachment**: `content` (base64), `filename`, `type` (MIME), `disposition: "attachment"`
+- **Inline image**: `content` (base64), `filename`, `type` (MIME), `disposition: "inline"`, `content_id` (referenced in HTML as `cid:<content_id>`)
 
 With custom headers:
 
