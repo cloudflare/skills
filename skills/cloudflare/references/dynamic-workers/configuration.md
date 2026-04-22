@@ -9,7 +9,7 @@ The `worker_loaders` binding gives your Worker access to the Dynamic Worker Load
 {
   "name": "my-loader",
   "main": "src/index.ts",
-  "compatibility_date": "2026-01-28",
+  "compatibility_date": "$today",
   "compatibility_flags": ["nodejs_compat"],
   "worker_loaders": [{ "binding": "LOADER" }]
 }
@@ -89,6 +89,26 @@ head_sampling_rate = 1
 
 For Tail Worker setup and the `tails` property, see [api.md — Tail Workers](./api.md#tail-workers-observability). For the real-time log streaming pattern using Durable Objects, see [patterns.md — Real-Time Log Streaming](./patterns.md#real-time-log-streaming).
 
+## Custom Limits
+
+Set explicit limits when running untrusted or AI-generated code. This keeps each invocation bounded even if the generated code loops, fans out, or behaves unexpectedly.
+
+```typescript
+const worker = env.LOADER.load({
+  compatibilityDate: "$today",
+  mainModule: "worker.js",
+  modules: { "worker.js": code },
+  globalOutbound: null,
+  limits: { cpuMs: 50, subRequests: 20 }
+});
+
+const entrypoint = worker.getEntrypoint(null, {
+  limits: { cpuMs: 10, subRequests: 5 }
+});
+```
+
+Retrieve current maximum values and behavior from the [Custom Limits docs](https://developers.cloudflare.com/dynamic-workers/usage/limits/) before citing specific ceilings.
+
 ## Supported Languages
 
 | Language | Module Type | Notes |
@@ -119,7 +139,7 @@ const { mainModule, modules } = await createWorker({
   files: {
     "src/index.ts": typescriptCode,
     "package.json": JSON.stringify({
-      dependencies: { hono: "^4.0.0" }
+      dependencies: { hono: "^4" }
     })
   },
   bundle: true,
@@ -129,7 +149,7 @@ const { mainModule, modules } = await createWorker({
 const worker = env.LOADER.load({
   mainModule,
   modules: modules as Record<string, string>,
-  compatibilityDate: "2026-01-28"
+  compatibilityDate: "$today"
 });
 ```
 
@@ -145,7 +165,7 @@ See the [@cloudflare/worker-bundler npm package](https://www.npmjs.com/package/@
 
 ```typescript
 env.LOADER.load({
-  compatibilityDate: "2026-01-28",       // Required
+  compatibilityDate: "$today",           // Required
   compatibilityFlags: ["nodejs_compat"],  // Optional
   allowExperimental: true,                // Optional — parent must have "experimental" flag
   // ...

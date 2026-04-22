@@ -35,7 +35,7 @@ The LLM reference (`llms-full.txt`) is the highest-signal single source. Start t
 If the product has an SDK or library (e.g. `@cloudflare/worker-bundler`, `@cloudflare/sandbox`):
 - Check the npm package for current API surface
 - Read the repo README and any inline type definitions
-- Note version numbers — skills should reference current versions
+- Capture the current API shape and doc entry points; avoid pinning version-specific details unless they are required to use the product
 
 ## 2. Understand the Product's Position
 
@@ -58,7 +58,7 @@ references/<product-name>/
   api.md            — API reference: methods, types, parameters, return values
   configuration.md  — wrangler.jsonc setup, binding combinations, CLI commands
   patterns.md       — Common usage patterns with full code examples
-  gotchas.md        — Errors, limits, pricing, best practices, starter links
+  gotchas.md        — Errors, best practices, retrieval cues, starter links
 ```
 
 ### What goes in each file
@@ -92,8 +92,7 @@ Aim for 4-7 patterns ranging from basic to advanced.
 **gotchas.md**: Everything that trips people up. Include:
 - Common errors with cause/solution pairs
 - Best practices (do/don't format with code examples)
-- Pricing table and billing nuances
-- Limits table
+- Retrieval cues for pricing, limits, and plan availability, with links to the official docs instead of copied tables
 - Links to starter templates and official resources
 
 ## 4. Update the Skill Index
@@ -115,7 +114,7 @@ Check if existing skills should link to the new one:
 
 - [ ] All code examples use current API syntax (check against `llms-full.txt` and docs)
 - [ ] `wrangler.jsonc` examples match real working configurations from official examples
-- [ ] Pricing and limits are cited from official docs (not guessed)
+- [ ] Pricing, limits, and plan availability link to official docs rather than copying values that may drift
 - [ ] No broken internal links between the 5 files
 - [ ] SKILL.md decision tree entry distinguishes this from similar products
 - [ ] SKILL.md product index row added in the correct section
@@ -126,7 +125,7 @@ Check if existing skills should link to the new one:
 
 | Source | URL | Key information extracted |
 |--------|-----|--------------------------|
-| LLM reference | `developers.cloudflare.com/dynamic-workers/llms-full.txt` | Full API surface, WorkerCode properties, pricing, billing rules |
+| LLM reference | `developers.cloudflare.com/dynamic-workers/llms-full.txt` | Full API surface, WorkerCode properties, retrieval entry points |
 | Docs home | `developers.cloudflare.com/dynamic-workers/` | Architecture overview, use cases, security model |
 | Getting started | `developers.cloudflare.com/dynamic-workers/getting-started/` | `worker_loaders` binding, `load()` vs `get()`, supported languages |
 | Blog post | `blog.cloudflare.com/dynamic-workers/` | V8 isolate performance claims, helper libraries, design rationale |
@@ -137,4 +136,4 @@ Check if existing skills should link to the new one:
 | `codemode-mcp-openapi` example | `github.com/cloudflare/agents/.../codemode-mcp-openapi/` | `openApiMcpServer()` for REST API wrapping |
 | `worker-bundler-playground` example | `github.com/cloudflare/agents/.../worker-bundler-playground/` | AI-generated app pattern, `createWorker()` with assets, DO persistence |
 
-Six examples were needed to cover the full range of patterns. The `llms-full.txt` provided the API reference backbone. The blog provided context the docs didn't (helper libraries, performance numbers). The examples provided real wrangler configs and production patterns.
+Six examples were needed to cover the full range of patterns. The `llms-full.txt` provided the API reference backbone. The blog provided design rationale and helper-library context. The examples provided real wrangler configs and production patterns.

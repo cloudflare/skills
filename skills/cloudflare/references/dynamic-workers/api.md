@@ -8,10 +8,11 @@ Creates a fresh Dynamic Worker. No caching — each call creates a new isolate.
 
 ```typescript
 const worker = env.LOADER.load({
-  compatibilityDate: "2026-01-28",
+  compatibilityDate: "$today",
   mainModule: "worker.js",
   modules: { "worker.js": code },
-  globalOutbound: null
+  globalOutbound: null,
+  limits: { cpuMs: 50, subRequests: 20 }
 });
 
 const response = await worker.getEntrypoint().fetch(request);
@@ -25,7 +26,7 @@ Loads or retrieves a cached Dynamic Worker by ID. The callback executes only if 
 const worker = env.LOADER.get("hello-v1", async () => {
   const code = await env.MY_CODE_STORAGE.get("hello-v1");
   return {
-    compatibilityDate: "2026-01-28",
+    compatibilityDate: "$today",
     mainModule: "index.js",
     modules: { "index.js": code },
     globalOutbound: null
@@ -47,7 +48,7 @@ Access a named entrypoint (a named `WorkerEntrypoint` export from the Dynamic Wo
 
 ### Required Properties
 
-**`compatibilityDate`** (string) — Sets the Worker runtime version (e.g. `"2026-01-28"`).
+**`compatibilityDate`** (string) — Sets the Worker runtime version. Use a current compatibility date.
 
 **`mainModule`** (string) — Name of the entry module. Must exist as a key in `modules`.
 
@@ -79,6 +80,24 @@ Access a named entrypoint (a named `WorkerEntrypoint` export from the Dynamic Wo
 - Loopback bindings (the loader's own entrypoints)
 
 **`tails`** (ServiceStub[]) — Tail Workers that receive logs and metadata after execution.
+
+**`limits`** ({ cpuMs?: number; subRequests?: number }) — Optional per-worker limits for CPU time and subrequests. Use this when executing untrusted code so failures happen inside a bounded sandbox instead of consuming the parent Worker's full budget.
+
+Retrieve the current maximum values from the [Custom Limits docs](https://developers.cloudflare.com/dynamic-workers/usage/limits/) before citing specific numbers.
+
+## Per-Invocation Limits
+
+You can also apply stricter limits at call time:
+
+```typescript
+const entrypoint = worker.getEntrypoint(null, {
+  limits: { cpuMs: 10, subRequests: 5 }
+});
+
+await entrypoint.fetch(request);
+```
+
+If limits are set both on the Worker code and at the entrypoint call, the lower limits apply.
 
 ## Custom Bindings via RPC (Cap'n Web)
 
@@ -115,10 +134,11 @@ const chatRoom = ctx.exports.ChatRoom({
 
 const worker = env.LOADER.load({
   env: { CHAT_ROOM: chatRoom },
-  compatibilityDate: "2026-01-28",
+  compatibilityDate: "$today",
   mainModule: "index.js",
   modules: { "index.js": codeFromAgent },
-  globalOutbound: null
+  globalOutbound: null,
+  limits: { cpuMs: 50, subRequests: 20 }
 });
 
 return worker.getEntrypoint("Agent").run();
@@ -190,7 +210,7 @@ const worker = env.LOADER.get("my-worker", async () => {
         export default app;
       `,
       "package.json": JSON.stringify({
-        dependencies: { hono: "^4.0.0" }
+        dependencies: { hono: "^4" }
       })
     },
     bundle: true,
@@ -200,7 +220,7 @@ const worker = env.LOADER.get("my-worker", async () => {
   return {
     mainModule,
     modules: modules as Record<string, string>,
-    compatibilityDate: wranglerConfig?.compatibilityDate ?? "2026-01-01",
+    compatibilityDate: wranglerConfig?.compatibilityDate ?? "$today",
     compatibilityFlags: wranglerConfig?.compatibilityFlags ?? []
   };
 });
@@ -256,7 +276,7 @@ export class DynamicWorkerTail extends WorkerEntrypoint {
 const worker = env.LOADER.get(workerId, () => ({
   mainModule: "index.js",
   modules: { "index.js": code },
-  compatibilityDate: "2026-01-28",
+  compatibilityDate: "$today",
   tails: [
     ctx.exports.DynamicWorkerTail({ props: { workerId } })
   ]

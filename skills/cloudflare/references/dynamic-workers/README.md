@@ -12,10 +12,24 @@ Spin up isolated Workers at runtime to execute code on-demand in secure V8 isola
 |---|---|---|---|
 | **Runtime** | V8 isolate | V8 isolate | Container (Durable Object) |
 | **When created** | At runtime from code strings | Pre-deployed via API | On first request to DO ID |
-| **Startup** | Milliseconds | Already deployed | 2-3s cold start |
 | **Languages** | JS, Python | JS, TS, Python | Any (Dockerfile) |
 | **State** | `load()`: ephemeral; `get()`: warm across requests (no isolate reuse guarantee) | Persistent (deployed script) | Ephemeral disk (lost on sleep); use R2 mounts for persistence |
 | **Best for** | One-shot code execution, AI agents | Multi-tenant SaaS platforms | Long-running processes, full OS |
+
+## When to Use Dynamic Workers
+
+- Use Dynamic Workers when code is supplied at runtime and needs to run inside a tightly controlled Worker sandbox.
+- Use `load()` for one-shot or constantly changing code, especially AI-generated code.
+- Use `get(id, callback)` when the same code will receive follow-up requests and you want warm-isolate reuse when available.
+- Prefer Workers for Platforms when tenants deploy versioned Workers you manage as durable platform assets.
+- Prefer Sandbox when code needs a filesystem, long-running processes, custom binaries, or broader OS-level behavior.
+
+## Safe Starting Point
+
+- Start with `globalOutbound: null` and only open network access deliberately.
+- Pass narrow RPC bindings through `env` instead of exposing raw bindings or secrets.
+- Set explicit `limits` for CPU time and subrequests when executing untrusted or AI-generated code.
+- Treat in-memory state as ephemeral across requests. If state matters, store it outside the isolate.
 
 ## Architecture
 
@@ -42,7 +56,7 @@ Request → Loader Worker → env.LOADER.load(code) → Dynamic Worker isolate
 {
   "name": "my-dynamic-worker",
   "main": "src/index.ts",
-  "compatibility_date": "2026-01-28",
+  "compatibility_date": "$today",
   "compatibility_flags": ["nodejs_compat"],
   "worker_loaders": [{ "binding": "LOADER" }]
 }
@@ -53,7 +67,7 @@ Request → Loader Worker → env.LOADER.load(code) → Dynamic Worker isolate
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const worker = env.LOADER.load({
-      compatibilityDate: "2026-01-28",
+      compatibilityDate: "$today",
       mainModule: "worker.js",
       modules: {
         "worker.js": `
@@ -64,7 +78,8 @@ export default {
           };
         `
       },
-      globalOutbound: null // Block all network access
+      globalOutbound: null, // Block all network access
+      limits: { cpuMs: 50, subRequests: 20 }
     });
 
     return worker.getEntrypoint().fetch(request);
@@ -83,7 +98,7 @@ export default {
 - [api.md](./api.md) — WorkerCode object, module types, RPC bindings, helper libraries
 - [configuration.md](./configuration.md) — Wrangler config, bundling, observability setup
 - [patterns.md](./patterns.md) — Code mode, credential injection, real-time logging, OpenAPI wrapping
-- [gotchas.md](./gotchas.md) — Limits, pricing, common errors, best practices
+- [gotchas.md](./gotchas.md) — Common errors, safe defaults, and live docs to retrieve pricing and limits
 
 ## See Also
 - [agents-sdk](../agents-sdk/) — Agents SDK (codemode, `createCodeTool()`, AI chat agents)

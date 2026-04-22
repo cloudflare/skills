@@ -18,10 +18,11 @@ export default {
 
       try {
         const worker = env.LOADER.load({
-          compatibilityDate: "2026-01-28",
+          compatibilityDate: "$today",
           mainModule: "worker.js",
           modules: { "worker.js": code?.trim() || DEFAULT_CODE },
-          globalOutbound: null
+          globalOutbound: null,
+          limits: { cpuMs: 50, subRequests: 20 }
         });
 
         const result = await worker.getEntrypoint().fetch(new Request("https://worker/"));
@@ -42,7 +43,7 @@ export default {
 
 ## AI Agent Code Mode
 
-Instead of calling tools one at a time, the LLM writes code that calls multiple tools programmatically. This reduces token usage by up to 80%.
+Instead of calling tools one at a time, the LLM writes code that calls multiple tools programmatically.
 
 Uses `@cloudflare/codemode` with `DynamicWorkerExecutor` to combine tools into a single `codemode` tool:
 
@@ -118,7 +119,7 @@ const server = openApiMcpServer({
 });
 ```
 
-This approach uses approximately 1,000 tokens regardless of how many API endpoints exist, compared to over 1 million tokens for native MCP tool definitions.
+This keeps authentication and request policy on the host side while the sandbox executes the generated orchestration code.
 
 ## Bundled Playground with Warm Caching
 
@@ -149,8 +150,9 @@ export default {
       return {
         mainModule,
         modules: modules as Record<string, string>,
-        compatibilityDate: wranglerConfig?.compatibilityDate ?? "2026-01-01",
+        compatibilityDate: wranglerConfig?.compatibilityDate ?? "$today",
         globalOutbound: null,
+        limits: { cpuMs: 50, subRequests: 20 },
         tails: [
           (ctx as any).exports.DynamicWorkerTail({ props: { workerId } })
         ]

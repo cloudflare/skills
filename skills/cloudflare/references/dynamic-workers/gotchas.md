@@ -1,5 +1,7 @@
 # Gotchas & Best Practices
 
+Retrieve current pricing, plan availability, and platform limits from the official docs before citing specific numbers. Those details change more often than the behavioral guidance in this file.
+
 ## Common Errors
 
 ### Dynamic Worker returns an error or empty response
@@ -103,6 +105,20 @@ async function workerId(files: Record<string, string>): Promise<string> {
 
 Use `globalOutbound: null` unless the Dynamic Worker genuinely needs network access. When it does, use a gateway to filter and inject credentials rather than passing raw tokens.
 
+### Set explicit runtime limits
+
+Use `limits` to bound CPU time and subrequests for untrusted or AI-generated code. Choose values that fit the task rather than inheriting the parent Worker's full budget.
+
+```typescript
+const worker = env.LOADER.load({
+  compatibilityDate: "$today",
+  mainModule: "worker.js",
+  modules: { "worker.js": code },
+  globalOutbound: null,
+  limits: { cpuMs: 50, subRequests: 20 }
+});
+```
+
 ### Cold-start warmup
 
 You can trigger isolate initialization before the real request by calling a method that forces the isolate to load. This pattern is used in [Cloudflare's playground example](https://github.com/cloudflare/agents/tree/main/examples/dynamic-workers-playground) but is not a documented API:
@@ -116,52 +132,12 @@ try {
 }
 ```
 
-## Pricing
+## Retrieve Current Pricing and Limits
 
-Available on **Workers Paid plan** only.
-
-| Metric | Included | Overage |
-|--------|----------|---------|
-| Dynamic Workers created daily | 1,000/month | $0.002/Worker/day |
-| Requests | 10M/month | $0.30/million |
-| CPU time | 30M ms/month | $0.02/million ms |
-
-**Note**: The "Dynamic Workers created daily" charge is not yet active during beta.
-
-Requests and CPU time are billed as part of your existing Workers plan (not additional charges).
-
-### What counts as a "Dynamic Worker created"?
-
-| Scenario | Count |
-|----------|-------|
-| Same code, same ID, multiple invocations | **1** Dynamic Worker |
-| Same code, different IDs | **1 per ID** |
-| Same ID, different code versions | **1 per version** |
-| No ID (`load()` used) | **1 per invocation** |
-
-**Cost implication**: `load()` is more expensive at scale than `get()` with stable IDs, because every invocation counts as a new Dynamic Worker. Example: 10,000 invocations/day of the same code costs `load()` = 10,000 billed workers ($0.002 x 10,000 = $20/day) vs `get("stable-id")` = 1 billed worker ($0.002/day).
-
-### CPU time
-
-Includes both:
-- **Startup time**: Isolate initialization and code parsing
-- **Execution time**: Active processing (excludes I/O wait)
-
-RPC method calls bill similarly to Durable Objects requests. Returned stubs from the same RPC method share a session (no additional billing).
-
-## Limits
-
-Dynamic Workers inherit [Workers platform limits](https://developers.cloudflare.com/workers/platform/limits/):
-
-| Resource | Workers Paid |
-|----------|-------------|
-| CPU time per invocation | 5 min max (configurable, default 30s) |
-| Memory | 128 MB |
-| Worker size | 10 MB |
-| Subrequests per invocation | 10,000 (configurable up to 10M) |
-| Simultaneous outgoing connections | 6 |
-
-Dynamic Worker-specific limits are not separately documented. Check the [official docs](https://developers.cloudflare.com/dynamic-workers/) for any updates.
+- Use the [Pricing docs](https://developers.cloudflare.com/dynamic-workers/pricing/) for current plan availability, billing dimensions, and whether any pricing component is active yet.
+- Use the [Custom Limits docs](https://developers.cloudflare.com/dynamic-workers/usage/limits/) for current limit controls and ceilings.
+- Use the [Workers platform limits docs](https://developers.cloudflare.com/workers/platform/limits/) when you need current runtime ceilings.
+- Prefer describing cost behavior qualitatively in the skill: `load()` creates fresh Workers, while `get()` can reuse a stable ID and usually fits repeated traffic better.
 
 ## Starter Templates
 
@@ -177,6 +153,7 @@ Dynamic Worker-specific limits are not separately documented. Check the [officia
 - [Official Docs](https://developers.cloudflare.com/dynamic-workers/)
 - [Getting Started](https://developers.cloudflare.com/dynamic-workers/getting-started/)
 - [Bindings (Cap'n Web)](https://developers.cloudflare.com/dynamic-workers/usage/bindings/)
+- [Custom Limits](https://developers.cloudflare.com/dynamic-workers/usage/limits/)
 - [Egress Control](https://developers.cloudflare.com/dynamic-workers/usage/egress-control/)
 - [Observability](https://developers.cloudflare.com/dynamic-workers/usage/observability/)
 - [Pricing](https://developers.cloudflare.com/dynamic-workers/pricing/)
