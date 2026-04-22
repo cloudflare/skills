@@ -18,7 +18,7 @@ export default {
 
       try {
         const worker = env.LOADER.load({
-          compatibilityDate: "$today",
+          compatibilityDate: "2026-04-22", // Use a current compatibility date
           mainModule: "worker.js",
           modules: { "worker.js": code?.trim() || DEFAULT_CODE },
           globalOutbound: null,
@@ -128,6 +128,12 @@ Use content-hashed IDs with `get()` for efficient caching, and `@cloudflare/work
 ```typescript
 import { createWorker } from "@cloudflare/worker-bundler";
 
+type LoaderCtx = ExecutionContext & {
+  exports: {
+    DynamicWorkerTail(options: { props: { workerId: string } }): ServiceStub;
+  };
+};
+
 async function createWorkerId(files: Record<string, string>): Promise<string> {
   const payload = JSON.stringify(Object.entries(files).sort());
   const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(payload));
@@ -138,7 +144,7 @@ async function createWorkerId(files: Record<string, string>): Promise<string> {
 }
 
 export default {
-  async fetch(request: Request, env: Env, ctx: ExecutionContext) {
+  async fetch(request: Request, env: Env, ctx: LoaderCtx) {
     const { files } = await request.json<{ files: Record<string, string> }>();
     const workerId = await createWorkerId(files);
 
@@ -150,11 +156,11 @@ export default {
       return {
         mainModule,
         modules: modules as Record<string, string>,
-        compatibilityDate: wranglerConfig?.compatibilityDate ?? "$today",
+        compatibilityDate: wranglerConfig?.compatibilityDate ?? "2026-04-22",
         globalOutbound: null,
         limits: { cpuMs: 50, subRequests: 20 },
         tails: [
-          (ctx as any).exports.DynamicWorkerTail({ props: { workerId } })
+          ctx.exports.DynamicWorkerTail({ props: { workerId } })
         ]
       };
     });
@@ -236,11 +242,14 @@ Pass only the capabilities the Dynamic Worker needs. Hide secrets, restrict acce
 
 ```typescript
 // Loader defines narrow interfaces
-export class DatabaseReader extends WorkerEntrypoint {
-  async query(sql: string): Promise<unknown[]> {
-    // Validate SQL is read-only
-    if (!/^\s*SELECT/i.test(sql)) throw new Error("Read-only access");
-    return this.env.DB.prepare(sql).all().results;
+export class OrderReader extends WorkerEntrypoint {
+  async listRecentOrders(customerId: string): Promise<unknown[]> {
+    return this.env.DB
+      .prepare(
+        "SELECT id, total, created_at FROM orders WHERE customer_id = ? ORDER BY created_at DESC LIMIT 20"
+      )
+      .bind(customerId)
+      .all().results;
   }
 }
 
@@ -259,7 +268,7 @@ export class HttpGateway extends WorkerEntrypoint {
 // Dynamic Worker receives constrained capabilities
 const worker = env.LOADER.load({
   env: {
-    DB: ctx.exports.DatabaseReader(),
+    ORDERS: ctx.exports.OrderReader(),
     // No direct KV, R2, or D1 access
   },
   globalOutbound: ctx.exports.HttpGateway(), // Filtered egress

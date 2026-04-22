@@ -9,7 +9,7 @@ The `worker_loaders` binding gives your Worker access to the Dynamic Worker Load
 {
   "name": "my-loader",
   "main": "src/index.ts",
-  "compatibility_date": "$today",
+  "compatibility_date": "2026-04-22", // Use current date for new projects
   "compatibility_flags": ["nodejs_compat"],
   "worker_loaders": [{ "binding": "LOADER" }]
 }
@@ -35,7 +35,7 @@ Dynamic Workers are typically used alongside other Cloudflare bindings in the **
   "durable_objects": {
     "bindings": [{ "class_name": "LogSession", "name": "LogSession" }]
   },
-  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["LogSession"] }]
+  "migrations": [{ "tag": "v1", "new_classes": ["LogSession"] }]
 }
 ```
 
@@ -95,7 +95,7 @@ Set explicit limits when running untrusted or AI-generated code. This keeps each
 
 ```typescript
 const worker = env.LOADER.load({
-  compatibilityDate: "$today",
+  compatibilityDate: "2026-04-22", // Use a current compatibility date
   mainModule: "worker.js",
   modules: { "worker.js": code },
   globalOutbound: null,
@@ -149,7 +149,7 @@ const { mainModule, modules } = await createWorker({
 const worker = env.LOADER.load({
   mainModule,
   modules: modules as Record<string, string>,
-  compatibilityDate: "$today"
+  compatibilityDate: "2026-04-22" // Use a current compatibility date
 });
 ```
 
@@ -165,7 +165,7 @@ See the [@cloudflare/worker-bundler npm package](https://www.npmjs.com/package/@
 
 ```typescript
 env.LOADER.load({
-  compatibilityDate: "$today",           // Required
+  compatibilityDate: "2026-04-22",      // Required. Use current date for new projects.
   compatibilityFlags: ["nodejs_compat"],  // Optional
   allowExperimental: true,                // Optional — parent must have "experimental" flag
   // ...

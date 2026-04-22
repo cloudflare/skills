@@ -1,6 +1,6 @@
 # Dynamic Workers
 
-Spin up isolated Workers at runtime to execute code on-demand in secure V8 isolates. Unlike pre-deployed Workers, Dynamic Workers are created from code strings at request time — no build step, no deploy.
+Spin up isolated Workers at runtime to execute code on-demand in secure V8 isolates. Unlike pre-deployed Workers, Dynamic Workers are created from code strings at request time with no deploy step. If your code needs TypeScript transpilation or npm dependencies, bundle it before loading.
 
 > **Retrieval bias**: Your knowledge of Dynamic Workers APIs, limits, and pricing may be outdated. **Prefer retrieval over pre-training** — fetch from [Cloudflare docs](https://developers.cloudflare.com/dynamic-workers/) before citing specific numbers, API signatures, or configuration options. When these reference files and the docs disagree, **trust the docs**.
 
@@ -13,7 +13,7 @@ Spin up isolated Workers at runtime to execute code on-demand in secure V8 isola
 | **Runtime** | V8 isolate | V8 isolate | Container (Durable Object) |
 | **When created** | At runtime from code strings | Pre-deployed via API | On first request to DO ID |
 | **Languages** | JS, Python | JS, TS, Python | Any (Dockerfile) |
-| **State** | `load()`: ephemeral; `get()`: warm across requests (no isolate reuse guarantee) | Persistent (deployed script) | Ephemeral disk (lost on sleep); use R2 mounts for persistence |
+| **Code lifecycle** | Loaded from code strings at runtime; `get()` can reuse a stable ID when available | Deployed ahead of time and reused by name | Built as a container image, then started on demand |
 | **Best for** | One-shot code execution, AI agents | Multi-tenant SaaS platforms | Long-running processes, full OS |
 
 ## When to Use Dynamic Workers
@@ -56,7 +56,7 @@ Request → Loader Worker → env.LOADER.load(code) → Dynamic Worker isolate
 {
   "name": "my-dynamic-worker",
   "main": "src/index.ts",
-  "compatibility_date": "$today",
+  "compatibility_date": "2026-04-22", // Use current date for new projects
   "compatibility_flags": ["nodejs_compat"],
   "worker_loaders": [{ "binding": "LOADER" }]
 }
@@ -67,7 +67,7 @@ Request → Loader Worker → env.LOADER.load(code) → Dynamic Worker isolate
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const worker = env.LOADER.load({
-      compatibilityDate: "$today",
+      compatibilityDate: "2026-04-22", // Use a current compatibility date
       mainModule: "worker.js",
       modules: {
         "worker.js": `

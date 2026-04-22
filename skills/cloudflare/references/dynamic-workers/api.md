@@ -8,7 +8,7 @@ Creates a fresh Dynamic Worker. No caching — each call creates a new isolate.
 
 ```typescript
 const worker = env.LOADER.load({
-  compatibilityDate: "$today",
+  compatibilityDate: "2026-04-22", // Use a current compatibility date
   mainModule: "worker.js",
   modules: { "worker.js": code },
   globalOutbound: null,
@@ -26,7 +26,7 @@ Loads or retrieves a cached Dynamic Worker by ID. The callback executes only if 
 const worker = env.LOADER.get("hello-v1", async () => {
   const code = await env.MY_CODE_STORAGE.get("hello-v1");
   return {
-    compatibilityDate: "$today",
+    compatibilityDate: "2026-04-22", // Use a current compatibility date
     mainModule: "index.js",
     modules: { "index.js": code },
     globalOutbound: null
@@ -134,7 +134,7 @@ const chatRoom = ctx.exports.ChatRoom({
 
 const worker = env.LOADER.load({
   env: { CHAT_ROOM: chatRoom },
-  compatibilityDate: "$today",
+  compatibilityDate: "2026-04-22", // Use a current compatibility date
   mainModule: "index.js",
   modules: { "index.js": codeFromAgent },
   globalOutbound: null,
@@ -220,7 +220,7 @@ const worker = env.LOADER.get("my-worker", async () => {
   return {
     mainModule,
     modules: modules as Record<string, string>,
-    compatibilityDate: wranglerConfig?.compatibilityDate ?? "$today",
+    compatibilityDate: wranglerConfig?.compatibilityDate ?? "2026-04-22",
     compatibilityFlags: wranglerConfig?.compatibilityFlags ?? []
   };
 });
@@ -276,7 +276,7 @@ export class DynamicWorkerTail extends WorkerEntrypoint {
 const worker = env.LOADER.get(workerId, () => ({
   mainModule: "index.js",
   modules: { "index.js": code },
-  compatibilityDate: "$today",
+  compatibilityDate: "2026-04-22", // Use a current compatibility date
   tails: [
     ctx.exports.DynamicWorkerTail({ props: { workerId } })
   ]

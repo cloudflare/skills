@@ -111,25 +111,12 @@ Use `limits` to bound CPU time and subrequests for untrusted or AI-generated cod
 
 ```typescript
 const worker = env.LOADER.load({
-  compatibilityDate: "$today",
+  compatibilityDate: "2026-04-22", // Use a current compatibility date
   mainModule: "worker.js",
   modules: { "worker.js": code },
   globalOutbound: null,
   limits: { cpuMs: 50, subRequests: 20 }
 });
-```
-
-### Cold-start warmup
-
-You can trigger isolate initialization before the real request by calling a method that forces the isolate to load. This pattern is used in [Cloudflare's playground example](https://github.com/cloudflare/agents/tree/main/examples/dynamic-workers-playground) but is not a documented API:
-
-```typescript
-const entrypoint = worker.getEntrypoint();
-try {
-  await entrypoint.__warmup__?.();
-} catch {
-  // Intentional — the method doesn't exist, but the isolate is now warm
-}
 ```
 
 ## Retrieve Current Pricing and Limits
