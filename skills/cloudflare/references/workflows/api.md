@@ -15,7 +15,7 @@ await step.sleep('description', 5000); // ms
 await step.sleepUntil('description', Date.parse('2024-12-31'));
 
 // step.waitForEvent()
-const data = await step.waitForEvent<PayloadType>('wait', {type: 'webhook-type', timeout: '24h'}); // Default 24h, max 365d
+const data = await step.waitForEvent<PayloadType>('wait', {type: 'webhook-type', timeout: '24h'});
 try { const event = await step.waitForEvent('wait', { type: 'approval', timeout: '1h' }); } catch (e) { /* Timeout */ }
 ```
 
@@ -52,7 +52,7 @@ await step.do('call api', { retries: { limit: 3, delay: '5 seconds', backoff: 'e
 // Create single
 const instance = await env.MY_WORKFLOW.create({id: crypto.randomUUID(), params: { userId: 'user123' }}); // id optional, auto-generated if omitted; throws if ID already exists within retention period
 
-// Create with custom retention (default: 3 days free, 30 days paid)
+// Create with custom retention (check docs for default per plan)
 const instance = await env.MY_WORKFLOW.create({
   id: crypto.randomUUID(),
   params: { userId: 'user123' },
@@ -143,7 +143,7 @@ const result = await step.do('fetch', async () => {
   return { userId: '123', data: [1, 2, 3] }; // ✅ Plain object
 });
 
-// ✅ ReadableStream<Uint8Array> for large binary output (bypasses 1 MiB non-stream limit)
+// ✅ ReadableStream<Uint8Array> for large binary output (bypasses non-stream step result size limit)
 const stream = await step.do('read from R2', async () => {
   const obj = await this.env.BUCKET.get('large-file.csv');
   return obj.body; // Return the ReadableStream directly
@@ -163,7 +163,7 @@ await step.sleepUntil('launch date', Date.parse('24 Oct 2024 13:00:00 UTC'));
 await step.sleepUntil('deadline', new Date('2024-12-31T23:59:59Z'));
 ```
 
-Units: second, minute, hour, day, week, month, year. Max: 365 days.
+Units: second, minute, hour, day, week, month, year.
 Sleeping instances don't count toward concurrency.
 
 ## Parameters

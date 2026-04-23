@@ -124,7 +124,7 @@ await introspector.modify(async (m) => {
 4. **Return state**: Persist via step returns, not variables
 5. **Always await**: `await step.do()`, avoid dangling promises
 6. **Deterministic conditionals**: Base on `event.payload` or step outputs
-7. **Store large data externally**: R2/KV for >1 MiB, return refs
+7. **Store large data externally**: R2/KV for data exceeding step return limit, return refs
 8. **Batch creation**: `createBatch()` for multiple instances
 
 ### ❌ DON'T

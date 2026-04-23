@@ -4,12 +4,12 @@
 
 ### "Step Timeout"
 
-**Cause:** Step execution exceeding 10 minute default timeout or configured timeout  
-**Solution:** Set custom timeout with `step.do('long operation', {timeout: '30 minutes'}, async () => {...})` or increase CPU limit in wrangler.jsonc (max 5min CPU time)
+**Cause:** Step execution exceeding the default or configured timeout  
+**Solution:** Set custom timeout with `step.do('long operation', {timeout: '30 minutes'}, async () => {...})` or increase CPU limit via `limits.cpu_ms` in wrangler.jsonc
 
 ### "waitForEvent Timeout"
 
-**Cause:** Event not received within timeout period (default 24h, max 365d)  
+**Cause:** Event not received within timeout period (check docs for default/max)  
 **Solution:** Wrap in try-catch to handle timeout gracefully and proceed with default behavior
 
 ### "Non-Deterministic Step Names"
@@ -29,13 +29,13 @@
 
 ### "Large Step Returns Exceeding Limit"
 
-**Cause:** Returning data >1 MiB from step  
-**Solution:** Store large data in R2 and return only reference: `{ key: 'r2-object-key' }`
+**Cause:** Returning data exceeding the per-step return size limit  
+**Solution:** Store large data in R2 and return only reference: `{ key: 'r2-object-key' }`. Alternatively, return a `ReadableStream<Uint8Array>` for large binary output
 
-### "Step Exceeded CPU Limit But Ran for < 30s"
+### "Step Exceeded CPU Limit But Ran for a Short Time"
 
 **Cause:** Confusion between CPU time (active compute) and wall-clock time (includes I/O waits)  
-**Solution:** Network requests, database queries, and sleeps don't count toward CPU. 30s limit = 30s of active processing
+**Solution:** Network requests, database queries, and sleeps don't count toward CPU. The CPU limit refers to active processing time only
 
 ### "Idempotency Violation"
 
@@ -49,7 +49,7 @@
 
 ### "Instance Data Disappeared After Completion"
 
-**Cause:** Completed/errored instances are automatically deleted after retention period (3 days free / 30 days paid)  
+**Cause:** Completed/errored instances are automatically deleted after the retention period (differs by plan)  
 **Solution:** Export critical data to KV/R2/D1 before workflow completes
 
 ### "Missing await on step.do"
@@ -60,39 +60,22 @@
 ### "Provided event type is invalid"
 
 **Cause:** Using unsupported characters in `waitForEvent` type (e.g. `.`)  
-**Solution:** Type only supports letters, digits, `-`, and `_`. Pattern: `^[a-zA-Z0-9_][a-zA-Z0-9-_]*$` (max 100 chars)
+**Solution:** Type only supports letters, digits, `-`, and `_`. Pattern: `^[a-zA-Z0-9_][a-zA-Z0-9-_]*$`
 
-## Limits
+## Limits & Pricing
 
-| Limit | Free | Paid | Notes |
-|-------|------|------|-------|
-| CPU per step | 10ms | 30s (default), 5min (max) | Set via `limits.cpu_ms` in wrangler.jsonc |
-| Step state | 1 MiB | 1 MiB | Per step return value |
-| Instance state | 100 MB | 1 GB | Total state per workflow instance |
-| Steps per workflow | 1,024 | 10,000 (default), up to 25,000 | `step.sleep()` and `step.waitForEvent()` don't count; set via `limits` in wrangler config |
-| Executions per day | 100k | Unlimited | Daily execution limit |
-| Concurrent instances | 100 | 50,000 | Maximum concurrent workflows; waiting state excluded |
-| Queued instances | 100,000 | 2,000,000 | Maximum queued workflow instances |
-| Event payload size | 1 MiB | 1 MiB | Max size of params passed to create() |
-| Instance creation rate | 100/s | 300/s per account, 100/s per workflow | HTTP 429 if exceeded |
-| Subrequests per instance | 50 | 10,000 (default), up to 10M | Maximum outbound requests per workflow instance |
-| State retention | 3 days | 30 days | How long completed instances kept |
-| Step timeout default | 10 min | 10 min | Per attempt |
-| waitForEvent timeout default | 24h | 24h | Maximum 365 days |
-| waitForEvent timeout max | 365 days | 365 days | Maximum wait time |
-| Step name length | 256 chars | 256 chars | Per step.do() name argument |
-| Workflow name length | 64 chars | 64 chars | Pattern: `^[a-zA-Z0-9_][a-zA-Z0-9-_]*$` |
-| Instance ID length | 100 chars | 100 chars | Pattern: `^[a-zA-Z0-9_][a-zA-Z0-9-_]*$` |
+Limits and pricing change over time. **Always fetch the latest values** from the official docs before citing specific numbers:
 
-**Note:** Instances in `waiting` state (from `step.sleep` or `step.waitForEvent`) don't count toward concurrent instance limit, allowing millions of sleeping workflows.
+- **Limits:** https://developers.cloudflare.com/workflows/reference/limits/
+- **Pricing:** https://developers.cloudflare.com/workflows/reference/pricing/
 
-## Pricing
+Key areas to check: CPU time per step, max steps per workflow, concurrent instance limits, step return size, event payload size, instance creation rate, subrequest limits, state retention period, and name/ID length constraints.
 
-| Metric | Free | Paid | Notes |
-|--------|------|------|-------|
-| Requests | 100k/day | 10M/mo + $0.30/M | Workflow invocations |
-| CPU time | 10ms/invoke | 30M CPU-ms/mo + $0.02/M CPU-ms | Actual CPU usage |
-| Storage | 1 GB | 1 GB/mo + $0.20/GB-mo | All instances (running/errored/sleeping/completed) |
+**Behavioral notes** (stable, not subject to number changes):
+- `step.sleep()` and `step.waitForEvent()` don't count toward the max steps limit
+- Instances in `waiting` state (sleeping, waiting for event, waiting for retry) don't count toward the concurrent instance limit
+- CPU time is active processing only — network I/O, DB queries, and sleeps are wall-clock time, not CPU time
+- `waitForEvent` type and workflow/instance names follow pattern `^[a-zA-Z0-9_][a-zA-Z0-9-_]*$`
 
 ## References
 
