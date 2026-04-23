@@ -6,7 +6,7 @@
 {
   "name": "my-worker",
   "main": "src/index.ts",
-  "compatibility_date": "2025-01-01",  // Use current date for new projects
+  "compatibility_date": "2025-01-01",  // Minimum 2024-10-22 required for Workflows bindings
   "observability": {
     "enabled": true  // Enables Workflows dashboard + structured logs
   },
@@ -14,8 +14,9 @@
     {
       "name": "my-workflow",           // Workflow name
       "binding": "MY_WORKFLOW",        // Env binding
-      "class_name": "MyWorkflow"      // TS class name
+      "class_name": "MyWorkflow",      // TS class name
       // "script_name": "other-worker" // For cross-script calls
+      // "limits": { "steps": 25000 }  // Optional: max steps per instance (default 10k, max 25k; free plan fixed at 1,024)
     }
   ],
   "limits": {

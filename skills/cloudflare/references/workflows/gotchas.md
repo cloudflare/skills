@@ -57,6 +57,11 @@
 **Cause:** Forgetting to await step.do() causing fire-and-forget behavior  
 **Solution:** Always await step operations: `await step.do('task', ...)`
 
+### "Provided event type is invalid"
+
+**Cause:** Using unsupported characters in `waitForEvent` type (e.g. `.`)  
+**Solution:** Type only supports letters, digits, `-`, and `_`. Pattern: `^[a-zA-Z0-9_][a-zA-Z0-9-_]*$` (max 100 chars)
+
 ## Limits
 
 | Limit | Free | Paid | Notes |
@@ -64,15 +69,20 @@
 | CPU per step | 10ms | 30s (default), 5min (max) | Set via `limits.cpu_ms` in wrangler.jsonc |
 | Step state | 1 MiB | 1 MiB | Per step return value |
 | Instance state | 100 MB | 1 GB | Total state per workflow instance |
-| Steps per workflow | 1,024 | 1,024 | `step.sleep()` doesn't count |
+| Steps per workflow | 1,024 | 10,000 (default), up to 25,000 | `step.sleep()` and `step.waitForEvent()` don't count; set via `limits` in wrangler config |
 | Executions per day | 100k | Unlimited | Daily execution limit |
-| Concurrent instances | 25 | 10k | Maximum concurrent workflows; waiting state excluded |
-| Queued instances | 100k | 1M | Maximum queued workflow instances |
+| Concurrent instances | 100 | 50,000 | Maximum concurrent workflows; waiting state excluded |
+| Queued instances | 100,000 | 2,000,000 | Maximum queued workflow instances |
+| Event payload size | 1 MiB | 1 MiB | Max size of params passed to create() |
+| Instance creation rate | 100/s | 300/s per account, 100/s per workflow | HTTP 429 if exceeded |
 | Subrequests per instance | 50 | 10,000 (default), up to 10M | Maximum outbound requests per workflow instance |
 | State retention | 3 days | 30 days | How long completed instances kept |
 | Step timeout default | 10 min | 10 min | Per attempt |
 | waitForEvent timeout default | 24h | 24h | Maximum 365 days |
 | waitForEvent timeout max | 365 days | 365 days | Maximum wait time |
+| Step name length | 256 chars | 256 chars | Per step.do() name argument |
+| Workflow name length | 64 chars | 64 chars | Pattern: `^[a-zA-Z0-9_][a-zA-Z0-9-_]*$` |
+| Instance ID length | 100 chars | 100 chars | Pattern: `^[a-zA-Z0-9_][a-zA-Z0-9-_]*$` |
 
 **Note:** Instances in `waiting` state (from `step.sleep` or `step.waitForEvent`) don't count toward concurrent instance limit, allowing millions of sleeping workflows.
 
