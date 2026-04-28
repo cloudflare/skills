@@ -55,7 +55,7 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 | Skill | Useful for |
 |-------|------------|
 | cloudflare | Comprehensive platform skill covering Workers, Pages, storage (KV, D1, R2), AI (Workers AI, Vectorize, Agents SDK), networking (Tunnel, Spectrum), security (WAF, DDoS), and IaC (Terraform, Pulumi) |
-| use-case-routing | Routing user goals and scenarios to the right Cloudflare products and implementation paths using structured use case decision trees |
+| use-case-routing | Finding the right Cloudflare products for a problem or goal — whether the user is new to Cloudflare or expanding into new use cases. Covers security, compute, networking, AI, compliance, and more |
 | agents-sdk | Building stateful AI agents with state, scheduling, RPC, MCP servers, email, and streaming chat |
 | durable-objects | Stateful coordination (chat rooms, games, booking), RPC, SQLite, alarms, WebSockets |
 | sandbox-sdk | Secure code execution for AI code execution, code interpreters, CI/CD systems, and interactive dev environments |
