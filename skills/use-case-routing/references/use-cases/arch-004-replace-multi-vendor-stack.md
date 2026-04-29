@@ -35,11 +35,11 @@ related:
 - Multiple cloud services stitched together → full-stack-migration
 - Starting fresh, want to avoid vendor sprawl → greenfield-setup
 
-**What data services do you need?**
-- Object storage → add R2
-- SQL database → add D1
-- Key-value cache → add KV
-- All of the above → bind R2, D1, and KV together
+**What data services do you need?** (informational — same path applies; emphasis depends on the answer)
+- Object storage (add R2)
+- SQL database (add D1)
+- Key-value cache (add KV)
+- All of the above (bind R2, D1, and KV together)
 
 ## Paths
 
