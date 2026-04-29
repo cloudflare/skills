@@ -6,11 +6,9 @@ references/use-cases/*.md file.
 Usage:
     python3 scripts/generate-index.py
 
-Run from the use-case-routing skill root. This is a starting point for the
-auto-generation work in TODO item 2 — for production use, swap the regex
-parser for PyYAML (`pip install pyyaml`) and add validation gates.
+This is a starting point. For production use, swap the regex frontmatter
+parser for PyYAML (`pip install pyyaml`) and add validation gates such as:
 
-Validation gates this script does NOT yet enforce (TODO item 2):
 - All required frontmatter fields present
 - `category` matches the controlled vocabulary
 - `id` is unique across the corpus
