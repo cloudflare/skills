@@ -14,8 +14,8 @@ keywords:
   - "serverless functions"
   - "edge compute"
   - "deploy API globally"
-  - "AWS Lambda alternative"
-  - "Vercel alternative"
+  - "serverless functions alternative"
+  - "frontend hosting alternative"
   - "Wrangler"
   - "cron job serverless"
 related:

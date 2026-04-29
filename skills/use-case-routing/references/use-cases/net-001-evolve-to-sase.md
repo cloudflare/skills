@@ -12,9 +12,8 @@ aliases:
   - Unified network and security platform
 keywords:
   - "replace VPN"
-  - "Zscaler alternative"
-  - "Netskope alternative"
-  - "Palo Alto Prisma alternative"
+  - "SSE alternative"
+  - "cloud security platform alternative"
   - "secure access service edge"
   - "SSE"
   - "ZTNA rollout"

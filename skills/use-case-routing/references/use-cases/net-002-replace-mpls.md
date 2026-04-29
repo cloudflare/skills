@@ -12,11 +12,9 @@ aliases:
   - SD-WAN
   - Branch office connectivity
 keywords:
-  - "Cisco SD-WAN integration"
-  - "Fortinet SD-WAN integration"
-  - "Palo Alto SD-WAN integration"
-  - "SonicWall integration"
-  - "Juniper integration"
+  - "SD-WAN integration"
+  - "router integration"
+  - "firewall integration"
   - "IPsec tunnel branch"
   - "GRE tunnel"
   - "leased line replacement"
@@ -58,7 +56,7 @@ Software-based WAN connectivity:
 
 Tunnel-based WAN over IPsec or GRE:
 
-1. Follow the Magic WAN integration guide for your network device (guides cover Cisco, Fortinet, Palo Alto, SonicWall, Juniper, and others)
+1. Follow the Magic WAN integration guide for your network device (guides cover all major router and firewall vendors)
 2. Establish IPsec or GRE tunnels from your routers and firewalls
 3. Configure static routes for site subnets
 4. Enable tunnel health checks and failover

@@ -17,8 +17,8 @@ keywords:
   - "untrusted code execution"
   - "dispatch namespaces"
   - "white-label hosting"
-  - "Vercel for SaaS"
-  - "Heroku alternative SaaS"
+  - "frontend hosting for SaaS"
+  - "PaaS alternative for SaaS"
 related:
   - dev-001
   - sec-010
