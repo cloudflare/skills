@@ -9,13 +9,15 @@ aliases:
   - Switch CDN providers
   - Move to Cloudflare
   - Migrate hosting to Cloudflare
+  - Migrate from another CDN
+  - Migrate from another hosting provider
 keywords:
-  - "migrate from Vercel"
-  - "migrate from Netlify"
-  - "migrate from AWS CloudFront"
-  - "migrate from Fastly"
-  - "switch from CloudFront"
-  - "leaving Vercel"
+  - "switch hosting provider"
+  - "leave my current CDN"
+  - "migrate from another frontend host"
+  - "migrate hosting to the edge"
+  - "move site to new platform"
+  - "change hosting platform"
 related:
   - start-001
   - dev-006
@@ -32,9 +34,9 @@ related:
 - Just DNS and CDN, keeping the existing origin → migrate-dns-cdn
 
 **Where is the site currently hosted?** (informational; affects migration guide and adapter steps)
-- Vercel
-- Netlify
-- AWS (CloudFront, S3, Lambda)
+- A frontend hosting platform
+- A traditional CDN
+- A cloud provider (compute, storage, functions)
 - Other provider
 
 ## Paths

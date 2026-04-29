@@ -14,9 +14,9 @@ aliases:
 keywords:
   - "consolidate cloud providers"
   - "zero egress fees"
-  - "AWS to Cloudflare migration"
-  - "replace S3 with R2"
-  - "replace Lambda with Workers"
+  - "cloud platform migration"
+  - "replace object storage"
+  - "replace serverless functions"
   - "vendor sprawl"
   - "one bill for infrastructure"
 related:
