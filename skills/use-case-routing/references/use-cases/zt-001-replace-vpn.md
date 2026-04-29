@@ -18,6 +18,14 @@ keywords:
   - "secure remote access"
   - "clientless SSH"
   - "browser-based RDP"
+  - "Okta integration"
+  - "Azure AD integration"
+  - "Entra ID integration"
+  - "Google Workspace SSO"
+  - "SAML SSO for internal apps"
+  - "OIDC for internal apps"
+  - "SSO for internal apps"
+  - "identity provider integration"
 related:
   - zt-002
   - zt-013

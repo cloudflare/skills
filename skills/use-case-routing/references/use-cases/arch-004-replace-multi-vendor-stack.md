@@ -14,6 +14,9 @@ aliases:
 keywords:
   - "consolidate cloud providers"
   - "zero egress fees"
+  - "high egress costs"
+  - "egress bill"
+  - "data transfer fees"
   - "cloud platform migration"
   - "replace object storage"
   - "replace serverless functions"

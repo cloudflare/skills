@@ -43,7 +43,8 @@ When a use case file and the docs disagree on product names or capabilities, **t
 3. Open the linked use case file from the index. Files follow the pattern `references/use-cases/<id>-<slug>.md` — the index resolves the full filename, so always go through the index rather than guessing the path.
 4. For interactive conversations, walk the **Ask first** questions and pick the matching path.
 5. For non-interactive conversations, use the `default_path` from the frontmatter.
-6. If multiple use cases match, present the top candidates and explain the difference.
+6. If multiple use cases match: present the top candidates and explain the difference. Use this when two or more entries have similar-strength signals (shared aliases, overlapping product lists). When one entry has a clear name or alias hit and others have only weak keyword hits, pick the strong one without disambiguating.
+7. If no use case scores well on name, alias, or keyword match: tell the user explicitly that this skill does not cover the question, and route them directly to `https://developers.cloudflare.com/`. Do not force a bad match.
 
 ## How to apply the output
 
