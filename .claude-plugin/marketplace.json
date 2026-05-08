@@ -7,9 +7,49 @@
   },
   "plugins": [
     {
+      "name": "cloudflare-core",
+      "source": "./plugins/cloudflare-core",
+      "description": "Core Cloudflare context: API and docs MCP servers, plus the platform overview skill. Required by most other Cloudflare plugins."
+    },
+    {
+      "name": "cloudflare-workers",
+      "source": "./plugins/cloudflare-workers",
+      "description": "Cloudflare Workers: Wrangler CLI, best practices, bindings, and builds. Depends on cloudflare-core."
+    },
+    {
+      "name": "cloudflare-observability",
+      "source": "./plugins/cloudflare-observability",
+      "description": "Cloudflare Workers Observability: query logs and metrics. Depends on cloudflare-workers."
+    },
+    {
+      "name": "cloudflare-durable-objects",
+      "source": "./plugins/cloudflare-durable-objects",
+      "description": "Cloudflare Durable Objects: stateful coordination. Depends on cloudflare-workers."
+    },
+    {
+      "name": "cloudflare-agents",
+      "source": "./plugins/cloudflare-agents",
+      "description": "Cloudflare Agents SDK for building AI agents on Workers. Includes /build-agent and /build-mcp commands. Depends on cloudflare-workers."
+    },
+    {
+      "name": "cloudflare-sandbox",
+      "source": "./plugins/cloudflare-sandbox",
+      "description": "Cloudflare Sandbox SDK for secure code execution on Workers. Depends on cloudflare-workers."
+    },
+    {
+      "name": "cloudflare-email",
+      "source": "./plugins/cloudflare-email",
+      "description": "Cloudflare Email Service: transactional email and routing. Depends on cloudflare-core."
+    },
+    {
+      "name": "cloudflare-web-perf",
+      "source": "./plugins/cloudflare-web-perf",
+      "description": "Web performance auditing with Chrome DevTools MCP. No Cloudflare dependency."
+    },
+    {
       "name": "cloudflare",
-      "source": "./",
-      "description": "Skills for the Cloudflare developer platform"
+      "source": "./plugins/cloudflare",
+      "description": "Umbrella plugin: depends on every other Cloudflare plugin. Install for full developer-platform context; uninstall and install per-product plugins for narrower scope."
     }
   ]
 }

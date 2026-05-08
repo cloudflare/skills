@@ -1,0 +1,11 @@
+{
+  "name": "cloudflare-agents",
+  "version": "1.0.0",
+  "description": "Cloudflare Agents SDK: build AI agents on Workers with state, workflows, scheduling, MCP servers, chat, voice, and browser automation.",
+  "author": {
+    "name": "Cloudflare",
+    "email": "support@cloudflare.com",
+    "url": "https://workers.cloudflare.com"
+  },
+  "keywords": ["cloudflare", "agents", "ai", "mcp", "workflows"]
+}

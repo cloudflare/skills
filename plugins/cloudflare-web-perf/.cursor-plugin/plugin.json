@@ -1,0 +1,11 @@
+{
+  "name": "cloudflare-web-perf",
+  "version": "1.0.0",
+  "description": "Web performance auditing using Chrome DevTools MCP. Measures Core Web Vitals, identifies render-blocking resources, and surfaces optimization opportunities.",
+  "author": {
+    "name": "Cloudflare",
+    "email": "support@cloudflare.com",
+    "url": "https://workers.cloudflare.com"
+  },
+  "keywords": ["web-perf", "lighthouse", "core-web-vitals", "chrome-devtools"]
+}

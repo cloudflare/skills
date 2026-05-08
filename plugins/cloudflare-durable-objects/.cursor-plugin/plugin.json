@@ -1,0 +1,11 @@
+{
+  "name": "cloudflare-durable-objects",
+  "version": "1.0.0",
+  "description": "Cloudflare Durable Objects: stateful coordination with SQLite storage, alarms, and WebSockets.",
+  "author": {
+    "name": "Cloudflare",
+    "email": "support@cloudflare.com",
+    "url": "https://workers.cloudflare.com"
+  },
+  "keywords": ["cloudflare", "durable-objects", "stateful", "sqlite", "websockets"]
+}

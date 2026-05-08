@@ -1,0 +1,7 @@
+{
+  "name": "cloudflare-workers",
+  "description": "Cloudflare Workers: Wrangler CLI, Workers best practices, bindings (D1/KV/R2/Hyperdrive), and Workers Builds CI/CD.",
+  "version": "1.0.0",
+  "author": { "name": "Cloudflare" },
+  "dependencies": ["cloudflare-core"]
+}

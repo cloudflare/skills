@@ -1,0 +1,6 @@
+{
+  "name": "cloudflare-web-perf",
+  "description": "Web performance auditing using Chrome DevTools MCP. Measures Core Web Vitals, identifies render-blocking resources, and surfaces optimization opportunities. Independent of Cloudflare; ships in this marketplace for convenience.",
+  "version": "1.0.0",
+  "author": { "name": "Cloudflare" }
+}

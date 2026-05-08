@@ -1,0 +1,11 @@
+{
+  "name": "cloudflare-workers",
+  "version": "1.0.0",
+  "description": "Cloudflare Workers: Wrangler CLI, Workers best practices, bindings (D1/KV/R2/Hyperdrive), and Workers Builds CI/CD.",
+  "author": {
+    "name": "Cloudflare",
+    "email": "support@cloudflare.com",
+    "url": "https://workers.cloudflare.com"
+  },
+  "keywords": ["cloudflare", "workers", "wrangler", "bindings", "serverless"]
+}

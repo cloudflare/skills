@@ -1,0 +1,7 @@
+{
+  "name": "cloudflare-email",
+  "description": "Cloudflare Email Service: send transactional emails and route incoming mail via the Workers binding or REST API.",
+  "version": "1.0.0",
+  "author": { "name": "Cloudflare" },
+  "dependencies": ["cloudflare-core"]
+}

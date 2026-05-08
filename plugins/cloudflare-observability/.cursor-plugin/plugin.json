@@ -1,0 +1,11 @@
+{
+  "name": "cloudflare-observability",
+  "version": "1.0.0",
+  "description": "Query and analyze Cloudflare Workers logs and metrics via the observability MCP server.",
+  "author": {
+    "name": "Cloudflare",
+    "email": "support@cloudflare.com",
+    "url": "https://workers.cloudflare.com"
+  },
+  "keywords": ["cloudflare", "observability", "workers", "logs", "metrics"]
+}

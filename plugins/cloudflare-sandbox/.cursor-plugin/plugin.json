@@ -1,0 +1,11 @@
+{
+  "name": "cloudflare-sandbox",
+  "version": "1.0.0",
+  "description": "Cloudflare Sandbox SDK: secure code-execution environments on Workers for AI code interpreters, CI/CD, and untrusted code.",
+  "author": {
+    "name": "Cloudflare",
+    "email": "support@cloudflare.com",
+    "url": "https://workers.cloudflare.com"
+  },
+  "keywords": ["cloudflare", "sandbox", "code-execution", "containers"]
+}

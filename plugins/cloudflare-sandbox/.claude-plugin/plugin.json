@@ -1,0 +1,7 @@
+{
+  "name": "cloudflare-sandbox",
+  "description": "Cloudflare Sandbox SDK: secure code-execution environments on Workers for AI code interpreters, CI/CD, and untrusted code.",
+  "version": "1.0.0",
+  "author": { "name": "Cloudflare" },
+  "dependencies": ["cloudflare-workers"]
+}

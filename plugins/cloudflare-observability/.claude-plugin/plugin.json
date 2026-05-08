@@ -1,0 +1,7 @@
+{
+  "name": "cloudflare-observability",
+  "description": "Query and analyze Cloudflare Workers logs and metrics via the observability MCP server. Install only when you need to inspect Workers telemetry; otherwise the per-session token cost can be saved.",
+  "version": "1.0.0",
+  "author": { "name": "Cloudflare" },
+  "dependencies": ["cloudflare-workers"]
+}

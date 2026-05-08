@@ -1,0 +1,16 @@
+{
+  "name": "cloudflare",
+  "description": "Umbrella plugin that installs all Cloudflare product plugins via dependencies. Use this for the comprehensive Cloudflare developer-platform context. For narrower scope and reduced session token usage, install only the per-product plugins you need (e.g. cloudflare-workers, cloudflare-agents).",
+  "version": "1.0.0",
+  "author": { "name": "Cloudflare" },
+  "dependencies": [
+    "cloudflare-core",
+    "cloudflare-workers",
+    "cloudflare-observability",
+    "cloudflare-durable-objects",
+    "cloudflare-agents",
+    "cloudflare-sandbox",
+    "cloudflare-email",
+    "cloudflare-web-perf"
+  ]
+}

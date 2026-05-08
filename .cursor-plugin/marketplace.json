@@ -5,9 +5,44 @@
   },
   "plugins": [
     {
-      "name": "cloudflare",
-      "source": "./",
-      "description": "Skills for the Cloudflare developer platform"
+      "name": "cloudflare-core",
+      "source": "./plugins/cloudflare-core",
+      "description": "Core Cloudflare context: API and docs MCP servers, plus the platform overview skill. Install alongside the per-product plugins below."
+    },
+    {
+      "name": "cloudflare-workers",
+      "source": "./plugins/cloudflare-workers",
+      "description": "Cloudflare Workers: Wrangler CLI, best practices, bindings, and builds. Pair with cloudflare-core."
+    },
+    {
+      "name": "cloudflare-observability",
+      "source": "./plugins/cloudflare-observability",
+      "description": "Cloudflare Workers Observability: query logs and metrics. Pair with cloudflare-workers."
+    },
+    {
+      "name": "cloudflare-durable-objects",
+      "source": "./plugins/cloudflare-durable-objects",
+      "description": "Cloudflare Durable Objects: stateful coordination. Pair with cloudflare-workers."
+    },
+    {
+      "name": "cloudflare-agents",
+      "source": "./plugins/cloudflare-agents",
+      "description": "Cloudflare Agents SDK for building AI agents on Workers. Pair with cloudflare-workers."
+    },
+    {
+      "name": "cloudflare-sandbox",
+      "source": "./plugins/cloudflare-sandbox",
+      "description": "Cloudflare Sandbox SDK for secure code execution. Pair with cloudflare-workers."
+    },
+    {
+      "name": "cloudflare-email",
+      "source": "./plugins/cloudflare-email",
+      "description": "Cloudflare Email Service: transactional email and routing. Pair with cloudflare-core."
+    },
+    {
+      "name": "cloudflare-web-perf",
+      "source": "./plugins/cloudflare-web-perf",
+      "description": "Web performance auditing with Chrome DevTools MCP. No Cloudflare dependency."
     }
   ]
 }

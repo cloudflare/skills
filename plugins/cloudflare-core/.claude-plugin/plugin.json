@@ -1,0 +1,6 @@
+{
+  "name": "cloudflare-core",
+  "description": "Core Cloudflare context: pan-Cloudflare API and docs MCP servers, plus a comprehensive platform overview skill. Other Cloudflare plugins depend on this for shared API and docs access.",
+  "version": "1.0.0",
+  "author": { "name": "Cloudflare" }
+}
