@@ -2,7 +2,7 @@
 
 A collection of [Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills), MCP servers, and slash commands for building on Cloudflare, Workers, the Agents SDK, and the wider Cloudflare Developer Platform.
 
-This marketplace ships **9 plugins** for Claude Code (8 product plugins plus an umbrella) and **8 plugins** for Cursor. Install the umbrella for the full experience, or install only the product plugins you need to keep your context window lean.
+This marketplace ships **9 plugins** for both Claude Code and Cursor: 8 product plugins plus an umbrella. Install the umbrella for the full experience, or install only the product plugins you need to keep your context window lean.
 
 ## Installing
 
@@ -42,9 +42,11 @@ Each product plugin transitively pulls in the plugins it depends on (e.g. instal
 
 ### Cursor
 
-Add the marketplace via the Cursor plugin UI, then install the per-product plugins you need (Cursor's plugin system has no umbrella/auto-install equivalent — install each plugin individually).
+Add the marketplace via the Cursor plugin UI, then install plugins from it.
 
-If you previously installed the monolithic `cloudflare` plugin on Cursor, that entry has been removed. Reinstall via the per-product plugins listed below.
+For the **full experience** (all skills + all 5 MCP servers in one install, identical to previous behavior), install the `cloudflare` umbrella plugin.
+
+For **narrower scope**, install only the per-product plugins you need. Cursor's plugin system has no dependency mechanism, so each plugin is installed individually and ships only its own MCP servers — installing only `cloudflare-workers`, for example, gives you `cloudflare-bindings` and `cloudflare-builds` but not `cloudflare-api`/`cloudflare-docs`/`cloudflare-observability`. Install the umbrella `cloudflare` plugin if you want the full MCP surface.
 
 ### npx skills
 
@@ -80,7 +82,7 @@ Clone this repo and copy the relevant skill folders from `plugins/<plugin-name>/
 | `cloudflare-web-perf` | `web-perf` | — | — | — *(no Cloudflare dep)* |
 | `cloudflare` | — | — | — | all 8 above (umbrella) |
 
-The Cursor marketplace ships the same 8 product plugins; Cursor's plugin system has no dependency mechanism, so the umbrella plugin and the dependency arrows above are Claude-Code-only.
+Cursor's plugin system has no dependency mechanism, so the dependency arrows above don't apply on Cursor. The Cursor `cloudflare` umbrella bundles all skills and MCP servers in a single install (rather than depending on the product plugins, which is what the Claude umbrella does); per-product Cursor installs ship only their own MCP servers. See the [Repository layout](#repository-layout) section for how this is wired.
 
 ## Commands
 
@@ -126,6 +128,14 @@ This marketplace bundles [Cloudflare's remote MCP servers](https://developers.cl
 | cloudflare-bindings | cloudflare-workers | Build Workers applications with storage, AI, and compute primitives |
 | cloudflare-builds | cloudflare-workers | Manage and get insights into Workers builds |
 | cloudflare-observability | cloudflare-observability | Debug and analyze Workers logs and analytics |
+
+## Repository layout
+
+Canonical plugin content lives under `plugins/<product>/` — each product plugin owns its own `skills/`, `commands/`, `rules/`, and (where applicable) `.mcp.json`. Edit there.
+
+The repo root has `skills/`, `commands/`, `rules/` directories of **symlinks** pointing into the product plugins. These exist so the Cursor `cloudflare` umbrella plugin (rooted at `./`) can serve the same content as the per-product plugins without duplication on disk.
+
+The root `.mcp.json` aggregates all 5 MCP servers and is **hand-maintained**. When you add or remove a server in any product `plugins/<product>/.mcp.json`, also update the root file to keep them in sync.
 
 ## Resources
 

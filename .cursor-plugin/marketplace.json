@@ -43,6 +43,11 @@
       "name": "cloudflare-web-perf",
       "source": "./plugins/cloudflare-web-perf",
       "description": "Web performance auditing with Chrome DevTools MCP. No Cloudflare dependency."
+    },
+    {
+      "name": "cloudflare",
+      "source": "./",
+      "description": "Umbrella plugin: all Cloudflare skills and MCP servers in a single install. Use for full developer-platform context; install per-product plugins above for narrower scope."
     }
   ]
 }
