@@ -40,7 +40,7 @@ const result = await agent.stub.myMethod(arg1, arg2);
 useAgent({
   agent: "MyAgent",
   name: "default",
-  query: async () => `token=${await getToken()}`,
+  query: async () => ({ token: await getToken() }),
   queryDeps: [tokenVersion]
 });
 ```
