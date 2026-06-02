@@ -1,0 +1,13 @@
+{
+  "name": "cloudflare",
+  "owner": {
+    "name": "Cloudflare"
+  },
+  "plugins": [
+    {
+      "name": "cloudflare",
+      "source": "./",
+      "description": "Skills for the Cloudflare developer platform"
+    }
+  ]
+}
