@@ -1,0 +1,39 @@
+{
+  "name": "turnstile-siteverify",
+  "version": "1.0.0",
+  "description": "Managed siteverify Worker template for Turnstile Spin. Deploys via the Spin agent skill or directly via wrangler.",
+  "license": "MIT",
+  "private": false,
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:integration": "vitest run test/integration.test.ts",
+    "test:validation": "vitest run test/validation.test.ts",
+    "test:deploy": "vitest run test/deploy.test.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240502.0",
+    "typescript": "^5.4.0",
+    "vitest": "^2.1.0",
+    "wrangler": "^3.60.0"
+  },
+  "keywords": [
+    "cloudflare",
+    "turnstile",
+    "siteverify",
+    "workers",
+    "captcha",
+    "bot-protection"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cloudflare/skills",
+    "directory": "skills/turnstile-spin/templates/worker"
+  }
+}
