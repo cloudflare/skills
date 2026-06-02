@@ -4,7 +4,7 @@ A collection of [Agent Skills](https://www.anthropic.com/engineering/equipping-a
 
 ## Installing
 
-These skills work with any agent that supports the Agent Skills standard, including Claude Code, OpenCode, OpenAI Codex, and Pi.
+These skills work with any agent that supports the Agent Skills standard, including Claude Code, Cursor, Droid, OpenCode, OpenAI Codex, and Pi.
 
 ### Claude Code
 
@@ -18,6 +18,21 @@ Install using the [plugin marketplace](https://code.claude.com/docs/en/discover-
 ### Cursor
 
 Install from the Cursor Marketplace or add manually via **Settings > Rules > Add Rule > Remote Rule (Github)** with `cloudflare/skills`.
+
+### Droid
+
+Install using the [Droid plugin manager](https://docs.factory.ai/cli/configuration/plugins):
+
+```
+droid plugin marketplace add https://github.com/cloudflare/skills
+droid plugin install cloudflare@cloudflare
+```
+
+Or install the skills directly with the [`npx skills`](https://skills.sh) CLI:
+
+```
+npx skills add https://github.com/cloudflare/skills -a droid
+```
 
 ### npx skills
 
@@ -35,6 +50,7 @@ Clone this repo and copy the skill folders into the appropriate directory for yo
 |-------|-----------------|------|
 | Claude Code | `~/.claude/skills/` | [docs](https://code.claude.com/docs/en/skills) |
 | Cursor | `~/.cursor/skills/` | [docs](https://cursor.com/docs/context/skills) |
+| Droid | `~/.factory/skills/` | [docs](https://docs.factory.ai/cli/configuration/skills) |
 | OpenCode | `~/.config/opencode/skills/` | [docs](https://opencode.ai/docs/skills/) |
 | OpenAI Codex | `~/.codex/skills/` | [docs](https://developers.openai.com/codex/skills/) |
 | Pi | `~/.pi/agent/skills/` | [docs](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent#skills) |
