@@ -28,12 +28,6 @@ droid plugin marketplace add https://github.com/cloudflare/skills
 droid plugin install cloudflare@skills
 ```
 
-Or install the skills directly with the [`npx skills`](https://skills.sh) CLI:
-
-```
-npx skills add https://github.com/cloudflare/skills -a droid
-```
-
 ### npx skills
 
 Install using the [`npx skills`](https://skills.sh) CLI:
