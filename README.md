@@ -25,7 +25,7 @@ Install using the [Droid plugin manager](https://docs.factory.ai/cli/configurati
 
 ```
 droid plugin marketplace add https://github.com/cloudflare/skills
-droid plugin install cloudflare@cloudflare
+droid plugin install cloudflare@skills
 ```
 
 Or install the skills directly with the [`npx skills`](https://skills.sh) CLI:
