@@ -38,15 +38,16 @@ The user pasted the prompt. You are in a multi-step dialog. Detect what you can,
 2. **Wrangler check.** `npx wrangler --version`. If missing, ask once: "Install wrangler with `npm install --save-dev wrangler` (Node project) or `npm install -g wrangler` (other)? Proceed?" **[wait for user]** If install is blocked entirely (corporate policy, blocked npm), fall back to driving Steps 4-5 via `curl` against `api.cloudflare.com/client/v4/`.
 
 3. **Auth + scope probe (FIRST irreversible action).** Run `scripts/auth-probe.sh`. Branch on `status`:
-   - `ok`: continue to Step 4.
-   - `missing_token` or `missing_scope`: ask the user to create a token at https://dash.cloudflare.com/profile/api-tokens → Custom token → permissions `Account.Turnstile:Edit` + `Account.Workers Scripts:Edit` → include the target account in Account Resources. **Do NOT direct them to `wrangler login`**. Its OAuth scope doesn't include `Account.Turnstile:Edit`. Offer three ways to hand the token over, cleanest first:
+   - `ok`: continue to Step 4. The script already picked the account (single-account token, or one matching `$CLOUDFLARE_ACCOUNT_ID`).
+   - `missing_token`, `missing_scope`, or `missing_workers_scope`: ask the user to create a token at https://dash.cloudflare.com/profile/api-tokens → Custom token → permissions `Account.Turnstile:Edit` **and** `Account.Workers Scripts:Edit` → include the target account in Account Resources. **Do NOT direct them to `wrangler login`**. Its OAuth scope doesn't include `Account.Turnstile:Edit` or `Account.Workers Scripts:Edit`. Offer three ways to hand the token over, cleanest first:
      1. **Export + relaunch** (token never enters chat): `export CLOUDFLARE_API_TOKEN=<token>` then restart the agent from that terminal.
      2. **Save to file** (token in file with user-only perms, not in chat): `umask 077 && printf '%s' '<token>' > ~/.cf-turnstile-token`, then read with `TOKEN=$(cat ~/.cf-turnstile-token)`.
      3. **Paste in chat** (fastest, but token lands in conversation log; user should rotate it after if the log is ever shared).
      While the user creates the token, run Steps 5, 6, 7 (Domain, Codebase scan, Insertion plan) in parallel. When they paste the token, re-run `auth-probe.sh`, then continue to Step 8.
-   - `account_mismatch`: tell the user to `unset CLOUDFLARE_ACCOUNT_ID` or fix it to match the token's account.
+   - `multiple_accounts`: the token covers more than one account and `$CLOUDFLARE_ACCOUNT_ID` is unset. Present the numbered `accounts` list. **[wait for user]** Then export `CLOUDFLARE_ACCOUNT_ID=<chosen>` and re-run `auth-probe.sh`.
+   - `account_mismatch`: `$CLOUDFLARE_ACCOUNT_ID` is set but isn't one of the token's accounts. Show the `accounts` list and ask the user to either `unset CLOUDFLARE_ACCOUNT_ID` or set it to one of those IDs.
 
-4. **Account selection.** If `auth-probe.sh` returned multiple accounts, present a numbered list. **[wait for user]** Otherwise use the single account silently.
+4. **Account selection.** If `auth-probe.sh` returned `ok` after a `multiple_accounts` round-trip, this is already done. Otherwise the script picked the single account silently and you continue to Step 5.
 
 5. **Domain.** Always include `localhost` and `127.0.0.1`. For production, scan `package.json` `homepage`, `wrangler.toml`, `README.md`, `AGENTS.md`, git remote. Confirm: "I'll register for `localhost`, `127.0.0.1`, and `<domain>`. OK?" **[wait for user]** If no production domain is found, ask.
 
@@ -56,7 +57,7 @@ The user pasted the prompt. You are in a multi-step dialog. Detect what you can,
 
 8. **Widget creation.** Run `scripts/widget-create.sh --account-id <id> --name <name> --domains <list> --mode managed`. Report the sitekey. The secret stays in env; never write it to disk.
 
-9. **Worker deploy.** Run `scripts/worker-deploy.sh --name turnstile-siteverify-<project-slug>` with `WIDGET_SECRET` exported. Report the Worker URL.
+9. **Worker deploy.** Run `scripts/worker-deploy.sh --name turnstile-siteverify-<project-slug>` with `WIDGET_SECRET` exported. Report the Worker URL on `status: ok`. On `set_secret_failed`, the Worker deployed but `TURNSTILE_SECRET_KEY` is not set on it; surface the error, then retry with `echo "$WIDGET_SECRET" | npx wrangler secret put TURNSTILE_SECRET_KEY --name <returned worker_name>` before running validation.
 
 10. **Frontend edits.** State the contract: "I'll add the widget + gate the existing submit handler on `success === true`. The existing handler logic stays the same." Ask "yes" / "show". **[wait for user]** If "show", print unified diffs and ask again. Do NOT propose alternate behavior (mail delivery, custom backends).
 

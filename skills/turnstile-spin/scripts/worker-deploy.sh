@@ -11,9 +11,11 @@
 #   --deploy-dir <path>    Where to extract the template. Default: /tmp/turnstile-siteverify-deploy
 #
 # Outputs JSON. Exit 0 on success, non-zero on failure.
-#   ok:        {"status":"ok","worker_url":"<url>","worker_name":"<name>"}
-#   conflict:  {"status":"error","reason":"name_conflict_after_retry"}
-#   no_secret: {"status":"error","reason":"missing_input_secret_after_retry"}
+#   ok:            {"status":"ok","worker_url":"<url>","worker_name":"<name>"}
+#   conflict:      {"status":"error","reason":"name_conflict_after_retry"}
+#   deploy_failed: {"status":"error","reason":"deploy_failed"}
+#   set_secret:    {"status":"error","reason":"set_secret_failed","worker_name":"<name>"}
+#   url_parse:     {"status":"error","reason":"url_parse_failed","worker_name":"<name>"}
 
 set -uo pipefail
 
@@ -65,7 +67,12 @@ set_secret() {
   echo "$WIDGET_SECRET" | (cd "$DEPLOY_DIR" && npx wrangler secret put TURNSTILE_SECRET_KEY --name "$NAME") >/dev/null 2>&1
 }
 
-set_secret
+if ! set_secret; then
+  echo "worker-deploy: failed to set TURNSTILE_SECRET_KEY on $NAME" >&2
+  rm -f "$deploy_log"
+  echo "{\"status\":\"error\",\"reason\":\"set_secret_failed\",\"worker_name\":\"$NAME\"}"
+  exit 1
+fi
 sleep 5
 
 # Try to extract the deployed URL from the wrangler log
