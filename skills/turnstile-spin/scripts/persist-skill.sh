@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
-# Persists the canonical Spin skill to the user's repo so the agent stays
-# useful for follow-up tasks.
+# Persists the canonical Spin skill bundle (SKILL.md + scripts/ + references/)
+# from cloudflare/skills to the user's repo so the agent can re-load it on
+# follow-up tasks without re-pasting the bootstrap prompt.
 #
 # Args:
-#   --path <path>   Destination, e.g. .claude/skills/turnstile-spin/SKILL.md
+#   --path <path>   SKILL.md destination, e.g. .claude/skills/turnstile-spin/SKILL.md.
+#                   The bundle is extracted into the parent directory of <path>,
+#                   so scripts land at e.g. .claude/skills/turnstile-spin/scripts/.
 #
-# Outputs JSON. Exit 0 if the skill was written, 1 if the upstream URL
-# returned non-200 or unexpected content.
-#   ok:    {"status":"ok","path":"<path>"}
-#   fail:  {"status":"error","reason":"<reason>","http_code":<code>}
+# Outputs JSON. Exit 0 if the bundle was written, 1 on failure.
+#   ok:    {"status":"ok","path":"<path>","bundle_root":"<dir>","scripts":[<list>]}
+#   fail:  {"status":"error","reason":"<reason>"}
 
 set -uo pipefail
 
@@ -22,22 +24,30 @@ done
 
 : "${PATH_ARG:?--path required}"
 
-URL="https://developers.cloudflare.com/turnstile/spin/index.md"
+TARGET_DIR=$(dirname "$PATH_ARG")
+mkdir -p "$TARGET_DIR"
 
-mkdir -p "$(dirname "$PATH_ARG")"
-tmp=$(mktemp)
-http_code=$(curl -sSL -w "%{http_code}" -o "$tmp" "$URL" 2>/dev/null || echo "000")
-
-# Validate: HTTP 200 AND first line is YAML frontmatter (matches the SKILL.md shape).
-# Without this check, a 404 would happily write Astro's HTML 404 page to the user's skill path.
-if [ "$http_code" = "200" ] && head -1 "$tmp" | grep -q "^---$"; then
-  mv "$tmp" "$PATH_ARG"
-  echo "persist-skill: wrote $PATH_ARG" >&2
-  echo "{\"status\":\"ok\",\"path\":\"$PATH_ARG\"}"
-  exit 0
+# Install the canonical bundle from cloudflare/skills via degit. This writes
+# SKILL.md, scripts/, references/, templates/, tests/ into $TARGET_DIR.
+if ! npx --yes degit cloudflare/skills/skills/turnstile-spin "$TARGET_DIR" >/dev/null 2>&1; then
+  echo "persist-skill: degit failed; cannot fetch cloudflare/skills/skills/turnstile-spin." >&2
+  echo "persist-skill: ensure your network can reach github.com and try again, or install manually." >&2
+  echo "{\"status\":\"error\",\"reason\":\"degit_failed\"}"
+  exit 1
 fi
 
-rm -f "$tmp"
-echo "persist-skill: refused to write; upstream returned HTTP $http_code or non-frontmatter content" >&2
-echo "{\"status\":\"error\",\"reason\":\"upstream_invalid\",\"http_code\":$http_code}"
-exit 1
+if [ ! -f "$TARGET_DIR/SKILL.md" ]; then
+  echo "persist-skill: bundle extracted but SKILL.md is missing at $TARGET_DIR/SKILL.md." >&2
+  echo "{\"status\":\"error\",\"reason\":\"skill_missing\"}"
+  exit 1
+fi
+
+# Make scripts executable so the agent can invoke them directly.
+if [ -d "$TARGET_DIR/scripts" ]; then
+  chmod +x "$TARGET_DIR/scripts"/*.sh 2>/dev/null || true
+fi
+
+scripts_list=$(ls "$TARGET_DIR/scripts" 2>/dev/null | sed 's/.*/"&"/' | paste -sd, -)
+echo "persist-skill: wrote bundle to $TARGET_DIR" >&2
+echo "{\"status\":\"ok\",\"path\":\"$PATH_ARG\",\"bundle_root\":\"$TARGET_DIR\",\"scripts\":[$scripts_list]}"
+exit 0

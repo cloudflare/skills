@@ -78,8 +78,9 @@ if [ "$success" != "true" ]; then
 fi
 
 # Probe Workers scope on the selected account. GET /workers/scripts requires
-# Account.Workers Scripts:Read; the Custom Token UI grants Read alongside Edit,
-# so a successful list call is a reliable proxy for deploy permission.
+# Account.Workers Scripts:Read, which is a best-effort proxy for Edit. Tokens
+# granted Edit-only (without Read) will fail this probe and emit a confusing
+# missing_workers_scope; the agent should suggest adding Read alongside Edit.
 tmp=$(mktemp)
 workers_code=$(curl -sS -w "%{http_code}" -o "$tmp" \
   "https://api.cloudflare.com/client/v4/accounts/$account_id/workers/scripts" \

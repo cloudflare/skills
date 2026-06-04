@@ -89,13 +89,13 @@ Spin validates the Turnstile token via a managed Worker before the user's existi
 
 ### Recovery flow: respect existing widget configuration
 
-If the user invokes Spin against an existing widget (URL `?widget=<id>`, or they say so):
+If the user tells you they already have a Turnstile widget set up and want to wire siteverify to it without rotating the sitekey (e.g. "I have a sitekey but siteverify never worked", "set up Spin against my existing widget `<sitekey>`"):
 
-1. Skip Step 8 (widget creation). The sitekey already exists.
-2. Fetch the widget's secret via `scripts/fetch-secret.sh --account-id <id> --sitekey <key>`. Branch on `status`:
-   - `ok`: use the returned secret.
-   - `missing_read_scope`: tell the user to add `Account.Turnstile:Read` to the token, or fall back to asking them to paste the secret.
-3. Check the widget's `clearance_level`:
+1. Skip Step 8 (widget creation). The sitekey already exists; get it from the user.
+2. Fetch the widget metadata via `scripts/fetch-secret.sh --account-id <id> --sitekey <key>`. Branch on `status`:
+   - `ok`: read `secret`, `clearance_level`, and `domains` from the response. Confirm `domains` includes the user's production hostname; if not, surface the gap before proceeding.
+   - `missing_read_scope`: tell the user to add `Account.Turnstile:Read` to the token, or fall back to asking them to paste the secret. In the paste path, you do not have `clearance_level` or `domains`; ask the user to confirm both.
+3. Check `clearance_level` from the response (or the user's answer):
    - `no_clearance`: standard recovery (deploy Worker, wire siteverify).
    - anything else: ask whether they want siteverify on top of pre-clearance, or exit per the scope boundary.
 4. Continue from Step 9 (Worker deploy). Site key does not change. Dashboard's `Deployment` column flips from `Manual` to `Spin` on the first request carrying `data-action="turnstile-spin-v1"`.
@@ -147,7 +147,8 @@ Edge cases to surface to the user:
 | `EXPECTED_HOSTNAME` mismatch | Update widget domains via PUT, not PATCH (PATCH returns `10405 Method not allowed`): `curl -X PUT .../widgets/$SITEKEY -d '{"name":"...","mode":"managed","domains":[...]}'` |
 | Worker name conflict | `worker-deploy.sh` retries automatically with a hash suffix |
 | Token expired mid-flow | Stop, re-run `scripts/auth-probe.sh`, prompt for fresh credentials |
-| Step 11 returns `missing-input-secret` | Secret didn't propagate. Re-set: `wrangler secret delete TURNSTILE_SECRET_KEY --name "$WORKER_NAME"`, then re-put, wait 10s, re-validate |
+| Step 11 returns `missing-input-secret` | Secret didn't propagate. Re-set: `echo "$WIDGET_SECRET" \| npx wrangler secret put TURNSTILE_SECRET_KEY --name <worker_name from worker-deploy.sh output>`, wait 10s, re-validate. Use the `worker_name` field returned by `worker-deploy.sh`; do not rely on a `$WORKER_NAME` env var. |
+| `worker-deploy.sh` returns `set_secret_failed` | Worker is deployed but secret is not set. Re-run only the secret-put using the returned `worker_name`: `echo "$WIDGET_SECRET" \| npx wrangler secret put TURNSTILE_SECRET_KEY --name <worker_name>`. Surface the `detail` field to the user — it carries the wrangler error. |
 
 ## Telemetry marker
 

@@ -12,7 +12,7 @@
 #
 # Outputs JSON. Exit 0 if all three checks pass, 1 otherwise.
 #   ok:    {"status":"ok"}
-#   fail:  {"status":"error","check":"health|dummy_siteverify|hostname","detail":"<msg>"}
+#   fail:  {"status":"error","check":"health|dummy_siteverify|worker_metadata|hostname","detail":"<msg>"}
 
 set -uo pipefail
 
@@ -33,9 +33,9 @@ done
 : "${EXPECTED_DOMAINS:?--expected-domains required}"
 
 # Check 1: health endpoint
-health=$(curl -sSf "${WORKER_URL}/" 2>/dev/null || echo "")
+health=$(curl -sSf "${WORKER_URL}/health" 2>/dev/null || echo "")
 if [ -z "$health" ] || ! echo "$health" | grep -q '"ok":true'; then
-  echo "validate: health check failed; $WORKER_URL did not return {ok:true,version:...}" >&2
+  echo "validate: health check failed; $WORKER_URL/health did not return {ok:true,version:...}" >&2
   echo "{\"status\":\"error\",\"check\":\"health\",\"detail\":\"worker /health did not respond ok:true\"}"
   exit 1
 fi
@@ -51,6 +51,16 @@ errors=$(echo "$dummy" | (jq -r '.["error-codes"] | length // 0' 2>/dev/null || 
 if [ "$success" != "false" ] || [ "$errors" = "0" ]; then
   echo "validate: dummy siteverify check failed; expected success:false + error-codes; got: $dummy" >&2
   echo "{\"status\":\"error\",\"check\":\"dummy_siteverify\",\"detail\":\"unexpected response shape\"}"
+  exit 1
+fi
+
+# Check 2b: confirm the Worker is the managed template (not a customer-written
+# replacement) by looking for the _worker metadata field. If absent, the user
+# deployed a custom Worker; surface it so the agent can alert them.
+worker_meta=$(echo "$dummy" | (jq -r '._worker.worker_version // "missing"' 2>/dev/null || echo "missing"))
+if [ "$worker_meta" = "missing" ]; then
+  echo "validate: _worker metadata missing from response; this is not the managed Spin Worker template." >&2
+  echo "{\"status\":\"error\",\"check\":\"worker_metadata\",\"detail\":\"_worker field missing; user may have deployed a custom Worker\"}"
   exit 1
 fi
 

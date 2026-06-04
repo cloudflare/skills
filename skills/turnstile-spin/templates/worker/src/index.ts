@@ -52,7 +52,11 @@ async function parseBody(request: Request): Promise<SiteverifyRequest> {
 	if (contentType.includes('application/json')) {
 		const body = (await request.json()) as Record<string, unknown>;
 		return {
-			token: String(body.token ?? body['cf-turnstile-response'] ?? ''),
+			// `response` is accepted for compatibility with code migrated from reCAPTCHA/hCaptcha,
+			// whose backends POST {secret, response, remoteip}. Spin's Worker holds the secret,
+			// so callers should send {token} or {cf-turnstile-response}; we accept {response}
+			// too so migrated backends work without backend code changes.
+			token: String(body.token ?? body['cf-turnstile-response'] ?? body.response ?? ''),
 			remoteip: body.remoteip ? String(body.remoteip) : undefined,
 			idempotency_key: body.idempotency_key ? String(body.idempotency_key) : undefined,
 		};
@@ -61,7 +65,7 @@ async function parseBody(request: Request): Promise<SiteverifyRequest> {
 	if (contentType.includes('application/x-www-form-urlencoded') || contentType.includes('multipart/form-data')) {
 		const form = await request.formData();
 		return {
-			token: String(form.get('token') ?? form.get('cf-turnstile-response') ?? ''),
+			token: String(form.get('token') ?? form.get('cf-turnstile-response') ?? form.get('response') ?? ''),
 			remoteip: form.get('remoteip') ? String(form.get('remoteip')) : undefined,
 			idempotency_key: form.get('idempotency_key') ? String(form.get('idempotency_key')) : undefined,
 		};

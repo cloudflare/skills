@@ -10,9 +10,13 @@
 #   --sitekey <key>     Widget sitekey to look up
 #
 # Outputs JSON. Exit 0 on success, 1 on failure.
-#   ok:        {"status":"ok","secret":"<secret>"}
+#   ok:        {"status":"ok","secret":"<secret>","clearance_level":"<level>","domains":[<list>]}
 #   no_scope:  {"status":"missing_read_scope","detail":"token lacks Account.Turnstile:Read"}
 #   not_found: {"status":"error","reason":"widget_not_found","http_code":<code>}
+#
+# The agent uses clearance_level to enforce the pre-clearance scope boundary
+# (Spin only applies to widgets where clearance_level == "no_clearance"; for
+# other levels siteverify is optional and the recovery flow should exit).
 #
 # Never propose recreating the widget to get a fresh secret; that breaks
 # the existing sitekey everywhere the user has it deployed in their frontend.
@@ -39,8 +43,10 @@ body=$(cat "$tmp"); rm -f "$tmp"
 
 if [ "$http_code" = "200" ]; then
   secret=$(echo "$body" | (jq -r '.result.secret' 2>/dev/null || python3 -c "import sys,json; print(json.load(sys.stdin)['result']['secret'])"))
+  clearance=$(echo "$body" | (jq -r '.result.clearance_level // "no_clearance"' 2>/dev/null || python3 -c "import sys,json; print(json.load(sys.stdin)['result'].get('clearance_level','no_clearance'))"))
+  domains=$(echo "$body" | (jq -c '.result.domains // []' 2>/dev/null || python3 -c "import sys,json; print(json.dumps(json.load(sys.stdin)['result'].get('domains',[])))"))
   if [ -n "$secret" ] && [ "$secret" != "null" ]; then
-    echo "{\"status\":\"ok\",\"secret\":\"$secret\"}"
+    echo "{\"status\":\"ok\",\"secret\":\"$secret\",\"clearance_level\":\"$clearance\",\"domains\":$domains}"
     exit 0
   fi
 fi
