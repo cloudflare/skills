@@ -45,7 +45,7 @@ deploy() {
 
 if ! deploy "$NAME"; then
   if grep -q "script name already in use" "$deploy_log"; then
-    NAME="${NAME}-$(date +%s | tail -c 5)"
+    NAME="${NAME}-$(openssl rand -hex 3 2>/dev/null || date +%s | tail -c 5)"
     echo "worker-deploy: name conflict; retrying as $NAME" >&2
     if ! deploy "$NAME"; then
       echo "worker-deploy: deploy failed even with new name" >&2
