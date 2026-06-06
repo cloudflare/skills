@@ -42,6 +42,11 @@
       "description": "Cloudflare Email Service: transactional email and routing. Depends on cloudflare-core."
     },
     {
+      "name": "cloudflare-turnstile",
+      "source": "./plugins/cloudflare-turnstile",
+      "description": "Cloudflare Turnstile: CAPTCHA/bot protection — create the widget and deploy the managed siteverify Worker. Depends on cloudflare-workers."
+    },
+    {
       "name": "cloudflare-web-perf",
       "source": "./plugins/cloudflare-web-perf",
       "description": "Web performance auditing with Chrome DevTools MCP. No Cloudflare dependency."

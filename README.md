@@ -2,7 +2,7 @@
 
 A collection of [Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills), MCP servers, and slash commands for building on Cloudflare, Workers, the Agents SDK, and the wider Cloudflare Developer Platform.
 
-This marketplace ships **9 plugins** for both Claude Code and Cursor: 8 product plugins plus an umbrella. Install the umbrella for the full experience, or install only the product plugins you need to keep your context window lean.
+This marketplace ships **10 plugins** for both Claude Code and Cursor: 9 product plugins plus an umbrella. Install the umbrella for the full experience, or install only the product plugins you need to keep your context window lean.
 
 ## Installing
 
@@ -22,7 +22,7 @@ For the **full experience** (everything, identical to previous behavior):
 /plugin install cloudflare@cloudflare
 ```
 
-This installs the `cloudflare` umbrella plugin, which depends on all 8 product plugins and pulls them in automatically.
+This installs the `cloudflare` umbrella plugin, which depends on all 9 product plugins and pulls them in automatically.
 
 For **narrower scope** (lower per-session token usage), install only the plugins you need. Examples:
 
@@ -79,8 +79,9 @@ Clone this repo and copy the relevant skill folders from `plugins/<plugin-name>/
 | `cloudflare-agents` | `agents-sdk` | — | `/build-agent`, `/build-mcp` | `cloudflare-workers` |
 | `cloudflare-sandbox` | `sandbox-sdk` | — | — | `cloudflare-workers` |
 | `cloudflare-email` | `cloudflare-email-service` | — | — | `cloudflare-core` |
+| `cloudflare-turnstile` | `turnstile-spin` | — | — | `cloudflare-workers` |
 | `cloudflare-web-perf` | `web-perf` | — | — | — *(no Cloudflare dep)* |
-| `cloudflare` | — | — | — | all 8 above (umbrella) |
+| `cloudflare` | — | — | — | all 9 above (umbrella) |
 
 Cursor's plugin system has no dependency mechanism, so the dependency arrows above don't apply on Cursor. The Cursor `cloudflare` umbrella bundles all skills and MCP servers in a single install (rather than depending on the product plugins, which is what the Claude umbrella does); per-product Cursor installs ship only their own MCP servers. See the [Repository layout](#repository-layout) section for how this is wired.
 
@@ -106,6 +107,7 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 | agents-sdk | cloudflare-agents | Building stateful AI agents with state, scheduling, RPC, MCP servers, email, and streaming chat |
 | sandbox-sdk | cloudflare-sandbox | Secure code execution for AI code execution, code interpreters, CI/CD systems, and interactive dev environments |
 | cloudflare-email-service | cloudflare-email | Sending and receiving transactional emails (Workers binding or REST API) |
+| turnstile-spin | cloudflare-turnstile | Setting up Turnstile CAPTCHA end-to-end: widget creation, managed siteverify Worker, and frontend snippets |
 | web-perf | cloudflare-web-perf | Auditing Core Web Vitals (FCP, LCP, TBT, CLS), render-blocking resources, network chains |
 
 ## Cloudflare One

@@ -1,0 +1,7 @@
+{
+  "name": "cloudflare-turnstile",
+  "description": "Cloudflare Turnstile: set up CAPTCHA/bot protection end-to-end — create the widget, deploy the managed siteverify Worker, and wire up frontend snippets.",
+  "version": "1.0.0",
+  "author": { "name": "Cloudflare" },
+  "dependencies": ["cloudflare-workers"]
+}
