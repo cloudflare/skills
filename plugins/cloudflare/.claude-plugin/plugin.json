@@ -12,6 +12,7 @@
     "cloudflare-sandbox",
     "cloudflare-email",
     "cloudflare-turnstile",
+    "cloudflare-one",
     "cloudflare-web-perf"
   ]
 }

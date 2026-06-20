@@ -45,6 +45,11 @@
       "description": "Cloudflare Turnstile: CAPTCHA/bot protection — create the widget and deploy the managed siteverify Worker. Pair with cloudflare-workers."
     },
     {
+      "name": "cloudflare-one",
+      "source": "./plugins/cloudflare-one",
+      "description": "Cloudflare One Zero Trust / SASE: Access, Gateway, WARP, Tunnel, WAN, DLP, CASB, device posture, identity, and migrations from Zscaler/Palo Alto/legacy VPN. Pair with cloudflare-core."
+    },
+    {
       "name": "cloudflare-web-perf",
       "source": "./plugins/cloudflare-web-perf",
       "description": "Web performance auditing with Chrome DevTools MCP. No Cloudflare dependency."

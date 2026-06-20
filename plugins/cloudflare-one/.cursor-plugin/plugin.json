@@ -1,0 +1,11 @@
+{
+  "name": "cloudflare-one",
+  "version": "1.0.0",
+  "description": "Cloudflare One Zero Trust and SASE: Access, Gateway, WARP, Tunnel, Cloudflare WAN, DLP, CASB, device posture, and identity, plus migrations from Zscaler, Palo Alto, and legacy VPN/SWG stacks.",
+  "author": {
+    "name": "Cloudflare",
+    "email": "support@cloudflare.com",
+    "url": "https://workers.cloudflare.com"
+  },
+  "keywords": ["cloudflare", "cloudflare-one", "zero-trust", "sase", "access", "gateway", "warp", "tunnel", "migration"]
+}

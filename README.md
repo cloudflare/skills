@@ -80,8 +80,9 @@ Clone this repo and copy the relevant skill folders from `plugins/<plugin-name>/
 | `cloudflare-sandbox` | `sandbox-sdk` | — | — | `cloudflare-workers` |
 | `cloudflare-email` | `cloudflare-email-service` | — | — | `cloudflare-core` |
 | `cloudflare-turnstile` | `turnstile-spin` | — | — | `cloudflare-workers` |
+| `cloudflare-one` | `cloudflare-one`, `cloudflare-one-migrations` | — | — | `cloudflare-core` |
 | `cloudflare-web-perf` | `web-perf` | — | — | — *(no Cloudflare dep)* |
-| `cloudflare` | — | — | — | all 9 above (umbrella) |
+| `cloudflare` | — | — | — | all 10 above (umbrella) |
 
 Cursor's plugin system has no dependency mechanism, so the dependency arrows above don't apply on Cursor. The Cursor `cloudflare` umbrella bundles all skills and MCP servers in a single install (rather than depending on the product plugins, which is what the Claude umbrella does); per-product Cursor installs ship only their own MCP servers. See the [Repository layout](#repository-layout) section for how this is wired.
 
@@ -108,16 +109,9 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 | sandbox-sdk | cloudflare-sandbox | Secure code execution for AI code execution, code interpreters, CI/CD systems, and interactive dev environments |
 | cloudflare-email-service | cloudflare-email | Sending and receiving transactional emails (Workers binding or REST API) |
 | turnstile-spin | cloudflare-turnstile | Setting up Turnstile CAPTCHA end-to-end: widget creation, managed siteverify Worker, and frontend snippets |
+| cloudflare-one | cloudflare-one | Designing, configuring, troubleshooting, or reviewing Cloudflare One Zero Trust / SASE deployments across Access, Gateway, WARP, Tunnel, Magic WAN, DLP, CASB, posture, and identity |
+| cloudflare-one-migrations | cloudflare-one | Migration assessments, policy mapping, rollout plans, and gap analysis for Zscaler, Palo Alto, legacy VPN/SWG, and SASE migrations to Cloudflare One |
 | web-perf | cloudflare-web-perf | Auditing Core Web Vitals (FCP, LCP, TBT, CLS), render-blocking resources, network chains |
-
-## Cloudflare One
-
-Short, retrieval-first skills for [Cloudflare One](https://developers.cloudflare.com/cloudflare-one/) work.
-
-| Skill | Useful for |
-|-------|------------|
-| cloudflare-one | Designing, configuring, troubleshooting, or reviewing Cloudflare One deployments across Access, Gateway, WARP, Tunnel, Magic WAN, DLP, CASB, posture, and identity |
-| cloudflare-one-migrations | Migration assessments, policy mapping, rollout plans, and gap analysis for Zscaler, Palo Alto, legacy VPN/SWG, and SASE migrations to Cloudflare One |
 
 ## MCP Servers
 
