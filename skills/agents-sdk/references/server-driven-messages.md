@@ -1,6 +1,6 @@
 # Server-Driven Messages (Trigger Patterns)
 
-Fetch https://developers.cloudflare.com/agents/api-reference/trigger-patterns/ for complete documentation.
+Fetch https://developers.cloudflare.com/agents/communication-channels/chat/autonomous-responses/ for complete documentation.
 
 Patterns for server-initiated LLM turns in `AIChatAgent` — from schedules, webhooks, email, or other agents.
 

@@ -155,7 +155,7 @@ export default {
 
 ## Transports
 
-Fetch https://developers.cloudflare.com/agents/api-reference/mcp-transports/ for complete documentation.
+Fetch https://developers.cloudflare.com/agents/model-context-protocol/protocol/transport/ for complete documentation.
 
 | Transport | Use for |
 |-----------|---------|
@@ -183,6 +183,6 @@ await this.addMcpServer("tools", url, {
 
 ## Securing MCP Servers
 
-Fetch https://developers.cloudflare.com/agents/api-reference/securing-mcp-servers/ for complete documentation.
+Fetch https://developers.cloudflare.com/agents/model-context-protocol/guides/securing-mcp-server/ for complete documentation.
 
 Use `@cloudflare/workers-oauth-provider` to add OAuth in front of your MCP server. See the securing docs for proxy patterns and `redirect_uri` validation.
