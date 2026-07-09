@@ -1,6 +1,6 @@
 # Email Handling
 
-Fetch `docs/email.md` from `https://github.com/cloudflare/agents/tree/main/docs` for complete documentation.
+Fetch https://developers.cloudflare.com/agents/api-reference/email/ for complete documentation.
 
 ## Overview
 

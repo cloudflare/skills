@@ -1,8 +1,8 @@
-# MCP Server Integration
+# MCP Integration
 
-Fetch `docs/mcp-client.md` and `docs/mcp-servers.md` from `https://github.com/cloudflare/agents/tree/main/docs` for complete documentation.
+Fetch https://developers.cloudflare.com/agents/api-reference/mcp-client-api/ and https://developers.cloudflare.com/agents/api-reference/mcp-agent-api/ for complete documentation.
 
-Agents include a multi-server MCP client for connecting to external MCP servers.
+Agents include a multi-server MCP client for connecting to external MCP servers, and `McpAgent` for building MCP servers.
 
 ## Add an MCP Server
 
@@ -138,17 +138,51 @@ export default {
   fetch(request: Request, env: Env, ctx: ExecutionContext) {
     const url = new URL(request.url);
 
-    // SSE transport (legacy)
-    if (url.pathname.startsWith("/sse")) {
-      return MyMCP.serveSSE("/sse", { binding: "MyMCP" }).fetch(request, env, ctx);
-    }
-
     // Streamable HTTP transport (recommended)
     if (url.pathname.startsWith("/mcp")) {
       return MyMCP.serve("/mcp", { binding: "MyMCP" }).fetch(request, env, ctx);
+    }
+
+    // SSE transport (legacy, deprecated)
+    if (url.pathname.startsWith("/sse")) {
+      return MyMCP.serveSSE("/sse", { binding: "MyMCP" }).fetch(request, env, ctx);
     }
 
     return new Response("Not found", { status: 404 });
   }
 };
 ```
+
+## Transports
+
+Fetch https://developers.cloudflare.com/agents/api-reference/mcp-transports/ for complete documentation.
+
+| Transport | Use for |
+|-----------|---------|
+| Streamable HTTP (`serve`) | External/public clients (recommended) |
+| SSE (`serveSSE`) | Legacy clients only (deprecated) |
+| RPC (`addMcpServer(name, env.Binding)`) | Same-Worker internal calls (fastest) |
+
+### RPC Transport (Same Worker)
+
+```typescript
+async onStart() {
+  await this.addMcpServer("internal-tools", this.env.MyMCPBinding, {
+    props: { userId: this.name }
+  });
+}
+```
+
+## Retry on MCP Connections
+
+```typescript
+await this.addMcpServer("tools", url, {
+  retry: { maxAttempts: 3, baseDelayMs: 500 }
+});
+```
+
+## Securing MCP Servers
+
+Fetch https://developers.cloudflare.com/agents/api-reference/securing-mcp-servers/ for complete documentation.
+
+Use `@cloudflare/workers-oauth-provider` to add OAuth in front of your MCP server. See the securing docs for proxy patterns and `redirect_uri` validation.

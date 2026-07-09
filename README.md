@@ -63,6 +63,15 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 | building-mcp-server-on-cloudflare | Building remote MCP servers with tools, OAuth, and deployment |
 | building-ai-agent-on-cloudflare | Building AI agents with state, WebSockets, and tool integration |
 
+## Cloudflare One
+
+Short, retrieval-first skills for [Cloudflare One](https://developers.cloudflare.com/cloudflare-one/) work.
+
+| Skill | Useful for |
+|-------|------------|
+| cloudflare-one | Designing, configuring, troubleshooting, or reviewing Cloudflare One deployments across Access, Gateway, WARP, Tunnel, Magic WAN, DLP, CASB, posture, and identity |
+| cloudflare-one-migrations | Migration assessments, policy mapping, rollout plans, and gap analysis for Zscaler, Palo Alto, legacy VPN/SWG, and SASE migrations to Cloudflare One |
+
 ## MCP Servers
 
 This plugin includes [Cloudflare's remote MCP servers](https://developers.cloudflare.com/agents/model-context-protocol/mcp-servers-for-cloudflare/) for enhanced functionality:

@@ -1,6 +1,6 @@
 ---
 name: cloudflare
-description: Comprehensive Cloudflare platform skill covering Workers, Dynamic Workers, Pages, storage (KV, D1, R2), AI (Workers AI, Vectorize, Agents SDK), networking (Tunnel, Spectrum), security (WAF, DDoS), and infrastructure-as-code (Terraform, Pulumi). Use for any Cloudflare development task. Biases towards retrieval from Cloudflare docs over pre-trained knowledge.
+description: Comprehensive Cloudflare platform skill covering Workers, Dynamic Workers, Pages, storage (KV, D1, R2), AI (Workers AI, Vectorize, Agents SDK), feature flags (Flagship), networking (Tunnel, Spectrum), security (WAF, DDoS), and infrastructure-as-code (Terraform, Pulumi). Use for any Cloudflare development task. Biases towards retrieval from Cloudflare docs over pre-trained knowledge.
 references:
   - workers
   - pages
@@ -30,6 +30,16 @@ When a reference file and the docs disagree, **trust the docs**. This is especia
 
 ## Quick Decision Trees
 
+### "I need feature flags"
+
+```
+Need feature flags?
+└─ Feature toggles, targeting rules, percentage rollouts → flagship/
+   ├─ Evaluate in Workers → Flagship binding (env.FLAGS)
+   ├─ Evaluate in Node.js / browser → OpenFeature SDK (@cloudflare/flagship)
+   └─ Manage flags via API → Flagship REST API
+```
+
 ### "I need to run code"
 
 ```
@@ -54,11 +64,14 @@ Need storage?
 ├─ Key-value (config, sessions, cache) → kv/
 ├─ Relational SQL → d1/ (SQLite) or hyperdrive/ (existing Postgres/MySQL)
 ├─ Object/file storage (S3-compatible) → r2/
+├─ Versioned file trees (repos, build outputs, checkpoints) → artifacts/
 ├─ Message queue (async processing) → queues/
 ├─ Vector embeddings (AI/semantic search) → vectorize/
 ├─ Strongly-consistent per-entity state → durable-objects/ (DO storage)
 ├─ Secrets management → secrets-store/
 ├─ Streaming ETL to R2 → pipelines/
+├─ Managed Apache Iceberg catalog on R2 → r2-data-catalog/
+├─ Serverless SQL analytics over Iceberg tables → r2-sql/
 └─ Persistent cache (long-term retention) → cache-reserve/
 ```
 
@@ -117,6 +130,7 @@ Need analytics?
 ├─ Custom high-cardinality metrics from Workers → analytics-engine/
 ├─ Client-side (RUM) performance data → web-analytics/
 ├─ Workers Logs and real-time debugging → observability/
+├─ SQL over Iceberg data lake (logs, events) → r2-sql/ (+ pipelines/, r2-data-catalog/)
 └─ Raw logs (Logpush to external tools) → Cloudflare docs
 ```
 
@@ -127,6 +141,11 @@ Need IaC? → pulumi/ (Pulumi), terraform/ (Terraform), or api/ (REST API)
 ```
 
 ## Product Index
+
+### Feature Flags
+| Product | Reference |
+|---------|-----------|
+| Flagship | `references/flagship/` |
 
 ### Compute & Runtime
 | Product | Reference |
@@ -150,6 +169,7 @@ Need IaC? → pulumi/ (Pulumi), terraform/ (Terraform), or api/ (REST API)
 | KV | `references/kv/` |
 | D1 | `references/d1/` |
 | R2 | `references/r2/` |
+| Artifacts | `references/artifacts/` |
 | Queues | `references/queues/` |
 | Hyperdrive | `references/hyperdrive/` |
 | DO Storage | `references/do-storage/` |

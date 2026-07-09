@@ -47,10 +47,18 @@ export class MyWorkflow extends WorkflowEntrypoint<Env, Params> {
 
 - **Durability**: Failed steps don't re-run successful ones
 - **Retries**: Configurable backoff (constant/linear/exponential)
-- **Events**: `waitForEvent()` for webhooks/approvals (timeout: 1h → 365d)
-- **Sleep**: `sleep()` / `sleepUntil()` for scheduling (max 365d)
+- **Events**: `waitForEvent()` for webhooks/approvals (configurable timeout)
+- **Sleep**: `sleep()` / `sleepUntil()` for scheduling
 - **Parallel**: `Promise.all()` for concurrent steps
 - **Idempotency**: Check-then-execute patterns
+
+## Retrieval
+
+These reference files cover API shapes, code patterns, and debugging — things that are stable. For **limits, pricing, and other values that change**, always fetch the latest from the official docs:
+
+- **Limits:** https://developers.cloudflare.com/workflows/reference/limits/
+- **Pricing:** https://developers.cloudflare.com/workflows/reference/pricing/
+- **Workers API:** https://developers.cloudflare.com/workflows/build/workers-api/
 
 ## Reading Order
 

@@ -1,8 +1,8 @@
 # Streaming Chat with AIChatAgent
 
-Fetch `docs/resumable-streaming.md` and `docs/client-sdk.md` from `https://github.com/cloudflare/agents/tree/main/docs` for complete documentation.
+Fetch https://developers.cloudflare.com/agents/api-reference/chat-agents/ for complete documentation.
 
-`AIChatAgent` provides streaming chat with automatic message persistence and resumable streams.
+`AIChatAgent` from `@cloudflare/ai-chat` provides streaming chat with automatic message persistence and resumable streams.
 
 ## Basic Chat Agent
 
@@ -12,10 +12,12 @@ import { streamText, convertToModelMessages } from "ai";
 import { openai } from "@ai-sdk/openai";
 
 export class Chat extends AIChatAgent<Env> {
-  async onChatMessage(onFinish) {
+  async onChatMessage(onFinish, options) {
     const result = streamText({
       model: openai("gpt-4o"),
+      system: "You are a helpful assistant.",
       messages: await convertToModelMessages(this.messages),
+      abortSignal: options?.abortSignal,
       onFinish
     });
     return result.toUIMessageStreamResponse();
@@ -23,21 +25,7 @@ export class Chat extends AIChatAgent<Env> {
 }
 ```
 
-## With Custom System Prompt
-
-```typescript
-export class Chat extends AIChatAgent<Env> {
-  async onChatMessage(onFinish) {
-    const result = streamText({
-      model: openai("gpt-4o"),
-      system: "You are a helpful assistant specializing in...",
-      messages: await convertToModelMessages(this.messages),
-      onFinish
-    });
-    return result.toUIMessageStreamResponse();
-  }
-}
-```
+**Important:** Always pass `abortSignal` and `onFinish` — they enable proper cleanup and message persistence.
 
 ## With Tools
 
@@ -54,11 +42,31 @@ const tools = {
 };
 
 export class Chat extends AIChatAgent<Env> {
-  async onChatMessage(onFinish) {
+  async onChatMessage(onFinish, options) {
     const result = streamText({
       model: openai("gpt-4o"),
       messages: await convertToModelMessages(this.messages),
       tools,
+      abortSignal: options?.abortSignal,
+      onFinish
+    });
+    return result.toUIMessageStreamResponse();
+  }
+}
+```
+
+## With Workers AI (no API keys)
+
+```typescript
+import { createWorkersAI } from "workers-ai-provider";
+
+export class Chat extends AIChatAgent<Env> {
+  async onChatMessage(onFinish, options) {
+    const workersai = createWorkersAI({ binding: this.env.AI });
+    const result = streamText({
+      model: workersai("@cf/meta/llama-4-scout-17b-16e-instruct"),
+      messages: await convertToModelMessages(this.messages),
+      abortSignal: options?.abortSignal,
       onFinish
     });
     return result.toUIMessageStreamResponse();
@@ -166,6 +174,16 @@ export class MyAgent extends Agent<Env> {
 
 Client receives streamed messages via WebSocket RPC.
 
+## Key Properties
+
+| Property | Purpose |
+|----------|---------|
+| `this.messages` | All persisted messages |
+| `maxPersistedMessages` | Limit stored messages (prune oldest) |
+| `messageConcurrency` | `"queue"` (default), `"latest"`, `"merge"`, `"drop"` |
+| `chatRecovery` | `"persist"` (default) or `"continue"` on reconnect |
+| `waitForMcpConnections` | Wait for MCP servers before first turn |
+
 ## Status Values
 
 `useAgentChat` status:
@@ -176,3 +194,5 @@ Client receives streamed messages via WebSocket RPC.
 | `streaming` | Response streaming |
 | `submitted` | Request sent, waiting |
 | `error` | Error occurred |
+
+Also: `isStreaming`, `isServerStreaming` for distinguishing user vs server-initiated streams.

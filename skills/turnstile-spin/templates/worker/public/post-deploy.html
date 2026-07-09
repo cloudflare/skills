@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Turnstile Spin — Deploy complete</title>
+		<style>
+			:root {
+				color-scheme: light dark;
+				--bg: #ffffff;
+				--fg: #1d1f20;
+				--muted: #6b6f72;
+				--border: #e5e7eb;
+				--accent: #f6821f;
+				--accent-fg: #ffffff;
+				--code-bg: #f5f5f5;
+				--ok: #16a34a;
+				--err: #dc2626;
+			}
+			@media (prefers-color-scheme: dark) {
+				:root {
+					--bg: #0f1010;
+					--fg: #f1f1f1;
+					--muted: #9aa0a3;
+					--border: #2a2a2a;
+					--code-bg: #1a1a1a;
+				}
+			}
+			* {
+				box-sizing: border-box;
+			}
+			body {
+				font:
+					16px/1.5 -apple-system,
+					"Segoe UI",
+					Inter,
+					system-ui,
+					sans-serif;
+				color: var(--fg);
+				background: var(--bg);
+				margin: 0;
+				padding: 0;
+			}
+			main {
+				max-width: 720px;
+				margin: 0 auto;
+				padding: 48px 24px 96px;
+			}
+			h1 {
+				font-size: 28px;
+				margin: 0 0 8px;
+				letter-spacing: -0.01em;
+			}
+			h2 {
+				font-size: 18px;
+				margin: 32px 0 12px;
+			}
+			p {
+				margin: 0 0 16px;
+				color: var(--fg);
+			}
+			.muted {
+				color: var(--muted);
+			}
+			.pill {
+				display: inline-block;
+				background: var(--ok);
+				color: white;
+				padding: 4px 10px;
+				border-radius: 12px;
+				font-size: 12px;
+				font-weight: 500;
+				margin-bottom: 16px;
+			}
+			.card {
+				border: 1px solid var(--border);
+				border-radius: 8px;
+				padding: 20px;
+				margin: 16px 0;
+				background: var(--bg);
+			}
+			label {
+				display: block;
+				font-size: 13px;
+				font-weight: 500;
+				margin-bottom: 6px;
+				color: var(--muted);
+			}
+			input[type="text"],
+			input[type="url"] {
+				width: 100%;
+				padding: 8px 12px;
+				border: 1px solid var(--border);
+				border-radius: 6px;
+				background: var(--bg);
+				color: var(--fg);
+				font-size: 14px;
+				font-family: "SF Mono", Menlo, Consolas, monospace;
+			}
+			input[readonly] {
+				background: var(--code-bg);
+			}
+			button {
+				background: var(--accent);
+				color: var(--accent-fg);
+				border: none;
+				border-radius: 6px;
+				padding: 10px 18px;
+				font-size: 14px;
+				font-weight: 500;
+				cursor: pointer;
+				margin-top: 12px;
+			}
+			button:hover {
+				opacity: 0.92;
+			}
+			button.secondary {
+				background: transparent;
+				color: var(--fg);
+				border: 1px solid var(--border);
+			}
+			code,
+			pre {
+				font-family: "SF Mono", Menlo, Consolas, monospace;
+				background: var(--code-bg);
+				border-radius: 4px;
+			}
+			code {
+				padding: 1px 5px;
+				font-size: 13px;
+			}
+			pre {
+				padding: 14px;
+				overflow-x: auto;
+				font-size: 13px;
+				line-height: 1.5;
+				border: 1px solid var(--border);
+			}
+			.status {
+				margin-top: 12px;
+				font-size: 13px;
+			}
+			.status.ok {
+				color: var(--ok);
+			}
+			.status.err {
+				color: var(--err);
+			}
+			.row {
+				display: flex;
+				gap: 8px;
+				align-items: center;
+			}
+			.row input {
+				flex: 1;
+			}
+			a {
+				color: var(--accent);
+			}
+		</style>
+	</head>
+	<body>
+		<main>
+			<div class="pill">Deploy complete</div>
+			<h1>Your Turnstile Spin backend is live.</h1>
+			<p class="muted">
+				This Worker is the managed siteverify backend for
+				<a href="https://developers.cloudflare.com/turnstile/spin/">Turnstile Spin</a>.
+				You have two remaining steps: get a site key, and paste both values
+				into your site.
+			</p>
+
+			<h2>1. Your Worker URL</h2>
+			<div class="card">
+				<label for="worker-url">Worker URL (the form action / fetch target)</label>
+				<div class="row">
+					<input id="worker-url" type="url" readonly value="" />
+					<button class="secondary" id="copy-worker">Copy</button>
+				</div>
+				<div class="status" id="health-status">Checking <code>/health</code>...</div>
+			</div>
+
+			<h2>2. Your site key</h2>
+			<div class="card">
+				<p>
+					You can either reuse an existing Turnstile widget or create a new
+					one. Both options take you through Cloudflare's dashboard; the secret
+					never leaves your account.
+				</p>
+				<button
+					id="create-widget"
+					onclick="window.open('https://dash.cloudflare.com/?to=/:account/turnstile', '_blank')"
+				>
+					Create a widget in the dashboard
+				</button>
+				<p class="muted" style="margin-top: 16px; font-size: 13px;">
+					After creating the widget, copy its <strong>site key</strong> (public,
+					goes in your HTML) and its <strong>secret</strong> (private, goes in
+					the Worker). Then run:
+				</p>
+				<pre>npx wrangler secret put TURNSTILE_SECRET_KEY --name turnstile-siteverify
+# paste the secret when prompted</pre>
+			</div>
+
+			<h2>3. Paste this into your site</h2>
+			<div class="card">
+				<label for="sitekey-input">Your site key</label>
+				<input
+					id="sitekey-input"
+					type="text"
+					placeholder="0x4AAAAAAA..."
+					oninput="updateSnippet()"
+				/>
+				<label for="snippet" style="margin-top: 16px;">HTML to paste</label>
+				<pre id="snippet">&lt;!-- enter your site key above to generate the snippet --&gt;</pre>
+				<button class="secondary" id="copy-snippet">Copy snippet</button>
+			</div>
+
+			<h2>Next</h2>
+			<p>
+				Open your site in a browser. Solve the Turnstile widget. Confirm the
+				form submission lands at your Worker and that the network response
+				includes <code>"success": true</code>.
+			</p>
+			<p class="muted" style="font-size: 13px;">
+				If you have a codebase and a coding agent, the AI agent path is faster.
+				See <a href="https://developers.cloudflare.com/turnstile/spin/">developers.cloudflare.com/turnstile/spin</a>.
+			</p>
+		</main>
+
+		<script>
+			const workerUrl = window.location.origin;
+			document.getElementById("worker-url").value = workerUrl;
+
+			document.getElementById("copy-worker").onclick = () => {
+				navigator.clipboard.writeText(workerUrl);
+			};
+
+			fetch(workerUrl + "/health")
+				.then((r) => r.json())
+				.then((j) => {
+					const el = document.getElementById("health-status");
+					if (j.ok) {
+						el.className = "status ok";
+						el.innerHTML =
+							"&#10003; Worker is healthy (version " +
+							j.version +
+							")";
+					} else {
+						el.className = "status err";
+						el.textContent = "Health check returned a non-ok response.";
+					}
+				})
+				.catch((e) => {
+					const el = document.getElementById("health-status");
+					el.className = "status err";
+					el.textContent = "Could not reach /health: " + e.message;
+				});
+
+			function updateSnippet() {
+				const sitekey =
+					document.getElementById("sitekey-input").value.trim() ||
+					"YOUR_SITEKEY";
+				const html = [
+					'<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></sc' +
+						"ript>",
+					"",
+					'<form action="' + workerUrl + '/" method="POST">',
+					'    <div class="cf-turnstile"',
+					'         data-sitekey="' + sitekey + '"',
+					'         data-action="turnstile-spin-v1"></div>',
+					'    <button type="submit">Submit</button>',
+					"</form>",
+				].join("\n");
+				document.getElementById("snippet").textContent = html;
+			}
+
+			document.getElementById("copy-snippet").onclick = () => {
+				navigator.clipboard.writeText(
+					document.getElementById("snippet").textContent,
+				);
+			};
+
+			updateSnippet();
+		</script>
+	</body>
+</html>

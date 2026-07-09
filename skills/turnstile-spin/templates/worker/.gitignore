@@ -1,0 +1,9 @@
+node_modules/
+.dev.vars
+.wrangler/
+.dist/
+.vitest-cache/
+*.log
+.DS_Store
+.env
+.env.local

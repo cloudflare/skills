@@ -9,7 +9,7 @@ export class ImageProcessingWorkflow extends WorkflowEntrypoint<Env, Params> {
     const description = await step.do('generate description', async () => 
       await this.env.AI.run('@cf/llava-hf/llava-1.5-7b-hf', {image: Array.from(new Uint8Array(imageData)), prompt: 'Describe this image', max_tokens: 50})
     );
-    await step.waitForEvent('await approval', { event: 'approved', timeout: '24h' });
+    await step.waitForEvent('await approval', { type: 'approved', timeout: '24h' });
     await step.do('publish', async () => await this.env.BUCKET.put(`public/${event.payload.imageKey}`, imageData));
   }
 }
@@ -68,7 +68,7 @@ export class ApprovalWorkflow extends WorkflowEntrypoint<Env, Params> {
   async run(event, step) {
     await step.do('create approval', async () => await this.env.DB.prepare('INSERT INTO approvals (id, user_id, status) VALUES (?, ?, ?)').bind(event.instanceId, event.payload.userId, 'pending').run());
     try {
-      const approval = await step.waitForEvent<{ approved: boolean }>('wait for approval', { event: 'approval-response', timeout: '48h' });
+      const approval = await step.waitForEvent<{ approved: boolean }>('wait for approval', { type: 'approval-response', timeout: '48h' });
       if (approval.approved) { await step.do('process approval', async () => {}); } 
       else { await step.do('handle rejection', async () => {}); }
     } catch (e) {
@@ -124,7 +124,7 @@ await introspector.modify(async (m) => {
 4. **Return state**: Persist via step returns, not variables
 5. **Always await**: `await step.do()`, avoid dangling promises
 6. **Deterministic conditionals**: Base on `event.payload` or step outputs
-7. **Store large data externally**: R2/KV for >1 MiB, return refs
+7. **Store large data externally**: R2/KV for data exceeding step return limit, return refs
 8. **Batch creation**: `createBatch()` for multiple instances
 
 ### ❌ DON'T

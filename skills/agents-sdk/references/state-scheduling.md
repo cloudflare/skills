@@ -1,6 +1,6 @@
 # State & Scheduling
 
-Fetch `docs/state.md` and `docs/scheduling.md` from `https://github.com/cloudflare/agents/tree/main/docs` for complete documentation.
+Fetch https://developers.cloudflare.com/agents/api-reference/store-and-sync-state/ and https://developers.cloudflare.com/agents/api-reference/schedule-tasks/ for complete documentation.
 
 ## State Management
 
@@ -134,6 +134,13 @@ async sendGreeting(payload: { to: string }, schedule: Schedule) {
 const schedules = this.getSchedules();
 const crons = this.getSchedules({ type: "cron" });
 await this.cancelSchedule(schedule.id);
+```
+
+### Retry on Schedules
+
+```typescript
+await this.schedule(60, "task", payload, { retry: { maxAttempts: 3 } });
+await this.scheduleEvery(30, "poll", undefined, { retry: { maxAttempts: 2 } });
 ```
 
 ## Lifecycle Callbacks

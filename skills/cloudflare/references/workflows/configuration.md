@@ -6,7 +6,7 @@
 {
   "name": "my-worker",
   "main": "src/index.ts",
-  "compatibility_date": "2025-01-01",  // Use current date for new projects
+  "compatibility_date": "2025-01-01",  // Minimum 2024-10-22 required for Workflows bindings
   "observability": {
     "enabled": true  // Enables Workflows dashboard + structured logs
   },
@@ -14,12 +14,13 @@
     {
       "name": "my-workflow",           // Workflow name
       "binding": "MY_WORKFLOW",        // Env binding
-      "class_name": "MyWorkflow"      // TS class name
+      "class_name": "MyWorkflow",      // TS class name
       // "script_name": "other-worker" // For cross-script calls
+      // "limits": { "steps": 25000 }  // Optional: max steps per instance (check docs for default/max per plan)
     }
   ],
   "limits": {
-    "cpu_ms": 300000  // 5 min max (default 30s)
+    "cpu_ms": 300000  // Check docs for default and max CPU time per plan
   }
 }
 ```
@@ -33,11 +34,11 @@ const data = await step.do('step name', async () => ({ result: 'value' }));
 // With retry config
 await step.do('api call', {
   retries: {
-    limit: 10,              // Default: 5, or Infinity
-    delay: '10 seconds',    // Default: 10000ms
+    limit: 10,              // Accepts number or Infinity
+    delay: '10 seconds',    // Accepts number (ms) or duration string
     backoff: 'exponential'  // constant | linear | exponential
   },
-  timeout: '30 minutes'     // Per-attempt timeout (default: 10min)
+  timeout: '30 minutes'     // Per-attempt timeout
 }, async () => {
   const res = await fetch('https://api.example.com/data');
   if (!res.ok) throw new Error('Failed');

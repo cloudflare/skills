@@ -1,6 +1,6 @@
 # Workflows Integration
 
-Fetch `docs/workflows.md` from `https://github.com/cloudflare/agents/tree/main/docs` for complete documentation.
+Fetch https://developers.cloudflare.com/agents/api-reference/run-workflows/ for complete documentation.
 
 ## Overview
 
