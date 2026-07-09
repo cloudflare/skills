@@ -1,108 +1,55 @@
 # Dynamic Workers
 
-Spin up isolated Workers at runtime to execute code on-demand in secure V8 isolates. Unlike pre-deployed Workers, Dynamic Workers are created from code strings at request time with no deploy step. If your code needs TypeScript transpilation or npm dependencies, bundle it before loading.
+Dynamic Workers spin up Workers at runtime to execute source code on demand in V8 isolates. Use them when code is supplied at runtime, especially AI-generated or user-provided code that needs fast isolated execution.
 
-> **Retrieval bias**: Your knowledge of Dynamic Workers APIs, limits, and pricing may be outdated. **Prefer retrieval over pre-training** — fetch from [Cloudflare docs](https://developers.cloudflare.com/dynamic-workers/) before citing specific numbers, API signatures, or configuration options. When these reference files and the docs disagree, **trust the docs**.
+Keep this file as a routing and retrieval map. Do not copy API signatures, pricing, limits, compatibility dates, setup examples, or generated template code here; those details drift and must come from the current Cloudflare docs.
 
-**Use cases**: AI agent code execution ("code mode"), generated applications, custom automations, user-uploaded code, rapid prototyping.
+## Official Documentation
 
-## Dynamic Workers vs Other Runtimes
+Start with the docs index, then retrieve only the page that matches the user's task.
 
-| | Dynamic Workers | Workers for Platforms | Sandbox |
-|---|---|---|---|
-| **Runtime** | V8 isolate | V8 isolate | Container (Durable Object) |
-| **When created** | At runtime from code strings | Pre-deployed via API | On first request to DO ID |
-| **Languages** | JS, Python | JS, TS, Python | Any (Dockerfile) |
-| **Code lifecycle** | Loaded from code strings at runtime; `get()` can reuse a stable ID when available | Deployed ahead of time and reused by name | Built as a container image, then started on demand |
-| **Best for** | One-shot code execution, AI agents | Multi-tenant SaaS platforms | Long-running processes, full OS |
+- Docs index for agents: https://developers.cloudflare.com/dynamic-workers/llms.txt
+- Full docs bundle for agents: https://developers.cloudflare.com/dynamic-workers/llms-full.txt
+- Product overview: https://developers.cloudflare.com/dynamic-workers/index.md
+- Getting started and Worker Loader setup: https://developers.cloudflare.com/dynamic-workers/getting-started/index.md
+- API reference for `load`, `get`, and `WorkerCode`: https://developers.cloudflare.com/dynamic-workers/api-reference/index.md
+- Bindings and capability exposure: https://developers.cloudflare.com/dynamic-workers/usage/bindings/index.md
+- Egress control and `globalOutbound`: https://developers.cloudflare.com/dynamic-workers/usage/egress-control/index.md
+- Custom limits: https://developers.cloudflare.com/dynamic-workers/usage/limits/index.md
+- Observability and Tail Workers: https://developers.cloudflare.com/dynamic-workers/usage/observability/index.md
+- Pricing: https://developers.cloudflare.com/dynamic-workers/pricing/index.md
+- Examples: https://developers.cloudflare.com/dynamic-workers/examples/dynamic-workers-starter/index.md
 
-## When to Use Dynamic Workers
+## Quick Routing
 
-- Use Dynamic Workers when code is supplied at runtime and needs to run inside a tightly controlled Worker sandbox.
-- Use `load()` for one-shot or constantly changing code, especially AI-generated code.
-- Use `get(id, callback)` when the same code will receive follow-up requests and you want warm-isolate reuse when available.
-- Prefer Workers for Platforms when tenants deploy versioned Workers you manage as durable platform assets.
-- Prefer Sandbox when code needs a filesystem, long-running processes, custom binaries, or broader OS-level behavior.
+- Dynamic Workers: source strings arrive at runtime and should execute quickly in a Worker isolate.
+- Workers for Platforms: tenants deploy durable/versioned Workers you manage as platform assets.
+- Sandbox: workloads need a full OS, filesystem, packages, long-running processes, or container behavior.
 
-## Safe Starting Point
+## Stable Answer Anchors
 
-- Start with `globalOutbound: null` and only open network access deliberately.
-- Pass narrow RPC bindings through `env` instead of exposing raw bindings or secrets.
-- Set explicit `limits` for CPU time and subrequests when executing untrusted or AI-generated code.
-- Treat in-memory state as ephemeral across requests. If state matters, store it outside the isolate.
+- One-shot generated source: retrieve the current API docs, then use `env.LOADER.load` with a `WorkerCode` object containing `mainModule` and `modules`. Mention `globalOutbound` when discussing egress.
+- Repeated unchanged programs: retrieve the current API docs, then use `env.LOADER.get(id, callback)`. Choose a stable ID such as a version or content hash. Warm/cached isolate reuse is best effort; in-memory state is ephemeral and not durable.
+- Untrusted source: start with `globalOutbound: null`, expose only narrow bindings/RPC capabilities, do not expose raw secrets, and use external storage such as Durable Objects, R2, or D1 for persistence.
 
-## Architecture
+## Drift Boundary
 
-```
-Request → Loader Worker → env.LOADER.load(code) → Dynamic Worker isolate
-                       → env.LOADER.get(id, cb)  → Cached Dynamic Worker
-```
+Safe to keep local:
 
-- **Loader Worker**: Your deployed Worker with a `worker_loaders` binding
-- **Dynamic Worker**: Ephemeral V8 isolate created from code you provide
-- **Capability-based security**: Dynamic Workers only access what you pass via `env` (RPC stubs, not raw bindings)
-- **Network control**: `globalOutbound` controls all egress (block, intercept, or inherit)
+- Product routing: when to choose Dynamic Workers instead of Workers for Platforms or Sandbox.
+- Retrieval order: docs index first, then task-specific docs.
+- Stable product vocabulary: Worker Loader binding, `load`, `get`, `WorkerCode`, bindings, egress control, limits, observability.
 
-## Two Loading Modes
+Always retrieve from docs before answering:
 
-**`load(code)`** — Fresh isolate every time. Best for one-shot AI-generated code.
+- Exact `wrangler` configuration fields, binding shapes, API signatures, module formats, language support, examples, limits, pricing, account requirements, compatibility flags, and release timing.
 
-**`get(id, callback)`** — Cached by ID across requests. Callback runs only when isolate isn't warm. Best for apps receiving repeated traffic.
+## Retrieval Checklist
 
-## Quick Start
+When answering, retrieve the current docs and confirm only what the user needs:
 
-**wrangler.jsonc**:
-```jsonc
-{
-  "name": "my-dynamic-worker",
-  "main": "src/index.ts",
-  "compatibility_date": "2026-04-22", // Use current date for new projects
-  "compatibility_flags": ["nodejs_compat"],
-  "worker_loaders": [{ "binding": "LOADER" }]
-}
-```
-
-**src/index.ts**:
-```typescript
-export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
-    const worker = env.LOADER.load({
-      compatibilityDate: "2026-04-22", // Use a current compatibility date
-      mainModule: "worker.js",
-      modules: {
-        "worker.js": `
-          export default {
-            fetch(request) {
-              return new Response("Hello from a dynamic Worker!");
-            }
-          };
-        `
-      },
-      globalOutbound: null, // Block all network access
-      limits: { cpuMs: 50, subRequests: 20 }
-    });
-
-    return worker.getEntrypoint().fetch(request);
-  }
-} satisfies ExportedHandler<Env>;
-```
-
-## Core APIs
-
-- `env.LOADER.load(code)` → Create fresh Dynamic Worker
-- `env.LOADER.get(id, callback)` → Load or reuse cached Dynamic Worker
-- `worker.getEntrypoint()` → Access default export (fetch, RPC methods)
-- `worker.getEntrypoint(name)` → Access named entrypoint
-
-## In This Reference
-- [api.md](./api.md) — WorkerCode object, module types, RPC bindings, helper libraries
-- [configuration.md](./configuration.md) — Wrangler config, bundling, observability setup
-- [patterns.md](./patterns.md) — Code mode, credential injection, real-time logging, OpenAPI wrapping
-- [gotchas.md](./gotchas.md) — Common errors, safe defaults, and live docs to retrieve pricing and limits
-
-## See Also
-- [agents-sdk](../agents-sdk/) — Agents SDK (codemode, `createCodeTool()`, AI chat agents)
-- [workers-for-platforms](../workers-for-platforms/) — Pre-deployed multi-tenant Workers
-- [sandbox](../sandbox/) — Container-based isolated execution
-- [workers](../workers/) — Standard Workers fundamentals
-- [tail-workers](../tail-workers/) — Log consumption (used for Dynamic Worker observability)
+- `worker_loaders` binding shape and binding name.
+- `env.LOADER.load(code)` for fresh one-shot execution.
+- `env.LOADER.get(id, callback)` for same-code reuse.
+- `WorkerCode` fields such as `mainModule`, `modules`, `globalOutbound`, `env`, `tails`, and `limits`.
+- Supported languages and bundling requirements.

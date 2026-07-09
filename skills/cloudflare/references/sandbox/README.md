@@ -94,4 +94,3 @@ EXPOSE 8080 3000  # Required for wrangler dev
 - [durable-objects](../durable-objects/) - Sandbox runs on DO infrastructure
 - [containers](../containers/) - Container runtime fundamentals
 - [workers](../workers/) - Entry point for sandbox requests
-- [dynamic-workers](../dynamic-workers/) - Lighter-weight alternative (V8 isolates, no container/filesystem)

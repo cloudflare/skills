@@ -1,6 +1,6 @@
 ---
 name: cloudflare
-description: Comprehensive Cloudflare platform skill covering Workers, Pages, storage (KV, D1, R2), AI (Workers AI, Vectorize, Agents SDK), networking (Tunnel, Spectrum), security (WAF, DDoS), and infrastructure-as-code (Terraform, Pulumi). Use for any Cloudflare development task. Biases towards retrieval from Cloudflare docs over pre-trained knowledge.
+description: Comprehensive Cloudflare platform skill covering Workers, Dynamic Workers, Pages, storage (KV, D1, R2), AI (Workers AI, Vectorize, Agents SDK), networking (Tunnel, Spectrum), security (WAF, DDoS), and infrastructure-as-code (Terraform, Pulumi). Use for any Cloudflare development task. Biases towards retrieval from Cloudflare docs over pre-trained knowledge.
 references:
   - workers
   - pages
@@ -40,7 +40,7 @@ Need to run code?
 ├─ Long-running multi-step jobs → workflows/
 ├─ Run containers → containers/
 ├─ Multi-tenant (customers deploy code) → workers-for-platforms/
-├─ Execute AI-generated/untrusted code in V8 isolates → dynamic-workers/
+├─ Execute source supplied at runtime in V8 isolates → dynamic-workers/
 ├─ Scheduled tasks (cron) → cron-triggers/
 ├─ Lightweight edge logic (modify HTTP) → snippets/
 ├─ Process Worker execution events (logs/observability) → tail-workers/
@@ -69,19 +69,9 @@ Need AI?
 ├─ Run inference (LLMs, embeddings, images) → workers-ai/
 ├─ Vector database for RAG/search → vectorize/
 ├─ Build stateful AI agents → agents-sdk/
-├─ Run AI-generated code in a sandbox → dynamic-workers/
+├─ Run AI-generated code in a Worker isolate → dynamic-workers/
 ├─ Gateway for any AI provider (caching, routing) → ai-gateway/
 └─ AI-powered search widget → ai-search/
-```
-
-### "I need to sandbox untrusted code"
-
-```
-Need to sandbox code?
-├─ One-shot/AI-generated code, fast startup (V8 isolate) → dynamic-workers/
-├─ Multi-tenant platform, customers deploy scripts → workers-for-platforms/
-├─ Full OS, filesystem, long-running processes (container) → sandbox/
-└─ Need both isolation + persistent state → sandbox/ (with R2 mounts)
 ```
 
 ### "I need networking/connectivity"

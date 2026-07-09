@@ -175,10 +175,6 @@ See durable-objects skill for full implementation.
 
 Dynamic dispatch sends TWO events per request. Filter by `scriptName` to distinguish dispatch vs user Worker events.
 
-### Dynamic Workers
-
-Dynamic Workers emit tail events via the `tails` property in WorkerCode. See [dynamic-workers patterns](../dynamic-workers/patterns.md) for the real-time log streaming pattern.
-
 ### Error Handling
 
 Always wrap external calls. See gotchas.md for fallback storage pattern.
