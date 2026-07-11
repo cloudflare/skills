@@ -32,7 +32,7 @@ curl -X POST "https://api.cloudflare.com/client/v4/accounts/{account_id}/cfd_tun
   -H "Content-Type: application/json" \
   --data '{
     "name": "my-tunnel",
-    "config_src": "cloudflare"
+    "tunnel_secret": "<base64-secret>"
   }'
 ```
 
@@ -41,7 +41,7 @@ curl -X POST "https://api.cloudflare.com/client/v4/accounts/{account_id}/cfd_tun
 const tunnel = await cf.zeroTrust.tunnels.cloudflared.create({
   account_id: accountId,
   name: 'my-tunnel',
-  config_src: 'cloudflare',
+  tunnel_secret: Buffer.from(crypto.randomBytes(32)).toString('base64'),
 });
 
 console.log(`Tunnel ID: ${tunnel.id}`);
@@ -97,6 +97,22 @@ curl -X PUT "https://api.cloudflare.com/client/v4/accounts/{account_id}/cfd_tunn
       ]
     }
   }'
+```
+
+### TypeScript
+```typescript
+const config = await cf.zeroTrust.tunnels.cloudflared.configurations.update(
+  tunnelId,
+  {
+    account_id: accountId,
+    config: {
+      ingress: [
+        { hostname: 'app.example.com', service: 'http://localhost:8000' },
+        { service: 'http_status:404' },
+      ],
+    },
+  }
+);
 ```
 
 ## Delete Tunnel
