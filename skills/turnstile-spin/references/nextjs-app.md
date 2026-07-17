@@ -30,6 +30,10 @@ export default function SignupPage() {
 		const data = await res.json();
 		if (data.ok) {
 			// proceed
+		} else {
+			// Tokens are single-use. Reset so the user can retry with a fresh one.
+			window.turnstile?.reset();
+			setToken("");
 		}
 	}
 
@@ -118,6 +122,32 @@ import { submitSignup } from "./actions";
 export default function SignupPage() {
 	return (
 		<form action={submitSignup}>
+			<input name="email" type="email" required />
+			<div
+				className="cf-turnstile"
+				data-sitekey="YOUR_SITEKEY"
+				data-action="turnstile-spin-v2"
+			/>
+			<button type="submit">Sign up</button>
+		</form>
+	);
+}
+```
+
+When using Server Actions with a native `<form action={submitSignup}>`, the browser navigates on response and the widget is reset automatically on the next render. If you keep the user on the same page after an action error (via `useActionState`), reset the widget explicitly:
+
+```tsx
+"use client";
+import { useActionState, useEffect } from "react";
+import { submitSignup } from "./actions";
+
+export default function SignupPage() {
+	const [state, action] = useActionState(submitSignup, null);
+	useEffect(() => {
+		if (state?.error) window.turnstile?.reset();
+	}, [state]);
+	return (
+		<form action={action}>
 			<input name="email" type="email" required />
 			<div
 				className="cf-turnstile"

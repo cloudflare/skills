@@ -13,7 +13,7 @@ For static sites or any project without a JS framework. The widget renders clien
 		></script>
 	</head>
 	<body>
-		<form action="/api/subscribe" method="POST">
+		<form id="cf-form" action="/api/subscribe" method="POST">
 			<input name="email" type="email" required />
 			<div
 				class="cf-turnstile"
@@ -22,6 +22,13 @@ For static sites or any project without a JS framework. The widget renders clien
 			></div>
 			<button type="submit">Subscribe</button>
 		</form>
+		<script>
+			// Tokens are single-use. Reset after every submit so a retry
+			// on server-side rejection gets a fresh token.
+			document.getElementById("cf-form").addEventListener("submit", () => {
+				setTimeout(() => window.turnstile?.reset(), 0);
+			});
+		</script>
 	</body>
 </html>
 ```
@@ -85,6 +92,9 @@ If the form is submitted via `fetch` instead of a native form post, the snippet 
 		const json = await res.json();
 		if (json.success) {
 			// proceed
+		} else {
+			// Reset so the user can retry with a fresh token.
+			window.turnstile?.reset();
 		}
 	});
 </script>

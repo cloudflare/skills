@@ -3,6 +3,10 @@
 For SvelteKit projects. The widget renders in the page; siteverify is called from a SvelteKit form action (or a `+server.ts` endpoint) server-side.
 
 ```svelte title="src/routes/signup/+page.svelte"
+<script>
+	import { enhance } from "$app/forms";
+</script>
+
 <svelte:head>
 	<script
 		src="https://challenges.cloudflare.com/turnstile/v0/api.js"
@@ -11,7 +15,19 @@ For SvelteKit projects. The widget renders in the page; siteverify is called fro
 	></script>
 </svelte:head>
 
-<form method="POST">
+<form
+	method="POST"
+	use:enhance={() => {
+		return async ({ result, update }) => {
+			await update();
+			// Tokens are single-use. Reset after each submit so a retry
+			// on failure gets a fresh token.
+			if (result.type !== "redirect") {
+				window.turnstile?.reset();
+			}
+		};
+	}}
+>
 	<input name="email" type="email" required />
 	<div
 		class="cf-turnstile"
@@ -86,6 +102,25 @@ export const POST: RequestHandler = async ({ request, getClientAddress }) => {
 	// process signup
 	return new Response(JSON.stringify({ ok: true }), { status: 200 });
 };
+```
+
+When calling this endpoint from client-side fetch, reset the widget in the error branch:
+
+```svelte
+<script>
+	async function submit(e) {
+		e.preventDefault();
+		const token = new FormData(e.target).get("cf-turnstile-response");
+		const res = await fetch("/api/signup", {
+			method: "POST",
+			body: JSON.stringify({ token }),
+		});
+		if (!res.ok) {
+			window.turnstile?.reset();
+			// surface error
+		}
+	}
+</script>
 ```
 
 ## Substitutions

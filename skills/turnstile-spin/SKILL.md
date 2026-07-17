@@ -142,14 +142,25 @@ Frontend (embeds the widget; submits to the user's existing endpoint):
 ```html
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
-<form action="/signup" method="POST">
+<form action="/signup" method="POST" id="cf-form">
   <!-- existing inputs unchanged -->
   <div class="cf-turnstile" data-sitekey="<SITEKEY>" data-action="turnstile-spin-v2"></div>
   <button type="submit">Sign up</button>
 </form>
+<script>
+  // Turnstile tokens are single-use. If the page does not navigate after
+  // submit (server returned an inline error, client-side validation
+  // caught something), reset the widget so a retry gets a fresh token
+  // instead of being rejected as timeout-or-duplicate.
+  document.getElementById('cf-form').addEventListener('submit', () => {
+    setTimeout(() => window.turnstile?.reset(), 0);
+  });
+</script>
 ```
 
 Backend: use the canonical siteverify fetch from Step 9 inside the existing handler. Read the token from `req.body['cf-turnstile-response']`, gate on `success === true`, and leave the rest of the handler alone. If the existing handler was a stub, Spin leaves it a stub gated on success. The user can replace the stub later; that's not Spin's job.
+
+**Token lifecycle: tokens are single-use.** A `cf-turnstile-response` token is redeemed exactly once at siteverify. If the server rejects (non-2xx or `success: false`), the browser still holds the redeemed token in the DOM; a naive retry submits the same token and Cloudflare's edge rejects the second attempt with `timeout-or-duplicate`. Always call `window.turnstile.reset()` before the user is allowed to retry. The framework references show the per-framework hook (submit listener for native forms, response handler for AJAX/SPA submits, `onError` for React components).
 
 ## Migrating from another CAPTCHA
 

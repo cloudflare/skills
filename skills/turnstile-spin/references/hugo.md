@@ -9,7 +9,7 @@ For Hugo static sites. The widget renders on any page that includes the partial;
 	defer
 ></script>
 
-<form action="{{ .Site.Params.turnstileFormEndpoint }}" method="POST">
+<form id="cf-form" action="{{ .Site.Params.turnstileFormEndpoint }}" method="POST">
 	<input name="email" type="email" required />
 	<div
 		class="cf-turnstile"
@@ -18,6 +18,13 @@ For Hugo static sites. The widget renders on any page that includes the partial;
 	></div>
 	<button type="submit">Subscribe</button>
 </form>
+<script>
+	// Tokens are single-use. Reset after submit so a retry on server
+	// rejection gets a fresh token.
+	document.getElementById("cf-form").addEventListener("submit", () => {
+		setTimeout(() => window.turnstile?.reset(), 0);
+	});
+</script>
 ```
 
 Add the params to your site config:

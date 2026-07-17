@@ -16,7 +16,7 @@ const SITEKEY = import.meta.env.PUBLIC_TURNSTILE_SITEKEY;
 		></script>
 	</head>
 	<body>
-		<form action="/api/signup" method="POST">
+		<form id="cf-form" action="/api/signup" method="POST">
 			<input name="email" type="email" required />
 			<div
 				class="cf-turnstile"
@@ -25,6 +25,13 @@ const SITEKEY = import.meta.env.PUBLIC_TURNSTILE_SITEKEY;
 			/>
 			<button type="submit">Sign up</button>
 		</form>
+		<script>
+			// Tokens are single-use. Reset after submit so a retry on server
+			// rejection gets a fresh token.
+			document.getElementById("cf-form")!.addEventListener("submit", () => {
+				setTimeout(() => (window as any).turnstile?.reset(), 0);
+			});
+		</script>
 	</body>
 </html>
 ```
@@ -95,6 +102,22 @@ export const server = {
 		},
 	}),
 };
+```
+
+If the action throws (via `throw new Error(...)` or an action error) and the client stays on the page, reset the widget in the client-side error handler:
+
+```astro
+<script>
+	import { actions } from "astro:actions";
+	document.querySelector("form")!.addEventListener("submit", async (e) => {
+		e.preventDefault();
+		const form = e.currentTarget as HTMLFormElement;
+		const { error } = await actions.signup(new FormData(form));
+		if (error) {
+			(window as any).turnstile?.reset();
+		}
+	});
+</script>
 ```
 
 ## Substitutions

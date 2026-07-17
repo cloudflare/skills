@@ -9,7 +9,7 @@ export default function SignupPage() {
 	return (
 		<>
 			<Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" />
-			<form action="/api/signup" method="POST">
+			<form id="cf-form" action="/api/signup" method="POST">
 				<input name="email" type="email" required />
 				<div
 					className="cf-turnstile"
@@ -18,10 +18,19 @@ export default function SignupPage() {
 				/>
 				<button type="submit">Sign up</button>
 			</form>
+			<Script id="cf-reset" strategy="afterInteractive">
+				{`
+					document.getElementById('cf-form').addEventListener('submit', () => {
+						setTimeout(() => window.turnstile?.reset(), 0);
+					});
+				`}
+			</Script>
 		</>
 	);
 }
 ```
+
+Tokens are single-use. If the API route returns 403 and your client stays on the page (e.g. renders an inline error), the reset script above ensures the next submit gets a fresh token. If you handle the response client-side with `fetch` instead of native form submit, call `window.turnstile.reset()` in the error branch instead of relying on the submit listener.
 
 API route (canonical siteverify):
 
