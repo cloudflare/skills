@@ -9,22 +9,15 @@ For Hugo static sites. The widget renders on any page that includes the partial;
 	defer
 ></script>
 
-<form id="cf-form" action="{{ .Site.Params.turnstileFormEndpoint }}" method="POST">
+<form action="{{ .Site.Params.turnstileFormEndpoint }}" method="POST">
 	<input name="email" type="email" required />
 	<div
 		class="cf-turnstile"
 		data-sitekey="{{ .Site.Params.turnstileSitekey }}"
-		data-action="turnstile-spin-v2"
+		data-action="subscribe"
 	></div>
 	<button type="submit">Subscribe</button>
 </form>
-<script>
-	// Tokens are single-use. Reset after submit so a retry on server
-	// rejection gets a fresh token.
-	document.getElementById("cf-form").addEventListener("submit", () => {
-		setTimeout(() => window.turnstile?.reset(), 0);
-	});
-</script>
 ```
 
 Add the params to your site config:
@@ -52,6 +45,16 @@ export async function onRequestPost({ request, env }) {
 	const form = await request.formData();
 	const token = form.get("cf-turnstile-response");
 
+	const expectedHostnames = new Set(
+		(env.TURNSTILE_HOSTNAMES ?? "")
+			.split(",")
+			.map((h) => h.trim())
+			.filter(Boolean),
+	);
+	if (expectedHostnames.size === 0) {
+		return new Response("forbidden", { status: 403 });
+	}
+
 	const r = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
 		method: "POST",
 		headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -61,15 +64,24 @@ export async function onRequestPost({ request, env }) {
 			remoteip: request.headers.get("CF-Connecting-IP"),
 		}),
 	});
-	const { success } = await r.json();
-	if (!success) return new Response("forbidden", { status: 403 });
+	const result = await r.json();
+	if (
+		r.ok !== true ||
+		result.success !== true ||
+		result.action !== "subscribe" ||
+		!expectedHostnames.has(result.hostname)
+	) {
+		return new Response("forbidden", { status: 403 });
+	}
 
 	// process subscribe
 	return new Response("ok");
 }
 ```
 
-Set the secret with `npx wrangler pages secret put TURNSTILE_SECRET` (or via the dashboard's Pages → your project → Settings → Environment variables → Add secret).
+`subscribe` is the stable action for this surface. Preserve an existing custom migration action and compare the returned action to the same value. Siteverify is mandatory for every widget mode, including pre-clearance. Set `TURNSTILE_HOSTNAMES` to the deployment-specific frontend hostnames; a production value must not include `localhost` or `127.0.0.1`.
+
+After the user approves a canonical absolute `WRANGLER_BIN` outside the project, set the secret with `(set +x; printf '%s' "$WIDGET_SECRET" | "$WRANGLER_BIN" pages secret put TURNSTILE_SECRET)` (or use the dashboard's Pages → your project → Settings → Environment variables → Add secret).
 
 **External backend**: any Node/Ruby/Python/Go handler can do the same call. See the [vanilla-html reference](./vanilla-html.md) for non-Cloudflare-specific snippets.
 

@@ -9,39 +9,42 @@ export default function SignupPage() {
 	return (
 		<>
 			<Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" />
-			<form id="cf-form" action="/api/signup" method="POST">
+			<form action="/api/signup" method="POST">
 				<input name="email" type="email" required />
 				<div
 					className="cf-turnstile"
 					data-sitekey="YOUR_SITEKEY"
-					data-action="turnstile-spin-v2"
+					data-action="signup"
 				/>
 				<button type="submit">Sign up</button>
 			</form>
-			<Script id="cf-reset" strategy="afterInteractive">
-				{`
-					document.getElementById('cf-form').addEventListener('submit', () => {
-						setTimeout(() => window.turnstile?.reset(), 0);
-					});
-				`}
-			</Script>
 		</>
 	);
 }
 ```
 
-Tokens are single-use. If the API route returns 403 and your client stays on the page (e.g. renders an inline error), the reset script above ensures the next submit gets a fresh token. If you handle the response client-side with `fetch` instead of native form submit, call `window.turnstile.reset()` in the error branch instead of relying on the submit listener.
+This native form navigates to the API response, so it does not need client-side reset code.
 
 API route (canonical siteverify):
 
 ```ts title="pages/api/signup.ts"
 import type { NextApiRequest, NextApiResponse } from "next";
 
+const expectedHostnames = new Set(
+	(process.env.TURNSTILE_HOSTNAMES ?? "")
+		.split(",")
+		.map((h) => h.trim())
+		.filter(Boolean),
+);
+
 export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse,
 ) {
 	const token = req.body["cf-turnstile-response"] ?? req.body.token;
+	if (expectedHostnames.size === 0) {
+		return res.status(403).json({ error: "Verification failed" });
+	}
 	const remoteip =
 		(req.headers["x-forwarded-for"] as string | undefined)?.split(",")[0] ??
 		req.socket.remoteAddress;
@@ -55,14 +58,21 @@ export default async function handler(
 			...(remoteip ? { remoteip } : {}),
 		}),
 	});
-	const data = await verify.json();
-	if (!data.success) {
+	const result = await verify.json();
+	if (
+		verify.ok !== true ||
+		result.success !== true ||
+		result.action !== "signup" ||
+		!expectedHostnames.has(result.hostname)
+	) {
 		return res.status(403).json({ error: "Verification failed" });
 	}
 	// process signup
 	return res.json({ ok: true });
 }
 ```
+
+`signup` is the stable action for this surface. Preserve an existing custom migration action and compare the returned action to the same value. Siteverify is mandatory for every widget mode, including pre-clearance. Set `TURNSTILE_HOSTNAMES` to the deployment-specific frontend hostnames; a production value must not include `localhost` or `127.0.0.1`.
 
 ## Substitutions
 

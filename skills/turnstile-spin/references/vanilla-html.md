@@ -13,22 +13,15 @@ For static sites or any project without a JS framework. The widget renders clien
 		></script>
 	</head>
 	<body>
-		<form id="cf-form" action="/api/subscribe" method="POST">
+		<form action="/api/subscribe" method="POST">
 			<input name="email" type="email" required />
 			<div
 				class="cf-turnstile"
 				data-sitekey="YOUR_SITEKEY"
-				data-action="turnstile-spin-v2"
+				data-action="subscribe"
 			></div>
 			<button type="submit">Subscribe</button>
 		</form>
-		<script>
-			// Tokens are single-use. Reset after every submit so a retry
-			// on server-side rejection gets a fresh token.
-			document.getElementById("cf-form").addEventListener("submit", () => {
-				setTimeout(() => window.turnstile?.reset(), 0);
-			});
-		</script>
 	</body>
 </html>
 ```
@@ -41,6 +34,14 @@ Add this to your existing `/api/subscribe` handler before the rest of its logic:
 
 ```js
 // Node / fetch idiom
+const expectedHostnames = new Set(
+	(process.env.TURNSTILE_HOSTNAMES ?? '')
+		.split(',')
+		.map((h) => h.trim())
+		.filter(Boolean),
+);
+if (expectedHostnames.size === 0) return res.status(403).end();
+
 const token = req.body['cf-turnstile-response'];
 const r = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
 	method: 'POST',
@@ -51,53 +52,92 @@ const r = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify
 		remoteip: req.ip,
 	}),
 });
-const { success } = await r.json();
-if (!success) return res.status(403).end();
+const result = await r.json();
+if (
+	r.ok !== true ||
+	result.success !== true ||
+	result.action !== 'subscribe' ||
+	!expectedHostnames.has(result.hostname)
+) {
+	return res.status(403).end();
+}
 // existing handler logic runs here
 ```
 
-Equivalent calls in other backend languages:
+Equivalent calls in other backend languages (each also compares `result.hostname` to a `TURNSTILE_HOSTNAMES` allowlist):
 
 ```ruby
 # Ruby
-require 'net/http'; require 'uri'; require 'json'
+require 'net/http'; require 'uri'; require 'json'; require 'set'
+expected_hostnames = (ENV['TURNSTILE_HOSTNAMES'] || '').split(',').map(&:strip).reject(&:empty?).to_set
+halt 403 if expected_hostnames.empty?
 res = Net::HTTP.post_form(URI('https://challenges.cloudflare.com/turnstile/v0/siteverify'),
   secret: ENV['TURNSTILE_SECRET'], response: params['cf-turnstile-response'], remoteip: request.ip)
-halt 403 unless JSON.parse(res.body)['success']
+result = JSON.parse(res.body)
+halt 403 unless res.is_a?(Net::HTTPSuccess) && result['success'] == true && result['action'] == 'subscribe' && expected_hostnames.include?(result['hostname'])
 ```
 
 ```python
 # Python (requests)
+expected_hostnames = {h.strip() for h in os.environ.get('TURNSTILE_HOSTNAMES', '').split(',') if h.strip()}
+if not expected_hostnames:
+    return '', 403
 r = requests.post('https://challenges.cloudflare.com/turnstile/v0/siteverify',
     data={'secret': os.environ['TURNSTILE_SECRET'],
           'response': form['cf-turnstile-response'],
           'remoteip': request.remote_addr})
-if not r.json()['success']:
+result = r.json()
+if (not r.ok or result.get('success') is not True or result.get('action') != 'subscribe'
+        or result.get('hostname') not in expected_hostnames):
     return '', 403
 ```
 
+`subscribe` is the stable action for this surface. Preserve an existing custom migration action and compare the returned action to the same value. Siteverify is mandatory for every widget mode, including pre-clearance. Set `TURNSTILE_HOSTNAMES` to the deployment-specific frontend hostnames; a production value must not include `localhost` or `127.0.0.1`.
+
 ## Variant: AJAX submit instead of form action
 
-If the form is submitted via `fetch` instead of a native form post, the snippet still works. The widget div populates a hidden `cf-turnstile-response` input that you can read from `new FormData(form)`.
+For an AJAX flow, replace the native form and API script with explicit rendering. Keep this surface's widget ID and reset it in `finally`, which covers network, JSON, validation, and server failures as well as successful same-page completion.
 
 ```html
+<form id="subscribe-form">
+	<input name="email" type="email" required />
+	<div id="subscribe-turnstile"></div>
+	<button type="submit">Subscribe</button>
+</form>
 <script>
-	document.querySelector("form").addEventListener("submit", async (e) => {
-		e.preventDefault();
-		const data = new FormData(e.target);
-		const res = await fetch("/api/subscribe", {
-			method: "POST",
-			body: data,
+	let subscribeWidgetId;
+
+	window.onSubscribeTurnstileLoad = () => {
+		subscribeWidgetId = window.turnstile.render("#subscribe-turnstile", {
+			sitekey: "YOUR_SITEKEY",
+			action: "subscribe",
 		});
-		const json = await res.json();
-		if (json.success) {
+	};
+
+	document.getElementById("subscribe-form").addEventListener("submit", async (event) => {
+		event.preventDefault();
+		try {
+			const res = await fetch("/api/subscribe", {
+				method: "POST",
+				body: new FormData(event.currentTarget),
+			});
+			const json = await res.json();
+			if (!res.ok || json.ok !== true) throw new Error("Submission failed");
 			// proceed
-		} else {
-			// Reset so the user can retry with a fresh token.
-			window.turnstile?.reset();
+		} catch {
+			// surface the error
+		} finally {
+			if (subscribeWidgetId !== undefined) {
+				window.turnstile.reset(subscribeWidgetId);
+			}
 		}
 	});
 </script>
+<script
+	src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onSubscribeTurnstileLoad&render=explicit"
+	async
+	defer
+></script>
 ```
 
 ## No backend?
