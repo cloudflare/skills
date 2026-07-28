@@ -86,4 +86,4 @@ export class MyAgent extends Agent<Env> {
 - durable-objects - Agent infrastructure
 - d1 - External database integration
 - workers-ai - AI model integration
-- vectorize - Vector search for RAG patterns
+- ai-search - Managed search/RAG

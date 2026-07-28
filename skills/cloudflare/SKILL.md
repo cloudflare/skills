@@ -1,6 +1,6 @@
 ---
 name: cloudflare
-description: Comprehensive Cloudflare platform skill covering Workers, Pages, storage (KV, D1, R2), AI (Workers AI, Vectorize, Agents SDK), feature flags (Flagship), networking (Tunnel, Spectrum), security (WAF, DDoS), and infrastructure-as-code (Terraform, Pulumi). Use for any Cloudflare development task. Biases towards retrieval from Cloudflare docs over pre-trained knowledge.
+description: Comprehensive Cloudflare platform skill covering Workers, Pages, storage (KV, D1, R2), AI (Workers AI, AI Search, Vectorize, Agents SDK, AI Gateway), feature flags (Flagship), networking (Tunnel, Spectrum), security (WAF, DDoS), and infrastructure-as-code (Terraform, Pulumi). Use for any Cloudflare development task. Biases towards retrieval from Cloudflare docs over pre-trained knowledge.
 references:
   - workers
   - pages
@@ -65,7 +65,8 @@ Need storage?
 ├─ Object/file storage (S3-compatible) → r2/
 ├─ Versioned file trees (repos, build outputs, checkpoints) → artifacts/
 ├─ Message queue (async processing) → queues/
-├─ Vector embeddings (AI/semantic search) → vectorize/
+├─ Searchable documents / knowledge base (managed RAG) → ai-search/
+├─ Raw vector embeddings you compute yourself → vectorize/
 ├─ Strongly-consistent per-entity state → durable-objects/ (DO storage)
 ├─ Secrets management → secrets-store/
 ├─ Streaming ETL to R2 → pipelines/
@@ -78,11 +79,12 @@ Need storage?
 
 ```
 Need AI?
+
 ├─ Run inference (LLMs, embeddings, images) → workers-ai/
-├─ Vector database for RAG/search → vectorize/
 ├─ Build stateful AI agents → agents-sdk/
-├─ Gateway for any AI provider (caching, routing) → ai-gateway/
-└─ AI-powered search widget → ai-search/
+├─ Search/RAG over your own content → ai-search/
+├─ Vector database for RAG/search → vectorize/
+└─ AI Gateway for any AI provider (caching, routing, multi-provider) → ai-gateway/
 ```
 
 ### "I need networking/connectivity"
