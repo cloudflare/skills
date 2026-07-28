@@ -2,7 +2,7 @@
 
 ## The legacy binding trap
 
-Most AI Search code in circulation, including model pretraining, predates the current API. `env.AI.autorag(...)`, `aiSearch()`, a `data[]` response, or `{ column, operator, value }` filters are all the legacy AutoRAG surface. It works indefinitely but receives no new features: no namespaces, Items API, hybrid search, boosting, cross-instance search, or `scoring_details`.
+Most AI Search code in circulation, including model pretraining, predates the current API. `env.AI.autorag(...)`, `aiSearch()`, a `data[]` response, or `{ type, key, value }` filters are all the legacy AutoRAG surface. It works indefinitely but receives no new features: no namespaces, Items API, hybrid search, boosting, cross-instance search, or `scoring_details`.
 
 | Legacy | Current |
 |--------|---------|
@@ -152,6 +152,8 @@ await instance.items.list({ status: "skipped" });  // filtered out or unsupporte
 ```
 
 **Check whether the code is item-level or instance-level before debugging the document.** Item-level codes (`over_size`, `unsupported_type`, `blocked_by_robots_txt`) fail one item. Instance-level codes (`bucket_unauthorized`, `external_source_missing_api_token`, `hybrid_search_is_full`) **pause indexing for the whole instance**. Both tiers are listed in [indexing error codes](https://developers.cloudflare.com/ai-search/troubleshooting/indexing-error-codes/).
+
+**`retrieval.return_on_failure` defaults to true**, so a retrieval failure returns empty results instead of throwing. Zero chunks can mean the query failed, not that nothing matched.
 
 A crawl that indexes nothing is usually bot protection rather than your path patterns: allow the `Cloudflare-AI-Search` user agent, renamed from `Cloudflare-AutoRAG`.
 

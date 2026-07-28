@@ -228,15 +228,15 @@ Text and boolean fields accept only `exists` / `not_exists`. Boosting runs after
 
 ## Failure surfaces
 
-The binding throws, and the class depends on the upstream HTTP status:
+The binding throws. Narrow on `err.name`, keyed to the upstream HTTP status:
 
-| Status | Class | Do |
+| Status | `err.name` | Do |
 |---|---|---|
 | 404 | `AiSearchNotFoundError` | Fix the instance or namespace name. Do not retry |
 | 5xx | `AiSearchInternalError` | Retry |
-| other | `AiSearchError` | Inspect `message` |
+| other | `AiSearchError` | Read `message`. Do not retry blind |
 
-**Narrow on `err.name`, not `instanceof`.** `message` carries the AI Search error string (`ai_search_not_found`, `namespace_not_found`), and numeric codes are in [API error codes](https://developers.cloudflare.com/ai-search/troubleshooting/api-error-codes/). The legacy `AutoRAGNotFoundError` family is not thrown here.
+**Use `err.name`, not `instanceof`.** These are type declarations, not exported runtime classes, so there is no constructor to compare against. `message` carries the AI Search error string (`ai_search_not_found`, `namespace_not_found`), and numeric codes are in [API error codes](https://developers.cloudflare.com/ai-search/troubleshooting/api-error-codes/). The legacy `AutoRAGNotFoundError` family is not thrown here.
 
 Four failures that do **not** throw:
 
