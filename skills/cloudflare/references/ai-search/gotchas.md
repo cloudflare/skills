@@ -17,7 +17,8 @@ Most AI Search code in circulation, including model pretraining, predates the cu
 | `data[].attributes.modified_date` | `chunks[].item.timestamp` |
 | top-level `filters` | `ai_search_options.retrieval.filters` |
 | `eq` / `gte` / `and` / `or` | `$eq` / `$gte`, implicit AND, no compound keys |
-| `ranking_options.score_threshold` | request-level match threshold under `retrieval` |
+| `ranking_options.score_threshold` | `retrieval.match_threshold` per request, `score_threshold` on the instance |
+| `hybrid_search_enabled` | `index_method: { vector, keyword }` (the old flag is deprecated) |
 | `env.AI.autorag("_").listInstances()` | `env.AI_SEARCH.list()` |
 | `/autorag/rags/{name}/ai-search` | `/ai-search/instances/{id}/search` |
 | `AutoRAGNotFoundError` etc. | `AiSearchNotFoundError` / `AiSearchInternalError` / `AiSearchError`, narrowed on `err.name` |
@@ -102,19 +103,6 @@ await instance.update({ index_method: { vector: true, keyword: true } });
 
 Changing `index_method` triggers a full reindex, and neither `keyword` nor `hybrid` returns a single keyword match until it finishes. Confirm it is live by reading `scoring_details.keyword_score` off a real query.
 
-## Defaults that changed
-
-Old values are listed because they are what you will find in existing code. Read current values off `instance.info()`.
-
-| Setting | Old value you may be carrying | What to do |
-|---------|-------------------------------|------------|
-| Score threshold | `0.3` | Delete the explicit value, re-tune from the current default |
-| Max results | `10`, capped at `20` | The cap is higher now; stop assuming 20 |
-| Response caching | did not exist | Now on by default; assume you are reading cache |
-| Instances per account | `10` | Far higher now |
-| Files per instance | `100,000` as one universal cap | Now the Free ceiling; Paid is far higher |
-| Sync interval | fixed `6 h` | Configurable, and irrelevant for built-in storage |
-
 ## Limits
 
 **Do not pin numeric limits from memory or from these files.** Read the [platform limits](https://developers.cloudflare.com/ai-search/platform/limits-pricing/). The ones that change a design:
@@ -130,7 +118,7 @@ Old values are listed because they are what you will find in existing code. Read
 
 ### Hybrid search lowers the file ceiling
 
-**An instance holds fewer files with hybrid search than with vector alone: on Paid, half as many.** `update()` accepts the change without warning, and the shortfall appears as documents that stop getting indexed once the reindex passes the lower ceiling. Hybrid is a capacity decision, not only a relevance one.
+**An instance holds fewer files with hybrid search than with vector alone** `update()` accepts the change without warning, and the shortfall appears as documents that stop getting indexed once the reindex passes the lower ceiling. Hybrid is a capacity decision, not only a relevance one.
 
 - A corpus sized against the vector-only ceiling may not fit once hybrid is on. Check `stats()` against the current limits first.
 - If you need both hybrid and the full ceiling, split the corpus across instances and use [cross-instance search](api.md#cross-instance-search).

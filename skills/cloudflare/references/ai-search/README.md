@@ -112,7 +112,7 @@ Details in [configuration.md](./configuration.md#data-sources).
 
 ## When to Use Something Else
 
-**Skip AI Search when** the corpus is small and structured enough that ordinary querying wins: a few dozen rows in [d1](../d1/), exact-key lookup in [kv](../kv/). Semantic retrieval is the wrong tool for "fetch the record with this ID."
+**Skip AI Search when** the corpus is small and structured enough that ordinary querying wins.
 
 **Use [vectorize](../vectorize/) instead when** you need your own chunking or embeddings, or vectors not derived from documents (image embeddings, user-preference vectors, recommendation features).
 

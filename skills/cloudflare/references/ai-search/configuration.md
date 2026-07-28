@@ -1,12 +1,8 @@
 # AI Search Configuration
 
-Almost every instance setting is changeable later with `update()`. This file covers the ones that are not, and the settings where the default or the docs will mislead you. Runtime traps are in [gotchas.md](gotchas.md).
-
 Full option list, current defaults, ranges, and enums: the [configuration docs](https://developers.cloudflare.com/ai-search/configuration/), `instance.info()`, and `npx wrangler ai-search create --help`.
 
 ## Worker setup
-
-**Default to `ai_search_namespaces`.** Switching to it later means a config change, a code change, and a redeploy.
 
 ```jsonc
 // wrangler.jsonc
@@ -26,6 +22,19 @@ const { chunks } = await env.AI_SEARCH.get("my-instance").search({
 });
 ```
 
+**Settings change from the Worker, not just the dashboard.** `update()` takes a partial of the same object `create()` takes, applies only the keys you pass, and returns the instance info that `info()` would return.
+
+```typescript
+const instance = env.AI_SEARCH.get("my-instance");
+
+const info = await instance.update({
+  index_method: { vector: true, keyword: true },
+  retrieval_options: { keyword_match_mode: "and" },
+});
+```
+
+Omitted keys keep their current value, so read before you write only when you need the old value. What `update()` cannot fix is in [Decide before you create](#decide-before-you-create).
+
 - **`compatibility_date` must be at least `2026-03-27`.** An older one leaves the binding `undefined` at runtime, the most common setup failure.
 - `remote: true` proxies `wrangler dev` to the deployed instance. There is no local emulator, so local dev hits real data and real query limits.
 - Every account has a `default` namespace. Wrangler creates any other namespace you name on deploy.
@@ -34,7 +43,7 @@ Use `ai_search` only when the Worker reads exactly one instance that already exi
 
 ## Decide before you create
 
-Surface all four to the user rather than picking silently.
+Surface these to the user rather than picking silently.
 
 **Cannot be changed on an existing instance. Create a new one.**
 
@@ -43,22 +52,28 @@ Surface all four to the user rather than picking silently.
 | **Embedding model** | Different dimensions, different vector space. Existing vectors are not converted, so there is nothing to migrate in place. |
 | **Data source type** | An instance takes built-in storage plus at most one external source. Switching that source type in place is unsupported. |
 
-**`update()` accepts these, but cannot apply them cleanly.**
+**Changing an indexing setting reindexes the whole instance.**
 
-| Decision | What actually happens |
-|----------|-----------------------|
-| **Keyword indexing** (`index_method.keyword`) | Full reindex, and a lower file ceiling. See [Search modes](#search-modes). |
-| **Custom metadata fields** | A new field does not backfill already-indexed items. See [Custom metadata](#custom-metadata). |
+`index_method`, `indexing_options`, and `chunk` / `chunk_size` / `chunk_overlap` are applied to an item when it is indexed, so `update()` resyncs the existing corpus to apply them. 
 
 ## Creating an instance
 
+**Default to built-in storage.** Only `id` is required. Omit `type` and `source` and the instance provisions its own R2 and Vectorize, and you write to it directly.
+
 ```bash
-npx wrangler ai-search create my-instance --type r2 --source my-docs-bucket --hybrid-search
+npx wrangler ai-search create my-instance
 ```
 
 ```typescript
-// requires the namespace binding
-await env.AI_SEARCH.create({ id: "my-instance", type: "r2", source: "my-docs-bucket" });
+// requires the namespace binding; create() returns the instance handle
+const instance = await env.AI_SEARCH.create({ id: "my-instance" });
+await instance.items.upload("faq.md", content);
+```
+
+Add `type` and `source` only to point at content that already lives elsewhere. See [Data sources](#data-sources).
+
+```bash
+npx wrangler ai-search create my-instance --type r2 --source my-docs-bucket --hybrid-search
 ```
 
 IDs are short, lowercase alphanumeric with `-` and `_`. Every ingestion, indexing, retrieval, and model setting is also a `create()` parameter; `create --help` lists current flags and the ambient types give the accepted shape.
@@ -73,15 +88,6 @@ An instance combines built-in storage with **one** external source. Pick by wher
 | Content already sitting in an R2 bucket | **R2** | Hours-scale sync |
 | Content is a website you own | **Website crawl** | Hours-scale sync |
 
-**Built-in storage** is on every instance (R2 and Vectorize, provisioned for you). Nothing to connect, and no sync schedule to design around.
-
-```typescript
-await env.AI_SEARCH.create({ id: "knowledge-base" });   // omit type/source
-await instance.items.upload("faq.md", content);
-```
-
-**R2** is right when the content is already there: point the instance at the existing bucket rather than copying it in, and R2 stays the one write path for content other systems read. Takes `prefix`, `r2_jurisdiction`, and the path filters below.
-
 **R2 is the only data source that needs a service API token**, with both `AI Search:Edit` and `AI Search:Run`. Pass its UUID as `token_id` when creating your first R2-backed instance. An expired token shows up as an instance that silently stops indexing.
 
 **Website crawl** requires a domain you own. Two non-obvious options:
@@ -95,8 +101,6 @@ source_params: {
   },
 }
 ```
-
-Bot protection must allow the `Cloudflare-AI-Search` user agent (renamed from `Cloudflare-AutoRAG`). A crawl that indexes nothing is usually this, not your patterns. Crawled pages land in built-in storage.
 
 Full `source_params`: [Data sources](https://developers.cloudflare.com/ai-search/configuration/data-source/).
 
@@ -126,7 +130,7 @@ include_items: ["**/docs/**"]
 
 **The matched string is shaped differently per source.** R2 patterns run against object paths with a leading slash (`/docs/guide.pdf`). Website patterns run against host-inclusive URLs without the scheme (`example.com/blog/post`), which is why a website pattern almost always needs a leading `**`.
 
-Pattern changes apply to subsequent syncs. To remove already-indexed items, delete them directly. Each list is capped: [Path filtering](https://developers.cloudflare.com/ai-search/configuration/indexing/path-filtering/).
+[Path filtering](https://developers.cloudflare.com/ai-search/configuration/indexing/path-filtering/).
 
 ## Indexing and syncing
 
@@ -140,9 +144,18 @@ npx wrangler ai-search jobs logs <NAME> <JOB-ID>     # what one sync did
 npx wrangler ai-search jobs create <NAME>            # sync now
 ```
 
-**To keep an external source fresh, trigger a job on publish** from CI/CD or a CMS webhook, rather than shortening `sync_interval`. The endpoint is rate-limited, so this is a per-change trigger, not a polling loop.
+The same surface is on the binding, so a webhook handler triggers and inspects syncs without shelling out:
 
-`stats()` is the monitoring surface: counts by state (`queued` / `running` / `completed` / `error` / `skipped` / `outdated`), last activity, embedding errors.
+```typescript
+await instance.jobs.create();                // sync now
+await instance.jobs.list();                  // sync history
+await instance.jobs.get(jobId).logs();       // what one sync did
+await instance.jobs.get(jobId).cancel();     // stop a running sync
+```
+
+**To keep an external source fresh, trigger a job on publish** from a Worker webhook or CI/CD, rather than shortening `sync_interval`. The endpoint is rate-limited, so this is a per-change trigger, not a polling loop.
+
+`stats()` is the monitoring surface: counts by state (`queued` / `running` / `completed` / `error` / `outdated`), last activity, embedding errors.
 
 ## Search modes
 
@@ -162,25 +175,6 @@ await env.AI_SEARCH.create({
 |---------|--------|
 | `keyword_tokenizer` | `trigram` for code, IDs, error strings, substring matching. `porter` (stemming) for prose |
 | `fusion_method` | `rrf` to blend both signals. `max` when one should dominate |
-
-**Enabling keyword indexing triggers a full reindex and lowers the per-instance file ceiling.** Near the file limit, that trade is the decision, not the tokenizer. See [gotchas.md](gotchas.md#hybrid-search-lowers-the-file-ceiling).
-
-## Retrieval options
-
-Instance-wide defaults here, per-request overrides via `ai_search_options`. `info()` shows current settings. What each lever costs:
-
-| Lever | Adds |
-|-------|------|
-| Score threshold, `boost_by` | Nothing. Exhaust these first |
-| `max_num_results`, `context_expansion` | Tokens downstream, if you feed them to a model |
-| `chunk_size` / `chunk_overlap` | A reindex, to change it |
-| Query rewriting | **A model call per query** |
-| Reranking | **A model call per query** |
-| Caching | Nothing, and **on by default** |
-
-**The instance-level threshold and the per-request one are not spelled the same.** Read each name off `info()` and the [search API docs](https://developers.cloudflare.com/ai-search/api/search/) rather than reusing one for the other.
-
-Caching on by default breaks tuning; see [gotchas.md](gotchas.md#silent-failures). `boost_by` has its own traps; see [api.md](api.md#boosting).
 
 ## Models
 

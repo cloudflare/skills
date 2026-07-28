@@ -47,45 +47,6 @@ searchTickets = tool({ description: "Past support tickets and resolutions.", /* 
 
 If corpora overlap, use [cross-instance search](#cross-instance-search) instead.
 
-## RAG where you own generation
-
-One answer, no agent loop, but you keep the prompt, the model choice, and the citation mapping.
-
-```typescript
-const { chunks } = await env.DOCS.search({
-  messages: [{ role: "user", content: question }],
-  ai_search_options: { retrieval: { max_num_results: 8, context_expansion: 1 } },
-});
-
-// Without this the model invents an ungrounded answer.
-if (chunks.length === 0) {
-  return Response.json({ answer: "I don't have information on that.", sources: [] });
-}
-
-const context = chunks.map((c, i) => `[${i + 1}] ${c.item.key}\n${c.text}`).join("\n\n");
-
-// Model IDs change. Read the current list from
-// https://developers.cloudflare.com/workers-ai/models/
-const { response } = await env.AI.run("@cf/zai-org/glm-5.2", {
-  messages: [
-    {
-      role: "system",
-      content:
-        "Answer only from the numbered context below. Cite sources as [n]. " +
-        "If the context does not contain the answer, say so.\n\n" + context,
-    },
-    { role: "user", content: question },
-  ],
-});
-
-return Response.json({
-  answer: response,
-  sources: chunks.map((c, i) => ({ n: i + 1, key: c.item.key, score: c.score })),
-});
-```
-
-`chatCompletions()` will not do the zero-chunk guard for you.
-
 ## Multitenancy
 
 Prefer instance-per-tenant unless tenant count makes it impractical.
@@ -106,20 +67,6 @@ await env.TENANTS.get(`tenant-${tenantId}`).items.upload("welcome.md", welcomeDo
 ```
 
 Instances per account is a plan limit and the Paid ceiling is high; check the [platform limits](https://developers.cloudflare.com/ai-search/platform/limits-pricing/) before ruling this out on tenant count.
-
-### Folder filter in one instance (many small tenants)
-
-Fewer moving parts, and correct only if every query path applies the filter. **One missed filter is a data leak.**
-
-```typescript
-// ❌ bare equality matches only direct children, so this returns nothing
-filters: { folder: `tenants/${tenantId}/` }
-
-// ✅ range query over the subtree
-filters: { folder: { $gte: `tenants/${tenantId}/`, $lt: `tenants/${tenantId}0` } }
-```
-
-Wrap this in one helper that takes `tenantId` as a required argument, and never call `search()` on that instance from anywhere else.
 
 ## Per-agent knowledge isolation
 

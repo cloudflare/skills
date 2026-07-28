@@ -1,23 +1,5 @@
 # AI Search API Reference
 
-## In This File
-
-| You need to | Section |
-|---|---|
-| See create, upload, and search end to end | [Complete example](#complete-example) |
-| Choose between the two bindings | [Bindings](#bindings) |
-| Know what a query returns | [`search()`](#search) |
-| Generate an answer instead of chunks | [`chatCompletions()`](#chatcompletions) |
-| Scope results to a folder, tenant, or date | [Filters](#filters) |
-| Rank fresh or high-priority content higher | [Boosting](#boosting) |
-| Handle errors | [Failure surfaces](#failure-surfaces) |
-| Add, list, or delete documents | [Items API](#items-api) |
-| Create instances at runtime | [Instances API](#instances-api) |
-| Call from outside a Worker | [Beyond the binding](#beyond-the-binding) |
-| Migrate off `env.AI.autorag()` | [Old patterns](#old-patterns) |
-
-Exact signatures and current defaults live in the ambient `AiSearchInstance` / `AiSearchNamespace` types, `npx wrangler ai-search --help`, and [the API docs](https://developers.cloudflare.com/ai-search/api/). Migration and filter traps are in [gotchas.md](gotchas.md).
-
 ## Complete Example
 
 Create, upload, and search through the namespace binding.
@@ -52,7 +34,7 @@ export default {
       return Response.json({ key, status: item.status });
     }
 
-    // Read.
+    // Query. Using the search API to get back a list of relevant chunks.
     const { chunks } = await docs.search({
       messages: [{ role: "user", content: url.searchParams.get("q")! }],
     });
@@ -66,8 +48,6 @@ export default {
   },
 } satisfies ExportedHandler<Env>;
 ```
-
-`create()` is on the namespace handle only, so the per-tenant patterns in [patterns.md](patterns.md#multitenancy) need `ai_search_namespaces`.
 
 ## Bindings
 
@@ -85,7 +65,7 @@ interface Env {
 const instance = env.TENANTS.get("tenant-abc");
 ```
 
-Both handles expose `search()`, `chatCompletions()`, `info()`, `stats()`, `update()`, and `items.*`. The namespace handle adds `get()`, `list()`, `create()`, `delete()`, and cross-instance `search()`.
+Both handles expose `search()`, `chatCompletions()`, `info()`, `stats()`, `update()`, `items.*`, and `jobs.*`. The namespace handle adds `get()`, `list()`, `create()`, `delete()`, and cross-instance `search()`.
 
 Binding declaration, `remote: true`, and the `compatibility_date` minimum are in [configuration.md](configuration.md#worker-setup). **If a binding is `undefined` at runtime, check the compatibility date first.**
 
@@ -218,14 +198,6 @@ ai_search_options: {
 | `exists` | Documents that have the field |
 | `not_exists` | Documents missing the field. How you suppress drafts |
 
-Three traps:
-
-- **`asc` is the default for numeric and datetime fields**, so `{ field: "timestamp" }` with no direction boosts the *oldest* documents.
-- **A per-request `boost_by` replaces the instance-level value outright.** It does not merge. `boost_by: []` turns boosting off for one call.
-- **It does not appear in `scoring_details`**, so compare orderings with and without it rather than reading its contribution off a response.
-
-Text and boolean fields accept only `exists` / `not_exists`. Boosting runs after retrieval and before reranking, so an enabled reranker can dampen it. Instance-wide defaults go under `retrieval_options` ([configuration.md](configuration.md#retrieval-options)). Reference: [Relevance boosting](https://developers.cloudflare.com/ai-search/configuration/retrieval/boosting/).
-
 ## Failure surfaces
 
 The binding throws. Narrow on `err.name`, keyed to the upstream HTTP status:
@@ -237,13 +209,6 @@ The binding throws. Narrow on `err.name`, keyed to the upstream HTTP status:
 | other | `AiSearchError` | Read `message`. Do not retry blind |
 
 **Use `err.name`, not `instanceof`.** These are type declarations, not exported runtime classes, so there is no constructor to compare against. `message` carries the AI Search error string (`ai_search_not_found`, `namespace_not_found`), and numeric codes are in [API error codes](https://developers.cloudflare.com/ai-search/troubleshooting/api-error-codes/). The legacy `AutoRAGNotFoundError` family is not thrown here.
-
-Four failures that do **not** throw:
-
-- **`get()` never fails.** A typo'd instance name surfaces on the first `search()`, `info()`, or `items.*` call.
-- **Cross-instance search degrades.** A failed instance yields partial results plus an `errors[]` entry, message only, no numeric code.
-- **Indexing failures never reach the search path.** A skipped or errored document is absent from results. `stats()` gives counts, `items.list({ status })` names the documents, and the codes are in [indexing error codes](https://developers.cloudflare.com/ai-search/troubleshooting/indexing-error-codes/).
-- **Zero results is a success.** Branch on `chunks.length === 0` before prompting a model.
 
 ## Items API
 
@@ -258,7 +223,7 @@ await instance.items.list({ status, search, source });
 await instance.items.get(itemId).info();   // also .download(), and items.delete(itemId)
 ```
 
-**Status is a state machine**: `queued` → `running` → `completed` | `error` | `skipped`, plus `outdated` when the source changed since indexing. Only `completed` items are searchable.
+**Status is a state machine**: `queued` → `running` → `completed` | `error`, plus `outdated` when the source changed since indexing. Only `completed` items are searchable.
 
 ```typescript
 // ❌ serializes the whole ingest, one round trip per file
