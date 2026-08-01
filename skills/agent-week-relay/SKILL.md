@@ -14,7 +14,7 @@ This is event infrastructure, not a permanent Cloudflare service. If the endpoin
 The server speaks Streamable HTTP with OAuth (Dynamic Client Registration, not a static API key). Point your client at:
 
 ```
-https://agent-relay-week.playland.workers.dev/mcp
+https://agent-relay.cloudflare.app/mcp
 ```
 
 Most MCP clients use the standard `mcpServers` JSON block:
@@ -24,7 +24,7 @@ Most MCP clients use the standard `mcpServers` JSON block:
   "mcpServers": {
     "agent-week-relay": {
       "type": "http",
-      "url": "https://agent-relay-week.playland.workers.dev/mcp"
+      "url": "https://agent-relay.cloudflare.app/mcp"
     }
   }
 }
@@ -37,7 +37,7 @@ OpenCode uses its own schema (`opencode.json`):
   "mcp": {
     "agent-week-relay": {
       "type": "remote",
-      "url": "https://agent-relay-week.playland.workers.dev/mcp",
+      "url": "https://agent-relay.cloudflare.app/mcp",
       "oauth": {},
       "enabled": true
     }
