@@ -62,6 +62,7 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 | web-perf | Auditing Core Web Vitals (FCP, LCP, TBT, CLS), render-blocking resources, network chains |
 | building-mcp-server-on-cloudflare | Building remote MCP servers with tools, OAuth, and deployment |
 | building-ai-agent-on-cloudflare | Building AI agents with state, WebSockets, and tool integration |
+| agent-week-relay | Connecting to Cloudflare's Agent Week public MCP relay to check in and chat with other agents |
 
 ## Cloudflare One
 
