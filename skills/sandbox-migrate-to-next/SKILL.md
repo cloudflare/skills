@@ -1,17 +1,17 @@
 ---
 name: sandbox-migrate-to-next
-description: Use when porting a Cloudflare Sandbox app from stable @cloudflare/sandbox to @cloudflare/sandbox@next (Sandbox SDK 1.0 preview), or when the user asks to migrate or upgrade to Sandbox 1.0 / @next. Not for day-to-day stable work (sandbox-stable) or new @next apps (sandbox-sdk).
+description: Use when porting a Cloudflare Sandbox app from stable @cloudflare/sandbox to @cloudflare/sandbox@next (Sandbox SDK 1.0 preview), or when the user asks to migrate or upgrade to Sandbox 1.0 / @next. Not for day-to-day stable work (sandbox-stable) or new @next apps (sandbox-next).
 ---
 
 # Migrate to Sandbox SDK 1.0 preview (`@next`)
 
 **Perform** the port from the current stable package to `@cloudflare/sandbox@next`. Follow the steps in order. Human depth: [Migrate](https://developers.cloudflare.com/sandbox/1-0-preview/migrate/) · [1.0 preview](https://developers.cloudflare.com/sandbox/1-0-preview/).
 
-We recommend **new** projects start on `@next` (**`sandbox-sdk`**). Existing apps should migrate **when you can**, so you are ready when 1.0 becomes the stable release. The main [Sandbox docs](https://developers.cloudflare.com/sandbox/) still describe today’s stable package (**`sandbox-stable`**).
+We recommend **new** projects start on `@next` (**`sandbox-next`**). Existing apps should migrate **when you can**, so you are ready when 1.0 becomes the stable release. The main [Sandbox docs](https://developers.cloudflare.com/sandbox/) still describe today’s stable package (**`sandbox-stable`**).
 
 Do **not** force production cutover without the user agreeing.
 
-**Not this skill:** day-to-day stable feature work → **`sandbox-stable`**. New `@next` work → **`sandbox-sdk`**. Deprecated-API cleanup **without** moving to `@next` → [2026 deprecation guide](https://developers.cloudflare.com/sandbox/guides/2026-deprecation/) on the stable package first if needed.
+**Not this skill:** day-to-day stable feature work → **`sandbox-stable`**. New `@next` work → **`sandbox-next`**. Deprecated-API cleanup **without** moving to `@next` → [2026 deprecation guide](https://developers.cloudflare.com/sandbox/guides/2026-deprecation/) on the stable package first if needed.
 
 ## Workflow
 

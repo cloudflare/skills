@@ -57,7 +57,7 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 | cloudflare | Comprehensive platform skill covering Workers, Pages, storage (KV, D1, R2), AI (Workers AI, Vectorize, Agents SDK), networking (Tunnel, Spectrum), security (WAF, DDoS), and IaC (Terraform, Pulumi) |
 | agents-sdk | Building stateful AI agents with state, scheduling, RPC, MCP servers, email, and streaming chat |
 | durable-objects | Stateful coordination (chat rooms, games, booking), RPC, SQLite, alarms, WebSockets |
-| sandbox-sdk | Build on Sandbox SDK 1.0 preview (`@cloudflare/sandbox@next`); recommended for new projects |
+| sandbox-next | Build on Sandbox SDK 1.0 preview (`@cloudflare/sandbox@next`); recommended for new projects |
 | sandbox-stable | Build on the current stable `@cloudflare/sandbox` package |
 | sandbox-migrate-to-next | Port a stable Sandbox app to `@cloudflare/sandbox@next` |
 | wrangler | Deploying and managing Workers, KV, R2, D1, Vectorize, Queues, Workflows |

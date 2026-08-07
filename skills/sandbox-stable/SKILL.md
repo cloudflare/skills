@@ -1,6 +1,6 @@
 ---
 name: sandbox-stable
-description: Use when building or changing Cloudflare Sandbox apps on the current stable @cloudflare/sandbox package (default npm tag)—commands, sessions, files, ports, tunnels, bridge, or deprecated-API cleanup while staying on stable. Not for @cloudflare/sandbox@next (use sandbox-sdk) or for porting to 1.0 (use sandbox-migrate-to-next).
+description: Use when building or changing Cloudflare Sandbox apps on the current stable @cloudflare/sandbox package (default npm tag)—commands, sessions, files, ports, tunnels, bridge, or deprecated-API cleanup while staying on stable. Not for @cloudflare/sandbox@next (use sandbox-next) or for porting to 1.0 (use sandbox-migrate-to-next).
 ---
 
 # Cloudflare Sandbox SDK (stable package)
@@ -9,7 +9,7 @@ Isolated Linux environments on [Cloudflare Containers](https://developers.cloudf
 
 This skill is the **current stable** line: default `@cloudflare/sandbox` (today’s published package) and a **matching** stable container image. The main [Sandbox documentation](https://developers.cloudflare.com/sandbox/) describes this package.
 
-We recommend starting **new** projects on the [1.0 preview](https://developers.cloudflare.com/sandbox/1-0-preview/) (`@cloudflare/sandbox@next`) with **`sandbox-sdk`**. Existing apps can stay on stable and keep shipping. When you can, plan a move with **`sandbox-migrate-to-next`** so you are ready when 1.0 becomes the stable release.
+We recommend starting **new** projects on the [1.0 preview](https://developers.cloudflare.com/sandbox/1-0-preview/) (`@cloudflare/sandbox@next`) with **`sandbox-next`**. Existing apps can stay on stable and keep shipping. When you can, plan a move with **`sandbox-migrate-to-next`** so you are ready when 1.0 becomes the stable release.
 
 Prefer stable docs and installed package types over memory. Do not apply `@next` API shapes here.
 
@@ -22,7 +22,7 @@ Before writing code, check the app:
 
 | If you find… | Do this |
 | ------------ | ------- |
-| `@cloudflare/sandbox@next` (or preview image) | Stop. Use **`sandbox-sdk`**. |
+| `@cloudflare/sandbox@next` (or preview image) | Stop. Use **`sandbox-next`**. |
 | User wants to **port** to 1.0 / `@next` | Stop. Use **`sandbox-migrate-to-next`**. Do not half-apply preview APIs while the package is still stable. |
 | Only cleaning deprecated stable APIs | Stay on this skill + [2026 deprecation guide](https://developers.cloudflare.com/sandbox/guides/2026-deprecation/). That is **not** a move to `@next`. |
 
