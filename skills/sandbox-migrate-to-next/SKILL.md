@@ -3,42 +3,43 @@ name: sandbox-migrate-to-next
 description: Use when porting a Cloudflare Sandbox app from stable @cloudflare/sandbox to @cloudflare/sandbox@next (Sandbox SDK 1.0 preview), or when the user asks to migrate or upgrade to Sandbox 1.0 / @next. Not for day-to-day stable work (sandbox-stable) or new @next apps (sandbox-next).
 ---
 
-# Migrate to Sandbox SDK 1.0 preview (`@next`)
+# Migrate stable → Sandbox SDK 1.0 preview (`@next`)
 
-**Perform** the port from the current stable package to `@cloudflare/sandbox@next`. Follow the steps in order. Human depth: [Migrate](https://developers.cloudflare.com/sandbox/1-0-preview/migrate/) · [1.0 preview](https://developers.cloudflare.com/sandbox/1-0-preview/).
+**Perform** the port. Follow the steps in order. Depth lives in docs—fetch the linked page when a step needs detail.
 
-We recommend **new** projects start on `@next` (**`sandbox-next`**). Existing apps should migrate **when you can**, so you are ready when 1.0 becomes the stable release. The main [Sandbox docs](https://developers.cloudflare.com/sandbox/) still describe today’s stable package (**`sandbox-stable`**).
+Human guide: [Migrate](https://developers.cloudflare.com/sandbox/1-0-preview/migrate/) · [1.0 preview](https://developers.cloudflare.com/sandbox/1-0-preview/)
 
-Do **not** force production cutover without the user agreeing.
+**New projects** should start on `@next` (**`sandbox-next`**), not this skill. **Day-to-day stable work** → **`sandbox-stable`**. Deprecated-API cleanup **without** moving to `@next` → [2026 deprecation guide](https://developers.cloudflare.com/sandbox/guides/2026-deprecation/) first if needed.
 
-**Not this skill:** day-to-day stable feature work → **`sandbox-stable`**. New `@next` work → **`sandbox-next`**. Deprecated-API cleanup **without** moving to `@next` → [2026 deprecation guide](https://developers.cloudflare.com/sandbox/guides/2026-deprecation/) on the stable package first if needed.
+Existing apps should migrate **when you can**, so you are ready when 1.0 becomes the stable release. Do **not** force production cutover without the user agreeing.
+
+**Prefer installed `@next` types and the migrate doc over memory.**
 
 ## Workflow
 
-1. **Review** the hard rules and replacement map below (and the migrate doc if needed).
-2. **Audit** the codebase; list every hit and its target shape.
-3. **Clarify** uncertainty with the user (cutover timing, bridge, Python image, unclear call sites).
-4. **Upgrade** package + image and apply code changes.
-5. **Validate** typecheck, smokes, and a second grep.
+1. **Review** hard rules and the replacement map  
+2. **Audit** the codebase; list hits and target shapes  
+3. **Clarify** with the user (cutover, bridge, Python image, unclear sites)  
+4. **Upgrade** package, image, and code  
+5. **Validate**  
 
 Stop after any step that needs a user decision.
 
 ## Hard rules
 
-- Worker package and container image must be the **same** `@next` line.
-- Production cutover uses **immediate** container rollout (`--containers-rollout=immediate`). Stable and `@next` control protocols are incompatible both ways; gradual rollout leaves a broken mixed window. In-flight container work can stop.
-- `await sandbox.exec(...)` means the process **started**, not that the command **finished**.
-- Argv is passed **as-is** (no implicit shell). Shell syntax needs an explicit shell binary.
-- Process handles have **no stdin**. Interactive input → terminals.
-- Observation `timeout` / `AbortSignal` cancel **only that wait**. They do **not** kill the process.
-- Do **not** use one retry loop for every error.
-- Do **not** invent APIs (`gitCheckout` on core, process stdin, string-exec completion helper).
-- Prefer installed `@next` types over guesses.
-- Self-deployed bridge is not on the preview — keep bridge Worker, image, and clients on **stable**.
+- Worker package and container image must be the **same** `@next` line.  
+- Production cutover uses **immediate** container rollout. Stable and `@next` control protocols are incompatible both ways; gradual rollout leaves a broken mixed window. In-flight container work can stop.  
+- After cutover, `await sandbox.exec(...)` means process **started**, not command **finished**.  
+- Argv is as-is (no implicit shell). Shell syntax needs an explicit shell binary.  
+- Process handles have **no stdin** → terminals for interactive input.  
+- Observation `timeout` / `AbortSignal` cancel the **wait only**, not the process.  
+- No single retry loop for every error.  
+- Do not invent APIs (`gitCheckout` on core, process stdin, string-exec completion helper).  
+- Self-deployed bridge stays on **stable** (not part of the preview line yet).  
 
 ## Replacement map
 
-| Stable | Preview |
+| Stable | `@next` |
 | ------ | ------- |
 | `SANDBOX_TRANSPORT` / `transport` / `setTransport` | Remove — RPC only |
 | `await sandbox.exec("cmd")` → buffered result | `await sandbox.exec(argv)` → handle, then `output` / waits |
@@ -46,10 +47,12 @@ Stop after any step that needs a user decision.
 | Default / named sessions | Gone — `cwd`/`env` per launch, or one shell script |
 | `sandbox.terminal(request)` / session terminal | `createTerminal` + `terminal.connect(request)` |
 | xterm `sessionId` | `terminalId` |
-| Interpreter on `Sandbox` | `withInterpreter` → `sandbox.interpreter.*` |
+| Interpreter methods on `Sandbox` | `withInterpreter` → `sandbox.interpreter.*` |
 | `gitCheckout` | argv `git` via `exec` |
 | String kill signals | Numeric only |
-| Files, mounts, backups, ports, tunnels, `proxyToSandbox` | Mostly unchanged (ignore session/transport bits) |
+| Files, mounts, backups, ports, tunnels, `proxyToSandbox` | Mostly unchanged (ignore session/transport bits on stable pages) |
+
+Depth: [Migrate](https://developers.cloudflare.com/sandbox/1-0-preview/migrate/) · after port, day-to-day → **`sandbox-next`**
 
 ## Audit
 
@@ -61,10 +64,10 @@ Also: string `exec(`, `cd` then a later `exec`, bare `createCodeContext` / `runC
 
 ## Clarify (ask when needed)
 
-- OK to cut production with immediate container rollout (live processes/terminals/streams may stop)?
-- Self-deployed bridge present? Leave it on stable.
-- Python interpreter → **`-python`** image variant?
-- Call sites not covered below?
+- OK to cut production with `--containers-rollout=immediate` (live processes/terminals/streams may stop)?  
+- Self-deployed bridge? Leave on stable.  
+- Python interpreter → **`-python`** image variant?  
+- Call sites not covered by the map?  
 
 ## Upgrade
 
@@ -76,72 +79,54 @@ npm install @cloudflare/sandbox@next
 
 ```dockerfile
 FROM cloudflare/sandbox:next
-# Python interpreter: cloudflare/sandbox:next-python
+# Python: cloudflare/sandbox:next-python
 ```
 
-Use the same prerelease tag on Worker and image when not on floating `next`.
+Same prerelease tag on Worker and image when not on floating `next`.
 
-### Transport
+### Code by area
 
-Delete `SANDBOX_TRANSPORT`, `transport` on `getSandbox()`, `setTransport()`, `SandboxTransport`. No replacement setting.
+Apply replacements from the map. For each area, implement from the doc—not from stable habits:
 
-### Commands
+| Area | Doc |
+| ---- | --- |
+| Commands / handles / waits | [Processes](https://developers.cloudflare.com/sandbox/1-0-preview/processes/) · [Processes API](https://developers.cloudflare.com/sandbox/1-0-preview/api/processes/) |
+| `cwd` / `env` / secrets | [Environment](https://developers.cloudflare.com/sandbox/1-0-preview/environment/) · [Outbound traffic](https://developers.cloudflare.com/sandbox/guides/outbound-traffic/) |
+| Drop sessions | [Migrate](https://developers.cloudflare.com/sandbox/1-0-preview/migrate/) · [Lifecycle](https://developers.cloudflare.com/sandbox/1-0-preview/lifecycle/) |
+| Terminals | [Terminals](https://developers.cloudflare.com/sandbox/1-0-preview/terminals/) |
+| Interpreter | [Interpreter](https://developers.cloudflare.com/sandbox/1-0-preview/interpreter/) |
+| Errors | [Errors](https://developers.cloudflare.com/sandbox/1-0-preview/errors/) |
+| Durable job across requests | [Process execution — lifetime / durability](https://developers.cloudflare.com/sandbox/1-0-preview/processes/) |
+
+**Commands (shape):**
 
 ```ts
-// Stable
+// Before (stable)
 const result = await sandbox.exec("npm test");
 
-// Preview
+// After (@next)
 const process = await sandbox.exec(["/bin/bash", "-lc", "npm test"]);
-// or: await sandbox.exec(["npm", "test"], { cwd: "/workspace/app" });
 const result = await process.output({ encoding: "utf8" });
 ```
-
-Default `output()` streams are **bytes**. Pass `{ encoding: "utf8" }` for strings.
 
 ```ts
 const server = await sandbox.exec(["/bin/bash", "-lc", "npm run dev"], {
   cwd: "/workspace/app",
 });
-await server.waitForPort(3000, { timeout: 60_000 }); // default mode: tcp
-const stream = await server.logs({ follow: true, replay: true });
-await server.kill(); // default 15
+await server.waitForPort(3000, { timeout: 60_000 });
+await server.kill(); // numeric; default 15
 ```
 
-```ts
-// One shot — do not rely on cd across separate exec calls
-await sandbox.exec(["/bin/bash", "-lc", "cd /app && npm test"]);
-// or
-await sandbox.exec(["npm", "test"], { cwd: "/app", env: { NODE_ENV: "test" } });
-```
-
-- `setEnvVars` remains for sandbox-wide **non-secret** config.
-- Do **not** put live API keys in `setEnvVars` or launch `env`. [Outbound traffic](https://developers.cloudflare.com/sandbox/guides/outbound-traffic/).
-
-| Goal | API |
-| ---- | --- |
-| Limit process lifetime | `exec(argv, { timeout })` |
-| Limit how long you wait | `timeout` / `signal` on `output` / `waitFor*` / `logs` — does not kill |
-
-### Sessions
-
-Remove `createSession`, `getSession`, `deleteSession`, `enableDefaultSession`, `sessionId` options. Isolate users with **separate sandbox IDs**.
-
-### Terminals
+**Terminals (shape):**
 
 ```ts
-const terminal = await sandbox.createTerminal({
-  command: ["bash"],
-  cwd: "/workspace",
-});
+const terminal = await sandbox.createTerminal({ command: ["bash"], cwd: "/workspace" });
 const t = await sandbox.getTerminal(terminal.id);
 if (!t) return new Response("terminal gone", { status: 410 });
 return t.connect(request, { cursor, cols, rows });
 ```
 
-Browser `@cloudflare/sandbox/xterm`: pass `terminalId` (not `sessionId`).
-
-### Interpreter
+**Interpreter (shape):**
 
 ```ts
 import { Sandbox as BaseSandbox } from "@cloudflare/sandbox";
@@ -150,14 +135,9 @@ import { withInterpreter } from "@cloudflare/sandbox/interpreter";
 export class Sandbox extends BaseSandbox<Env> {
   interpreter = withInterpreter(this);
 }
-
-const ctx = await sandbox.interpreter.createCodeContext({ language: "python" });
-const result = await sandbox.interpreter.runCode('print("hi")', { context: ctx });
 ```
 
-Python requires the **`-python`** image. Same `@next` Worker + image line.
-
-### Git
+**Git (shape):**
 
 ```ts
 const clone = await sandbox.exec(
@@ -165,53 +145,19 @@ const clone = await sandbox.exec(
   { cwd: "/workspace" },
 );
 const result = await clone.output({ encoding: "utf8" });
-if (result.exitCode !== 0) throw new Error(result.stderr);
 ```
 
-### Work across requests
-
-Process IDs are **not** durable jobs. Store argv (or script), `cwd`, `env`, and app checkpoint — optionally `process.id` while it might still be alive.
-
-```ts
-const existing = processId ? await sandbox.getProcess(processId) : null;
-if (existing) {
-  await existing.logs({ since: cursor, replay: true, follow: true });
-} else {
-  const p = await sandbox.exec(storedArgv, { cwd: storedCwd, env: storedEnv });
-  // save p.id
-}
-```
-
-`getProcess` / `getTerminal` / `list*` do not start a container; they return `null` / `[]` when none is running.
-
-### Errors
-
-| Error | What to do |
-| ----- | ---------- |
-| `ContainerUnavailableError` | Back off; retry **new** operation |
-| `OperationInterruptedError` | Work may have started — inspect before repeating side effects |
-| `RPCTransportError` | This call may already have run |
-| `StaleProcessHandleError` / `StaleTerminalHandleError` | Relaunch from stored work |
-| `ProcessWaitTimeoutError` / `ProcessAbortedError` | Wait ended only — process may still run |
-| `RuntimeControlProtocolError` | Worker and image not on same `@next` line — fix deploy |
-
-Prefer `instanceof` on classes from `@cloudflare/sandbox`.
-
-### Bridge
-
-Leave self-deployed bridge on the stable release line. Do not pair bridge with `@cloudflare/sandbox@next`.
+Delete transport settings entirely. Remove session APIs. Isolate users with **separate sandbox IDs**.
 
 ### Deploy cutover
 
-Finish code on a branch/staging first. Production is **one** deploy of matching Worker + image:
+Staging/branch first. Production is **one** deploy of matching Worker + image:
 
 ```sh
 npx wrangler deploy --containers-rollout=immediate
 ```
 
-- Does not clear `rollout_active_grace_period`. Leave grace at default `0` (or set `0` if raised).
-- Before: finish or stop work you must keep.
-- After: treat pre-deploy process/terminal IDs as invalid; start work again.
+Leave `rollout_active_grace_period` at default `0` (or set `0` if raised). After cutover, pre-deploy process/terminal IDs are invalid. Details: [Migrate](https://developers.cloudflare.com/sandbox/1-0-preview/migrate/) · [Container rollouts](https://developers.cloudflare.com/containers/platform-details/rollouts/)
 
 ## Validate
 
@@ -219,19 +165,21 @@ npx wrangler deploy --containers-rollout=immediate
 2. Typecheck against `@next`  
 3. Smoke argv `exec` + `output({ encoding: "utf8" })`  
 4. Smoke long process / terminal / interpreter if used  
-5. Error handling distinguishes unavailable / interrupted-RPC / stale / local wait  
+5. Errors distinguished: unavailable / interrupted-RPC / stale / local wait  
 6. No live secrets in sandbox env  
 7. Grep again for removed APIs  
-8. Production cutover used `--containers-rollout=immediate`
+8. Production used `--containers-rollout=immediate`  
+
+Then day-to-day work uses **`sandbox-next`**.
 
 ## Red flags — stop and fix
 
-- Mixing `@next` Worker with stable image (or reverse)
-- Gradual container rollout for this control-plane cutover
-- Treating `await exec` as command completion
-- Assuming `cd` / exports persist across `exec` calls
-- One retry wrapper for every sandbox error
-- Inventing `gitCheckout`, process stdin, or undocumented extension APIs
-- Keeping pre-cutover process/terminal IDs after deploy
-- Forcing production cutover without user agreement
-- Putting live secrets in `setEnvVars` / launch `env`
+- Mixing `@next` Worker with stable image (or reverse)  
+- Gradual container rollout for this cutover  
+- Treating `await exec` as command completion  
+- Assuming `cd` / exports persist across `exec` calls  
+- One retry wrapper for every error  
+- Inventing `gitCheckout`, process stdin, or undocumented APIs  
+- Keeping pre-cutover process/terminal IDs after deploy  
+- Forcing production cutover without user agreement  
+- Putting live secrets in `setEnvVars` / launch `env`  

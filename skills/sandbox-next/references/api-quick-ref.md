@@ -1,8 +1,8 @@
-# Sandbox SDK API quick reference (`@next`)
+# `@next` API quick reference
 
-Canonical docs: https://developers.cloudflare.com/sandbox/1-0-preview/api/
+Canonical: https://developers.cloudflare.com/sandbox/1-0-preview/api/
 
-Prefer installed `@cloudflare/sandbox@next` types. Stable package APIs differ (string `exec`, sessions, etc.).
+Prefer installed `@cloudflare/sandbox@next` types. This file is a scan aid only.
 
 ## Lifecycle
 
@@ -11,11 +11,12 @@ getSandbox(binding, sandboxId, options?: {
   sleepAfter?: string | number;
   keepAlive?: boolean;
   normalizeId?: boolean;
-  // no transport / enableDefaultSession on @next
 }): Sandbox
 
 await sandbox.destroy(): Promise<void>
 ```
+
+No `transport` / `enableDefaultSession` on `@next`.
 
 ## Processes
 
@@ -26,12 +27,9 @@ await sandbox.exec(argv: readonly [string, ...string[]], options?: {
   timeout?: number; // remote process lifetime
 }): Promise<SandboxProcess>
 
-await sandbox.getProcess(id: string): Promise<SandboxProcess | null> // non-waking
+await sandbox.getProcess(id: string): Promise<SandboxProcess | null>
 await sandbox.listProcesses(): Promise<ProcessStatus[]>
 
-// handle
-process.id
-process.pid
 await process.output({ encoding?: "utf8"; maxBytes?; timeout?; signal? })
 await process.logs({ since?; replay?; follow?; signal? })
 await process.waitForExit({ timeout?; signal? })
@@ -41,16 +39,12 @@ await process.kill(signal?: number) // default 15
 await process.status()
 ```
 
-`await exec` = launch succeeded, not exit. No process stdin.
+`await exec` = launch succeeded. No process stdin.
 
 ## Terminals
 
 ```ts
-await sandbox.createTerminal({
-  command: readonly [string, ...string[]];
-  cwd?; env?; cols?; rows?; bufferSize?;
-}): Promise<Terminal>
-
+await sandbox.createTerminal({ command: readonly [string, ...string[]]; cwd?; env?; cols?; rows?; bufferSize? })
 await sandbox.getTerminal(id): Promise<Terminal | null>
 await sandbox.listTerminals(): Promise<Terminal[]>
 
@@ -62,7 +56,7 @@ await terminal.interrupt()
 await terminal.terminate()
 ```
 
-## Interpreter (extension)
+## Interpreter
 
 ```ts
 import { withInterpreter } from "@cloudflare/sandbox/interpreter";
@@ -70,7 +64,7 @@ import { withInterpreter } from "@cloudflare/sandbox/interpreter";
 
 await sandbox.interpreter.createCodeContext({ language?, cwd? })
 await sandbox.interpreter.runCode(code, { context?, language?, onStdout?, ... })
-await sandbox.interpreter.runCodeStream(code, { context?, language? }) // SSE; callbacks not used
+await sandbox.interpreter.runCodeStream(code, { context?, language? })
 await sandbox.interpreter.listCodeContexts()
 await sandbox.interpreter.deleteCodeContext(id)
 ```
@@ -78,12 +72,7 @@ await sandbox.interpreter.deleteCodeContext(id)
 ## Environment
 
 ```ts
-await sandbox.setEnvVars(Record<string, string | undefined>) // undefined removes
-// plus env on exec / createTerminal
+await sandbox.setEnvVars(Record<string, string | undefined>)
 ```
 
-Non-secret config only. Secrets: Worker + outbound handlers.
-
-## Errors (common)
-
-`ContainerUnavailableError`, `OperationInterruptedError`, `RPCTransportError`, `StaleProcessHandleError`, `StaleTerminalHandleError`, process wait/spawn errors — see https://developers.cloudflare.com/sandbox/1-0-preview/api/errors/
+Non-secret only. Secrets: Worker + outbound handlers.

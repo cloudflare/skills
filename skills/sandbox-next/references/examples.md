@@ -1,15 +1,13 @@
-# Sandbox SDK examples
+# `@next` examples
 
-Branch aligned with preview: https://github.com/cloudflare/sandbox-sdk/tree/next/examples
+https://github.com/cloudflare/sandbox-sdk/tree/next/examples
 
-| Example | Use case |
+| Example | Use when |
 | ------- | -------- |
-| `minimal` | Basic `@next` setup |
+| `minimal` | Basic `@next` Worker |
 | `code-interpreter` | `withInterpreter` |
-| `openai-agents` | OpenAI adapters |
-| `opencode` | OpenCode extension |
-| `claude-code` / `codex` | Agent harnesses + argv `exec` / git via exec |
-| `collaborative-terminal` / `s3-mount` | Terminals |
+| `openai-agents` / `opencode` / `claude-code` / `codex` | Agent harnesses |
+| `collaborative-terminal` / `s3-mount` | Terminals / mounts |
 | `authentication` | Multi-user sandbox IDs |
 
-Prefer examples on the **`next`** branch when building for `@cloudflare/sandbox@next`.
+Use the **`next`** branch for `@cloudflare/sandbox@next`.
