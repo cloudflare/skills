@@ -1,4 +1,6 @@
-# `@next` examples
+# `@next` examples index
+
+Pointers only—not a full catalog. Prefer the repo tree and docs.
 
 https://github.com/cloudflare/sandbox-sdk/tree/next/examples
 

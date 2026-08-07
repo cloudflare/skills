@@ -1,10 +1,21 @@
-# `@next` API quick reference
+# `@next` cheatsheet (not the full API)
 
-Canonical: https://developers.cloudflare.com/sandbox/1-0-preview/api/
+Scan aid for the **process / terminal / interpreter** shapes that differ most from stable. **Not exhaustive.**
 
-Prefer installed `@cloudflare/sandbox@next` types. This file is a scan aid only.
+| For… | Go here |
+| ---- | ------- |
+| Full signatures and types | Installed `@cloudflare/sandbox@next` package types |
+| Preview API hub | https://developers.cloudflare.com/sandbox/1-0-preview/api/ |
+| Processes · terminals · errors · interpreter | Same hub (dedicated pages) |
+| Files, mounts, backups, ports, tunnels, lifecycle options | Main docs linked from the hub and from **`sandbox-next`** § Retrieve — ignore stable-only session/transport bits |
+| Mental model (exec, durability, ID vs container) | https://developers.cloudflare.com/sandbox/1-0-preview/processes/ · https://developers.cloudflare.com/sandbox/1-0-preview/lifecycle/ |
+| `Sandbox` extends `Container` | [Cloudflare Containers](https://developers.cloudflare.com/containers/) + Sandbox lifecycle docs above |
 
-## Lifecycle
+If something is missing here, it is almost certainly **documented elsewhere or in types**—do not invent it from this file.
+
+---
+
+## Lifecycle (common options)
 
 ```ts
 getSandbox(binding, sandboxId, options?: {
@@ -39,12 +50,16 @@ await process.kill(signal?: number) // default 15
 await process.status()
 ```
 
-`await exec` = launch succeeded. No process stdin.
+`await exec` = launch succeeded, not exit. No process stdin.
 
 ## Terminals
 
 ```ts
-await sandbox.createTerminal({ command: readonly [string, ...string[]]; cwd?; env?; cols?; rows?; bufferSize? })
+await sandbox.createTerminal({
+  command: readonly [string, ...string[]];
+  cwd?; env?; cols?; rows?; bufferSize?;
+}): Promise<Terminal>
+
 await sandbox.getTerminal(id): Promise<Terminal | null>
 await sandbox.listTerminals(): Promise<Terminal[]>
 
@@ -56,7 +71,7 @@ await terminal.interrupt()
 await terminal.terminate()
 ```
 
-## Interpreter
+## Interpreter (extension)
 
 ```ts
 import { withInterpreter } from "@cloudflare/sandbox/interpreter";
@@ -72,7 +87,8 @@ await sandbox.interpreter.deleteCodeContext(id)
 ## Environment
 
 ```ts
-await sandbox.setEnvVars(Record<string, string | undefined>)
+await sandbox.setEnvVars(Record<string, string | undefined>) // undefined removes
+// plus env on exec / createTerminal
 ```
 
-Non-secret only. Secrets: Worker + outbound handlers.
+Non-secret config only. Secrets: Worker + outbound handlers.

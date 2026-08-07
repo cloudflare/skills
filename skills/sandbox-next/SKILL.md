@@ -57,7 +57,7 @@ const result = await process.output({ encoding: "utf8" });
 // result.stdout, result.exitCode
 ```
 
-Optional signature cheat sheet: [references/api-quick-ref.md](references/api-quick-ref.md)  
+Optional **non-exhaustive** cheatsheet (process/terminal/interpreter only): [references/api-quick-ref.md](references/api-quick-ref.md)  
 Examples index (`next` branch): [references/examples.md](references/examples.md)
 
 ## 3. Retrieve — open the doc for the task
