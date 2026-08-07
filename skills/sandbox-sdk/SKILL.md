@@ -1,54 +1,58 @@
 ---
 name: sandbox-sdk
-description: Build apps with Cloudflare Sandbox SDK for secure code execution. Use for new sandboxes, AI code execution, interpreters, CI-like jobs, and interactive environments. Prefer @cloudflare/sandbox@next (Sandbox SDK 1.0 preview) for new work. Load sandbox-v1-migration when moving a stable app to @next; load sandbox-2026-deprecation for stable-only cleanup of transports, exposePort, and default sessions.
+description: Use when building or changing Cloudflare Sandbox apps on @cloudflare/sandbox@next (Sandbox SDK 1.0 preview)—code execution, AI runners, interpreters, CI-like jobs, terminals, mounts, tunnels, or preview URLs. Not for the default stable package (use sandbox-stable) or for porting stable to @next (use sandbox-migrate-to-next).
 ---
 
-# Cloudflare Sandbox SDK
+# Cloudflare Sandbox SDK (`@next`)
 
 Isolated Linux environments on [Cloudflare Containers](https://developers.cloudflare.com/containers/), driven from Workers.
 
-## Choose the right track
+This skill is the **1.0 preview** line: `@cloudflare/sandbox@next` and a matching `cloudflare/sandbox:next` image. We recommend this line for **new projects**. Existing apps on the default package should keep using **`sandbox-stable`** until they are ready to move; then use **`sandbox-migrate-to-next`**.
 
-| Situation | Package | Skill / docs |
-| --------- | ------- | ------------ |
-| **New project** | `@cloudflare/sandbox@next` | This skill + [1.0 preview](https://developers.cloudflare.com/sandbox/1-0-preview/) |
-| **Migrate stable → 1.0** | `@next` | **`sandbox-v1-migration`** + [Migrate](https://developers.cloudflare.com/sandbox/1-0-preview/migrate/) |
-| **Stay on stable; remove deprecated APIs** | current stable | **`sandbox-2026-deprecation`** + [2026 deprecation guide](https://developers.cloudflare.com/sandbox/guides/2026-deprecation/) |
-| **Stable-only maintenance** | current stable | [Main Sandbox docs](https://developers.cloudflare.com/sandbox/) |
+Prefer preview docs and installed `@next` types over memory. Stable and `@next` APIs differ.
 
-Do not mix a preview Worker package with a stable container image (or the reverse).
+## Confirm the package line
 
-**Agent setup (install these skills):** [Agent setup](https://developers.cloudflare.com/agent-setup/) · [cloudflare/skills](https://github.com/cloudflare/skills)
+Before writing code, check the app:
 
-## Retrieval (prefer docs over memory)
+- Dependency is `@cloudflare/sandbox@next` (or another preview tag), **and**
+- Container image matches (for example `cloudflare/sandbox:next` or `next-python`)
+
+| If you find… | Do this |
+| ------------ | ------- |
+| Default `@cloudflare/sandbox` (no `@next`) | Stop. Use **`sandbox-stable`** and the [main Sandbox docs](https://developers.cloudflare.com/sandbox/). Do not apply `@next` APIs. |
+| User wants to **port** stable → `@next` | Stop. Use **`sandbox-migrate-to-next`**. |
+| Self-deployed **bridge** only | Bridge is not on the 1.0 preview line yet. Keep bridge on the stable package + image. [Bridge](https://developers.cloudflare.com/sandbox/bridge/). |
+
+Never mix an `@next` Worker package with a stable container image (or the reverse).
+
+Install skills: [Agent setup](https://developers.cloudflare.com/agent-setup/) · [cloudflare/skills](https://github.com/cloudflare/skills).
+
+## Retrieval
 
 | Topic | URL |
 | ----- | --- |
-| 1.0 overview | https://developers.cloudflare.com/sandbox/1-0-preview/ |
-| Get started (`@next`) | https://developers.cloudflare.com/sandbox/1-0-preview/get-started/ |
+| Overview | https://developers.cloudflare.com/sandbox/1-0-preview/ |
+| Get started | https://developers.cloudflare.com/sandbox/1-0-preview/get-started/ |
 | Processes | https://developers.cloudflare.com/sandbox/1-0-preview/processes/ |
 | Process API | https://developers.cloudflare.com/sandbox/1-0-preview/api/processes/ |
 | Terminals | https://developers.cloudflare.com/sandbox/1-0-preview/terminals/ |
 | Errors | https://developers.cloudflare.com/sandbox/1-0-preview/errors/ |
 | Environment | https://developers.cloudflare.com/sandbox/1-0-preview/environment/ |
 | Interpreter | https://developers.cloudflare.com/sandbox/1-0-preview/interpreter/ |
-| Examples | https://github.com/cloudflare/sandbox-sdk/tree/next/examples |
-| Stable docs | https://developers.cloudflare.com/sandbox/ |
+| Examples (`next` branch) | https://github.com/cloudflare/sandbox-sdk/tree/next/examples |
+| API quick ref | [references/api-quick-ref.md](references/api-quick-ref.md) |
 
-Fetch the relevant page when implementing. Installed `@next` types win over guesses.
-
-## Install (`@next`)
+## Install
 
 ```bash
 npm install @cloudflare/sandbox@next
-docker info   # required for local container dev
+docker info   # local container dev
 ```
 
-Container image must match the Worker line, for example `cloudflare/sandbox:next` (Python interpreter: `next-python` variant).
+## Worker shape
 
-## Required Worker shape
-
-Re-export `Sandbox` and bind the Durable Object / container in wrangler (see preview get-started). Minimal Worker:
+Re-export `Sandbox` and bind the Durable Object / container (see get-started):
 
 ```ts
 import { getSandbox, proxyToSandbox, Sandbox } from "@cloudflare/sandbox";
@@ -71,37 +75,29 @@ export default {
 };
 ```
 
-## Core model (`@next`)
+## Core model
 
-- `exec(argv)` takes an **argv array**, resolves when the process **starts**, returns a **handle**.
-- Collect results with `output()`, `logs()`, `waitForExit()`, `waitForPort()`, `waitForLog()`, `kill(signal?)`.
-- No implicit shell and no shell-escaping of argv. Shell syntax needs e.g. `["/bin/bash", "-lc", script]`.
-- No hidden sessions: `cd` / `export` in one process do not affect the next. Pass `cwd` / `env` per launch or one shell script.
+- `exec(argv)` takes an **argv** list and resolves when the process **starts**. It returns a **handle**.
+- Observe or control with `output()`, `logs()`, `waitForExit()`, `waitForPort()`, `waitForLog()`, `kill(signal?)`.
+- No implicit shell. Shell syntax needs an explicit shell, for example `["/bin/bash", "-lc", script]`.
+- Each launch is independent. A `cd` in one `exec()` is not remembered in the next. Pass `cwd` and `env` when you need them.
 - Process handles have **no stdin**. Interactive PTY → `createTerminal` + `connect`.
-- Local wait `timeout` / `AbortSignal` cancel the wait only — they do not kill the process.
+- Wait `timeout` / `AbortSignal` cancel the **wait only** — they do not kill the process. Use `kill` or `exec` remote `timeout`.
 - `getProcess` / `listProcesses` do not start a container; they return `null` / `[]` when none is up.
-- Process IDs are per **current container**, not forever for a sandbox ID. Store the job to relaunch after stop/replace.
-
-### Short command
+- Process IDs live in the **current container**. Store the full job (argv, cwd, env) to relaunch after stop or replace.
 
 ```ts
-const process = await sandbox.exec(["node", "--version"]);
-const result = await process.output({ encoding: "utf8" });
-// result.stdout, result.exitCode, result.truncated, ...
-```
+const p = await sandbox.exec(["node", "--version"]);
+const result = await p.output({ encoding: "utf8" });
 
-### Long-running + readiness
-
-```ts
 const server = await sandbox.exec(["/bin/bash", "-lc", "npm run dev"], {
   cwd: "/workspace/app",
 });
 await server.waitForPort(3000, { timeout: 60_000 }); // default mode: tcp
-const stream = await server.logs({ follow: true, replay: true });
-await server.kill(); // numeric signal, default 15
+await server.kill(); // numeric signal; default 15
 ```
 
-### Interpreter (extension)
+### Interpreter
 
 ```ts
 import { Sandbox as BaseSandbox } from "@cloudflare/sandbox";
@@ -110,57 +106,29 @@ import { withInterpreter } from "@cloudflare/sandbox/interpreter";
 export class Sandbox extends BaseSandbox<Env> {
   interpreter = withInterpreter(this);
 }
-
-const ctx = await sandbox.interpreter.createCodeContext({ language: "python" });
-const result = await sandbox.interpreter.runCode("print(1+1)", { context: ctx });
+// sandbox.interpreter.createCodeContext / runCode
+// Python needs the -python image variant
 ```
-
-Python needs the **`-python`** image variant.
 
 ### Terminals
 
 ```ts
 const terminal = await sandbox.createTerminal({ command: ["bash"] });
-// WebSocket upgrade:
 const t = await sandbox.getTerminal(terminal.id);
 if (t) return t.connect(request, { cursor });
 ```
 
-### Files, mounts, ports, tunnels
+### Env, URLs, errors
 
-Still on the sandbox. Prefer main docs for signatures; ignore stable-only session/transport/`sandbox.terminal` bits. Preview env: [Environment variables](https://developers.cloudflare.com/sandbox/1-0-preview/environment/).
+- Non-secret config only in `setEnvVars` / launch `env`. Secrets stay in the Worker; use [outbound traffic](https://developers.cloudflare.com/sandbox/guides/outbound-traffic/) when processes call external APIs.
+- Public URLs: `sandbox.tunnels` when it fits; `exposePort` + `proxyToSandbox` when the Worker must front the request. Production hostnames need wildcard DNS on a custom domain.
+- Do not use one retry loop for every error. `ContainerUnavailableError` → back off, new operation. `OperationInterruptedError` / `RPCTransportError` → inspect (work may have started). Stale handle → relaunch from stored job. Local wait timeout → observation only.
 
-Non-secret config only in `setEnvVars` / launch `env`. Live credentials: Worker secrets + [outbound traffic](https://developers.cloudflare.com/sandbox/guides/outbound-traffic/).
+## Common mistakes
 
-### Errors (do not one-loop retry)
-
-| Error | Action |
-| ----- | ------ |
-| `ContainerUnavailableError` | Back off; retry as a **new** operation |
-| `OperationInterruptedError` / `RPCTransportError` | Inspect; work may have started — no blind replay |
-| `StaleProcessHandleError` / `StaleTerminalHandleError` | Relaunch from stored job |
-| Local wait timeout / abort | Observation only; process may still run |
-
-See [Errors and recovery](https://developers.cloudflare.com/sandbox/1-0-preview/errors/).
-
-### Public URLs
-
-Prefer `sandbox.tunnels` where appropriate; `exposePort` + `proxyToSandbox` when the Worker must front the request. Production preview hostnames need wildcard DNS on a custom domain.
-
-### Bridge
-
-Self-deployed HTTP bridge is **not** on the 1.0 preview line yet. Keep bridge Worker + image + clients on **stable**. See [Bridge](https://developers.cloudflare.com/sandbox/bridge/).
-
-## Anti-patterns
-
-- String `exec` that expects buffered completion (stable) on `@next`
-- Mixing `@next` Worker with stable image
-- Assuming session/`cd` state across `exec` calls
+- Using this skill on the default stable package
+- Treating `await exec` as “command finished”
+- Mixing `@next` Worker with a stable image
+- Assuming shell state across `exec` calls
 - Putting API keys in sandbox env
-- Inventing `gitCheckout` on core — use argv `git` via `exec`
-- Using general knowledge instead of `@next` types + preview docs
-
-## Related skills
-
-- **`sandbox-v1-migration`** — stable → `@next`
-- **`sandbox-2026-deprecation`** — deprecated APIs while staying on stable
+- Inventing `gitCheckout` on core — run `git` via argv `exec`
