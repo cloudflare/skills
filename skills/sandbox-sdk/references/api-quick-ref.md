@@ -1,113 +1,89 @@
-# Sandbox SDK API Reference
+# Sandbox SDK API quick reference (`@next`)
 
-Detailed API for `@cloudflare/sandbox`. For full docs: https://developers.cloudflare.com/sandbox/api/
+Canonical docs: https://developers.cloudflare.com/sandbox/1-0-preview/api/
+
+Prefer installed `@cloudflare/sandbox@next` types. Stable package APIs differ (string `exec`, sessions, etc.).
 
 ## Lifecycle
 
-```typescript
-getSandbox(binding: DurableObjectNamespace<Sandbox>, sandboxId: string, options?: SandboxOptions): Sandbox
+```ts
+getSandbox(binding, sandboxId, options?: {
+  sleepAfter?: string | number;
+  keepAlive?: boolean;
+  normalizeId?: boolean;
+  // no transport / enableDefaultSession on @next
+}): Sandbox
 
-interface SandboxOptions {
-  sleepAfter?: string;     // Duration before auto-sleep (default: "10m")
-  keepAlive?: boolean;     // Prevent auto-sleep (default: false)
-  normalizeId?: boolean;   // Lowercase IDs for preview URLs (default: false)
-}
-
-await sandbox.destroy(): Promise<void>  // Immediately terminate and delete all state
+await sandbox.destroy(): Promise<void>
 ```
 
-## Commands
+## Processes
 
-```typescript
-await sandbox.exec(command: string, options?: ExecOptions): Promise<ExecResult>
+```ts
+await sandbox.exec(argv: readonly [string, ...string[]], options?: {
+  cwd?: string;
+  env?: Record<string, string>;
+  timeout?: number; // remote process lifetime
+}): Promise<SandboxProcess>
 
-interface ExecOptions {
-  cwd?: string;           // Working directory
-  env?: Record<string, string>;  // Environment variables
-  timeout?: number;       // Timeout in ms (no default; runs without timeout if unset)
-  stdin?: string;         // Input to command
-}
+await sandbox.getProcess(id: string): Promise<SandboxProcess | null> // non-waking
+await sandbox.listProcesses(): Promise<ProcessStatus[]>
 
-interface ExecResult {
-  stdout: string;
-  stderr: string;
-  exitCode: number;
-  success: boolean;       // exitCode === 0
-}
+// handle
+process.id
+process.pid
+await process.output({ encoding?: "utf8"; maxBytes?; timeout?; signal? })
+await process.logs({ since?; replay?; follow?; signal? })
+await process.waitForExit({ timeout?; signal? })
+await process.waitForPort(port, { mode?: "tcp" | "http"; path?; timeout?; ... })
+await process.waitForLog(pattern, { stream?; timeout?; signal? })
+await process.kill(signal?: number) // default 15
+await process.status()
 ```
 
-## Code Interpreter
+`await exec` = launch succeeded, not exit. No process stdin.
 
-```typescript
-await sandbox.createCodeContext(options?: CreateContextOptions): Promise<CodeContext>
+## Terminals
 
-interface CreateContextOptions {
-  language?: 'python' | 'javascript' | 'typescript';  // default: 'python'
-  cwd?: string;           // Working directory (default: '/workspace')
-  envVars?: Record<string, string>;
-  timeout?: number;       // Request timeout in ms (default: 30000)
-}
+```ts
+await sandbox.createTerminal({
+  command: readonly [string, ...string[]];
+  cwd?; env?; cols?; rows?; bufferSize?;
+}): Promise<Terminal>
 
-await sandbox.runCode(code: string, options?: RunCodeOptions): Promise<ExecutionResult>
+await sandbox.getTerminal(id): Promise<Terminal | null>
+await sandbox.listTerminals(): Promise<Terminal[]>
 
-interface RunCodeOptions {
-  context?: CodeContext;  // Reuse context for state persistence
-  language?: 'python' | 'javascript' | 'typescript';
-  timeout?: number;       // Execution timeout in ms (default: 60000)
-}
-
-interface ExecutionResult {
-  code: string;
-  logs: { stdout: string[]; stderr: string[] };
-  results: RichOutput[];  // text, html, png, json, etc.
-  error?: { name: string; value: string; traceback: string[] };
-  executionCount: number;
-}
+await terminal.connect(request, { cursor?; cols?; rows? })
+await terminal.write(data: Uint8Array)
+await terminal.resize(cols, rows)
+await terminal.output({ since?; replay?; follow?; signal? })
+await terminal.interrupt()
+await terminal.terminate()
 ```
 
-## Files
+## Interpreter (extension)
 
-```typescript
-await sandbox.writeFile(path: string, content: string | Uint8Array): Promise<void>
-await sandbox.readFile(path: string): Promise<{ content: string }>
-await sandbox.mkdir(path: string, options?: { recursive?: boolean }): Promise<void>
-await sandbox.listFiles(path: string): Promise<FileMetadata[]>
-await sandbox.deleteFile(path: string): Promise<void>
+```ts
+import { withInterpreter } from "@cloudflare/sandbox/interpreter";
+// subclass: interpreter = withInterpreter(this)
 
-interface FileMetadata {
-  name: string;
-  path: string;
-  isDirectory: boolean;
-  size: number;
-  modifiedAt: string;
-}
+await sandbox.interpreter.createCodeContext({ language?, cwd? })
+await sandbox.interpreter.runCode(code, { context?, language?, onStdout?, ... })
+await sandbox.interpreter.runCodeStream(code, { context?, language? }) // SSE; callbacks not used
+await sandbox.interpreter.listCodeContexts()
+await sandbox.interpreter.deleteCodeContext(id)
 ```
 
-## Ports
+## Environment
 
-```typescript
-await sandbox.exposePort(port: number): Promise<{ url: string; token: string }>
-await sandbox.unexposePort(port: number): Promise<void>
-await sandbox.listPorts(): Promise<PortInfo[]>
+```ts
+await sandbox.setEnvVars(Record<string, string | undefined>) // undefined removes
+// plus env on exec / createTerminal
 ```
 
-## Error Handling
+Non-secret config only. Secrets: Worker + outbound handlers.
 
-Errors include context about the operation:
+## Errors (common)
 
-```typescript
-try {
-  await sandbox.exec('invalid-command');
-} catch (error) {
-  // error.message includes command and sandbox context
-}
-```
-
-For `runCode()`, check `result.error` instead of catching:
-
-```typescript
-const result = await sandbox.runCode('1/0', { language: 'python' });
-if (result.error) {
-  console.error(result.error.name);  // "ZeroDivisionError"
-}
-```
+`ContainerUnavailableError`, `OperationInterruptedError`, `RPCTransportError`, `StaleProcessHandleError`, `StaleTerminalHandleError`, process wait/spawn errors — see https://developers.cloudflare.com/sandbox/1-0-preview/api/errors/

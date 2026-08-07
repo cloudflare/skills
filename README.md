@@ -57,7 +57,9 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 | cloudflare | Comprehensive platform skill covering Workers, Pages, storage (KV, D1, R2), AI (Workers AI, Vectorize, Agents SDK), networking (Tunnel, Spectrum), security (WAF, DDoS), and IaC (Terraform, Pulumi) |
 | agents-sdk | Building stateful AI agents with state, scheduling, RPC, MCP servers, email, and streaming chat |
 | durable-objects | Stateful coordination (chat rooms, games, booking), RPC, SQLite, alarms, WebSockets |
-| sandbox-sdk | Secure code execution for AI code execution, code interpreters, CI/CD systems, and interactive dev environments |
+| sandbox-sdk | Secure code execution on Sandbox SDK; prefer `@cloudflare/sandbox@next` for new work |
+| sandbox-v1-migration | Migrate a stable Sandbox app to `@cloudflare/sandbox@next` (1.0 preview) |
+| sandbox-2026-deprecation | Clean up deprecated APIs while staying on the current stable Sandbox package |
 | wrangler | Deploying and managing Workers, KV, R2, D1, Vectorize, Queues, Workflows |
 | web-perf | Auditing Core Web Vitals (FCP, LCP, TBT, CLS), render-blocking resources, network chains |
 | building-mcp-server-on-cloudflare | Building remote MCP servers with tools, OAuth, and deployment |
