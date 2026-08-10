@@ -4,7 +4,7 @@ Serverless, distributed, **read-only** query engine (Apache DataFusion) for Apac
 
 ## Documentation
 
-For full function lists, data types, and pricing, **retrieve the live docs** — use the `cloudflare-docs` MCP/search tool if available, otherwise `webfetch`.
+For full function lists, data types, and pricing, **retrieve the live docs** — use the Cloudflare MCP `docs` tool if available, otherwise `webfetch`.
 
 | Topic | URL |
 |-------|-----|

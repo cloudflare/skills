@@ -4,7 +4,7 @@ Managed Apache Iceberg REST catalog built into R2 buckets. No catalog servers to
 
 ## Documentation
 
-This reference is a fast-start with verified connection details and code. For limits, maintenance settings, engine config examples, and pricing, **retrieve the live docs** — use the `cloudflare-docs` MCP/search tool if available, otherwise `webfetch` the URL. Docs are source of truth over this file.
+This reference is a fast-start with verified connection details and code. For limits, maintenance settings, engine config examples, and pricing, **retrieve the live docs** — use the Cloudflare MCP `docs` tool if available, otherwise `webfetch` the URL. Docs are source of truth over this file.
 
 | Topic | URL |
 |-------|-----|
