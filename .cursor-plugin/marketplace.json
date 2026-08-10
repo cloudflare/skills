@@ -7,7 +7,7 @@
     {
       "name": "cloudflare",
       "source": "./",
-      "description": "Skills for the Cloudflare developer platform"
+      "description": "Build, test, and deploy applications on Cloudflare with platform guidance Skills and the Cloudflare MCP server."
     }
   ]
 }

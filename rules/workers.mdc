@@ -22,7 +22,7 @@ STOP. Your knowledge of Cloudflare Workers APIs and limits may be outdated. Alwa
 ## Docs
 
 - https://developers.cloudflare.com/workers/
-- MCP: `https://docs.mcp.cloudflare.com/mcp`
+- Cloudflare MCP (`docs` tool): `https://mcp.cloudflare.com/mcp`
 
 For all limits and quotas, retrieve from the product's `/platform/limits/` page.
 

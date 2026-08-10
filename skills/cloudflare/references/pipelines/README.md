@@ -4,7 +4,7 @@ Streaming ingest: receive events over HTTP/Workers/Logpush, transform with SQL, 
 
 ## Documentation
 
-This reference is a fast-start with verified code and gotchas. For limits, settings, full SQL syntax, and pricing, **retrieve the live docs** — use the `cloudflare-docs` MCP/search tool if available, otherwise `webfetch` the URL. Docs are source of truth over this file.
+This reference is a fast-start with verified code and gotchas. For limits, settings, full SQL syntax, and pricing, **retrieve the live docs** — use the Cloudflare MCP `docs` tool if available, otherwise `webfetch` the URL. Docs are source of truth over this file.
 
 | Topic | URL |
 |-------|-----|
