@@ -22,11 +22,27 @@ Fetch the **latest** information before citing specific numbers, API signatures,
 | Source | How to retrieve | Use for |
 |--------|----------------|---------|
 | Cloudflare docs | `cloudflare-docs` search tool or `https://developers.cloudflare.com/` | Limits, pricing, API reference, compatibility dates/flags |
+| Docs index (llms.txt) | `https://developers.cloudflare.com/llms.txt` | Finding the correct URL for a product before fetching it |
+| Per-product page list | `https://developers.cloudflare.com/<product>/llms.txt` | Every page in one product, with descriptions |
+| Per-product full text | `https://developers.cloudflare.com/<product>/llms-full.txt` | Whole product docs as one file (large — grep it, do not read it whole) |
 | Workers types | `npm pack @cloudflare/workers-types` or check `node_modules` | Type signatures, binding shapes, handler types |
 | Wrangler config schema | `node_modules/wrangler/config-schema.json` | Config fields, binding shapes, allowed values |
 | Product changelogs | `https://developers.cloudflare.com/changelog/` | Recent changes to limits, features, deprecations |
 
 When a reference file and the docs disagree, **trust the docs**. This is especially important for: numeric limits, pricing tiers, type signatures, and configuration options.
+
+### Never guess a docs URL
+
+Docs paths get reorganized, and a plausible-looking path is usually a 404 rather than a redirect. Do not build a URL by appending a guessed slug to a known parent.
+
+If you do not already have the exact URL — from this skill, from `cloudflare-docs` search, or from a search result — resolve it first:
+
+1. Fetch `https://developers.cloudflare.com/llms.txt` (~16KB) for the index of every product.
+2. Fetch that product's `llms.txt` for its full page list, and take the URL verbatim.
+
+Any page is also retrievable as Markdown by appending `index.md` to its URL, or by sending an `Accept: text/markdown` header. Prefer the Markdown form when you only need the content.
+
+If a fetch does 404, do not retry variations of the guess — go to the product's `llms.txt` and find the real path.
 
 ## Quick Decision Trees
 
