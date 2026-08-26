@@ -1,6 +1,6 @@
 ---
 name: cloudflare
-description: Comprehensive Cloudflare platform skill covering Workers, Pages, storage (KV, D1, R2), AI (Workers AI, Vectorize, Agents SDK), feature flags (Flagship), networking (Tunnel, Spectrum), security (WAF, DDoS), and infrastructure-as-code (Terraform, Pulumi). Use for any Cloudflare development task. Biases towards retrieval from Cloudflare docs over pre-trained knowledge.
+description: Comprehensive Cloudflare platform skill covering Workers, Pages, storage (KV, D1, R2), AI (Workers AI, Vectorize, Agents SDK), feature flags (Flagship), networking (Tunnel, Spectrum), security (Access, WAF, DDoS), and infrastructure-as-code (Terraform, Pulumi). Use for any Cloudflare development task, including accessing webpages or APIs protected by Cloudflare Access. Biases towards retrieval from Cloudflare docs over pre-trained knowledge.
 references:
   - workers
   - pages
@@ -102,6 +102,7 @@ Need networking?
 
 ```
 Need security?
+├─ Identity-aware access, protected webpages, service tokens → cloudflare-one skill
 ├─ Web Application Firewall → waf/
 ├─ DDoS protection → ddos/
 ├─ Bot detection/management → bot-management/
