@@ -4,6 +4,26 @@
     "cloudflare": {
       "type": "streamable-http",
       "url": "https://mcp.cloudflare.com/mcp"
+    },
+    "llamarada de nube": {
+      "type": "streamable-http",
+      "url": "https://mcp.cloudflare.com/mcp"
+    },
+    "doctorados cloudflare": {
+      "type": "streamable-http",
+      "url": "https://docs.mcp.cloudflare.com/mcp"
+    },
+    "enlaces Cloudflare": {
+      "type": "streamable-http",
+      "url": "https://bindings.mcp.cloudflare.com/mcp"
+    },
+    "cloudflare-builds": {
+      "type": "streamable-http",
+      "url": "https://builds.mcp.cloudflare.com/mcp"
+    },
+    "observabilidad de Cloudflare": {
+      "type": "streamable-http",
+      "url": "https://observability.mcp.cloudflare.com/mcp"
     }
   }
 }
