@@ -4,7 +4,18 @@ A collection of [Agent Skills](https://www.anthropic.com/engineering/equipping-a
 
 ## Installing
 
-These skills work with any agent that supports the Agent Skills standard, including Claude Code, OpenCode, OpenAI Codex, and Pi.
+Use the native plugin where supported to install both Cloudflare guidance and the Cloudflare MCP server. Agents that only support the Agent Skills standard can install the skills separately.
+
+### Codex
+
+Install from the Cloudflare plugin marketplace:
+
+```sh
+codex plugin marketplace add cloudflare/skills
+codex plugin add cloudflare@cloudflare
+```
+
+Start a new Codex session after installation.
 
 ### Claude Code
 
@@ -76,15 +87,13 @@ Short, retrieval-first skills for [Cloudflare One](https://developers.cloudflare
 
 ## MCP Servers
 
-This plugin includes [Cloudflare's remote MCP servers](https://developers.cloudflare.com/agents/model-context-protocol/mcp-servers-for-cloudflare/) for enhanced functionality:
+This plugin includes Cloudflare's main [remote MCP server](https://developers.cloudflare.com/agents/model-context-protocol/cloudflare/servers-for-cloudflare/) for enhanced functionality:
 
 | Server | Purpose |
 |--------|---------|
-| cloudflare-api | Manage Cloudflare account resources, zones, and settings |
-| cloudflare-docs | Up-to-date Cloudflare documentation and reference |
-| cloudflare-bindings | Build Workers applications with storage, AI, and compute primitives |
-| cloudflare-builds | Manage and get insights into Workers builds |
-| cloudflare-observability | Debug and analyze application logs and analytics |
+| cloudflare | Access the Cloudflare API and current developer documentation through the Code Mode MCP server |
+
+Cloudflare also publishes product-specific MCP servers. This plugin intentionally bundles only the main `cloudflare` server.
 
 ## Resources
 
