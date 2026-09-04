@@ -4,13 +4,13 @@
 
 ```bash
 # TypeScript API Worker
-npm create cloudflare@latest my-api -- --type=hello-world --lang=ts --deploy
+npm create cloudflare@latest -- my-api --type=hello-world --lang=ts --deploy
 
-# Next.js on Pages
-npm create cloudflare@latest my-app -- --type=web-app --framework=next --platform=pages --ts --deploy
+# Next.js on Workers (recommended path)
+npm create cloudflare@latest -- my-app --framework=next
 
-# Astro static site  
-npm create cloudflare@latest my-blog -- --type=web-app --framework=astro --platform=pages --ts
+# Astro static site on Workers
+npm create cloudflare@latest -- my-blog --framework=astro --lang=ts
 ```
 
 ## CI/CD (GitHub Actions)
@@ -23,13 +23,13 @@ npm create cloudflare@latest my-blog -- --type=web-app --framework=astro --platf
     CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 ```
 
-**Non-interactive requires:**
+**For non-interactive use, provide the choices relevant to the selected starter:**
 ```bash
---type=<value>       # Required
+--type=<value>       # Worker starter, or use --framework instead
 --no-git             # Recommended (CI already in git)
 --no-deploy          # Deploy separately with secrets
---framework=<value>  # For web-app
---ts / --no-ts       # Required
+--framework=<value>  # Framework starter; --type is ignored
+--lang=ts            # Language when applicable
 ```
 
 ## Monorepo
@@ -38,38 +38,27 @@ C3 detects workspace config (`package.json` workspaces or `pnpm-workspace.yaml`)
 
 ```bash
 cd packages/
-npm create cloudflare@latest my-worker -- --type=hello-world --lang=ts --no-deploy
+npm create cloudflare@latest -- my-worker --type=hello-world --lang=ts --no-deploy
 ```
 
 ## Custom Templates
 
 ```bash
-# GitHub repo
+# External Git repository
 npm create cloudflare@latest -- --template=username/repo
 npm create cloudflare@latest -- --template=cloudflare/templates/worker-openapi
-
-# Local path
-npm create cloudflare@latest my-app -- --template=../my-template
 ```
 
-**Template requires `c3.config.json`:**
-```json
-{
-  "name": "my-template",
-  "category": "hello-world",
-  "copies": [{ "path": "src/" }, { "path": "wrangler.jsonc" }],
-  "transforms": [{ "path": "package.json", "jsonc": { "name": "{{projectName}}" }}]
-}
-```
+Remote templates should contain `package.json`, a Wrangler configuration file, and a `src/` directory with the referenced Worker script. `--template` accepts repository forms such as `user/repo`, an HTTPS/SSH Git URL, a GitLab/Bitbucket URL, a subdirectory, branch, or commit.
 
 ## Existing Projects
 
 ```bash
-# Add Cloudflare to existing Worker
-npm create cloudflare@latest . -- --type=pre-existing --existing-script=./dist/index.js
+# Clone an existing deployed Worker
+npm create cloudflare@latest -- . --type=pre-existing --existing-script=my-worker
 
-# Add to existing framework app
-npm create cloudflare@latest . -- --type=web-app --framework=next --platform=pages --ts
+# Add Cloudflare Workers to an existing framework app
+npm create cloudflare@latest -- . --framework=react-router --lang=ts --no-deploy
 ```
 
 ## Post-Creation Checklist

@@ -24,10 +24,13 @@ npx wrangler kv namespace create MY_KV  # Get real ID
 
 | Need | Platform |
 |------|----------|
-| Git integration, branch previews | `--platform=pages` |
-| Durable Objects, D1, Queues | Workers (default) |
+| New static, SPA, SSG, framework, or full-stack app | Workers (default) |
+| Git integration and preview URLs | Workers Builds (default); Pages also supports these |
+| Direct Durable Objects, Cron Triggers, queue consumers, richer observability | Workers (default) |
+| D1 or queue producer | Workers or Pages |
+| Existing Pages app or required Pages-only workflow | `--platform=pages` |
 
-Wrong platform? Recreate with correct `--platform` flag.
+Pages has richer branch deploy controls, custom branch aliases, native Pages Functions routing/plugins, separate preview bindings, and support for external-zone custom domains. If none is required, prefer Workers for new projects. For an existing Pages project, use the [Pages-to-Workers migration guide](https://developers.cloudflare.com/workers/static-assets/migration-guides/migrate-from-pages/) instead of blindly recreating it.
 
 ## TypeScript Issues
 
@@ -51,7 +54,7 @@ rm package-lock.json  # If using pnpm
 
 **CI hangs on prompts:**
 ```bash
-npm create cloudflare@latest my-app -- \
+npm create cloudflare@latest -- my-app \
   --type=hello-world --lang=ts --no-git --no-deploy
 ```
 
