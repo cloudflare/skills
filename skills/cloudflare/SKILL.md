@@ -45,7 +45,8 @@ Need feature flags?
 ```
 Need to run code?
 ├─ Serverless functions at the edge → workers/
-├─ Full-stack web app with Git deploys → pages/
+├─ New static, SPA, SSG, or full-stack app → workers/ + static-assets/
+│   └─ Existing Pages project or Pages-only workflow → pages/ + pages-functions/
 ├─ Stateful coordination/real-time → durable-objects/
 ├─ Long-running multi-step jobs → workflows/
 ├─ Run containers → containers/

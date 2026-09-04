@@ -75,14 +75,15 @@ npx wrangler pages deployment tail --status error
 
 ## Migration
 
-**Workers → Pages Functions:**
-- `export default { fetch(req, env) {} }` → `export function onRequest(ctx) { const { request, env } = ctx; }`
-- Use `_worker.js` for complex routing: `env.ASSETS.fetch(request)` for static files
+**Pages Functions → Workers:**
+- For framework applications, switch from the Pages adapter to the framework's Workers adapter or guide.
+- For Advanced Mode, move `_worker.js` outside the asset directory (recommended) or exclude it with `.assetsignore`, point the Worker's `main` field at it, and set `assets.directory` to the static output. Add an assets binding only if the script calls it.
+- For a `/functions` folder, compile it with `wrangler pages functions build --outdir=./dist/worker/`, point `main` at the generated Worker, or adopt a Workers-native framework/router for ongoing file-based routing.
+- Pages runs Functions before assets according to `_routes.json`; Workers serves matching assets first unless `assets.run_worker_first` is configured.
 
-**Other platforms → Pages:**
-- File-based routing: `/functions/api/users.js` → `/api/users`
-- Dynamic routes: `[param]` not `:param`
-- Replace Node.js deps with Workers APIs or add `nodejs_compat` flag
+Do not migrate an existing Worker to Pages solely to obtain file-based routing. Workers is the recommended target for new applications.
+
+Follow the live [Pages-to-Workers migration guide](https://developers.cloudflare.com/workers/static-assets/migration-guides/migrate-from-pages/) for configuration, serving behavior, preview environments, bindings, custom domains, and rollout.
 
 ## Resources
 

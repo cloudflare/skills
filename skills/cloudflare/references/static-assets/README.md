@@ -31,18 +31,19 @@ Deploy: `wrangler deploy`
 
 | Factor | Workers Static Assets | Cloudflare Pages |
 |--------|----------------------|------------------|
-| **Use case** | Hybrid apps (static + dynamic API) | Static sites, SSG |
-| **Worker control** | Full control over routing | Limited (Functions) |
-| **Configuration** | Code-first, flexible | Git-based, opinionated |
-| **Dynamic routing** | Worker-first patterns | Functions (_functions/) |
-| **Best for** | Full-stack apps, SPAs with APIs | Jamstack, static docs |
+| **Use case** | Recommended for new static, SPA, SSG, SSR, and full-stack apps | Existing Pages apps and Pages-only workflows |
+| **Worker control** | Assets-only or full Worker control, including asset-first and selective Worker-first routing | Native Pages Functions and file-based routing |
+| **CI/CD** | Workers Builds with Git integration, caching, deploy hooks, and preview URLs | Git integration plus richer branch controls and custom branch aliases |
+| **Frameworks** | Primary target for current Cloudflare framework adapters | Maintain existing Pages adapters; static framework output remains supported |
+| **Distinct capabilities** | Broader runtime, observability, bindings, and deployment features | External-zone custom domains, native Pages Plugins, and separate preview bindings |
 
 **Decision tree:**
 
-- Need custom routing logic? → Workers Static Assets
-- Pure static site or SSG? → Pages
-- API routes + SPA? → Workers Static Assets
-- Framework (Next, Nuxt, Remix)? → Pages
+- New static site, SSG, SPA, or full-stack app? → Workers Static Assets
+- API routes or custom routing? → Workers Static Assets
+- Framework app? → Follow the framework's Workers guide; for full-stack Next.js use vinext, and for Remix migrate to React Router on Workers
+- Existing Pages project? → Keep Pages if it is working, or follow the Pages-to-Workers migration guide
+- Need a Pages-only workflow from the compatibility matrix? → Pages
 
 ## Reading Order
 

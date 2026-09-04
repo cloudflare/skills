@@ -21,7 +21,7 @@ Smart Placement automatically analyzes Worker request duration across Cloudflare
 - Pure edge logic (auth checks, redirects, simple transformations)
 - Workers without fetch event handlers
 - Workers with RPC methods or named entrypoints (only `fetch` handlers are affected)
-- Pages/Assets Workers with `run_worker_first = true` (degrades asset serving)
+- Workers Static Assets apps using `run_worker_first` without validating that whole-script placement matches the desired edge/compute split
 
 ### Decision Tree
 

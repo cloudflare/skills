@@ -18,13 +18,13 @@
 - Worker doesn't make backend calls (runs faster at edge)
 - Backend calls are cached (network latency to user more important)
 - Backend service has good global distribution
-- Worker serves static assets or Pages content
+- Worker mainly serves static assets or cached content
 
 **Solutions:**
 - Disable Smart Placement: `{ "placement": { "mode": "off" } }`
 - Review whether Worker actually benefits from Smart Placement
 - Consider caching strategy to reduce backend calls
-- For Pages/Assets Workers, use separate backend Worker with Smart Placement
+- For Workers Static Assets apps with distinct edge and backend placement needs, consider a separate backend Worker
 
 ### "No request duration metrics"
 
@@ -40,27 +40,26 @@
 **Cause:** Smart Placement not enabled, beta feature removed, or Worker not analyzed yet
 **Solution:** Verify Smart Placement enabled, wait for analysis (15min), check if beta feature still available
 
-## Pages/Assets + Smart Placement Performance Degradation
+## Workers Static Assets + Smart Placement
 
-**Problem:** Static assets load 2-5x slower when Smart Placement enabled with `run_worker_first = true`.
+**Problem:** Placement decisions do not match the desired split between edge-first asset handling and compute near a backend.
 
-**Cause:** Smart Placement routes ALL requests (including static assets like HTML, CSS, JS, images) to remote locations. Static content should ALWAYS be served from edge closest to user.
+**Cause:** When Workers Static Assets uses `assets.run_worker_first`, Smart Placement places the entire Worker script as one unit. This setting belongs to Workers Static Assets, not Pages.
 
-**Solution:** Split into separate Workers OR disable Smart Placement:
+**Solution:** Measure request duration and choose asset-first routing, selective `run_worker_first` patterns, or separate Workers according to the workload:
 ```jsonc
-// ❌ BAD - Assets routed away from user
+// Review carefully: the whole Worker is placed as one unit
 {
-  "name": "pages-app",
+  "name": "full-stack-app",
   "placement": { "mode": "smart" },
   "assets": { "run_worker_first": true }
 }
 
-// ✅ GOOD - Assets at edge, API optimized
+// Alternative: separate edge assets from placed backend compute
 // frontend/wrangler.jsonc
 {
   "name": "frontend",
-  "assets": { "run_worker_first": true }
-  // No placement field - stays at edge
+  "assets": { "directory": "./dist" }
 }
 
 // backend/wrangler.jsonc
@@ -70,7 +69,7 @@
 }
 ```
 
-This is one of the most common and impactful Smart Placement misconfigurations.
+Do not claim a guaranteed slowdown or a fixed performance multiplier; the live documentation describes this as a placement-model limitation whose impact depends on the application.
 
 ## Monolithic Full-Stack Worker
 
@@ -168,7 +167,7 @@ Both behaviors identical - Worker runs at edge closest to user.
 - Workers without significant backend communication
 - Pure edge logic (auth checks, redirects, simple transformations)
 - Workers without fetch event handlers
-- Pages/Assets Workers with `run_worker_first = true`
+- Workers Static Assets apps whose `run_worker_first` routing does not match whole-script placement
 - Workers using RPC methods instead of fetch handlers
 
 These scenarios won't benefit and may perform worse with Smart Placement.

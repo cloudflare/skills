@@ -133,29 +133,11 @@ Automatically optimizes function execution location based on request patterns.
 
 **When to skip**: Evenly distributed global traffic with no data locality constraints.
 
-## Remote Bindings (Local Dev)
+## Remote Development
 
-Connect local dev server to production bindings instead of local mocks:
+Pages does not support `wrangler pages dev --remote`. Use local bindings with `wrangler pages dev`, and use a Pages preview environment when Cloudflare-hosted validation is required.
 
-```bash
-# All bindings remote
-npx wrangler pages dev ./dist --remote
-
-# Specific bindings remote (others local)
-npx wrangler pages dev ./dist --remote --kv=KV --d1=DB
-```
-
-**Use cases**:
-- Test against production data (read-only operations)
-- Debug binding-specific behavior
-- Validate changes before deployment
-
-**⚠️ Warning**: 
-- Writes affect **real production data**
-- Use only for read-heavy debugging or with non-production accounts
-- Consider creating separate preview environments instead
-
-**Requirements**: Must be logged in (`npx wrangler login`) with access to bindings.
+For remote development, migrate to Workers and use `wrangler dev --remote`. Review every remote binding before writing data because remote operations affect the configured Cloudflare resource.
 
 ## Local Dev
 
@@ -165,9 +147,6 @@ npx wrangler pages dev ./dist
 
 # With bindings
 npx wrangler pages dev ./dist --kv KV --d1 DB=local-db-id
-
-# Remote bindings (production data)
-npx wrangler pages dev ./dist --remote
 
 # Persistence
 npx wrangler pages dev ./dist --persist-to=./.wrangler/state/v3
