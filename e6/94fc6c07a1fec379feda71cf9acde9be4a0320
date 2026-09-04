@@ -1,0 +1,63 @@
+skills/cloudflare/references/pages/api.md
+  s_ca41e7d89c4a3c::t_0fd3939859ed62 193,195-202
+skills/cloudflare/references/pages/configuration.md
+  s_ca41e7d89c4a3c::t_6d5fc955b164fb 136,138,140
+skills/cloudflare/references/pages/gotchas.md
+  s_ca41e7d89c4a3c::t_fbcefdbfd3b342 59-78,111,113-115
+skills/cloudflare/references/pages/patterns.md
+  s_ca41e7d89c4a3c::t_c5d6b5574d33a6 188-192,194
+skills/cloudflare/references/smart-placement/README.md
+  s_ca41e7d89c4a3c::t_a1a2cf6893addd 24
+skills/cloudflare/references/smart-placement/api.md
+  s_ca41e7d89c4a3c::t_7ca29a675a8a4c 113,115
+skills/cloudflare/references/smart-placement/configuration.md
+  s_ca41e7d89c4a3c::t_8ae24a1c9235a8 152,154,156,158-161,164,166,171,175,186
+skills/cloudflare/references/smart-placement/gotchas.md
+  s_ca41e7d89c4a3c::t_6ba952215b4569 21,27,43,45,47,49,51,53,58,62,72,170
+skills/turnstile-spin/SKILL.md
+  s_ca41e7d89c4a3c::t_33c402a704d851 325
+skills/cloudflare/SKILL.md
+  s_ab7d09545ad14c::t_c93e7e02cd5c76 48-49
+skills/cloudflare/references/c3/README.md
+  s_ab7d09545ad14c::t_59a69ca803c922 3,9,11-12,14-18,26-27,29-35,37-38,40-41,44,48,50
+skills/cloudflare/references/c3/api.md
+  s_ab7d09545ad14c::t_79ab4d705a2ffe 6,8,15-20,34-37,44,55,57-58,60-61,64-67,73
+skills/cloudflare/references/c3/gotchas.md
+  s_ab7d09545ad14c::t_fd3fb905e105a9 27-31,33,57
+skills/cloudflare/references/c3/patterns.md
+  s_ab7d09545ad14c::t_97e53f188daeac 7,9-10,12-13,26,28,31-32,41,47,52,57-58,60-61
+skills/cloudflare/references/pages-functions/README.md
+  s_ab7d09545ad14c::t_936814755bc735 3-5,23-25,28-32,35-38,84
+skills/cloudflare/references/pages-functions/gotchas.md
+  s_ab7d09545ad14c::t_30bcfcc242fd5f 78-86
+skills/cloudflare/references/pages/README.md
+  s_ab7d09545ad14c::t_7d8a27887e6f86 3-5,29-30,33-39,41,47,74
+skills/cloudflare/references/static-assets/README.md
+  s_ab7d09545ad14c::t_ed42f3640c507e 34-38,42-46
+workers-vs-pages-discrepancy-report.md
+  s_ab7d09545ad14c::t_af84aa755723d6 1-269
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "e694fc6c07a1fec379feda71cf9acde9be4a0320",
+  "prompts": {},
+  "sessions": {
+    "s_ab7d09545ad14c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a06c82-d029-7720-8ae8-db662eb31c10",
+        "model": "unknown"
+      },
+      "human_author": "Matt TK Taylor <matttaylor@cloudflare.com>"
+    },
+    "s_ca41e7d89c4a3c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a06ca5-2dde-7490-982f-d76b44828a1a",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Matt TK Taylor <matttaylor@cloudflare.com>"
+    }
+  }
+}
