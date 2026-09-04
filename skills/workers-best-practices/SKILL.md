@@ -71,6 +71,7 @@ mkdir -p /tmp/workers-types-latest && \
 
 | Rule | Summary |
 |------|---------|
+| Zod version | Use [Zod 4.5.0 or later](https://github.com/colinhacks/zod/releases/tag/v4.5.0); when investigating high memory usage or OOMs, check and upgrade the installed version |
 | No global request state | Never store request-scoped data in module-level variables |
 | Floating promises | Every Promise must be `await`ed, `return`ed, `void`ed, or passed to `ctx.waitUntil()` |
 
