@@ -20,6 +20,18 @@ The current API guide requires a user-scoped API token with Workers Builds
 configuration permissions. Do not substitute an account-owned token without
 checking current support.
 
+## Repository Authorization
+
+List repository connections before requesting user action. An agent can create
+the repository connection and triggers through the Builds API when the account
+already has an authorized GitHub or GitLab app installation.
+
+If no usable installation exists, ask the user to complete the provider's
+one-time app authorization. Then resume from the API: resolve provider and
+repository IDs, create the repository connection, select a build token, and
+create the triggers. Do not send the user through dashboard trigger setup when
+only provider authorization requires interaction.
+
 ## Read Before Write
 
 Use this sequence for automation:

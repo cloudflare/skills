@@ -34,14 +34,23 @@ build variables and secrets, build token, cache, and watch paths.
 
 ## Get Started
 
-1. Create a Worker, including an assets-only Worker for a static site.
-2. Make sure the dashboard Worker name matches the `name` in the Wrangler
-   configuration in the selected root directory.
-3. Open the Worker in the dashboard and go to **Settings > Builds**.
-4. Connect a GitHub or GitLab repository.
-5. Configure the production branch and commands.
-6. Enable non-production builds if the project needs previews.
-7. Push a commit and verify the source commit, build, deployment, and Git check.
+Prefer the Builds REST API so an agent can complete and verify setup:
+
+1. Create or deploy the Worker with Wrangler, including an assets-only Worker
+   for a static site. Confirm its name matches the Wrangler configuration.
+2. Retrieve the current Builds API guide and resolve the Worker tag.
+3. List existing repository connections and build tokens. Reuse an authorized
+   GitHub or GitLab connection when available.
+4. Create or update the production trigger with the repository, branch, root
+   directory, build command, deploy command, build token, and watch paths.
+5. Create or update the preview trigger when the project needs non-production
+   builds.
+6. Read both triggers back, start a test build, and inspect its commit, status,
+   logs, deployment, and Git check.
+
+If the account has no authorized connection for the Git provider, ask the user
+to complete that provider's one-time app authorization. Resume API setup after
+authorization instead of asking the user to configure triggers in the dashboard.
 
 ## In This Reference
 
