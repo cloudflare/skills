@@ -62,17 +62,15 @@
 - **Problem**: No updates since 2024; incompatible with Next.js 15+; missing App Router features
 - **Cause**: Cloudflare discontinued official support; community fork exists but limited
 - **Solutions**:
-  1. **Recommended**: Use Vercel (official Next.js host)
-  2. **Advanced**: Self-host on Workers using custom adapter (complex, unsupported)
-  3. **Migration**: Switch to SvelteKit/Nuxt (similar DX, full Pages support)
+  1. **Recommended**: Migrate the application to Workers using the current Next.js framework guide
+  2. **Existing project**: Continue using the deprecated adapter only while planning migration
 
 **Remix**: Official adapter (`@remix-run/cloudflare-pages`) **deprecated**.
 - **Problem**: No maintenance from Remix team; compatibility issues with Remix v2+
 - **Cause**: Remix team deprecated all framework adapters
 - **Solutions**:
-  1. **Recommended**: Migrate to SvelteKit (similar file-based routing, better DX)
-  2. **Alternative**: Use Astro (static-first with optional SSR)
-  3. **Workaround**: Continue using deprecated adapter (no future support)
+  1. **Recommended**: Migrate to React Router on Workers using the current framework guide
+  2. **Existing project**: Continue using the deprecated adapter only while planning migration
 
 ### ✅ Supported Frameworks
 

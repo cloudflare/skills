@@ -6,11 +6,11 @@
 # TypeScript API Worker
 npm create cloudflare@latest my-api -- --type=hello-world --lang=ts --deploy
 
-# Next.js on Pages
-npm create cloudflare@latest my-app -- --type=web-app --framework=next --platform=pages --ts --deploy
+# Next.js on Workers
+npm create cloudflare@latest -- my-app --framework=next
 
-# Astro static site  
-npm create cloudflare@latest my-blog -- --type=web-app --framework=astro --platform=pages --ts
+# Astro static site on Workers
+npm create cloudflare@latest -- my-blog --framework=astro
 ```
 
 ## CI/CD (GitHub Actions)
@@ -68,8 +68,8 @@ npm create cloudflare@latest my-app -- --template=../my-template
 # Add Cloudflare to existing Worker
 npm create cloudflare@latest . -- --type=pre-existing --existing-script=./dist/index.js
 
-# Add to existing framework app
-npm create cloudflare@latest . -- --type=web-app --framework=next --platform=pages --ts
+# Add to an existing framework app
+npm create cloudflare@latest -- . --framework=next
 ```
 
 ## Post-Creation Checklist

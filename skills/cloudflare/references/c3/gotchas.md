@@ -24,10 +24,12 @@ npx wrangler kv namespace create MY_KV  # Get real ID
 
 | Need | Platform |
 |------|----------|
-| Git integration, branch previews | `--platform=pages` |
-| Durable Objects, D1, Queues | Workers (default) |
+| New static, SPA, or full-stack app | Workers (default) |
+| Git integration and branch previews | Workers + Workers Builds |
+| Maintain an existing Pages project | `--platform=pages` |
 
-Wrong platform? Recreate with correct `--platform` flag.
+For a new project created as Pages, prefer migrating it to Workers rather than
+recreating it as another Pages project.
 
 ## TypeScript Issues
 

@@ -198,7 +198,7 @@ const data = await event.locals.runtime.env.DB.prepare('SELECT * FROM users').al
 - **Solid Start**: `@solidjs/start-cloudflare-pages`
 
 **❌ Deprecated/Unsupported**:
-- **Next.js**: Official adapter (`@cloudflare/next-on-pages`) deprecated. Use Vercel or self-host on Workers.
-- **Remix**: Official adapter (`@remix-run/cloudflare-pages`) deprecated. Migrate to supported frameworks.
+- **Next.js on Pages**: `@cloudflare/next-on-pages` is deprecated. Deploy new Next.js applications to Workers using the current Workers framework guide.
+- **Remix on Pages**: `@remix-run/cloudflare-pages` is deprecated. Deploy new applications to Workers using the current React Router framework guide.
 
 See [gotchas.md](./gotchas.md#framework-specific) for migration guidance.

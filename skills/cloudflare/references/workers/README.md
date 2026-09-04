@@ -40,6 +40,9 @@ npx wrangler secret put API_KEY     # Set secret
 
 ## When to Use Workers
 
+- Static sites and documentation
+- Single-page applications
+- Full-stack and server-rendered applications
 - API endpoints at the edge
 - Request/response transformation
 - Authentication/authorization layers
@@ -100,6 +103,8 @@ async tail(events: TraceItem[], env: Env, ctx: ExecutionContext): Promise<void>
 
 ## See Also
 
+- [Static Assets](../static-assets/README.md) - Static, SPA, and full-stack applications
+- [Workers Builds](../workers-builds/README.md) - Integrated Git-based CI/CD
 - [KV](../kv/README.md) - Key-value storage
 - [D1](../d1/README.md) - SQL database
 - [R2](../r2/README.md) - Object storage

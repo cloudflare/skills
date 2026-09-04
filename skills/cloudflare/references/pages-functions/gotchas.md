@@ -59,13 +59,8 @@ npx wrangler pages deployment tail --status error
 
 ## Limits
 
-| Resource | Free | Paid |
-|----------|------|------|
-| CPU time | 10ms | 30s (default), 5min (max) |
-| Memory | 128 MB | 128 MB |
-| Script size | 10 MB compressed | 10 MB compressed |
-| Env vars | 5 KB per var, 64 max | 5 KB per var, 64 max |
-| Requests | 100k/day | Unlimited ($0.50/million) |
+Pages Functions use Workers limits and pricing. Retrieve the current Workers
+limits and pricing documentation before quoting values.
 
 ## Best Practices
 
@@ -75,19 +70,17 @@ npx wrangler pages deployment tail --status error
 
 ## Migration
 
-**Workers → Pages Functions:**
-- `export default { fetch(req, env) {} }` → `export function onRequest(ctx) { const { request, env } = ctx; }`
-- Use `_worker.js` for complex routing: `env.ASSETS.fetch(request)` for static files
-
-**Other platforms → Pages:**
-- File-based routing: `/functions/api/users.js` → `/api/users`
-- Dynamic routes: `[param]` not `:param`
-- Replace Node.js deps with Workers APIs or add `nodejs_compat` flag
+For new projects, deploy to Workers. When migrating an existing Pages Functions
+project, follow the current Pages-to-Workers migration guide and verify routing,
+bindings, headers, redirects, domains, and previews before changing traffic.
 
 ## Resources
 
 - [Official Docs](https://developers.cloudflare.com/pages/functions/)
 - [Workers APIs](https://developers.cloudflare.com/workers/runtime-apis/)
+- [Workers limits](https://developers.cloudflare.com/workers/platform/limits/)
+- [Workers pricing](https://developers.cloudflare.com/workers/platform/pricing/)
+- [Migrate from Pages](https://developers.cloudflare.com/workers/static-assets/migration-guides/migrate-from-pages/)
 - [Examples](https://github.com/cloudflare/pages-example-projects)
 - [Discord](https://discord.gg/cloudflaredev)
 
