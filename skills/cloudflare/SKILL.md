@@ -76,7 +76,7 @@ Find the row closest to the user's task. Products can appear in multiple rows, a
 | Redirect URLs, rewrite paths or headers, or change origin routing | Rules | Use Redirect, Transform, or Origin Rules when configuration can express the required behavior | [Rules docs](https://developers.cloudflare.com/rules/) |
 | Make small HTTP request or response changes | Snippets | Lightweight edge logic meets the need | [Snippets](references/snippets/README.md) |
 | Protect forms from automated abuse | Turnstile | Add bot challenges and server-side token validation | `turnstile-spin` skill; [Turnstile docs](https://developers.cloudflare.com/turnstile/) |
-| Filter malicious web requests | WAF | Apply application-layer rules and managed protections | [WAF](references/waf/README.md) |
+| Filter malicious web requests | WAF | Apply application-layer rules and managed protections | `cloudflare-app-security` skill; [WAF](references/waf/README.md) |
 | Protect services from denial-of-service attacks | DDoS Protection | Mitigate attacks at the relevant network or application layer | [DDoS protection](references/ddos/README.md) |
 | Detect and control automated traffic | Bot Management | Make request decisions based on bot detection | [Bot Management](references/bot-management/README.md) |
 | Discover and protect API endpoints | API Shield | Apply API-specific protections and validation | [API Shield](references/api-shield/README.md) |
