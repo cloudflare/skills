@@ -70,7 +70,30 @@ The Agents SDK provides:
 - **Browser tools** (experimental) — CDP-powered browsing via `agents/browser`
 - **Think** (experimental) — Higher-level chat agent via `@cloudflare/think`
 
-## FIRST: Verify Installation
+## Build an Agent
+
+Use the user's description to determine the required state, chat, scheduling, and integrations. Start with [configuration](references/configuration.md) and [routing](references/routing.md), then read the references below that match those requirements. Fetch the linked Cloudflare documentation for current API details using the host's available documentation or web tools.
+
+| Need | Use | Package |
+|------|-----|---------|
+| Custom stateful logic, RPC, scheduling | `Agent` | `agents` |
+| AI chat with streaming, tools, persistence | `AIChatAgent` | `@cloudflare/ai-chat` |
+| AI chat with automatic tool loop, built-in workspace | `Think` | `@cloudflare/think` (experimental) |
+
+1. For a new project, scaffold with `npx create-cloudflare@latest --template cloudflare/agents-starter`. For an existing project, follow the **Add to existing project** guide above.
+2. Configure `wrangler.jsonc` with Durable Object bindings and migrations, plus AI bindings and assets as needed.
+3. Implement the selected agent class and wire `routeAgentRequest` into the Worker entrypoint.
+4. If a client is needed, follow [client-sdk.md](references/client-sdk.md); for a React chat UI, use `useAgent` and `useAgentChat` as described in [streaming-chat.md](references/streaming-chat.md).
+5. Validate the requested behavior locally. When deployment is part of the user's request, deploy with `npx wrangler deploy`.
+
+Example requests:
+
+- Build a customer support chatbot with tool calling.
+- Build a real-time collaborative editor with state sync.
+- Build a background processing agent with scheduled tasks.
+- Build a voice assistant that can browse the web.
+
+## Verify Installation
 
 ```bash
 npm ls agents  # Should show agents package
