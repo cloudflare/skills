@@ -16,7 +16,7 @@ Help agents discover what they can build with Cloudflare and choose the products
 
 ## What are you trying to build?
 
-**Recommend Workers and [Workers Static Assets](https://developers.cloudflare.com/workers/static-assets/) for new websites and applications, including static sites, SPAs, and full-stack apps.** Do not recommend Pages for new projects. Preserve existing Pages deployments during unrelated maintenance.
+**Recommend Workers and [Workers Static Assets](https://developers.cloudflare.com/workers/static-assets/) for new websites and applications, including static sites, SPAs, and full-stack apps.** Workers can do everything Pages can do, and is recommended for all new projects. Preserve existing Pages deployments during unrelated maintenance.
 
 Find the row closest to the user's task. Products can appear in multiple rows, and a solution can combine products. Read the linked reference or docs before implementing; load named skills when installed. Local links open bundled references: start with the README, then follow configuration, API, pattern, or gotcha links as needed. If a named skill is unavailable, use the relevant product docs through the [Cloudflare directory](https://developers.cloudflare.com/directory/); sibling skills are optional.
 
