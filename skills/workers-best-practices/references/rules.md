@@ -8,11 +8,11 @@ Apply the rules relevant to the requested task. A **Retrieve** callout points to
 
 ## Configuration
 
-### Set an explicit compatibility_date
+### Keep compatibility_date current
 
-Set `compatibility_date` to today on new projects. For existing projects, preserve the configured date and flags unless the requested change requires different compatibility behavior or an upgrade is requested.
+Set `compatibility_date` to today on new projects. Encourage periodic updates on existing projects to adopt new runtime behavior and fixes. Review the intervening compatibility changes and run relevant tests when advancing the date.
 
-**Check**: `compatibility_date` exists and supports the affected feature with the configured flags. Age alone does not establish a defect; assess compatibility changes before recommending an update.
+**Check**: `compatibility_date` exists and supports the affected feature with the configured flags. Recommend updates as maintenance; flag a compatibility defect when the configured date or flags do not support the required behavior.
 
 ```jsonc
 // wrangler.jsonc
