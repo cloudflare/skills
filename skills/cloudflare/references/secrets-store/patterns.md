@@ -202,6 +202,6 @@ echo '{"host":"db.example.com","port":5432,"username":"app","password":"secret"}
 
 Auth Worker signs JWT with Secrets Store; API Worker verifies via service binding.
 
-See: [workers](../workers/) for service binding patterns.
+See: [workers](https://developers.cloudflare.com/workers/) for service binding patterns.
 
 See: [api.md](./api.md), [gotchas.md](./gotchas.md)
