@@ -26,6 +26,20 @@ Install using the [plugin marketplace](https://code.claude.com/docs/en/discover-
 /plugin install cloudflare@cloudflare
 ```
 
+### VS Code / GitHub Copilot
+
+Enable `chat.plugins.enabled` in VS Code, then add this repository to `chat.plugins.marketplaces` in your user settings:
+
+```json
+{
+  "chat.plugins.marketplaces": ["cloudflare/skills"]
+}
+```
+
+Preserve any marketplaces already listed. Open the Extensions view, search `@agentPlugins`, and install **cloudflare**. Alternatively, run **Chat: Install Plugin From Source** and enter `https://github.com/cloudflare/skills`.
+
+The repository already includes an Agent Plugins 1.0 manifest, `skills/`, and `mcp.json`; no VS Code-specific manifest is required. See [VS Code's agent plugin documentation](https://code.visualstudio.com/docs/agent-customization/agent-plugins) for installation and troubleshooting.
+
 ### Cursor
 
 Install from the Cursor Marketplace or add manually via **Settings > Rules > Add Rule > Remote Rule (Github)** with `cloudflare/skills`.
