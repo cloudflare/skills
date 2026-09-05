@@ -37,22 +37,23 @@ describe("Business logic", () => {
 **Pros:** Fast, simple  
 **Cons:** No full runtime, can't test fetch handler
 
-## vitest-pool-workers
+## Workers Vitest Plugin
+
+These examples assume an ESM project (`"type": "module"` in `package.json`). See the [current Vitest setup](https://developers.cloudflare.com/workers/testing/vitest-integration/write-your-first-test/) for prerequisites and migration guidance.
 
 Full Workers runtime in Vitest. Reads `wrangler.toml`.
 
 ```bash
-npm i -D @cloudflare/vitest-pool-workers
+npm i -D @cloudflare/vitest-plugin vitest@^4.1.0
 ```
 
 ```js
 // vitest.config.js
-import { defineWorkersConfig } from "@cloudflare/vitest-pool-workers/config";
+import { cloudflareTest } from "@cloudflare/vitest-plugin";
+import { defineConfig } from "vitest/config";
 
-export default defineWorkersConfig({
-  test: {
-    poolOptions: { workers: { wrangler: { configPath: "./wrangler.toml" } } },
-  },
+export default defineConfig({
+  plugins: [cloudflareTest({ wrangler: { configPath: "./wrangler.toml" } })],
 });
 ```
 
