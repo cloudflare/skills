@@ -33,7 +33,7 @@ Use installed help and schema to check whether documented features exist in the 
 
 ## Preview deployments
 
-Check installed `wrangler --help` and the [Worker command reference](https://developers.cloudflare.com/workers/wrangler/commands/workers/) for preview support. Where the branch-preview command is available, inspect `wrangler preview --help` for deployment and naming options, and retrieve the current preview configuration and resource-isolation docs before deploying. Use the project's build workflow, including any Vite-generated config.
+Check installed `wrangler --help` and the [Worker command reference](https://developers.cloudflare.com/workers/wrangler/commands/workers/) for preview support. Command availability does not establish account eligibility; check any beta restrictions reported by help or the docs. Where branch previews are supported, inspect `wrangler preview --help` for deployment and naming options, and retrieve the current preview configuration and resource-isolation docs before deploying. Use the project's build workflow, including any Vite-generated config.
 
 Distinguish branch previews from uploading a Worker version with `wrangler versions upload`; consult the [version URL documentation](https://developers.cloudflare.com/workers/versions-and-deployments/preview-urls/) for the latter. A test URL does not imply isolated storage. Check the actual binding targets: separate preview settings can still reference shared KV namespaces, D1 databases, or R2 buckets. If branch previews are unavailable, explain the gap and choose a supported workflow that fits the requested isolation; [Wrangler environments](https://developers.cloudflare.com/workers/wrangler/environments/) support persistent staging Workers.
 
