@@ -21,6 +21,7 @@ Use the Cloudflare MCP `docs` tool if available, or fetch the relevant linked pa
 | --- | --- |
 | Discover commands and flags, including resource management, deployments, rollback, and diagnostics | Project-local `wrangler --help` and `wrangler <command> --help`; [command reference](https://developers.cloudflare.com/workers/wrangler/commands/) |
 | Edit config or add a binding | Installed `wrangler/config-schema.json` (usually under `node_modules`); [configuration reference](https://developers.cloudflare.com/workers/wrangler/configuration/) |
+| Test a deployed branch or version | See Preview deployments below; [Worker commands](https://developers.cloudflare.com/workers/wrangler/commands/workers/) |
 | Configure staging or production | [Environments](https://developers.cloudflare.com/workers/wrangler/environments/) |
 | Set secrets locally, in CI, or on a deployed Worker | [Secrets](https://developers.cloudflare.com/workers/configuration/secrets/) |
 | Generate binding and runtime types | [TypeScript](https://developers.cloudflare.com/workers/languages/typescript/) |
@@ -29,6 +30,12 @@ Use the Cloudflare MCP `docs` tool if available, or fetch the relevant linked pa
 | Deploy an unauthenticated prototype | [Claim deployments](https://developers.cloudflare.com/workers/platform/claim-deployments/) for eligibility, expiry, and claim URL handling; use a permanent account for production or CI |
 
 Use installed help and schema to check whether documented features exist in the project's version. If a required feature needs an upgrade, make that dependency explicit. If retrieval is unavailable, state the gap and use available local evidence rather than inventing syntax.
+
+## Preview deployments
+
+Check installed `wrangler --help` and the [Worker command reference](https://developers.cloudflare.com/workers/wrangler/commands/workers/) for preview support. Where the branch-preview command is available, inspect `wrangler preview --help` for deployment and naming options, and retrieve the current preview configuration and resource-isolation docs before deploying. Use the project's build workflow, including any Vite-generated config.
+
+Distinguish branch previews from uploading a Worker version with `wrangler versions upload`; consult the [version URL documentation](https://developers.cloudflare.com/workers/versions-and-deployments/preview-urls/) for the latter. A test URL does not imply isolated storage. Check the actual binding targets: separate preview settings can still reference shared KV namespaces, D1 databases, or R2 buckets. If branch previews are unavailable, explain the gap and choose a supported workflow that fits the requested isolation; [Wrangler environments](https://developers.cloudflare.com/workers/wrangler/environments/) support persistent staging Workers.
 
 ## Apply the Change
 

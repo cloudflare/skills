@@ -73,7 +73,7 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 | sandbox-stable | Sandbox on the current stable `@cloudflare/sandbox` package |
 | sandbox-migrate-to-next | Port a stable Sandbox app to `@cloudflare/sandbox@next` |
 | wrangler | Deploying and managing Workers, KV, R2, D1, Vectorize, Queues, Workflows |
-| workers-verification | Diagnosing and verifying browser-to-Worker behavior with local traces, Local Explorer, and binding state |
+| workers-development | Discovering local development, Explorer, production observability, and preview tools |
 | workers-best-practices | Writing, reviewing, or configuring production Workers |
 | cloudflare-email-service | Implementing or troubleshooting Email Sending, Email Routing, and delivery configuration |
 | turnstile-spin | Setting up, repairing, or migrating Turnstile bot verification, including server-side Siteverify |
