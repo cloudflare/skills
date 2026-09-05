@@ -74,6 +74,7 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 | sandbox-migrate-to-next | Port a stable Sandbox app to `@cloudflare/sandbox@next` |
 | wrangler | Deploying and managing Workers, KV, R2, D1, Vectorize, Queues, Workflows |
 | workers-best-practices | Writing, reviewing, or configuring production Workers |
+| cloudflare-app-auth | Customer login and sessions on Workers, protected routes, and native Cloudflare Access integration |
 | cloudflare-email-service | Implementing or troubleshooting Email Sending, Email Routing, and delivery configuration |
 | turnstile-spin | Setting up, repairing, or migrating Turnstile bot verification, including server-side Siteverify |
 | web-perf | Auditing Core Web Vitals (FCP, LCP, TBT, CLS), render-blocking resources, network chains |
