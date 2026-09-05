@@ -17,7 +17,7 @@ KV provides:
 
 | Need | Recommendation |
 |------|----------------|
-| Strong consistency | → [Durable Objects](../durable-objects/) |
+| Strong consistency | → [Durable Objects](https://developers.cloudflare.com/durable-objects/) |
 | SQL queries | → [D1](../d1/) |
 | Object storage (files) | → [R2](../r2/) |
 | High read, low write volume | → KV ✅ |
@@ -84,6 +84,6 @@ const json = await env.MY_KV.get<Config>("config", "json");
 
 ## See Also
 
-- [workers](../workers/) - Worker runtime for KV access
+- [workers](https://developers.cloudflare.com/workers/) - Worker runtime for KV access
 - [d1](../d1/) - Use D1 for strong consistency needs
-- [durable-objects](../durable-objects/) - Strongly consistent alternative
+- [durable-objects](https://developers.cloudflare.com/durable-objects/) - Strongly consistent alternative

@@ -27,7 +27,7 @@ const accountId = process.env.CF_ACCOUNT_ID;
 
 ### cURL
 ```bash
-curl -X POST "https://api.cloudflare.com/client/v4/accounts/{account_id}/tunnels" \
+curl -X POST "https://api.cloudflare.com/client/v4/accounts/{account_id}/cfd_tunnel" \
   -H "Authorization: Bearer ${CF_API_TOKEN}" \
   -H "Content-Type: application/json" \
   --data '{
@@ -38,7 +38,7 @@ curl -X POST "https://api.cloudflare.com/client/v4/accounts/{account_id}/tunnels
 
 ### TypeScript
 ```typescript
-const tunnel = await cf.zeroTrust.tunnels.create({
+const tunnel = await cf.zeroTrust.tunnels.cloudflared.create({
   account_id: accountId,
   name: 'my-tunnel',
   tunnel_secret: Buffer.from(crypto.randomBytes(32)).toString('base64'),
@@ -51,17 +51,15 @@ console.log(`Tunnel ID: ${tunnel.id}`);
 
 ### cURL
 ```bash
-curl -X GET "https://api.cloudflare.com/client/v4/accounts/{account_id}/tunnels" \
+curl -X GET "https://api.cloudflare.com/client/v4/accounts/{account_id}/cfd_tunnel" \
   -H "Authorization: Bearer ${CF_API_TOKEN}"
 ```
 
 ### TypeScript
 ```typescript
-const tunnels = await cf.zeroTrust.tunnels.list({
+for await (const tunnel of cf.zeroTrust.tunnels.cloudflared.list({
   account_id: accountId,
-});
-
-for (const tunnel of tunnels.result) {
+})) {
   console.log(`${tunnel.name}: ${tunnel.id}`);
 }
 ```
@@ -70,13 +68,13 @@ for (const tunnel of tunnels.result) {
 
 ### cURL
 ```bash
-curl -X GET "https://api.cloudflare.com/client/v4/accounts/{account_id}/tunnels/{tunnel_id}" \
+curl -X GET "https://api.cloudflare.com/client/v4/accounts/{account_id}/cfd_tunnel/{tunnel_id}" \
   -H "Authorization: Bearer ${CF_API_TOKEN}"
 ```
 
 ### TypeScript
 ```typescript
-const tunnel = await cf.zeroTrust.tunnels.get(tunnelId, {
+const tunnel = await cf.zeroTrust.tunnels.cloudflared.get(tunnelId, {
   account_id: accountId,
 });
 
@@ -88,7 +86,7 @@ console.log(`Connections: ${tunnel.connections?.length || 0}`);
 
 ### cURL
 ```bash
-curl -X PUT "https://api.cloudflare.com/client/v4/accounts/{account_id}/tunnels/{tunnel_id}/configurations" \
+curl -X PUT "https://api.cloudflare.com/client/v4/accounts/{account_id}/cfd_tunnel/{tunnel_id}/configurations" \
   -H "Authorization: Bearer ${CF_API_TOKEN}" \
   -H "Content-Type: application/json" \
   --data '{
@@ -103,7 +101,7 @@ curl -X PUT "https://api.cloudflare.com/client/v4/accounts/{account_id}/tunnels/
 
 ### TypeScript
 ```typescript
-const config = await cf.zeroTrust.tunnels.configurations.update(
+const config = await cf.zeroTrust.tunnels.cloudflared.configurations.update(
   tunnelId,
   {
     account_id: accountId,
@@ -121,13 +119,13 @@ const config = await cf.zeroTrust.tunnels.configurations.update(
 
 ### cURL
 ```bash
-curl -X DELETE "https://api.cloudflare.com/client/v4/accounts/{account_id}/tunnels/{tunnel_id}" \
+curl -X DELETE "https://api.cloudflare.com/client/v4/accounts/{account_id}/cfd_tunnel/{tunnel_id}" \
   -H "Authorization: Bearer ${CF_API_TOKEN}"
 ```
 
 ### TypeScript
 ```typescript
-await cf.zeroTrust.tunnels.delete(tunnelId, {
+await cf.zeroTrust.tunnels.cloudflared.delete(tunnelId, {
   account_id: accountId,
 });
 ```
@@ -157,25 +155,29 @@ docker run cloudflare/cloudflared:latest tunnel --no-autoupdate run --token ${TU
 
 ### Get Tunnel Token (TypeScript)
 ```typescript
-// Get tunnel to retrieve token
-const tunnel = await cf.zeroTrust.tunnels.get(tunnelId, {
+const token = await cf.zeroTrust.tunnels.cloudflared.token.get(tunnelId, {
   account_id: accountId,
 });
-
-// Token available in tunnel.token (only for config source: cloudflare)
-const token = tunnel.token;
 ```
 
 ## DNS Routes API
 
+Public hostnames use proxied CNAME records pointing to `<tunnel_id>.cfargotunnel.com`.
+
 ```bash
 # Create DNS route
-curl -X POST "https://api.cloudflare.com/client/v4/accounts/{account_id}/tunnels/{tunnel_id}/connections" \
+curl -X POST "https://api.cloudflare.com/client/v4/zones/{zone_id}/dns_records" \
   -H "Authorization: Bearer ${CF_API_TOKEN}" \
-  --data '{"hostname": "app.example.com"}'
+  -H "Content-Type: application/json" \
+  --data '{
+    "type": "CNAME",
+    "name": "app.example.com",
+    "content": "<tunnel_id>.cfargotunnel.com",
+    "proxied": true
+  }'
 
 # Delete route
-curl -X DELETE "https://api.cloudflare.com/client/v4/accounts/{account_id}/tunnels/{tunnel_id}/connections/{route_id}" \
+curl -X DELETE "https://api.cloudflare.com/client/v4/zones/{zone_id}/dns_records/{dns_record_id}" \
   -H "Authorization: Bearer ${CF_API_TOKEN}"
 ```
 
@@ -183,11 +185,15 @@ curl -X DELETE "https://api.cloudflare.com/client/v4/accounts/{account_id}/tunne
 
 ```bash
 # Add IP route
-curl -X POST "https://api.cloudflare.com/client/v4/accounts/{account_id}/tunnels/{tunnel_id}/routes" \
+curl -X POST "https://api.cloudflare.com/client/v4/accounts/{account_id}/teamnet/routes" \
   -H "Authorization: Bearer ${CF_API_TOKEN}" \
-  --data '{"ip_network": "10.0.0.0/8"}'
+  -H "Content-Type: application/json" \
+  --data '{
+    "network": "10.0.0.0/8",
+    "tunnel_id": "<tunnel_id>"
+  }'
 
 # List IP routes
-curl -X GET "https://api.cloudflare.com/client/v4/accounts/{account_id}/tunnels/{tunnel_id}/routes" \
+curl -X GET "https://api.cloudflare.com/client/v4/accounts/{account_id}/teamnet/routes" \
   -H "Authorization: Bearer ${CF_API_TOKEN}"
 ```

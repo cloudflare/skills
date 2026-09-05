@@ -54,6 +54,6 @@ REST API note: management endpoints use Cloudflare v4 envelopes (`result`, `resu
 ## See Also
 
 - **[Flagship API reference](https://developers.cloudflare.com/api/resources/flagship/)** — Source of truth for REST API paths, envelopes, and response fields
-- **[../workers/](../workers/)** — Workers runtime (Flagship runs inside Workers)
+- **[Workers docs](https://developers.cloudflare.com/workers/)** — Workers runtime (Flagship runs inside Workers)
 - **[../kv/](../kv/)** — KV storage (Flagship uses KV infrastructure for flag delivery)
-- **[../wrangler/](../wrangler/)** — Wrangler CLI for deployment and config
+- **[Wrangler docs](https://developers.cloudflare.com/workers/wrangler/)** — Wrangler CLI for deployment and config

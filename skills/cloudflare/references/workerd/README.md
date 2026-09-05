@@ -73,6 +73,6 @@ workerd is in **active development**. Breaking changes possible. Pin versions in
 5. [gotchas.md](./gotchas.md) - Common errors, debugging
 
 ## Related References
-- [workers](../workers/) - Workers runtime API documentation
+- [workers](https://developers.cloudflare.com/workers/) - Workers runtime API documentation
 - [miniflare](../miniflare/) - Testing tool built on workerd
-- [wrangler](../wrangler/) - CLI that uses workerd for local dev
+- [wrangler](https://developers.cloudflare.com/workers/wrangler/) - CLI that uses workerd for local dev

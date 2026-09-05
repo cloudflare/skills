@@ -72,7 +72,7 @@ Use the namespace-scoped Artifacts base URL plus a gateway JWT. For imports from
 
 - [Cloudflare Artifacts Docs](https://developers.cloudflare.com/artifacts/)
 - [Artifacts Git Protocol Docs](https://developers.cloudflare.com/artifacts/api/git-protocol/)
-- [ArtifactFS Docs](https://developers.cloudflare.com/artifacts/api/artifactfs/)
+- [ArtifactFS Docs](https://developers.cloudflare.com/artifacts/guides/artifact-fs/)
 - [Cloudflare Workers Docs](https://developers.cloudflare.com/workers/)
 - [Cloudflare Durable Objects Docs](https://developers.cloudflare.com/durable-objects/)
 - [Cloudflare R2 Docs](https://developers.cloudflare.com/r2/)

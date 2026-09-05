@@ -89,7 +89,7 @@ Follow the live [Pages-to-Workers migration guide](https://developers.cloudflare
 
 - [Official Docs](https://developers.cloudflare.com/pages/functions/)
 - [Workers APIs](https://developers.cloudflare.com/workers/runtime-apis/)
-- [Examples](https://github.com/cloudflare/pages-example-projects)
+- [Framework guides](https://developers.cloudflare.com/pages/framework-guides/)
 - [Discord](https://discord.gg/cloudflaredev)
 
 **See also:** [configuration.md](./configuration.md) for TypeScript setup | [patterns.md](./patterns.md) for middleware/auth | [api.md](./api.md) for bindings
