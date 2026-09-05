@@ -1,6 +1,7 @@
 ---
 name: turnstile-spin
 description: Set up, repair, or migrate to Cloudflare Turnstile bot verification in an existing frontend and backend, including server-side Siteverify.
+compatibility: Requires Bash, curl, Python 3, jq, and network access to Cloudflare. Local env-file writes also require Git. Existing-widget recovery requires an approved Wrangler 4.109+ executable; widget management requires account access.
 ---
 
 # Turnstile Spin skill
@@ -34,6 +35,10 @@ Load when the user's prompt mentions any of:
 - A specific signup, login, contact form, download, comment, API endpoint, or other user-triggered request combined with "Cloudflare" or "bot"
 
 Do not load for unrelated Cloudflare tasks (Workers, Pages, R2, etc.) unless Turnstile is also mentioned.
+
+## Dependency preflight
+
+Before the wizard or existing-widget flow, resolve `scripts/preflight.sh` from this loaded skill's directory and run it while keeping the user's project as the working directory. It checks dependencies without using credentials, installing software, or contacting Cloudflare. If `missing_dependencies` is returned, report the named requirements and use an available supported environment or ask for the missing setup; do not start auth/widget operations. Re-run with `--env-file` before choosing a local env-file destination to check Git as well. Resolve and verify the approved Wrangler executable separately when the selected flow requires it.
 
 ## Choose the flow before responding
 

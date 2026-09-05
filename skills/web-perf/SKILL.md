@@ -1,6 +1,7 @@
 ---
 name: web-perf
 description: Audit, diagnose, or optimize website loading and interaction performance, Core Web Vitals, and Lighthouse performance scores.
+compatibility: Performance measurements require browser trace/network tools such as Chrome DevTools MCP, which this plugin does not bundle. Source analysis can proceed without them. Internet access is needed for current documentation.
 ---
 
 # Web Performance Audit

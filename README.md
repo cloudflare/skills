@@ -95,6 +95,17 @@ Short, retrieval-first skills for [Cloudflare One](https://developers.cloudflare
 | cloudflare-one | Designing, configuring, troubleshooting, or reviewing Cloudflare One deployments across Access, Gateway, WARP, Tunnel, Magic WAN, DLP, CASB, posture, and identity |
 | cloudflare-one-migrations | Migration assessments, policy mapping, rollout plans, and gap analysis for Zscaler, Palo Alto, legacy VPN/SWG, and SASE migrations to Cloudflare One |
 
+## Requirements
+
+| Capability | Bundled tools | Additional requirements |
+|---|---|---|
+| Platform guidance | Skill references; Cloudflare MCP configuration with plugin installs | Documentation retrieval/network access for current API facts. Skills-only installs do not configure MCP. |
+| Live Cloudflare operations | Main Cloudflare remote MCP configuration | Connect the intended account; access depends on the operation and account permissions. |
+| Web performance measurements | Performance workflow | Browser trace/network tools such as Chrome DevTools MCP, installed separately. Without them, source analysis remains available and trace metrics are unmeasured. |
+| Turnstile setup and validation | Bash helper scripts | Bash, curl, Python 3, jq, Cloudflare API/Siteverify network access, and appropriate account access. Run the bundled dependency preflight first. |
+| Turnstile local env-file destination | Ignore-check procedure | Git and an existing ignored destination. |
+| Turnstile existing-widget recovery | Guarded recovery workflow | Approved canonical Wrangler 4.109+ executable and target account authentication. |
+
 ## MCP Servers
 
 This plugin includes Cloudflare's main [remote MCP server](https://developers.cloudflare.com/agents/model-context-protocol/cloudflare/servers-for-cloudflare/) for enhanced functionality:
