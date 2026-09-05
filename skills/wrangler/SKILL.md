@@ -21,6 +21,8 @@ Use the Cloudflare MCP `docs` tool if available, or fetch the relevant linked pa
 | --- | --- |
 | Discover commands and flags, including resource management, deployments, rollback, and diagnostics | Project-local `wrangler --help` and `wrangler <command> --help`; [command reference](https://developers.cloudflare.com/workers/wrangler/commands/) |
 | Edit config or add a binding | Installed `wrangler/config-schema.json` (usually under `node_modules`); [configuration reference](https://developers.cloudflare.com/workers/wrangler/configuration/) |
+| Deploy a framework application | [Framework guides](https://developers.cloudflare.com/workers/framework-guides/); follow the guide for the project's existing framework and adapter |
+| Migrate an application to Workers when requested | [Pages to Workers](https://developers.cloudflare.com/workers/static-assets/migration-guides/migrate-from-pages/); [Vercel to Workers](https://developers.cloudflare.com/workers/static-assets/migration-guides/vercel-to-workers/) |
 | Configure staging or production | [Environments](https://developers.cloudflare.com/workers/wrangler/environments/) |
 | Set secrets locally, in CI, or on a deployed Worker | [Secrets](https://developers.cloudflare.com/workers/configuration/secrets/) |
 | Generate binding and runtime types | [TypeScript](https://developers.cloudflare.com/workers/languages/typescript/) |
