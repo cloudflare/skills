@@ -1,14 +1,14 @@
 {
-  "name": "cloudflare-skills",
+  "name": "cloudflare",
   "interface": {
-    "displayName": "Cloudflare Skills"
+    "displayName": "Cloudflare"
   },
   "plugins": [
     {
       "name": "cloudflare",
       "source": {
-        "source": "local",
-        "path": "./"
+        "source": "url",
+        "url": "https://github.com/cloudflare/skills.git"
       },
       "policy": {
         "installation": "AVAILABLE",

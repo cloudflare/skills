@@ -4,7 +4,18 @@ A collection of [Agent Skills](https://www.anthropic.com/engineering/equipping-a
 
 ## Installing
 
-These skills work with any agent that supports the Agent Skills standard, including Claude Code, OpenCode, OpenAI Codex, and Pi.
+Use the native plugin where supported to install both Cloudflare guidance and the Cloudflare MCP server. Agents that only support the Agent Skills standard can install the skills separately.
+
+### Codex
+
+Install from the Cloudflare plugin marketplace:
+
+```sh
+codex plugin marketplace add cloudflare/skills
+codex plugin add cloudflare@cloudflare
+```
+
+Start a new Codex session after installation.
 
 ### Claude Code
 
@@ -14,6 +25,16 @@ Install using the [plugin marketplace](https://code.claude.com/docs/en/discover-
 /plugin marketplace add cloudflare/skills
 /plugin install cloudflare@cloudflare
 ```
+
+### VS Code / GitHub Copilot
+
+Install directly from this repository:
+
+1. Enable `chat.plugins.enabled` in VS Code settings.
+2. Open the Command Palette and run **Chat: Install Plugin From Source**.
+3. Enter `https://github.com/cloudflare/skills`.
+
+For marketplace installation or troubleshooting, see [VS Code's agent plugin documentation](https://code.visualstudio.com/docs/agent-customization/agent-plugins).
 
 ### Cursor
 
@@ -54,19 +75,21 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 
 | Skill | Useful for |
 |-------|------------|
-| cloudflare | Retrieval-first platform router for broad Cloudflare tasks, product selection, current docs, MCP tools, and focused skills |
+| cloudflare | Helps agents discover which Cloudflare products fit their needs, then find the right skills and docs |
 | agents-sdk | Building stateful AI agents with state, scheduling, RPC, MCP servers, email, and streaming chat |
 | browser-run | Browser automation on Cloudflare with screenshots, PDFs, crawlers, CDP, Playwright, Puppeteer, Live View, and WebMCP |
 | cloudflare-email-service | Transactional email sending, Email Routing, Workers email bindings, REST email API, and deliverability |
 | dynamic-workers | Runtime-loaded Workers, Worker Loader bindings, generated-code execution, egress control, and dynamic sandboxing |
 | durable-objects | Stateful coordination (chat rooms, games, booking), RPC, SQLite, alarms, WebSockets |
-| flagship | Cloudflare feature flags, typed values, targeting rules, percentage rollouts, Workers evaluation, and API automation |
-| sandbox-sdk | Secure code execution for AI code execution, code interpreters, CI/CD systems, and interactive dev environments |
-| workflows | Durable multi-step Workers applications with retries, sleeps, events, rollback, and instance management |
-| wrangler | Deploying and managing Workers, KV, R2, D1, Vectorize, Queues, Workflows, Browser Run, AI Search, and related resources |
+| sandbox-next | Sandbox on `@cloudflare/sandbox@next` (1.0 preview); recommended for new projects |
+| sandbox-stable | Sandbox on the current stable `@cloudflare/sandbox` package |
+| sandbox-migrate-to-next | Port a stable Sandbox app to `@cloudflare/sandbox@next` |
+| wrangler | Deploying and managing Workers, KV, R2, D1, Vectorize, Queues, Workflows |
 | web-perf | Auditing Core Web Vitals (FCP, LCP, TBT, CLS), render-blocking resources, network chains |
+| flagship | Cloudflare feature flags, typed values, targeting rules, percentage rollouts, Workers evaluation, and API automation |
+| workflows | Durable multi-step Workers applications with retries, sleeps, events, rollback, and instance management |
 | workers-best-practices | Reviewing and authoring production Workers code, bindings, generated types, streaming, secrets, and observability |
-| turnstile-spin | End-to-end Turnstile setup, CAPTCHA migration, managed siteverify Worker deployment, snippets, and validation |
+| turnstile-spin | Set up, repair, or migrate Turnstile in an existing frontend and backend |
 
 ## Cloudflare One
 
@@ -83,9 +106,9 @@ This plugin includes Cloudflare's main [remote MCP server](https://developers.cl
 
 | Server | Purpose |
 |--------|---------|
-| cloudflare-api | Access the Cloudflare API through the Code Mode MCP server |
+| cloudflare | Access the Cloudflare API and current developer documentation through the Code Mode MCP server |
 
-Cloudflare also publishes product-specific MCP servers for docs, Workers bindings, builds, observability, Radar, Browser Run, and more. This plugin intentionally bundles only the main `cloudflare-api` server.
+Cloudflare also publishes product-specific MCP servers. This plugin intentionally bundles only the main `cloudflare` server.
 
 ## Resources
 

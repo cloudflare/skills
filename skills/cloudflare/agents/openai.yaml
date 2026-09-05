@@ -6,7 +6,7 @@ interface:
 dependencies:
   tools:
     - type: "mcp"
-      value: "cloudflare-api"
+      value: "cloudflare"
       description: "Cloudflare API Code Mode MCP server for account and API workflows"
       transport: "streamable_http"
       url: "https://mcp.cloudflare.com/mcp"

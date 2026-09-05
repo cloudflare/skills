@@ -1,126 +1,50 @@
 ---
 name: wrangler
-description: Use Cloudflare Wrangler for Workers and Cloudflare resource workflows. Load before running or writing Wrangler commands, editing wrangler.jsonc, deploying Workers, temporary deploys, generating types, managing secrets, tailing logs, or creating KV, R2, D1, Queues, Vectorize, Workflows, Hyperdrive, Containers, Workers AI, Pages, Pipelines, Browser Run, AI Search, Workers VPC, mTLS, Artifacts, Agent Memory, or Secrets Store resources.
+description: Run or troubleshoot Wrangler CLI commands and configure Worker projects for local development, deployment, and Cloudflare resource management.
 ---
 
 # Wrangler CLI
 
-Use this skill for command selection, configuration edits, and validation around Wrangler. Retrieve current docs or `--help` output before relying on exact flags or subcommands.
+Use the project's Wrangler version and retrieve the relevant documentation before writing commands or configuration. CLI flags and configuration fields change; do not rely on memorized examples.
 
-## Sources
+## Inspect the Project
 
-Prefer current sources in this order:
+- Find the package manager, installed Wrangler version, package scripts, framework, and Wrangler config. Run commands through the project's scripts or package manager so they use its local version. Install dependencies using the existing lockfile when needed; do not silently upgrade Wrangler to match current docs. If Wrangler is not a dependency, follow the [installation guide](https://developers.cloudflare.com/workers/wrangler/install-and-update/) to add it locally.
+- Identify the config used by the build or deploy command, including framework-generated config. Edit its source rather than generated output.
+- Establish the target account, Worker, environment, and resource before running commands that change them. For data operations, determine whether the target is local or remote.
 
-1. Project-local Wrangler: `npx wrangler --version`, `npx wrangler <command> --help`.
-2. Wrangler docs: `https://developers.cloudflare.com/workers/wrangler/`.
-3. Config schema: `node_modules/wrangler/config-schema.json`.
-4. Generated types: `worker-configuration.d.ts` from `npx wrangler types`.
+## Retrieve What the Task Needs
 
-When docs, schema, and generated types disagree, trust the project-local Wrangler version for commands being run in that project.
+Use the Cloudflare MCP `docs` tool if available, or fetch the relevant linked page directly. Follow links to the specific command or product involved; avoid loading the entire reference. If a page moves, rediscover it through the [Wrangler command index](https://developers.cloudflare.com/workers/wrangler/commands/) or Cloudflare docs search.
 
-## Workflow
-
-1. Inspect the project: package manager, `wrangler.jsonc`/`wrangler.toml`, framework, scripts, `package.json`, generated types, and existing bindings.
-2. Check Wrangler availability with `npx wrangler --version`. Add `wrangler` as a dev dependency when the project does not already manage it.
-3. Retrieve the exact command shape with `npx wrangler <group> --help` or current docs before creating resources, changing config, or using a less-common flag.
-4. Prefer `wrangler.jsonc` for new or migrated Workers config.
-5. After config or binding changes, run `npx wrangler types`.
-6. Validate deployable changes with `npx wrangler deploy --dry-run` when possible, plus the project test/typecheck command.
-7. Report the account, worker/project name, environment, and validation commands used.
-
-## Command Defaults
-
-| Task | Default command or check |
+| Task | Source |
 | --- | --- |
-| New Workers app | `npm create cloudflare@latest` or the repo's existing scaffold command |
-| Local dev | `npx wrangler dev` |
-| Deploy | `npx wrangler deploy` |
-| Temporary deploy for unauthenticated prototypes | `npx wrangler deploy --temporary` only after Wrangler suggests it or the docs confirm support |
-| Dry run deploy | `npx wrangler deploy --dry-run` |
-| Generate types | `npx wrangler types` |
-| Auth/account check | `npx wrangler whoami` |
-| Tail logs | `npx wrangler tail` |
-| Startup profiling | `npx wrangler check startup` |
-| Secret write | `npx wrangler secret put NAME` |
-| Bulk secret sync | `npx wrangler secret bulk < secrets.json` |
-| Command discovery | `npx wrangler <group> --help` |
+| Discover commands and flags, including resource management, deployments, rollback, and diagnostics | Project-local `wrangler --help` and `wrangler <command> --help`; [command reference](https://developers.cloudflare.com/workers/wrangler/commands/) |
+| Edit config or add a binding | Installed `wrangler/config-schema.json` (usually under `node_modules`); [configuration reference](https://developers.cloudflare.com/workers/wrangler/configuration/) |
+| Configure staging or production | [Environments](https://developers.cloudflare.com/workers/wrangler/environments/) |
+| Set secrets locally, in CI, or on a deployed Worker | [Secrets](https://developers.cloudflare.com/workers/configuration/secrets/) |
+| Generate binding and runtime types | [TypeScript](https://developers.cloudflare.com/workers/languages/typescript/) |
+| Run locally or choose a testing approach | [Local development](https://developers.cloudflare.com/workers/local-development/); [testing](https://developers.cloudflare.com/workers/testing/) |
+| Diagnose authentication or select an account | [General commands](https://developers.cloudflare.com/workers/wrangler/commands/general/), including `whoami`; [authentication profiles](https://developers.cloudflare.com/workers/wrangler/profiles/) |
+| Deploy an unauthenticated prototype | [Claim deployments](https://developers.cloudflare.com/workers/platform/claim-deployments/) for eligibility, expiry, and claim URL handling; use a permanent account for production or CI |
 
-Use environment flags only after confirming the project defines the target environment.
+Use installed help and schema to check whether documented features exist in the project's version. If a required feature needs an upgrade, make that dependency explicit. If retrieval is unavailable, state the gap and use available local evidence rather than inventing syntax.
 
-## Configuration Rules
+## Apply the Change
 
-- Prefer `wrangler.jsonc` over TOML for new config.
-- Keep `compatibility_date` current for new projects; avoid changing it casually in existing production projects.
-- Add `nodejs_compat` only when the app or dependencies need Node.js built-ins.
-- Do not hand-write Worker binding interfaces in TypeScript; regenerate types instead.
-- Keep non-secret config in `vars`; keep secrets in Wrangler secrets or platform secret storage.
-- Use `secrets.required` to declare required secrets when the project relies on deploy-time validation and generated types.
-- Match binding names in config to code and generated types.
-- Binding arrays are often non-inheritable across Wrangler environments. Repeat bindings such as `vars`, KV, D1, R2, AI Search, Vectorize, service bindings, Queues, Workflows, tail consumers, required secrets, and Secrets Store entries in each environment that needs them.
-- For Durable Objects, never edit old migration tags; add a new migration tag.
-- For D1 projects with nested migrations, use `migrations_pattern` after retrieving current D1 migration docs. The pattern is relative to the Wrangler config file and defaults to `${migrations_dir}/*.sql`.
-- For Pipelines bindings, use the `stream` config field. The old `pipeline` field is deprecated, though the runtime binding API remains the same.
-- Automatic resource provisioning can create KV, R2, and D1 resources when IDs are omitted, but generated IDs may be written back only for local CLI deploy flows. Inspect docs before relying on dashboard/Git deploys to update source config.
-- Frameworks and build tools may redirect Wrangler to generated config under `.wrangler/deploy/config.json`; inspect generated config before diagnosing deploy/dev behavior.
-- For local development with real remote resources, set per-binding `remote: true` only after the user understands it will touch real resources.
+- Prefer `wrangler.jsonc` for new config. Set a new project's [compatibility date](https://developers.cloudflare.com/workers/configuration/compatibility-dates/) to today; review runtime changes and test when advancing an existing project's date. Preserve existing project conventions and avoid incidental format migrations.
+- Check environment inheritance before adding bindings or variables. Some fields must be specified separately for each environment; a working default config does not establish that staging is configured.
+- With the Cloudflare Vite plugin, select the environment via `CLOUDFLARE_ENV` at dev or build time. Deploy the resulting build; setting an environment at deploy time does not retarget its flattened config. See [Vite environments](https://developers.cloudflare.com/workers/vite-plugin/reference/cloudflare-environments/).
+- Reconcile dashboard changes with the config before deploying: Wrangler can overwrite dashboard variables and routes. When binding existing resources, verify their identifiers; omitted identifiers can trigger [automatic provisioning](https://developers.cloudflare.com/workers/wrangler/configuration/#automatic-provisioning).
+- Distinguish local simulation from remote bindings during development. A locally running Worker can still access real resources; check the selected bindings before testing writes.
+- Keep secret values out of command arguments, source code, and logs. Use the documented interactive input or protected file/stdin mechanism for the command. Local secret files must be ignored by version control and are not automatically uploaded as deployed secrets. For missing local secrets, check file precedence and any `secrets.required` declaration in the secrets docs.
+- Treat `wrangler secret put` and `secret delete` as deployments: they create a version and deploy it immediately. Use the documented `wrangler versions secret` workflow when the change must be staged.
+- Before a rollback, check [rollback limitations](https://developers.cloudflare.com/workers/versions-and-deployments/rollbacks/): connected resources and their data are not rolled back with Worker code.
 
-## Resource Workflows
+## Validate
 
-Retrieve current command help before using these groups:
+After changing config or bindings in a TypeScript project, regenerate types with the project's `wrangler types` command rather than hand-editing generated declarations. Run the relevant existing typecheck or tests.
 
-| Resource | Help entry point |
-| --- | --- |
-| KV | `npx wrangler kv --help` |
-| R2 | `npx wrangler r2 --help` |
-| D1 | `npx wrangler d1 --help` |
-| Queues | `npx wrangler queues --help` |
-| Vectorize | `npx wrangler vectorize --help` |
-| Hyperdrive | `npx wrangler hyperdrive --help` |
-| Workflows | `npx wrangler workflows --help` |
-| Pipelines | `npx wrangler pipelines --help` |
-| Browser Run sessions | `npx wrangler browser --help` |
-| AI Search | `npx wrangler ai-search --help` |
-| Workers VPC | `npx wrangler vpc --help` |
-| mTLS certificates | `npx wrangler mtls-certificate --help` |
-| Artifacts | `npx wrangler artifacts --help` |
-| Agent Memory namespaces | `npx wrangler agent-memory --help` |
-| Secrets Store | `npx wrangler secrets-store --help` |
-| Pages | `npx wrangler pages --help` |
-| Containers | Check current Containers docs and Wrangler help; commands and limits change quickly. |
-| Dynamic Workers / Worker Loaders | Check current Dynamic Workers docs plus config schema; this is primarily `worker_loaders` config, not a resource command group. |
+For deployment changes, use the project's build workflow and `wrangler deploy --dry-run` where supported, with the intended config and environment. A successful dry run checks the build and packaging; it does not prove remote resources or runtime behavior work. Use task-specific local or remote checks as appropriate to the requested work.
 
-Prefer Wrangler-managed resource creation when the user wants local reproducibility or generated config. Prefer Dashboard/API inspection when the task is audit-only.
-
-## Secrets
-
-- Never pass secret values as command arguments.
-- Prefer the interactive `npx wrangler secret put NAME` prompt.
-- For automation, pipe from a protected file or secret manager; do not use `echo` in examples.
-- For bulk updates, prefer JSON piped to `npx wrangler secret bulk`. A secret value creates/updates it, `null` deletes it, omitted secrets are unchanged, `.env` input cannot delete secrets, and current requests support up to 100 create/update/delete operations.
-- Do not print existing secret values. Wrangler normally only lists names.
-- Confirm the worker name and environment before writing or deleting a secret.
-
-## Validation
-
-Use the tightest validation set the project supports:
-
-```bash
-npx wrangler types
-npx wrangler deploy --dry-run
-npm test
-npx tsc --noEmit
-```
-
-Skip unavailable commands with a short note. If validation fails because a command or flag is stale, retrieve current Wrangler help, adjust, and rerun.
-
-## Gotchas
-
-- `wrangler dev` uses local simulations by default for many bindings; remote resources require explicit remote configuration.
-- Browser Run Quick Actions through the Worker binding require remote mode in local development and a current compatibility date.
-- Workers AI and some platform services may require remote mode or deployed testing.
-- `.dev.vars` is for local development; it is not deployed as production secrets.
-- `--env` changes names, bindings, and variables according to the config environment. Inspect the config before using it.
-- `wrangler deploy --temporary` is for unauthenticated agent/prototype deploys, not production or CI. Claim URLs are sensitive and expire if not used.
-- `--temporary` is not a global flag and only supports a subset of products. Retrieve claim deployment docs before using advanced bindings.
-- Deleting Workers, resources, namespaces, buckets, databases, or secrets is destructive. Confirm the exact target first.
-- If a repo pins Wrangler, use the pinned version unless the task is explicitly to upgrade it.
+Report what changed, the target environment, checks performed, and any unresolved validation gaps. Link the documentation used when the result depends on current command or configuration behavior.

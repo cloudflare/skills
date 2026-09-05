@@ -19,7 +19,7 @@ Use the user's goal as the routing signal. Load or follow focused skills first w
 | Review Worker code or apply production Worker implementation patterns | `workers-best-practices` |
 | Keep per-object state, coordinate WebSockets, or use SQLite per object | `durable-objects` |
 | Build a stateful AI agent, chat app, MCP integration, scheduler, or voice workflow | `agents-sdk` |
-| Execute untrusted code, run an interpreter, or need filesystem/process isolation | `sandbox-sdk` |
+| Execute untrusted code, run an interpreter, or need filesystem/process isolation | `sandbox-next` for new or preview projects, `sandbox-stable` for existing stable apps |
 | Send transactional email or route inbound email | `cloudflare-email-service` |
 | Evaluate feature flags, target users, or roll out changes gradually | `flagship` |
 | Add CAPTCHA or Turnstile bot protection to a form or app | `turnstile-spin` |
@@ -33,8 +33,8 @@ When the user asks for a design rather than a single product task, check the cur
 
 | Need | Default choice | Use something else when |
 | --- | --- | --- |
-| Stateless HTTP/API code | Workers | The app is static-first with Git deploys; consider Pages or Workers static assets. |
-| Static or full-stack frontend | Workers static assets or Pages | Existing Pages project conventions dominate. |
+| Stateless HTTP/API code | Workers | The app is static-first; use Workers Static Assets. Preserve existing Pages deployments during unrelated work. |
+| Static or full-stack frontend | Workers Static Assets | Existing Pages project conventions dominate. |
 | Per-room, per-user, per-tenant coordination | Durable Objects | Data needs global relational querying; use D1 or external DB. |
 | Key-value config, cache, sessions | KV | You need read-after-write consistency, relational queries, or high write rate to one key. |
 | Feature flags, targeting, gradual rollouts | Flagship | Static config can stay in Wrangler vars; low-level key-value config belongs in KV. |

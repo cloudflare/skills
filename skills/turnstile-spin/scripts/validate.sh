@@ -1,136 +1,137 @@
 #!/usr/bin/env bash
-# Validates a deployed Turnstile siteverify Worker end-to-end.
-#
-# Reads:
-#   $CLOUDFLARE_API_TOKEN (required for hostname check)
-#
-# Args:
-#   --worker-url <url>     Deployed Worker URL (from worker-deploy.sh)
-#   --account-id <id>      Cloudflare account ID
-#   --sitekey <key>        Widget sitekey (from widget-create.sh)
-#   --expected-domains <a,b,c>  Comma-separated domains that must appear in the widget's domains array
-#   --written-files <paths>  Comma- or newline-separated frontend files that received widget snippets
-#   --allowed-actions <a,b>  Comma-separated Turnstile action markers. Defaults to turnstile-spin-v1.
-#
-# Outputs JSON. Exit 0 if all checks pass, 1 otherwise.
-#   ok:    {"status":"ok"}
-#   fail:  {"status":"error","check":"health|dummy_siteverify|worker_metadata|hostname|frontend_marker","detail":"<msg>"}
+# Validates a Turnstile widget without placing its secret in arguments,
+# exported environment variables, logs, or temporary files.
 
-set -uo pipefail
-ALLOWED_ACTIONS="${ALLOWED_ACTIONS:-turnstile-spin-v1}"
+set +x
+set -euo pipefail
+
+usage() {
+  echo "Usage: printf '%s' \"\$TURNSTILE_SECRET\" | $0 --sitekey <sitekey> --account-id <account-id> --expected-domains '<json-array>'" >&2
+  exit 2
+}
+
+need_arg() {
+  if [[ -z "${2-}" || "$2" == --* ]]; then
+    usage
+  fi
+}
+
+SITEKEY=""
+ACCOUNT_ID=""
+EXPECTED_DOMAINS_JSON=""
 
 while [[ $# -gt 0 ]]; do
-  case $1 in
-    --worker-url)       WORKER_URL="$2"; shift 2 ;;
-    --account-id)       ACCOUNT_ID="$2"; shift 2 ;;
-    --sitekey)          SITEKEY="$2"; shift 2 ;;
-    --expected-domains) EXPECTED_DOMAINS="$2"; shift 2 ;;
-    --written-files)    WRITTEN_FILES="$2"; shift 2 ;;
-    --allowed-actions)  ALLOWED_ACTIONS="$2"; shift 2 ;;
-    *) echo "validate: unknown arg $1" >&2; exit 2 ;;
+  case "$1" in
+    --sitekey)
+      need_arg "$1" "${2-}"
+      SITEKEY="$2"
+      shift 2
+      ;;
+    --account-id)
+      need_arg "$1" "${2-}"
+      ACCOUNT_ID="$2"
+      shift 2
+      ;;
+    --expected-domains)
+      need_arg "$1" "${2-}"
+      EXPECTED_DOMAINS_JSON="$2"
+      shift 2
+      ;;
+    *) usage ;;
   esac
 done
 
+[[ -n "$SITEKEY" && -n "$ACCOUNT_ID" && -n "$EXPECTED_DOMAINS_JSON" ]] || usage
 : "${CLOUDFLARE_API_TOKEN:?CLOUDFLARE_API_TOKEN must be set}"
-: "${WORKER_URL:?--worker-url required}"
-: "${ACCOUNT_ID:?--account-id required}"
-: "${SITEKEY:?--sitekey required}"
-: "${EXPECTED_DOMAINS:?--expected-domains required}"
-
-# Check 1: health endpoint
-health=$(curl -sSf "${WORKER_URL}/health" 2>/dev/null || echo "")
-if [ -z "$health" ] || ! echo "$health" | grep -q '"ok":true'; then
-  echo "validate: health check failed; $WORKER_URL/health did not return {ok:true,version:...}" >&2
-  echo "{\"status\":\"error\",\"check\":\"health\",\"detail\":\"worker /health did not respond ok:true\"}"
+API_TOKEN="$CLOUDFLARE_API_TOKEN"
+unset CLOUDFLARE_API_TOKEN
+[[ "$API_TOKEN" =~ ^[A-Za-z0-9_-]+$ ]] || {
+  echo "validate: CLOUDFLARE_API_TOKEN has an invalid format" >&2
   exit 1
-fi
+}
 
-# Check 2: dummy siteverify; should return success:false + error-codes array
-dummy=$(curl -sS -X POST "${WORKER_URL}/" \
-  -H "Content-Type: application/json" \
-  -d '{"token":"XXXX.DUMMY.TOKEN.XXXX"}' 2>/dev/null || echo "")
-
-success=$(echo "$dummy" | (jq -r '.success // "missing"' 2>/dev/null || echo "missing"))
-errors=$(echo "$dummy" | (jq -r '.["error-codes"] | length // 0' 2>/dev/null || echo "0"))
-
-if [ "$success" != "false" ] || [ "$errors" = "0" ]; then
-  echo "validate: dummy siteverify check failed; expected success:false + error-codes; got: $dummy" >&2
-  echo "{\"status\":\"error\",\"check\":\"dummy_siteverify\",\"detail\":\"unexpected response shape\"}"
-  exit 1
-fi
-
-# Check 2b: confirm the Worker is the managed template (not a customer-written
-# replacement) by looking for the _worker metadata field. If absent, the user
-# deployed a custom Worker; surface it so the agent can alert them.
-worker_meta=$(echo "$dummy" | (jq -r '._worker.worker_version // "missing"' 2>/dev/null || echo "missing"))
-if [ "$worker_meta" = "missing" ]; then
-  echo "validate: _worker metadata missing from response; this is not the managed Spin Worker template." >&2
-  echo "{\"status\":\"error\",\"check\":\"worker_metadata\",\"detail\":\"_worker field missing; user may have deployed a custom Worker\"}"
-  exit 1
-fi
-
-# Check 3: hostname / widget domains registered
-widget=$(curl -sS \
-  "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/challenges/widgets/$SITEKEY" \
-  -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" 2>/dev/null)
-registered=$(echo "$widget" | (jq -r '.result.domains[]' 2>/dev/null || python3 -c "import sys,json; [print(d) for d in json.load(sys.stdin)['result']['domains']]"))
-
-missing=""
-IFS=',' read -ra DOMS <<< "$EXPECTED_DOMAINS"
-for d in "${DOMS[@]}"; do
-  if ! echo "$registered" | grep -qFx "$d"; then
-    missing="${missing}${d} "
-  fi
+for command_name in curl jq python3; do
+  command -v "$command_name" >/dev/null 2>&1 || {
+    echo "validate: $command_name is required" >&2
+    exit 1
+  }
 done
 
-if [ -n "$missing" ]; then
-  echo "validate: hostname check failed; domains not on widget: $missing" >&2
-  echo "{\"status\":\"error\",\"check\":\"hostname\",\"detail\":\"missing domains: ${missing% }\"}"
+if ! jq -e '
+  type == "array" and
+  length > 0 and
+  all(.[]; type == "string" and length > 0)
+' <<<"$EXPECTED_DOMAINS_JSON" >/dev/null; then
+  echo "validate: --expected-domains must be a non-empty JSON array of domains" >&2
+  exit 2
+fi
+
+WIDGET_SECRET=""
+IFS= read -r -d '' WIDGET_SECRET || true
+trap 'unset API_TOKEN WIDGET_SECRET WIDGET_API_SECRET WIDGET_RESPONSE SITEVERIFY_RESPONSE' EXIT
+
+if [[ -z "$WIDGET_SECRET" || "$WIDGET_SECRET" =~ [[:space:]] ]]; then
+  echo "validate: standard input must contain one non-empty secret without whitespace" >&2
   exit 1
 fi
 
-# Check 4: every frontend widget snippet written by the wizard includes the Spin marker.
-# Widgets created by this skill use turnstile-spin-v1. Dashboard recovery flows may
-# preserve turnstile-spin-v2, so callers can explicitly allow both when appropriate.
-if [ -n "${WRITTEN_FILES:-}" ]; then
-  marker_missing=""
-  missing_files=""
+ACCOUNT_ENCODED="$(python3 -I -c 'import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1], safe=""))' "$ACCOUNT_ID")"
+SITEKEY_ENCODED="$(python3 -I -c 'import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1], safe=""))' "$SITEKEY")"
 
-  while IFS= read -r file; do
-    [ -z "$file" ] && continue
-
-    if [ ! -f "$file" ]; then
-      missing_files="${missing_files}${file} "
-      continue
-    fi
-
-    found="false"
-    IFS=',' read -ra ACTIONS <<< "$ALLOWED_ACTIONS"
-    for action in "${ACTIONS[@]}"; do
-      if grep -q "data-action=\"$action\"" "$file"; then
-        found="true"
-        break
-      fi
-    done
-
-    if [ "$found" != "true" ]; then
-      marker_missing="${marker_missing}${file} "
-    fi
-  done <<EOF
-$(printf '%s\n' "$WRITTEN_FILES" | tr ',' '\n')
-EOF
-
-  if [ -n "$missing_files" ]; then
-    echo "validate: frontend files not found: $missing_files" >&2
-    echo "{\"status\":\"error\",\"check\":\"frontend_marker\",\"detail\":\"frontend files not found: ${missing_files% }\"}"
-    exit 1
-  fi
-
-  if [ -n "$marker_missing" ]; then
-    echo "validate: Spin telemetry marker missing from written files: $marker_missing" >&2
-    echo "{\"status\":\"error\",\"check\":\"frontend_marker\",\"detail\":\"missing data-action marker in: ${marker_missing% }\"}"
-    exit 1
-  fi
+if ! WIDGET_RESPONSE="$(
+  printf 'header = "Authorization: Bearer %s"\n' "$API_TOKEN" |
+    curl --disable --config - --fail --silent --show-error \
+      "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ENCODED/challenges/widgets/$SITEKEY_ENCODED"
+)"; then
+  echo "validate: widget metadata lookup failed" >&2
+  exit 1
 fi
 
-echo '{"status":"ok"}'
+if ! printf '%s' "$WIDGET_RESPONSE" | jq -e --arg sitekey "$SITEKEY" --argjson expected "$EXPECTED_DOMAINS_JSON" '
+  . as $widget
+  | (.success == true) and
+    (.result.sitekey == $sitekey) and
+    ((.result.clearance_level | type) == "string") and
+    (.result.clearance_level as $clearance | ["no_clearance", "interactive", "managed", "jschallenge"] | index($clearance) != null) and
+    ((.result.domains | type) == "array") and
+    (all($expected[]; . as $domain | $widget.result.domains | index($domain) != null))
+' >/dev/null; then
+  echo "validate: widget sitekey, domains, or clearance level was invalid" >&2
+  exit 1
+fi
+
+if ! WIDGET_API_SECRET="$(printf '%s' "$WIDGET_RESPONSE" | jq -er '.result.secret | select(type == "string" and test("^\\S+$"))')"; then
+  echo "validate: widget metadata did not include a valid secret" >&2
+  exit 1
+fi
+if [[ "$WIDGET_API_SECRET" != "$WIDGET_SECRET" ]]; then
+  echo "validate: secret does not belong to the requested sitekey" >&2
+  exit 1
+fi
+unset WIDGET_API_SECRET
+unset WIDGET_RESPONSE
+
+if ! SITEVERIFY_RESPONSE="$(
+  printf '%s' "$WIDGET_SECRET" |
+    python3 -I -c 'import sys,urllib.parse; print(urllib.parse.urlencode({"secret":sys.stdin.read(),"response":"XXXX.DUMMY.TOKEN.XXXX"}),end="")' |
+    curl --disable --fail --silent --show-error \
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify" \
+      -H "Content-Type: application/x-www-form-urlencoded" \
+      --data-binary @-
+)"; then
+  echo "validate: dummy-token siteverify request failed" >&2
+  exit 1
+fi
+
+if ! jq -e '
+  (.success == false) and
+  ((.["error-codes"] | type) == "array") and
+  ((.["error-codes"] | index("invalid-input-response")) != null) and
+  ((.["error-codes"] | index("invalid-input-secret")) == null)
+' <<<"$SITEVERIFY_RESPONSE" >/dev/null; then
+  echo "validate: siteverify did not confirm the widget secret" >&2
+  exit 1
+fi
+
+unset WIDGET_SECRET SITEVERIFY_RESPONSE
+echo '{"status":"ok","metadata_check":"ran","dummy_siteverify":"ran"}'

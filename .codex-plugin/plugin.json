@@ -1,7 +1,7 @@
 {
   "name": "cloudflare",
   "version": "1.0.0",
-  "description": "Skills for the Cloudflare developer platform: Workers, Durable Objects, Browser Run, Dynamic Workers, Workflows, Agents SDK, the Cloudflare API MCP server, Wrangler CLI, and web performance.",
+  "description": "Build, test, and deploy applications on Cloudflare with platform guidance Skills and the Cloudflare MCP server.",
   "author": {
     "name": "Cloudflare",
     "email": "support@cloudflare.com",
@@ -26,8 +26,8 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Cloudflare",
-    "shortDescription": "Cloudflare developer platform skills and MCP",
-    "longDescription": "Bring Cloudflare platform guidance into Codex with skills for Workers, Durable Objects, Browser Run, Dynamic Workers, Workflows, Agents SDK, Cloudflare One, Wrangler, web performance, and Turnstile, plus the Cloudflare API Code Mode MCP server for live account and API workflows.",
+    "shortDescription": "Cloudflare platform and MCP",
+    "longDescription": "Build, review, and operate on Cloudflare with guidance for Workers, Durable Objects, Agents SDK, Cloudflare One, Wrangler, web performance, Turnstile, and more, plus the Cloudflare Code Mode MCP server for live account, API, and documentation workflows.",
     "developerName": "Cloudflare",
     "category": "Developer Tools",
     "capabilities": [
@@ -40,11 +40,11 @@
     "defaultPrompt": [
       "Build a Cloudflare Worker or agent with the right SDK and Wrangler setup",
       "Review this Cloudflare project for production Workers best practices",
-      "Use Cloudflare docs and MCP to inspect or deploy this project"
+      "Use Cloudflare skills and MCP to inspect or deploy this project"
     ],
     "brandColor": "#F6821F",
-    "composerIcon": "./assets/cloudflare.svg",
-    "logo": "./assets/cloudflare.svg",
+    "composerIcon": "./logo.svg",
+    "logo": "./logo.svg",
     "screenshots": []
   }
 }

@@ -1,6 +1,6 @@
 ---
 name: cloudflare-email-service
-description: Send and receive transactional email with Cloudflare Email Service. Load for Email Sending, Email Routing, Workers send_email bindings, REST email API, SMTP submission, Agents SDK email handling, deliverability, SPF/DKIM/DMARC, wrangler email setup, or MCP email tools. Retrieve current docs before exact APIs.
+description: Implement or troubleshoot Cloudflare Email Sending and Email Routing integrations and their delivery configuration.
 ---
 
 # Cloudflare Email Service
@@ -15,7 +15,7 @@ Cloudflare Email Service lets you send transactional emails and route incoming e
 
 | Source | How to retrieve | Use for |
 |--------|----------------|---------|
-| Cloudflare docs | `cloudflare-docs` search tool or URL `https://developers.cloudflare.com/email-service/` | API reference, limits, pricing, latest features |
+| Cloudflare docs | Cloudflare MCP `docs` tool or URL `https://developers.cloudflare.com/email-service/` | API reference, limits, pricing, latest features |
 | REST API spec | `https://developers.cloudflare.com/api/resources/email_sending` | OpenAPI spec for the Email Sending REST API |
 | Workers types | `https://github.com/cloudflare/workerd/tree/main/types` | Type signatures, binding shapes |
 | Agents SDK docs | Fetch `docs/email.md` from `https://github.com/cloudflare/agents/tree/main/docs` | Email handling in Agents SDK |

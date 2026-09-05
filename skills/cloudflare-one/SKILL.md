@@ -1,6 +1,6 @@
 ---
 name: cloudflare-one
-description: "Guides Cloudflare One Zero Trust and SASE work across Access, Gateway, WARP, Tunnel, Cloudflare WAN, DLP, CASB, device posture, and identity. Use when designing, configuring, troubleshooting, or reviewing Cloudflare One deployments. Retrieval-first: use current Cloudflare docs/API schemas instead of embedded product docs."
+description: Design, configure, troubleshoot, or review Cloudflare One Zero Trust and SASE deployments. Use cloudflare-one-migrations for migration planning from other vendors.
 ---
 
 # Cloudflare One
@@ -65,6 +65,8 @@ Use these to avoid jumping straight to configuration. Ask only the prompts relev
 ## Guardrails
 
 - Access controls application authorization; Gateway controls traffic inspection/filtering. Use both when the requirement spans identity-aware app access and network/web security.
+- For new Access deployments, create policies through the reusable policy API (`/access/policies`) and attach them to applications. Do not send inline `policies` in an application create/update request unless the current API documentation explicitly requires an app-scoped policy.
+- Treat an app-scoped policy reported as `reusable: false` as legacy. Migrate existing policies with the documented `make_reusable` endpoint or replace them with reusable policies; do not create new legacy policies. Distinguish legacy policies from the deprecated legacy private-network application type.
 - Public hostname Access apps can be clientless. Private destination apps require WARP/Device client or another network on-ramp plus routes and DNS resolution. Retrieve [self-hosted private app](https://developers.cloudflare.com/cloudflare-one/access-controls/applications/non-http/self-hosted-private-app/) docs before configuring private destinations.
 - Cloudflare Tunnel is an off-ramp from a private network to Cloudflare. Cloudflare WAN and Mesh are other off-ramps which can also be on-ramps.
 - Group-based policies depend on IdP group claims or SCIM. If group sync is missing, do not invent group selectors.
@@ -163,7 +165,7 @@ Use these to avoid jumping straight to configuration. Ask only the prompts relev
 
 ## Validation Prompts
 
-- Access: test authorized, unauthorized, posture-failing, service-token, and multi-IdP flows when applicable; inspect logs and policy precedence.
+- Access: test authorized, unauthorized, posture-failing, service-token, and multi-IdP flows when applicable; inspect logs and policy precedence. For new policies, verify they are managed through the reusable policy collection and not returned as `reusable: false` app-scoped policies.
 - Private network access: verify route lookup, tunnel health, origin reachability, split tunnel behavior, DNS resolution, and end-to-end access from a device client test device.
 - Gateway: verify rule type, action, traffic expression, precedence/evaluation phase, referenced lists, and Gateway settings before enabling broadly.
 - TLS/DLP: test Do Not Inspect exceptions and root CA trust before enabling inspection; test DLP with known samples and monitor false positives before blocking.

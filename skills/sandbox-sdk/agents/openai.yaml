@@ -1,4 +1,0 @@
-interface:
-  display_name: "Sandbox SDK"
-  short_description: "Run secure Cloudflare code sandboxes"
-  default_prompt: "Use $sandbox-sdk to build or review a Cloudflare Sandbox SDK integration."

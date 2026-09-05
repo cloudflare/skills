@@ -5,16 +5,24 @@
 #   $CLOUDFLARE_API_TOKEN  (required)
 #   $CLOUDFLARE_ACCOUNT_ID (optional; if set, must be one of the token's accounts)
 #
-# Outputs JSON to stdout, always exits 0. The agent reads `status`:
-#   "ok"                   ; selected account passed both Turnstile and Workers scope probes
-#   "missing_token"        ; no token set, or wrangler whoami failed
-#   "missing_scope"        ; token lacks Account.Turnstile:Edit on the selected account
-#   "missing_workers_scope"; token has Turnstile scope but lacks Workers Scripts on the selected account
-#   "multiple_accounts"    ; token covers >1 accounts and $CLOUDFLARE_ACCOUNT_ID is unset; agent must ask user to pick, set it, and re-run
-#   "account_mismatch"     ; $CLOUDFLARE_ACCOUNT_ID is set but is not in the token's accounts list
+# Requires: bash, curl, python3. Optional: a user-approved WRANGLER_BIN for account enumeration.
 #
-# Human-readable diagnostics go to stderr. The agent surfaces them to the user.
+# Outputs JSON to stdout, always exits 0. The agent reads `status`:
+#   "ok"                ; selected account passed the Turnstile Edit-scope probe
+#   "missing_token"     ; no token set, python3 unavailable, or account enumeration failed
+#   "missing_scope"     ; token lacks Account.Turnstile:Edit on the selected account
+#   "multiple_accounts" ; token covers >1 accounts and $CLOUDFLARE_ACCOUNT_ID is unset
+#   "account_mismatch"  ; $CLOUDFLARE_ACCOUNT_ID is set but is not in the token's accounts list
+#   "network_failure"   ; the Edit-scope probe could not reach the Cloudflare API
+#   "upstream_failure"  ; the Edit-scope probe returned an unexpected upstream response
+#
+# Account enumeration uses `WRANGLER_BIN whoami --json` only when WRANGLER_BIN is
+# an approved canonical absolute path outside PROJECT_ROOT and WRANGLER_VERSION
+# matches it exactly. Otherwise the caller must supply $CLOUDFLARE_ACCOUNT_ID.
+#
+# Human-readable diagnostics go to stderr.
 
+set +x
 set -uo pipefail
 
 emit() {
@@ -22,75 +30,256 @@ emit() {
   exit 0
 }
 
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "auth-probe: python3 is required but not found in PATH." >&2
+  emit '{"status":"missing_token","reason":"python3_not_available"}'
+fi
+
 token="${CLOUDFLARE_API_TOKEN:-}"
+unset CLOUDFLARE_API_TOKEN
 declared_account="${CLOUDFLARE_ACCOUNT_ID:-}"
 
 if [ -z "$token" ]; then
   echo "auth-probe: \$CLOUDFLARE_API_TOKEN is not set." >&2
   emit '{"status":"missing_token","reason":"no_env_var"}'
 fi
-
-whoami_json=$(npx wrangler whoami --json 2>/dev/null || true)
-if [ -z "$whoami_json" ] || [ "$(echo "$whoami_json" | head -c 1)" != "{" ]; then
-  echo "auth-probe: wrangler whoami returned no JSON. Token may be invalid or expired." >&2
-  emit '{"status":"missing_token","reason":"whoami_failed"}'
+if [[ ! "$token" =~ ^[A-Za-z0-9_-]+$ ]]; then
+  echo "auth-probe: CLOUDFLARE_API_TOKEN has an invalid format." >&2
+  emit '{"status":"missing_token","reason":"invalid_token_format"}'
 fi
 
-# Extract the accounts array. Fall back to python3 if jq is missing.
-accounts_json=$(echo "$whoami_json" | (jq -c '.accounts' 2>/dev/null || python3 -c "import sys,json; print(json.dumps(json.load(sys.stdin)['accounts']))"))
-account_count=$(echo "$accounts_json" | (jq 'length' 2>/dev/null || python3 -c "import sys,json; print(len(json.load(sys.stdin)))"))
+accounts_json=""
+account_count=0
 
-if [ -z "$account_count" ] || [ "$account_count" = "0" ] || [ "$account_count" = "null" ]; then
-  echo "auth-probe: wrangler whoami succeeded but no accounts found on the token." >&2
+if [ -n "${WRANGLER_BIN:-}" ]; then
+  if [[ "$WRANGLER_BIN" != /* || ! -x "$WRANGLER_BIN" ]]; then
+    echo "auth-probe: WRANGLER_BIN must be an executable absolute path." >&2
+    emit '{"status":"missing_token","reason":"invalid_wrangler_path"}'
+  fi
+
+  wrangler_bin=$(python3 -I -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$WRANGLER_BIN")
+  if [ "$wrangler_bin" != "$WRANGLER_BIN" ]; then
+    echo "auth-probe: WRANGLER_BIN must be canonical, without symlinks." >&2
+    emit '{"status":"missing_token","reason":"noncanonical_wrangler_path"}'
+  fi
+  if [ -n "${PROJECT_ROOT:-}" ]; then
+    project_root=$(python3 -I -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$PROJECT_ROOT")
+    if [[ "$wrangler_bin" == "$project_root" || "$wrangler_bin" == "$project_root/"* ]]; then
+      echo "auth-probe: WRANGLER_BIN must be outside PROJECT_ROOT." >&2
+      emit '{"status":"missing_token","reason":"project_local_wrangler"}'
+    fi
+  fi
+  if [ -z "${WRANGLER_VERSION:-}" ]; then
+    echo "auth-probe: WRANGLER_VERSION is required with WRANGLER_BIN." >&2
+    emit '{"status":"missing_token","reason":"missing_wrangler_version"}'
+  fi
+
+  actual_version=$(
+    "$wrangler_bin" --version 2>/dev/null |
+      python3 -I -c 'import re,sys; m=re.search(r"\b(\d+\.\d+\.\d+)\b", sys.stdin.read()); print(m.group(1) if m else "")'
+  )
+  if [ "$actual_version" != "$WRANGLER_VERSION" ]; then
+    echo "auth-probe: WRANGLER_BIN version does not match WRANGLER_VERSION." >&2
+    emit '{"status":"missing_token","reason":"wrangler_version_mismatch"}'
+  fi
+
+  whoami_json=$(CLOUDFLARE_API_TOKEN="$token" "$wrangler_bin" whoami --json 2>/dev/null || true)
+  if [ -n "$whoami_json" ] && [ "$(printf '%s' "$whoami_json" | head -c 1)" = "{" ]; then
+    accounts_json=$(printf '%s' "$whoami_json" | python3 -I -c '
+import json, sys
+try:
+    d = json.load(sys.stdin)
+    print(json.dumps(d.get("accounts") or []))
+except Exception:
+    print("[]")
+')
+    account_count=$(printf '%s' "$accounts_json" | python3 -I -c '
+import json, sys
+try:
+    print(len(json.load(sys.stdin)))
+except Exception:
+    print(0)
+')
+  fi
+fi
+
+if [ "$account_count" = "0" ] && [ -n "$declared_account" ]; then
+  # No wrangler, but user gave us an account. Trust it and skip enumeration.
+  accounts_json="[{\"id\":$(python3 -I -c 'import json, sys; print(json.dumps(sys.argv[1]))' "$declared_account")}]"
+  account_count=1
+fi
+
+if [ "$account_count" = "0" ]; then
+  echo "auth-probe: could not enumerate accounts. Export CLOUDFLARE_ACCOUNT_ID or provide an approved WRANGLER_BIN and WRANGLER_VERSION." >&2
   emit '{"status":"missing_token","reason":"no_accounts"}'
 fi
 
-# Pick the account to probe:
-#   - $CLOUDFLARE_ACCOUNT_ID set: must be in the token's accounts list, else account_mismatch
-#   - unset, exactly 1 account: use it silently
-#   - unset, >1 accounts: emit multiple_accounts; agent picks and re-runs
 if [ -n "$declared_account" ]; then
-  in_list=$(echo "$accounts_json" | (jq --arg id "$declared_account" 'map(.id) | index($id) != null' 2>/dev/null || python3 -c "import sys,json; print('true' if any(a['id']==sys.argv[1] for a in json.load(sys.stdin)) else 'false')" "$declared_account"))
+  in_list=$(printf '%s' "$accounts_json" | python3 -I -c '
+import json, sys
+target = sys.argv[1]
+try:
+    accounts = json.load(sys.stdin)
+except Exception:
+    print("false"); sys.exit(0)
+print("true" if any((a or {}).get("id") == target for a in accounts) else "false")
+' "$declared_account")
   if [ "$in_list" != "true" ]; then
     echo "auth-probe: \$CLOUDFLARE_ACCOUNT_ID ($declared_account) is not one of the token's accounts." >&2
-    echo "auth-probe: Either unset \$CLOUDFLARE_ACCOUNT_ID, or set it to an account included in the token's Account Resources." >&2
-    emit "{\"status\":\"account_mismatch\",\"declared\":\"$declared_account\",\"accounts\":$accounts_json}"
+    emit "$(python3 -I -c '
+import json, sys
+declared, accounts_raw = sys.argv[1], sys.argv[2]
+try:
+    accounts = json.loads(accounts_raw)
+except Exception:
+    accounts = []
+print(json.dumps({"status":"account_mismatch","declared":declared,"accounts":accounts}))
+' "$declared_account" "$accounts_json")"
   fi
   account_id="$declared_account"
 elif [ "$account_count" = "1" ]; then
-  account_id=$(echo "$accounts_json" | (jq -r '.[0].id' 2>/dev/null || python3 -c "import sys,json; print(json.load(sys.stdin)[0]['id'])"))
+  account_id=$(printf '%s' "$accounts_json" | python3 -I -c '
+import json, sys
+try:
+    print(json.load(sys.stdin)[0]["id"])
+except Exception:
+    print("")
+')
+  if [ -z "$account_id" ]; then
+    echo "auth-probe: accounts list had one entry but no id field." >&2
+    emit '{"status":"missing_token","reason":"malformed_accounts"}'
+  fi
 else
   echo "auth-probe: token covers $account_count accounts; ask the user to pick one, then export \$CLOUDFLARE_ACCOUNT_ID and re-run." >&2
-  emit "{\"status\":\"multiple_accounts\",\"accounts\":$accounts_json}"
+  emit "$(python3 -I -c '
+import json, sys
+try:
+    accounts = json.loads(sys.argv[1])
+except Exception:
+    accounts = []
+print(json.dumps({"status":"multiple_accounts","accounts":accounts}))
+' "$accounts_json")"
 fi
 
-# Probe Turnstile scope on the selected account
-tmp=$(mktemp)
-http_code=$(curl -sS -w "%{http_code}" -o "$tmp" \
-  "https://api.cloudflare.com/client/v4/accounts/$account_id/challenges/widgets" \
-  -H "Authorization: Bearer $token" 2>/dev/null || echo "000")
-body=$(cat "$tmp"); rm -f "$tmp"
-success=$(echo "$body" | (jq -r '.success' 2>/dev/null || echo "false"))
+# Edit-scope probe. A GET /challenges/widgets would authorize a Read-only
+# token; to verify Edit specifically, POST with an intentionally invalid
+# payload and interpret the response:
+#   401 or 403                                  → token lacks Edit
+#   200 with success:false, errors[0].code=10000 → token lacks Edit
+#   400/422 or 200 with validation error codes  → Edit scope OK
+#
+# The API rejects the empty-name/empty-domains payload with 400 today, so
+# no widget is created. If validation ever loosens and the probe accidentally
+# creates one, we detect the returned sitekey and DELETE it as a safety net
+# so the probe stays side-effect-free.
+account_enc=$(python3 -I -c 'import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1], safe=""))' "$account_id")
 
-if [ "$success" != "true" ]; then
-  echo "auth-probe: token cannot read /challenges/widgets on account $account_id (HTTP $http_code). Missing Account.Turnstile:Edit." >&2
-  emit "{\"status\":\"missing_scope\",\"account_id\":\"$account_id\",\"http_code\":$http_code}"
+if ! probe_response="$(
+  printf 'header = "Authorization: Bearer %s"\n' "$token" |
+    curl --disable --config - --silent --show-error --write-out $'\n%{http_code}' -X POST \
+      "https://api.cloudflare.com/client/v4/accounts/$account_enc/challenges/widgets" \
+      -H "Content-Type: application/json" \
+      --data '{"name":"","domains":[]}'
+)"; then
+  echo "auth-probe: network failure probing Edit scope on account $account_id." >&2
+  emit '{"status":"network_failure","account_id":"'"$account_id"'"}'
 fi
 
-# Probe Workers scope on the selected account. GET /workers/scripts requires
-# Account.Workers Scripts:Read, which is a best-effort proxy for Edit. Tokens
-# granted Edit-only (without Read) will fail this probe and emit a confusing
-# missing_workers_scope; the agent should suggest adding Read alongside Edit.
-tmp=$(mktemp)
-workers_code=$(curl -sS -w "%{http_code}" -o "$tmp" \
-  "https://api.cloudflare.com/client/v4/accounts/$account_id/workers/scripts" \
-  -H "Authorization: Bearer $token" 2>/dev/null || echo "000")
-workers_body=$(cat "$tmp"); rm -f "$tmp"
-workers_success=$(echo "$workers_body" | (jq -r '.success' 2>/dev/null || echo "false"))
+edit_code="${probe_response##*$'\n'}"
+probe_body="${probe_response%$'\n'*}"
+probe_output=$(printf '%s' "$probe_body" | python3 -I -c '
+import json, sys
+http_code = sys.argv[1]
+verdict = "unknown"
+created_sitekey = ""
+try:
+    raw = sys.stdin.read()
+    data = json.loads(raw) if raw else {}
+except Exception:
+    data = None
+if isinstance(data, dict):
+    errors = data.get("errors") or []
+    if not isinstance(errors, list):
+        errors = []
+    first = (errors[0] or {}) if errors else {}
+    if not isinstance(first, dict):
+        first = {}
+    first_code = first.get("code", 0)
+    if http_code in ("401", "403"):
+        verdict = "missing_scope"
+    elif http_code == "200" and data.get("success") is False and first_code == 10000:
+        verdict = "missing_scope"
+    elif http_code in ("400", "422"):
+        verdict = "scope_ok"
+    elif http_code == "200":
+        # Any 200 that got past auth means scope is fine (whether success or not).
+        verdict = "scope_ok"
+    else:
+        verdict = f"unexpected_{http_code}"
+    # Detect accidental widget creation (safety net if API validation ever
+    # accepts the empty-name/empty-domains probe payload).
+    result = data.get("result")
+    if isinstance(result, dict) and data.get("success") is True:
+        sk = result.get("sitekey", "")
+        if isinstance(sk, str) and sk:
+            created_sitekey = sk
+print(f"{verdict}|{created_sitekey}")
+' "$edit_code")
+unset probe_body probe_response
+verdict="${probe_output%%|*}"
+created_sitekey="${probe_output#*|}"
+[ "$created_sitekey" = "$probe_output" ] && created_sitekey=""
 
-if [ "$workers_success" != "true" ]; then
-  echo "auth-probe: token cannot read /workers/scripts on account $account_id (HTTP $workers_code). Missing Account.Workers Scripts:Edit." >&2
-  emit "{\"status\":\"missing_workers_scope\",\"account_id\":\"$account_id\",\"http_code\":$workers_code}"
+# If the probe unexpectedly created a widget (API validation loosened),
+# DELETE it so the probe stays side-effect-free.
+if [ -n "$created_sitekey" ]; then
+  echo "auth-probe: probe unexpectedly created widget $created_sitekey; cleaning up..." >&2
+  sk_enc=$(python3 -I -c 'import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1], safe=""))' "$created_sitekey")
+  cleanup_code=$(
+    printf 'header = "Authorization: Bearer %s"\n' "$token" |
+      curl --disable --config - --silent --show-error --output /dev/null --write-out "%{http_code}" -X DELETE \
+        "https://api.cloudflare.com/client/v4/accounts/$account_enc/challenges/widgets/$sk_enc" || echo "000"
+  )
+  case "$cleanup_code" in
+    2*) echo "auth-probe: cleanup DELETE for widget $created_sitekey succeeded (HTTP $cleanup_code)." >&2 ;;
+    *)  echo "auth-probe: cleanup DELETE for widget $created_sitekey FAILED (HTTP $cleanup_code). Please remove it from the Turnstile dashboard manually." >&2 ;;
+  esac
 fi
 
-emit "{\"status\":\"ok\",\"account_id\":\"$account_id\",\"accounts\":$accounts_json}"
+case "$verdict" in
+  scope_ok)
+    emit "$(python3 -I -c '
+import json, sys
+account_id, accounts_raw = sys.argv[1], sys.argv[2]
+try:
+    accounts = json.loads(accounts_raw)
+except Exception:
+    accounts = []
+print(json.dumps({"status":"ok","account_id":account_id,"accounts":accounts}))
+' "$account_id" "$accounts_json")"
+    ;;
+  missing_scope)
+    echo "auth-probe: token cannot write /challenges/widgets on account $account_id (HTTP $edit_code). Missing Account.Turnstile:Edit." >&2
+    emit "$(python3 -I -c '
+import json, sys
+account_id, http_code = sys.argv[1], sys.argv[2]
+try:
+    code_num = int(http_code)
+except ValueError:
+    code_num = 0
+print(json.dumps({"status":"missing_scope","account_id":account_id,"http_code":code_num}))
+' "$account_id" "$edit_code")"
+    ;;
+  *)
+    echo "auth-probe: unexpected response probing Edit scope on account $account_id (HTTP $edit_code)." >&2
+    emit "$(python3 -I -c '
+import json, sys
+account_id, http_code = sys.argv[1], sys.argv[2]
+try:
+    code_num = int(http_code)
+except ValueError:
+    code_num = 0
+print(json.dumps({"status":"upstream_failure","account_id":account_id,"http_code":code_num}))
+' "$account_id" "$edit_code")"
+    ;;
+esac
