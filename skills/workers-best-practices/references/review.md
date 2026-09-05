@@ -4,23 +4,26 @@ How to review Workers code for type correctness, API usage, config validity, and
 
 ## Retrieval
 
-Use the project's configured runtime and dependency versions as the baseline. Retrieve additional sources only for affected behavior that needs verification; types, schemas, and APIs can vary with versions and compatibility settings.
+Your knowledge of Cloudflare Workers APIs and limits may be outdated. Always retrieve [current documentation](http://developers.cloudflare.com/) when an affected API signature, configuration field, runtime behavior, or limit is uncertain or the task requests current guidance. Types, config schemas, and APIs change with compatibility dates and new bindings.
 
 ### Workers types
 
-Start with the generated types or installed type package actually referenced by the project's TypeScript configuration. Check the relevant declaration and package version when a signature or binding shape is in question. If dependencies are absent, use the manifest/lockfile to identify the target version and consult matching published declarations or docs as needed.
-
-Use the project's existing `wrangler types` command when a binding/configuration change requires regenerating types. A read-only review can inspect the existing declarations and note evidence of drift without changing generated files.
-
-Consult newer published types when the task involves an upgrade, a new feature, or a discrepancy needing investigation. Confirm compatibility with the configured target before recommending their APIs; do not silently replace the installed version as the review baseline.
+`npx wrangler types` generates a typed `Env` interface from the local wrangler config. Use this when a binding/configuration change requires regenerating types.
 
 ### Wrangler config schema
 
-Use the schema bundled with the project's Wrangler version at `node_modules/wrangler/config-schema.json`. Search the affected field or binding definition and follow its references as needed; reading the entire schema is not a prerequisite. If unavailable locally, consult the matching version's schema or docs.
+The authoritative schema is bundled with wrangler as `config-schema.json` (JSON Schema draft-07).
+
+```bash
+# Read from local node_modules
+cat node_modules/wrangler/config-schema.json
+```
+
+Do not guess field names or structures — look them up.
 
 ### Cloudflare docs
 
-For uncertain APIs, runtime semantics, compatibility requirements, or limits, use the Cloudflare docs search tool or retrieve the relevant page under `https://developers.cloudflare.com/workers/`. The best practices page lives at `/workers/best-practices/workers-best-practices/`. Reuse sufficient evidence already available for the task rather than fetching the same references before every edit.
+For uncertain APIs, runtime semantics, compatibility requirements, or limits, use the Cloudflare docs search tool or retrieve the relevant page under `https://developers.cloudflare.com/workers/`. The best practices page lives at `/workers/best-practices/workers-best-practices/`.
 
 ---
 

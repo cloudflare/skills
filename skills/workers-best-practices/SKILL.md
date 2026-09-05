@@ -1,6 +1,6 @@
 ---
 name: workers-best-practices
-description: Reviews and authors Cloudflare Workers code against production best practices. Load when writing new Workers, reviewing Worker code, configuring wrangler.jsonc, or checking for common Workers anti-patterns (streaming, floating promises, global state, secrets, bindings, observability). Biases towards retrieval from Cloudflare docs over pre-trained knowledge.
+description: Reviews and authors Cloudflare Workers code against production best practices. Load when writing new Workers, reviewing Worker code, configuring wrangler.jsonc, or checking for common Workers anti-patterns (streaming, floating promises, global state, secrets, bindings, observability). Retrieves current documentation when affected APIs, configuration, runtime behavior, or limits are uncertain.
 ---
 
 Use the project's installed versions, generated types, and Wrangler compatibility settings as the baseline for existing code. Retrieve current Cloudflare sources when the affected API, configuration, runtime behavior, or limit needs verification.
@@ -12,7 +12,7 @@ Consult only the sources needed for the task. A newer published type package doe
 | Source | How to retrieve | Use for |
 |--------|----------------|---------|
 | Workers best practices | Fetch `https://developers.cloudflare.com/workers/best-practices/workers-best-practices/` | Canonical rules, patterns, anti-patterns |
-| Workers types | See `references/review.md` for retrieval steps | API signatures, handler types, binding types |
+| Workers types | See `references/review.md` | API signatures, handler types, binding types |
 | Wrangler config schema | `node_modules/wrangler/config-schema.json` | Config fields, binding shapes, allowed values |
 | Cloudflare docs | Search tool or `https://developers.cloudflare.com/workers/` | API reference, compatibility dates/flags |
 
