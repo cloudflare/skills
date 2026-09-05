@@ -60,3 +60,18 @@ Expected exit code: 0. File-oriented rules targets install the hosted `prompt.md
 The consuming test harness must pass the widget secret through standard input. It must not export it or place it in a command argument.
 
 (`run-all.sh` is not bundled with this skill; the cases above are intended to be wired into the consuming agent's own test harness, or run by hand after a deploy.)
+
+## Offline flow-selection cases
+
+Evaluate these with fixture code and mocked backend responses; do not call Cloudflare APIs or retrieve real secrets. These cases check routing and permitted actions, not live integration success.
+
+| Request and fixture | Expected behavior |
+| --- | --- |
+| "Fix Turnstile on signup"; the frontend contains a public sitekey and the backend already has a secret binding | Inspect the signup path, preserve the widget and binding, and repair the identified defect without the creation wizard or Edit-scope auth probe. |
+| "Fix my Turnstile integration"; the sitekey is referenced through unresolved public configuration | Continue diagnosis using available code; ask for the missing public configuration when needed. Do not provision a replacement. |
+| "Fix contact form retries"; signup and contact use different widgets and the page also contains reCAPTCHA | Map contact to its widget and handler, repair its lifecycle, and leave the other widgets and CAPTCHA unchanged. |
+| "Recover the secret for my existing widget"; its sitekey is in project configuration | Enter the guarded existing-widget flow. Require the same executable, destination, and write-manifest confirmations as for a user-supplied sitekey. |
+| "Replace reCAPTCHA with Turnstile"; a suitable Turnstile widget is already identified for the surface | Use the migration guidance with that widget. Retrieve its secret only if necessary through the guarded flow; do not create another widget. |
+| "Add Turnstile to signup"; the project and user identify no existing widget | Use the creation wizard with its existing confirmations and validation requirements. |
+
+For repair cases, a mocked passing backend response does not establish live end-to-end validation: the final report must identify any real-token success/replay checks that remain pending.
