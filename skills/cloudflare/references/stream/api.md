@@ -196,4 +196,4 @@ await client.stream.videos.delete(videoId, {
 
 ## See Also
 
-- [workers](../workers/) - Deploy Stream APIs in Workers
+- [workers](https://developers.cloudflare.com/workers/) - Deploy Stream APIs in Workers
