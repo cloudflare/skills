@@ -70,5 +70,5 @@ API Token permissions: `Account Secrets Store Edit/Read`
 - [gotchas.md](./gotchas.md) - Security issues, limits, best practices
 
 ## See Also
-- [workers](../workers/) - Worker bindings integration
-- [wrangler](../wrangler/) - CLI secret management commands
+- [workers](https://developers.cloudflare.com/workers/) - Worker bindings integration
+- [wrangler](https://developers.cloudflare.com/workers/wrangler/) - CLI secret management commands

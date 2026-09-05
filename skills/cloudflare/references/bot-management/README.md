@@ -90,5 +90,5 @@ export default {
 ## See Also
 
 - [waf](../waf/) - WAF custom rules for bot enforcement
-- [workers](../workers/) - Workers request.cf.botManagement API
+- [workers](https://developers.cloudflare.com/workers/) - Workers request.cf.botManagement API
 - [api-shield](../api-shield/) - API-specific bot protection
