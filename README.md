@@ -62,12 +62,22 @@ Clone this repo and copy the skill folders into the appropriate directory for yo
 
 ## Commands
 
-Commands are user-invocable slash commands that you explicitly call.
+These command files provide explicit slash commands in hosts that support `commands/`, such as Claude Code. Codex uses the skill entry points below.
 
 | Command | Description |
 |---------|-------------|
 | `/cloudflare:build-agent` | Build an AI agent on Cloudflare using the Agents SDK |
 | `/cloudflare:build-mcp` | Build an MCP server on Cloudflare |
+
+## Workers workflows
+
+In Codex, select the installed plugin skill with `$cloudflare:setup`, `$cloudflare:deploy`, or `$cloudflare:status`, followed by your project, environment, or question. These workflows are also available through normal skill discovery. When installing only the skill folders, use the unqualified names `$setup`, `$deploy`, and `$status`.
+
+| Skill | Useful for |
+|-------|------------|
+| [setup](skills/setup/SKILL.md) | Setting up a Workers project for local development |
+| [deploy](skills/deploy/SKILL.md) | Building, validating, and deploying a Worker to the requested environment |
+| [status](skills/status/SKILL.md) | Inspecting deployment state and diagnostics without changing resources |
 
 ## Skills
 
