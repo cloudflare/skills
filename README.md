@@ -83,8 +83,6 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 | sandbox-migrate-to-next | Port a stable Sandbox app to `@cloudflare/sandbox@next` |
 | wrangler | Deploying and managing Workers, KV, R2, D1, Vectorize, Queues, Workflows |
 | web-perf | Auditing Core Web Vitals (FCP, LCP, TBT, CLS), render-blocking resources, network chains |
-| building-mcp-server-on-cloudflare | Building remote MCP servers with tools, OAuth, and deployment |
-| building-ai-agent-on-cloudflare | Building AI agents with state, WebSockets, and tool integration |
 
 ## Cloudflare One
 

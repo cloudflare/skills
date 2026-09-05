@@ -100,6 +100,6 @@ await mf.dispose();
 - [api.md](./api.md) - Complete method reference
 
 ## See Also
-- [wrangler](../wrangler/) - CLI tool that embeds Miniflare for `wrangler dev`
+- [wrangler](https://developers.cloudflare.com/workers/wrangler/) - CLI tool that embeds Miniflare for `wrangler dev`
 - [workerd](../workerd/) - Runtime that powers Miniflare
-- [workers](../workers/) - Workers runtime API documentation
+- [workers](https://developers.cloudflare.com/workers/) - Workers runtime API documentation

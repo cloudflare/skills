@@ -9,7 +9,7 @@ Use this skill to identify the relevant Cloudflare product and load only the ref
 
 ## Defer to narrower skills
 
-When one of these matches, use it instead of this skill and do not load a similarly named reference from this directory:
+When one of these matches and the skill is available, use it for that part of the request:
 
 | Request | Skill |
 | --- | --- |
@@ -21,11 +21,13 @@ When one of these matches, use it instead of this skill and do not load a simila
 | Maintain a stable Sandbox project | `sandbox-stable` |
 | Migrate Sandbox stable to next | `sandbox-migrate-to-next` |
 | Add or repair Turnstile | `turnstile-spin` |
-| Build an AI agent end to end | `building-ai-agent-on-cloudflare` |
-| Build a remote MCP server | `building-mcp-server-on-cloudflare` |
+| Build an AI agent end to end | `agents-sdk`; load its references for the requested features |
+| Build a remote MCP server | `agents-sdk`; start with its `references/mcp.md` |
 | Audit web performance | `web-perf` |
 | Work on Cloudflare One | `cloudflare-one` or `cloudflare-one-migrations` |
 | Build an email service | `cloudflare-email-service` |
+
+If a specialist skill is not installed, use current product documentation at <https://developers.cloudflare.com/> and the project’s installed types and configuration schema. This skill can be installed on its own; sibling skills and their references are optional.
 
 If a request spans a specialist area and an uncovered product, apply the specialist skill to its part and use this skill only for the uncovered part.
 
