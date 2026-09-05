@@ -11,8 +11,8 @@ npm create cloudflare@latest my-app
 # Worker (API/WebSocket/Cron)
 npm create cloudflare@latest my-api -- --type=hello-world --ts
 
-# Pages (static/SSG/full-stack)
-npm create cloudflare@latest my-site -- --type=web-app --framework=astro --platform=pages
+# Static or full-stack site on Workers
+npm create cloudflare@latest -- my-site --framework=astro
 ```
 
 ## Platform Decision Tree
@@ -25,20 +25,21 @@ What are you building?
 │       npm create cloudflare@latest my-api -- --type=hello-world
 
 ├─ Static site / SSG / Documentation
-│   └─ Pages - requires --platform=pages
-│       npm create cloudflare@latest my-site -- --type=web-app --framework=astro --platform=pages
+│   └─ Workers Static Assets
+│       npm create cloudflare@latest -- my-site
 
-├─ Full-stack app (Next.js/Remix/SvelteKit)
-│   ├─ Need Durable Objects, Queues, or Workers-only features?
-│   │   └─ Workers (default)
-│   └─ Otherwise use Pages for git integration and branch previews
-│       └─ Add --platform=pages
+├─ Full-stack app (Next.js/React Router/SvelteKit)
+│   └─ Workers (default), with Workers Builds for Git CI/CD
 
+├─ Existing Pages project
+│   └─ Use --platform=pages only when maintaining the Pages project
+│
 └─ Convert existing project
     └─ npm create cloudflare@latest . -- --type=pre-existing --existing-script=./src/worker.ts
 ```
 
-**Critical:** Pages projects require `--platform=pages` flag. Without it, C3 defaults to Workers.
+Workers is the default and the recommended platform for new projects, including
+static sites. Use `--platform=pages` only for an existing Pages workflow.
 
 ## Interactive Flow
 

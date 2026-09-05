@@ -17,18 +17,18 @@ Serverless functions on Cloudflare Pages using Workers runtime. Full-stack dev w
 ## Decision Tree: Is This Pages Functions?
 
 ```
-Need serverless backend? 
-├─ Yes, for a static site → Pages Functions
-├─ Yes, standalone API → Workers
-└─ Just static hosting → Pages (no functions)
+Starting a new project?
+├─ Static site → Workers Static Assets
+├─ Static site with APIs → Workers + Static Assets
+└─ Standalone API → Workers
 
-Have existing Worker?
-├─ Complex routing logic → Use _worker.js (Advanced Mode)
-└─ Simple routes → Migrate to /functions (File-Based)
+Maintaining an existing Pages project?
+├─ Need server-side routes → Pages Functions
+└─ Just static hosting → Keep Pages or migrate to Workers Static Assets
 
 Framework-based?
-├─ Next.js/SvelteKit/Remix → Uses _worker.js automatically
-└─ Vanilla/HTML/React SPA → Use /functions
+├─ New application → Use the current Workers framework guide
+└─ Existing Pages application → Follow its Pages adapter behavior
 ```
 
 ## File-Based Routing
@@ -80,7 +80,7 @@ export function onRequest(context) {
 
 ## Reading Order
 
-**New to Pages Functions?** Start here:
+**Maintaining Pages Functions?** Start here:
 1. [README.md](./README.md) - Overview, routing, decision tree (you are here)
 2. [configuration.md](./configuration.md) - TypeScript setup, wrangler.jsonc, bindings
 3. [api.md](./api.md) - EventContext, handlers, bindings reference
@@ -93,6 +93,6 @@ export function onRequest(context) {
 - TypeScript setup → [configuration.md](./configuration.md)
 
 ## See Also
-- [pages](../pages/) - Pages platform overview and static site deployment
+- [pages](../pages/) - Maintain or migrate existing Pages projects
 - [workers](https://developers.cloudflare.com/workers/) - Workers runtime API reference
 - [d1](../d1/) - D1 database integration with Pages Functions

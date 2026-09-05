@@ -54,11 +54,11 @@ CF_TELEMETRY_DISABLED=1     # Disable telemetry
 # TypeScript Worker
 npm create cloudflare@latest my-api -- --type=hello-world --lang=ts --no-deploy
 
-# Next.js on Pages
-npm create cloudflare@latest my-app -- --type=web-app --framework=next --platform=pages --ts
+# Next.js on Workers
+npm create cloudflare@latest -- my-app --framework=next
 
-# Astro blog
-npm create cloudflare@latest my-blog -- --type=web-app --framework=astro --ts --deploy
+# Astro blog on Workers
+npm create cloudflare@latest -- my-blog --framework=astro
 
 # CI: non-interactive
 npm create cloudflare@latest my-app -- --type=web-app --framework=next --ts --no-git --no-deploy

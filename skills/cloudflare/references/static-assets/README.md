@@ -27,22 +27,19 @@ export default {
 
 Deploy: `wrangler deploy`
 
-## When to Use Workers Static Assets vs Pages
+## When to Use Workers Static Assets
 
-| Factor | Workers Static Assets | Cloudflare Pages |
-|--------|----------------------|------------------|
-| **Use case** | Hybrid apps (static + dynamic API) | Static sites, SSG |
-| **Worker control** | Full control over routing | Limited (Functions) |
-| **Configuration** | Code-first, flexible | Git-based, opinionated |
-| **Dynamic routing** | Worker-first patterns | Functions (_functions/) |
-| **Best for** | Full-stack apps, SPAs with APIs | Jamstack, static docs |
+Workers Static Assets is the recommended path for new static sites, SPAs, SSG
+sites, and full-stack applications. A purely static site only needs an
+`assets.directory`; no Worker script is required. Add a Worker entry point when
+the application needs APIs, bindings, or custom routing.
 
 **Decision tree:**
 
-- Need custom routing logic? → Workers Static Assets
-- Pure static site or SSG? → Pages
-- API routes + SPA? → Workers Static Assets
-- Framework (Next, Nuxt, Remix)? → Pages
+- Pure static site or SSG? → Workers Static Assets
+- SPA or framework application? → Workers Static Assets
+- API routes or custom routing? → Workers Static Assets with a Worker entry point
+- Existing Pages project? → Keep it on Pages or migrate to Workers
 
 ## Reading Order
 
@@ -62,4 +59,5 @@ Deploy: `wrangler deploy`
 
 - [Cloudflare Workers Docs](https://developers.cloudflare.com/workers/)
 - [Static Assets Docs](https://developers.cloudflare.com/workers/static-assets/)
+- [Migrate from Pages](https://developers.cloudflare.com/workers/static-assets/migration-guides/migrate-from-pages/)
 - [Cloudflare Pages](https://developers.cloudflare.com/pages/)

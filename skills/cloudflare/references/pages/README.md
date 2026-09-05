@@ -2,6 +2,10 @@
 
 JAMstack platform for full-stack apps on Cloudflare's global network.
 
+> **For existing Pages projects.** Workers is Cloudflare's primary application
+> platform and the recommended choice for new static sites, SPAs, and full-stack
+> applications. See the [Pages-to-Workers migration guide](https://developers.cloudflare.com/workers/static-assets/migration-guides/migrate-from-pages/).
+
 ## Key Features
 
 - **Git-based deploys**: Auto-deploy from GitHub/GitLab
@@ -30,16 +34,13 @@ npm create cloudflare@latest my-app
 
 ## vs Workers
 
-- **Pages**: Static sites, JAMstack, frameworks, git workflow, file-based routing
-- **Workers**: Pure APIs, complex routing, WebSockets, scheduled tasks, email handlers
-- **Combine**: Pages Functions use Workers runtime, can bind to Workers
+- **Workers**: New static sites, SPAs, frameworks, full-stack applications, and APIs
+- **Pages**: Existing Pages projects and workflows
+- **Migration**: Workers supports most Pages use cases with a broader feature set
 
-## Quick Start
+## Existing Project Commands
 
 ```bash
-# Create
-npm create cloudflare@latest
-
 # Local dev
 npx wrangler pages dev ./dist
 
@@ -65,7 +66,7 @@ npx wrangler pages deployment tail --project-name=my-project
 
 ## Reading Order
 
-**New to Pages?** Start here:
+**Maintaining Pages?** Start here:
 1. README.md (you are here) - Overview & quick start
 2. [configuration.md](./configuration.md) - Project setup, wrangler.jsonc, bindings
 3. [api.md](./api.md) - Functions API, routing, context

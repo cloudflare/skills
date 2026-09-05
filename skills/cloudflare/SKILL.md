@@ -100,7 +100,7 @@ Find the row closest to the user's task. Products can appear in multiple rows, a
 | Embed local Worker simulation in tooling | Miniflare | A programmatic emulator is needed for a custom development or test harness | [Miniflare](references/miniflare/README.md) |
 | Run or investigate the underlying Workers runtime | workerd | Work directly with the runtime outside normal managed deployment | [workerd](references/workerd/README.md) |
 | Try a small Worker in the browser | Workers Playground | Explore or share a minimal example without local setup | [Workers Playground](references/workers-playground/README.md) |
-| Build and deploy whenever code is pushed | Workers Builds | Connect a Git repository to automated builds and deployments | [Builds docs](https://developers.cloudflare.com/workers/ci-cd/builds/) |
+| Build and deploy whenever code is pushed | Workers Builds | Connect a Git repository to automated builds and deployments | [Workers Builds](references/workers-builds/README.md); [Builds docs](https://developers.cloudflare.com/workers/ci-cd/builds/) |
 | Preview a version, release it gradually, or roll back code | Workers versions and deployments | Manage application releases; rollback does not restore connected resource data | [Deployment docs](https://developers.cloudflare.com/workers/versions-and-deployments/); `wrangler` skill |
 | Release a feature gradually or target user groups | Flagship | Change feature availability with targeting and percentage rollouts | [Flagship](references/flagship/README.md) |
 | Manage infrastructure as code | Terraform or Pulumi | Use Terraform for declarative configuration or Pulumi for infrastructure in programming languages | [Terraform](references/terraform/README.md); [Pulumi](references/pulumi/README.md) |
