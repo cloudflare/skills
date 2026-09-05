@@ -28,6 +28,8 @@ Fetch the **latest** information before citing specific numbers, API signatures,
 
 When a reference file and the docs disagree, **trust the docs**. This is especially important for: numeric limits, pricing tiers, type signatures, and configuration options.
 
+Before manually configuring an app for Workers or creating bound resources, load the [Wrangler skill](../wrangler/SKILL.md#apply-the-change): Wrangler can automatically configure supported apps and provision resources on deploy.
+
 ## Quick Decision Trees
 
 ### "I need feature flags"
