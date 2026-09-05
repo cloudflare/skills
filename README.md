@@ -68,6 +68,9 @@ Commands are user-invocable slash commands that you explicitly call.
 |---------|-------------|
 | `/cloudflare:build-agent` | Build an AI agent on Cloudflare using the Agents SDK |
 | `/cloudflare:build-mcp` | Build an MCP server on Cloudflare |
+| `/cloudflare:setup` | Set up a Workers project for local development |
+| `/cloudflare:deploy` | Deploy a Worker using its existing project workflow |
+| `/cloudflare:status` | Inspect Worker deployment status or diagnostics without changing resources |
 
 ## Skills
 
