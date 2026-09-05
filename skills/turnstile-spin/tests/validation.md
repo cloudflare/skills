@@ -45,7 +45,7 @@ Native forms that navigate do not need reset logic. For each same-page flow, ver
 
 ## Test 5: Skill persists to a bundle location
 
-After Step 11:
+When the user requested or authorized persistence and Step 11 ran:
 
 ```sh
 test -f .claude/skills/turnstile-spin/SKILL.md \
