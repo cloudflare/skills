@@ -12,7 +12,9 @@ The user invoked this command with: $ARGUMENTS
 
 ## Instructions
 
-Read `agents-sdk/SKILL.md` for SDK guidance and `agents-sdk/references/mcp.md` for the relevant developer documentation. Follow the linked server and security guides for scaffolding, dependency versions, implementation, and authentication; use the migration guide when adapting an existing server. Validate the requested tools and endpoint locally before deployment.
+Resolve bundled files from `${CLAUDE_PLUGIN_ROOT}`, the installed plugin directory, rather than the user project or current working directory.
+
+Read `${CLAUDE_PLUGIN_ROOT}/skills/agents-sdk/SKILL.md` for SDK guidance and `${CLAUDE_PLUGIN_ROOT}/skills/agents-sdk/references/mcp.md` for the relevant developer documentation. Follow the linked server and security guides for scaffolding, dependency versions, implementation, and authentication; use the migration guide when adapting an existing server. Validate the requested tools and endpoint locally before deployment.
 
 ## Example Usage
 
