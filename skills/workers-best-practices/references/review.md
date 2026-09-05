@@ -108,9 +108,3 @@ Check the API and encoding at each boundary. Structured clone support does not i
 | [Durable Object KV storage](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/#put-1) | `storage.put()` supports structured-clone values; do not apply a blanket ban on `Map` or `Set`. |
 | [Durable Object SQL](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/#exec) | Check bound parameters against the SQL API's supported types. Encode objects explicitly for the intended column representation. |
 | [WebSocket messages](https://developers.cloudflare.com/workers/runtime-apis/websockets/#send) | Use `send()` with a string, `ArrayBuffer`, or `ArrayBufferView`; encode objects, for example with `JSON.stringify()`. |
-
-For example, this Queue payload is valid with V8 encoding:
-
-```ts
-await env.EVENTS.send(new Map([["count", 1]]), { contentType: "v8" });
-```
