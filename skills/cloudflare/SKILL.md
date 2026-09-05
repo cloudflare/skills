@@ -50,7 +50,8 @@ Help agents discover what they can build with Cloudflare and choose the products
 | Add managed search or answers over your own content | **AI Search** for a managed retrieval-augmented generation (RAG) pipeline |
 | Build a custom semantic search or RAG pipeline | **Vectorize** for vector storage and retrieval, with **Workers AI** for embeddings or generation |
 | Observe and control requests to AI providers | **AI Gateway** |
-| Build a stateful AI agent with tools, scheduling, or live chat | **Agents SDK**; add **Sandbox SDK** when it needs isolated code execution |
+| Build a stateful AI agent with tools, scheduling, or live chat | **Agents SDK**; choose **Dynamic Workers** or **Sandbox SDK** for code execution according to the runtime it needs |
+| Execute AI-generated or untrusted code, build Code Mode tools, or create on-demand previews | **[Dynamic Workers](https://developers.cloudflare.com/dynamic-workers/)** to load code at runtime in isolated Workers with controlled bindings and network access; use **Sandbox SDK** when the code needs a Linux environment, shell commands, or container tools |
 | Expose tools through a remote MCP server | **Workers** with the MCP server guidance in **Agents SDK** |
 | Automate a browser, capture screenshots, or extract rendered pages | **Browser Run** (the local reference folder is `browser-rendering`) |
 
@@ -98,6 +99,8 @@ If a specialist skill is not installed, use current product documentation at <ht
 For work spanning products, keep the overall product recommendation here and use each specialist skill or product reference for its part.
 
 ## Find product references
+
+For **Dynamic Workers**, use the [product docs](https://developers.cloudflare.com/dynamic-workers/) and [documentation index](https://developers.cloudflare.com/dynamic-workers/llms.txt) directly; there is no bundled product reference. Retrieve the relevant API, bindings, egress control, and resource-limit guidance before implementing.
 
 The folder in parentheses is under `references/`. Start with its `README.md`; open `configuration.md`, `api.md`, `patterns.md`, or `gotchas.md` only when the task needs that detail.
 
