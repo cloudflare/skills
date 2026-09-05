@@ -1,63 +1,7 @@
-# Server-Driven Messages (Trigger Patterns)
+# Server-Driven Messages
 
-Fetch https://developers.cloudflare.com/agents/communication-channels/chat/autonomous-responses/ for complete documentation.
+Read [Autonomous responses](https://developers.cloudflare.com/agents/communication-channels/chat/autonomous-responses/) for scheduled, webhook, email, and agent-triggered turns, message schemas, response hooks, and client streaming status.
 
-Patterns for server-initiated LLM turns in `AIChatAgent` — from schedules, webhooks, email, or other agents.
+Choose `saveMessages` to persist messages and request a model response, or `persistMessages` to update context without starting a turn. Use `onChatResponse` to react to turns regardless of their trigger. For webhooks that need a quick acknowledgement, consult the documented `submitMessages` path.
 
-## `saveMessages` — Trigger an LLM Turn
-
-```typescript
-await this.saveMessages((existingMessages) => [
-  ...existingMessages,
-  { role: "user", content: "Check for new notifications" }
-]);
-```
-
-`saveMessages` persists the messages AND triggers `onChatMessage`.
-
-## `persistMessages` — Save Without Triggering
-
-```typescript
-await this.persistMessages([
-  ...this.messages,
-  { role: "assistant", content: "System note: checked at " + new Date() }
-]);
-```
-
-## `waitUntilStable`
-
-**Always call before `saveMessages` from non-chat contexts** (schedules, webhooks, email):
-
-```typescript
-async checkNotifications(payload: unknown, schedule: Schedule) {
-  await this.waitUntilStable({ timeout: 30_000 });
-  await this.saveMessages((msgs) => [
-    ...msgs,
-    { role: "user", content: "Run scheduled notification check" }
-  ]);
-}
-```
-
-## `onChatResponse`
-
-Runs after each LLM turn completes. Use for chaining:
-
-```typescript
-async onChatResponse(result: ChatResponseResult) {
-  if (result.type === "finish" && needsFollowUp(result)) {
-    await this.saveMessages((msgs) => [
-      ...msgs,
-      { role: "user", content: "Continue with next step" }
-    ]);
-  }
-}
-```
-
-## Client Status
-
-```tsx
-const { isStreaming, isServerStreaming } = useAgentChat({ agent });
-```
-
-- `isStreaming` — true during any streaming (user-initiated or server-initiated)
-- `isServerStreaming` — true only during server-initiated streams
+Before reading conversation history or calling `saveMessages` from non-chat entry points, await `waitUntilStable` and handle a timeout without proceeding as if the conversation were stable. Prefer the functional `saveMessages` form when calls can queue, so each update uses the latest history.
