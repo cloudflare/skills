@@ -19,12 +19,12 @@ Your knowledge of web performance metrics, thresholds, and tooling APIs may be o
 
 Discover available browser and performance tools before starting. Use the capabilities available for the requested audit. If trace tools are unavailable, continue any useful source or network analysis and state which measurements could not be collected.
 
-If the user wants Chrome DevTools MCP setup, consult its [installation guide](https://github.com/ChromeDevTools/chrome-devtools-mcp#quick-start) and use an explicit package version. Only change MCP configuration when setup is within the user's authorized scope; otherwise ask first. For clients using `command` and `args`, an example server entry is:
+If the user wants Chrome DevTools MCP setup, consult its [installation guide](https://github.com/ChromeDevTools/chrome-devtools-mcp#quick-start) and use the latest package version. Only change MCP configuration when setup is within the user's authorized scope; otherwise ask first. For clients using `command` and `args`, an example server entry is:
 
 ```json
 "chrome-devtools": {
   "command": "npx",
-  "args": ["-y", "chrome-devtools-mcp@1.8.0"]
+  "args": ["-y", "chrome-devtools-mcp@latest"]
 }
 ```
 
