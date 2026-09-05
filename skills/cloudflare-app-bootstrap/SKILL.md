@@ -25,7 +25,7 @@ Read [automatic provisioning](https://developers.cloudflare.com/workers/wrangler
 
 Choose the dev command from the app's scripts and [local development guide](https://developers.cloudflare.com/workers/local-development/). A local Worker can use remote bindings: identify which resources are simulated and which calls reach real services before exercising writes. Use the framework's supported Workers dev integration; a frontend-only dev server does not establish that server bindings work.
 
-For data-backed features, initialize only the state needed for the first meaningful request. Preserve existing migration tooling; for D1, follow [migrations](https://developers.cloudflare.com/d1/reference/migrations/) and explicitly target the local database. Local schema and data do not populate remote databases. For Durable Objects, check current [class export configuration](https://developers.cloudflare.com/durable-objects/reference/durable-objects-migrations/) rather than treating it as a D1 SQL migration.
+For data-backed features, initialize only the state needed for the first meaningful request. Preserve existing migration tooling; for D1, follow [migrations](https://developers.cloudflare.com/d1/reference/migrations/) and explicitly target the selected development database. Use local migrations for simulated D1; these do not initialize remote bindings. Apply remote migrations only when the requested setup includes that database change. For Durable Objects, check current [class export configuration](https://developers.cloudflare.com/durable-objects/reference/durable-objects-migrations/) rather than treating it as a D1 SQL migration.
 
 ## Resolve configuration and secrets
 
