@@ -56,5 +56,4 @@ Docs: https://developers.cloudflare.com/workers/runtime-apis/nodejs/
 
 ## Product Docs
 
-When verification is needed, retrieve API references and limits from:
-`/kv/` · `/r2/` · `/d1/` · `/durable-objects/` · `/queues/` · `/vectorize/` · `/workers-ai/` · `/agents/`
+For products used by the Worker, find the relevant documentation in the [Cloudflare docs directory](https://developers.cloudflare.com/directory/). Retrieve the API reference, configuration guidance, or limits needed for the task.
