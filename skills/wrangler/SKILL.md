@@ -47,4 +47,6 @@ After changing config or bindings in a TypeScript project, regenerate types with
 
 For deployment changes, use the project's build workflow and `wrangler deploy --dry-run` where supported, with the intended config and environment. A successful dry run checks the build and packaging; it does not prove remote resources or runtime behavior work. Use task-specific local or remote checks as appropriate to the requested work.
 
+When runtime or binding behavior needs verification, follow the [integration test harness](https://developers.cloudflare.com/workers/testing/test-harness/) to exercise Worker builds and inspect relevant binding state; use its [Playwright integration](https://developers.cloudflare.com/workers/testing/test-harness/integrations/#playwright) for browser user flows. Reuse existing tests and keep coverage focused on the change. Distinguish [local simulation and remote bindings](https://developers.cloudflare.com/workers/local-development/) when reporting results. For deployed runtime failures, consult [Workers logs](https://developers.cloudflare.com/workers/observability/logs/).
+
 Report what changed, the target environment, checks performed, and any unresolved validation gaps. Link the documentation used when the result depends on current command or configuration behavior.
