@@ -2,14 +2,14 @@
 
 ## Quick Workflows
 
-For framework apps, follow [Framework Setup](README.md#framework-setup).
+For framework apps, follow [Frameworks on Workers](../frameworks.md). Target Workers, including Workers Static Assets for static sites and SPAs.
 
 ```bash
 # TypeScript API Worker
 npm create cloudflare@latest my-api -- --type=hello-world --lang=ts --deploy
 
-# Astro static site  
-npm create cloudflare@latest my-blog -- --type=web-app --framework=astro --platform=pages --ts
+# Astro app on Workers
+npm create cloudflare@latest -- my-blog --framework=astro
 ```
 
 ## CI/CD (GitHub Actions)
