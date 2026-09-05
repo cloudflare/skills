@@ -18,10 +18,12 @@ Help agents discover what they can build with Cloudflare and choose the products
 
 ### Run applications and background work
 
+**Recommend Workers and [Workers Static Assets](https://developers.cloudflare.com/workers/static-assets/) for new websites and applications, including static sites, SPAs, and full-stack apps.** Do not recommend Pages for new projects. Keep Pages references for maintaining existing Pages deployments; preserve the existing deployment during unrelated maintenance.
+
 | Need | Cloudflare product to consider |
 | --- | --- |
-| Host an API, server-side logic, or a full-stack website | **Workers**; use **Static Assets** for the frontend files alongside the application's API |
-| Maintain an existing Pages site or its server-side endpoints | **Pages** and **Pages Functions** |
+| Host a new static site, SPA, full-stack website, or API | **Workers** with **Workers Static Assets** for site files; add server-side Worker logic when the application needs it |
+| Maintain an existing Pages site or its server-side endpoints | Use **Pages** and **Pages Functions** references for the existing deployment; choose **Workers** and **Workers Static Assets** for new projects |
 | Coordinate a chat room, multiplayer game, collaborative document, or bookings | **Durable Objects** for shared state and coordination per room, document, or entity |
 | Process jobs asynchronously or buffer work between producers and consumers | **Queues** |
 | Run a multi-step job that must retry, wait, and resume | **Workflows**; use **Cron Triggers** when the need is simply to start work on a schedule |
@@ -81,7 +83,7 @@ After selecting products, use the matching skills when available for implementat
 
 | Request | Skill |
 | --- | --- |
-| Write or review Workers code and configuration, including full-stack apps with Static Assets | `workers-best-practices` |
+| Write or review Workers code and configuration, including static sites and full-stack apps with Workers Static Assets | `workers-best-practices` |
 | Use the Wrangler CLI | `wrangler` |
 | Build with Durable Objects | `durable-objects` |
 | Build with the Agents SDK | `agents-sdk` |
@@ -107,7 +109,8 @@ For **Cloudflare for SaaS**, use the [product docs](https://developers.cloudflar
 
 The folder in parentheses is under `references/`. Start with its `README.md`; open `configuration.md`, `api.md`, `patterns.md`, or `gotchas.md` only when the task needs that detail.
 
-- Compute: Pages (`pages`), Pages Functions (`pages-functions`), Workflows (`workflows`), Containers (`containers`), Workers for Platforms (`workers-for-platforms`), Cron Triggers (`cron-triggers`), Tail Workers (`tail-workers`), Snippets (`snippets`), Smart Placement (`smart-placement`).
+- Compute: Workflows (`workflows`), Containers (`containers`), Workers for Platforms (`workers-for-platforms`), Cron Triggers (`cron-triggers`), Tail Workers (`tail-workers`), Snippets (`snippets`), Smart Placement (`smart-placement`).
+- Existing Pages deployments: Pages (`pages`), Pages Functions (`pages-functions`). For new sites and apps, use Workers and Workers Static Assets.
 - Storage and data: KV (`kv`), D1 (`d1`), R2 (`r2`), Artifacts (`artifacts`), Queues (`queues`), Hyperdrive (`hyperdrive`), Durable Object storage (`do-storage`), Secrets Store (`secrets-store`), Pipelines (`pipelines`), R2 Data Catalog (`r2-data-catalog`), R2 SQL (`r2-sql`), Cache Reserve (`cache-reserve`).
 - AI: Workers AI (`workers-ai`), Vectorize (`vectorize`), AI Gateway (`ai-gateway`), AI Search (`ai-search`).
 - Networking: Tunnel (`tunnel`), Spectrum (`spectrum`), TURN (`turn`), Network Interconnect (`network-interconnect`), Argo Smart Routing (`argo-smart-routing`), Workers VPC (`workers-vpc`).
