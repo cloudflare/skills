@@ -12,10 +12,12 @@ The user invoked this command with: $ARGUMENTS
 
 ## Instructions
 
+Resolve bundled files from `${CLAUDE_PLUGIN_ROOT}`, the installed plugin directory, rather than the user project or current working directory.
+
 When this command is invoked:
 
-1. Read the skill file at `agents-sdk/SKILL.md` for core SDK guidance, APIs, and wrangler config
-2. Based on what the user wants to build, read the relevant references from `agents-sdk/references/`:
+1. Read the skill file at `${CLAUDE_PLUGIN_ROOT}/skills/agents-sdk/SKILL.md` for core SDK guidance, APIs, and wrangler config
+2. Based on what the user wants to build, read the relevant references from `${CLAUDE_PLUGIN_ROOT}/skills/agents-sdk/references/`:
    - For chat/AI agents: `streaming-chat.md`, `client-sdk.md`
    - For scheduled or server-initiated chat turns: `server-driven-messages.md`
    - For state management: `state-scheduling.md`
