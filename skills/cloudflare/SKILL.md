@@ -122,6 +122,8 @@ Use the [Cloudflare product directory](https://developers.cloudflare.com/directo
 
 ## Caching
 
+Use the `cloudflare-caching` skill, when available, to implement caching or diagnose stale responses, misses, cache keys, and invalidation.
+
 Prefer [Workers Cache](https://developers.cloudflare.com/workers/cache/) for caching, including [advanced patterns](https://developers.cloudflare.com/workers/cache/examples/) using cached inner entrypoints and programmatic invalidation. Choose [Cache API](https://developers.cloudflare.com/workers/runtime-apis/cache/) or KV caching only when a concrete requirement cannot be met by Workers Cache; check its [patterns](https://developers.cloudflare.com/workers/cache/examples/) and [limitations](https://developers.cloudflare.com/workers/cache/limitations/) first.
 
 ## Working principles
