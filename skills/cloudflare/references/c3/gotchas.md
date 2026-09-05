@@ -20,14 +20,9 @@ npx wrangler kv namespace create MY_KV  # Get real ID
 **Error:** "Worker already exists"  
 **Fix:** Change `name` in wrangler.jsonc
 
-## Platform Selection
+## Deployment Target
 
-| Need | Platform |
-|------|----------|
-| Git integration, branch previews | `--platform=pages` |
-| Durable Objects, D1, Queues | Workers (default) |
-
-Wrong platform? Recreate with correct `--platform` flag.
+Use Workers for framework apps, static sites, and SPAs. Use [Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/) for Git integration and previews. If setup produced a Pages target, consult the selected [Workers framework guide](../frameworks.md) before adjusting configuration; do not recreate the application blindly.
 
 ## TypeScript Issues
 
@@ -64,11 +59,7 @@ env:
 
 ## Framework-Specific
 
-| Framework | Issue | Fix |
-|-----------|-------|-----|
-| Next.js | create-next-app failed | `npm cache clean --force`, retry |
-| Astro | Adapter missing | Install `@astrojs/cloudflare` |
-| Remix | Module errors | Update `@remix-run/cloudflare*` |
+Identify the installed framework and rendering mode, then read its [Workers integration and upstream guidance](../frameworks.md). Adapter requirements differ for static and server-rendered output; do not add an adapter solely because of the framework name.
 
 ## Compatibility Date
 
