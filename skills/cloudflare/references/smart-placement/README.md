@@ -132,7 +132,7 @@ wrangler tail your-worker-name --header cf-placement
 
 ## See Also
 
-- [workers](../workers/) - Worker runtime and fetch handlers
+- [workers](https://developers.cloudflare.com/workers/) - Worker runtime and fetch handlers
 - [d1](../d1/) - D1 database that benefits from Smart Placement
-- [durable-objects](../durable-objects/) - Durable Objects with backend logic
+- [durable-objects](https://developers.cloudflare.com/durable-objects/) - Durable Objects with backend logic
 - [bindings](../bindings/) - Service bindings for frontend/backend split

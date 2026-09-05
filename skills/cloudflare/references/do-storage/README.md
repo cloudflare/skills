@@ -70,6 +70,6 @@ export class Counter extends DurableObject {
 
 ## See Also
 
-- [durable-objects](../durable-objects/) - DO fundamentals and coordination patterns
-- [workers](../workers/) - Worker runtime for DO stubs
+- [durable-objects](https://developers.cloudflare.com/durable-objects/) - DO fundamentals and coordination patterns
+- [workers](https://developers.cloudflare.com/workers/) - Worker runtime for DO stubs
 - [d1](../d1/) - Shared database alternative to per-DO storage

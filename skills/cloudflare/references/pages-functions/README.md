@@ -94,5 +94,5 @@ export function onRequest(context) {
 
 ## See Also
 - [pages](../pages/) - Pages platform overview and static site deployment
-- [workers](../workers/) - Workers runtime API reference
+- [workers](https://developers.cloudflare.com/workers/) - Workers runtime API reference
 - [d1](../d1/) - D1 database integration with Pages Functions
