@@ -46,7 +46,9 @@ Read [ctx.access limitations](https://developers.cloudflare.com/workers/configur
 
 ## Verify the boundary
 
-Use the [local Access simulation](https://developers.cloudflare.com/workers/configuration/cloudflare-access/#test-ctxaccess-locally) to exercise identity-dependent handlers: configure `access.dev` with an audience and test identity, then remove the development block to exercise missing context. This simulates identity; it does not prove deployed Access policy enforcement.
+For handlers that consume native `ctx.access`, use the [local Access simulation](https://developers.cloudflare.com/workers/configuration/cloudflare-access/#test-ctxaccess-locally): configure `access.dev` with an audience and test identity, then remove the development block to exercise missing context. This exercises native-context handling; it does not inject a request JWT, test a JWT fallback, or prove deployed Access policy enforcement.
+
+For a request-token fallback, test the verifier separately using signed test tokens and verifier fixtures: valid claims, invalid signature, wrong issuer or audience, and expired tokens. On the deployed request path, verify token presence and rejection of missing or invalid tokens; this is especially relevant when Static Assets makes native context unavailable.
 
 Test the flows affected by the change:
 
