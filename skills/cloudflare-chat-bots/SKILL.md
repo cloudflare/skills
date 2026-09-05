@@ -29,7 +29,7 @@ Read [channel setup](references/channels.md) for the selected provider's onboard
 
 ## Acknowledge and deliver
 
-Read the provider's acknowledgment and retry rules before wiring handlers. Separate its timely acknowledgment from slow model or tool work. Use the selected SDK's documented reply lifecycle; Think messengers already supplies managed reply fibers and recovery behavior.
+Read the provider's acknowledgment and retry rules before wiring handlers. Separate its timely acknowledgment from slow model or tool work. Use the selected SDK's documented reply lifecycle; The Think messenger integration already supplies managed reply fibers and recovery behavior.
 
 For manual Worker ingress, read [execution context](https://developers.cloudflare.com/workers/runtime-apis/context/#waituntil): `ctx.waitUntil()` extends a Worker request for bounded background work, but is not durable job execution. Use durable execution when work must survive interruption. Do not apply Worker request-lifetime assumptions to an Agent's Durable Object or add a second queue around an SDK-managed lifecycle without a requirement.
 
