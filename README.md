@@ -103,6 +103,10 @@ This plugin includes Cloudflare's main [remote MCP server](https://developers.cl
 
 Cloudflare also publishes product-specific MCP servers. This plugin intentionally bundles only the main `cloudflare` server.
 
+## Contributing and releases
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for testing an edited checkout through a local marketplace, refreshing the installed copy, and preparing synchronized plugin releases.
+
 ## Resources
 
 - [Cloudflare Agents Documentation](https://developers.cloudflare.com/agents/)
