@@ -149,36 +149,30 @@ export default {
 } satisfies ExportedHandler<Env>;
 ```
 
-## Cloudflare Pages/Assets Warning
+## Workers Static Assets and `run_worker_first`
 
-**CRITICAL PERFORMANCE ISSUE:** Enabling Smart Placement with `assets.run_worker_first = true` in Pages projects **severely degrades asset serving performance**. This is one of the most common misconfigurations.
+`assets.run_worker_first` is a Workers Static Assets setting, not a Pages setting. When it is combined with Smart Placement, the entire Worker script is placed as one unit. Placement therefore may not reflect the intended split between edge-first asset handling and compute located near a backend.
 
-**Why this is bad:**
-- Smart Placement routes ALL requests (including static assets) away from edge to remote locations
-- Static assets (HTML, CSS, JS, images) should ALWAYS be served from edge closest to user
-- Result: 2-5x slower asset loading times, poor user experience
+Choose based on the application's routing needs and measured request duration:
 
-**Problem:** Smart Placement routes asset requests away from edge, but static assets should always be served from edge closest to user.
-
-**Solutions (in order of preference):**
-1. **Recommended:** Split into separate Workers (frontend at edge + backend with Smart Placement)
-2. Set `"mode": "off"` to explicitly disable Smart Placement for Pages/Assets Workers
-3. Use `assets.run_worker_first = false` (serves assets first, bypasses Worker for static content)
+1. Prefer the default asset-first behavior when the Worker does not need to inspect matching asset requests.
+2. Use selective `run_worker_first` route patterns when only specific paths require the Worker.
+3. If edge and backend work have different placement needs, consider separate frontend and backend Workers.
+4. Keep `run_worker_first: true` when middleware must run for every asset request, but validate the resulting placement rather than assuming it will help or hurt.
 
 ```jsonc
-// ❌ BAD - Degrades asset performance by 2-5x
+// Review carefully: the whole Worker is placed as one unit
 {
-  "name": "pages-app",
+  "name": "full-stack-app",
   "placement": { "mode": "smart" },
   "assets": { "run_worker_first": true }
 }
 
-// ✅ GOOD - Frontend at edge, backend optimized
+// Alternative when frontend and backend have different placement needs
 // frontend-worker/wrangler.jsonc
 {
   "name": "frontend",
-  "assets": { "run_worker_first": true }
-  // No placement - runs at edge
+  "assets": { "directory": "./dist" }
 }
 
 // backend-worker/wrangler.jsonc
@@ -189,7 +183,7 @@ export default {
 }
 ```
 
-**Key takeaway:** Never enable Smart Placement on Workers that serve static assets with `run_worker_first = true`.
+**Key takeaway:** Treat Smart Placement plus `run_worker_first` as a whole-script placement trade-off and measure it. Do not describe degradation as guaranteed.
 
 ## Local Development
 

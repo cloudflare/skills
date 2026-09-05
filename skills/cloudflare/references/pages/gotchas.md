@@ -56,42 +56,26 @@
 
 ## Framework-Specific
 
-### ⚠️ Deprecated Frameworks
+### New projects
 
-**Next.js**: Official adapter (`@cloudflare/next-on-pages`) **deprecated** and unmaintained.
-- **Problem**: No updates since 2024; incompatible with Next.js 15+; missing App Router features
-- **Cause**: Cloudflare discontinued official support; community fork exists but limited
-- **Solutions**:
-  1. **Recommended**: Use Vercel (official Next.js host)
-  2. **Advanced**: Self-host on Workers using custom adapter (complex, unsupported)
-  3. **Migration**: Switch to SvelteKit/Nuxt (similar DX, full Pages support)
+Use the framework's [Workers guide](https://developers.cloudflare.com/workers/framework-guides/) for new applications. Workers Static Assets is Cloudflare's recommended target for new static, SPA, SSG, SSR, and full-stack projects and supports Git builds and preview URLs.
 
-**Remix**: Official adapter (`@remix-run/cloudflare-pages`) **deprecated**.
-- **Problem**: No maintenance from Remix team; compatibility issues with Remix v2+
-- **Cause**: Remix team deprecated all framework adapters
-- **Solutions**:
-  1. **Recommended**: Migrate to SvelteKit (similar file-based routing, better DX)
-  2. **Alternative**: Use Astro (static-first with optional SSR)
-  3. **Workaround**: Continue using deprecated adapter (no future support)
+**Next.js**:
+- Cloudflare recommends [vinext on Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/) for full-stack Next.js, including SSR, Server Components, Server Actions, route handlers, and middleware.
+- Use Pages only for an existing project or a static Next.js export.
 
-### ✅ Supported Frameworks
+**Remix**:
+- Remix is no longer recommended for new projects by its authors.
+- Migrate an existing Remix application to React Router, then follow the [React Router Workers guide](https://developers.cloudflare.com/workers/framework-guides/web-apps/react-router/).
 
-**SvelteKit**:
-- Use `@sveltejs/adapter-cloudflare`
-- Access bindings via `platform.env` in server load functions
-- Set `platform: 'cloudflare'` in `svelte.config.js`
+### Existing Pages projects
 
-**Astro**:
-- Built-in Cloudflare adapter
-- Access bindings via `Astro.locals.runtime.env`
+- **SvelteKit**: Continue using `@sveltejs/adapter-cloudflare`; access bindings through `platform.env`.
+- **Astro**: Continue using the Cloudflare adapter configured for Pages; access bindings through `Astro.locals.runtime.env`.
+- **Nuxt**: Existing Pages deployments can continue using `nitro.preset: 'cloudflare-pages'`; access bindings through `event.context.cloudflare.env`.
+- **Qwik/Solid Start**: Follow the current Pages framework guide and adapter documentation.
 
-**Nuxt**:
-- Set `nitro.preset: 'cloudflare-pages'` in `nuxt.config.ts`
-- Access bindings via `event.context.cloudflare.env`
-
-**Qwik, Solid Start**:
-- Built-in or official Cloudflare adapters available
-- Check respective framework docs for binding access
+When migrating any of these projects, switch to the framework's Workers target and replace `pages_build_output_dir` with `assets.directory`.
 
 ## Debugging
 
@@ -124,31 +108,11 @@ console.log('Params:', params);
 **Cause**: Traffic evenly distributed globally, or no data locality constraints  
 **Solution**: Smart Placement most effective with centralized data (D1/DO) or regional traffic; disable if no benefit
 
-## Remote Bindings Issues
+## Remote Development
 
-### Accidentally Modified Production Data
-
-**Problem**: Local dev with `--remote` altered production database/KV  
-**Cause**: Remote bindings connect directly to production resources; writes are real  
-**Solution**: 
-- Use `--remote` only for read-heavy debugging
-- Create separate preview environments for testing
-- Never use `--remote` for write operations during development
-
-### Remote Binding Auth Errors
-
-**Problem**: `npx wrangler pages dev --remote` fails with "Unauthorized" or auth error  
-**Cause**: Not logged in, session expired, or insufficient account permissions  
-**Solution**: 
-1. Run `npx wrangler login` to re-authenticate
-2. Verify account has access to project and bindings
-3. Check binding IDs match production configuration
-
-### Slow Local Dev with Remote Bindings
-
-**Problem**: Local dev server slow when using `--remote`  
-**Cause**: Every request makes network calls to production bindings  
-**Solution**: Use local bindings for development; reserve `--remote` for final validation
+**Problem**: `npx wrangler pages dev --remote` fails.
+**Cause**: Remote development is not supported for Pages; this is not necessarily an authentication problem.
+**Solution**: Use local `wrangler pages dev` and a Pages preview deployment for hosted validation. If remote development is required, migrate to Workers and use `wrangler dev --remote`.
 
 ## Common Errors
 

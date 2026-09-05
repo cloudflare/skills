@@ -190,15 +190,15 @@ const event = getRequestEvent();
 const data = await event.locals.runtime.env.DB.prepare('SELECT * FROM users').all();
 ```
 
-**✅ Supported adapters** (2026):
+**Existing Pages framework projects:**
 - **SvelteKit**: `@sveltejs/adapter-cloudflare`
-- **Astro**: Built-in Cloudflare adapter
-- **Nuxt**: Set `nitro.preset: 'cloudflare-pages'` in `nuxt.config.ts`
-- **Qwik**: Built-in Cloudflare adapter
-- **Solid Start**: `@solidjs/start-cloudflare-pages`
+- **Astro**: Cloudflare adapter targeting Pages
+- **Nuxt**: `nitro.preset: 'cloudflare-pages'`
+- **Qwik/Solid Start**: Follow the current framework-specific Pages guide
 
-**❌ Deprecated/Unsupported**:
-- **Next.js**: Official adapter (`@cloudflare/next-on-pages`) deprecated. Use Vercel or self-host on Workers.
-- **Remix**: Official adapter (`@remix-run/cloudflare-pages`) deprecated. Migrate to supported frameworks.
+**New and migrating projects:**
+- Use the framework's [Workers guide](https://developers.cloudflare.com/workers/framework-guides/) for new applications; Workers is Cloudflare's primary application platform.
+- **Next.js full-stack**: Cloudflare recommends [vinext on Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/). Pages remains suitable for a static Next.js export.
+- **Remix**: Remix is no longer recommended for new projects by its authors. Migrate to [React Router on Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/react-router/).
 
 See [gotchas.md](./gotchas.md#framework-specific) for migration guidance.

@@ -1,6 +1,8 @@
 # Cloudflare Pages Functions
 
-Serverless functions on Cloudflare Pages using Workers runtime. Full-stack dev with file-based routing.
+Serverless functions for existing Cloudflare Pages projects using the Workers runtime and file-based routing.
+
+> **Starting a new application?** Use a Worker with Static Assets. Workers is Cloudflare's primary application platform and supports static, SPA, SSG, SSR, API, and full-stack workloads. Use this reference to maintain or migrate an existing Pages Functions project.
 
 ## Quick Navigation
 
@@ -18,17 +20,22 @@ Serverless functions on Cloudflare Pages using Workers runtime. Full-stack dev w
 
 ```
 Need serverless backend? 
-├─ Yes, for a static site → Pages Functions
-├─ Yes, standalone API → Workers
-└─ Just static hosting → Pages (no functions)
+├─ New static/full-stack app or standalone API → Workers + Static Assets
+├─ Existing Pages project → Pages Functions
+└─ Existing Pages static site with no backend → Pages (no functions)
 
 Have existing Worker?
-├─ Complex routing logic → Use _worker.js (Advanced Mode)
-└─ Simple routes → Migrate to /functions (File-Based)
+└─ Keep it on Workers; do not migrate to Pages solely for file routing
+
+Have existing Pages Functions?
+├─ Keep Pages → Use /functions or _worker.js (Advanced Mode)
+└─ Migrate to Workers → Use a Workers-native framework/router or compile /functions
 
 Framework-based?
-├─ Next.js/SvelteKit/Remix → Uses _worker.js automatically
-└─ Vanilla/HTML/React SPA → Use /functions
+├─ New framework app → Use the framework's Workers guide
+├─ Existing full-stack Next.js → Migrate to vinext on Workers
+├─ Existing Remix → Migrate to React Router on Workers
+└─ Existing Pages adapter → Follow its output/routing conventions
 ```
 
 ## File-Based Routing
@@ -74,7 +81,7 @@ export function onRequest(context) {
 
 - **Method handlers:** `onRequestGet`, `onRequestPost`, etc.
 - **Middleware:** `_middleware.js` for cross-cutting concerns
-- **Bindings:** KV, D1, R2, Durable Objects, Workers AI, Service bindings
+- **Bindings:** KV, D1, R2, Workers AI, and Service bindings. Durable Objects require a binding to a separate Worker; define them directly when migrating to Workers.
 - **TypeScript:** Full type support via `wrangler types` command
 - **Advanced mode:** Use `_worker.js` for custom routing logic
 

@@ -1,18 +1,21 @@
 # C3 (create-cloudflare)
 
-Official CLI for scaffolding Cloudflare Workers and Pages projects with templates, TypeScript, and instant deployment.
+Official CLI for scaffolding Cloudflare Workers and, when explicitly requested, Pages projects with framework-aware setup and deployment.
 
 ## Quick Start
 
 ```bash
 # Interactive (recommended for first-time)
-npm create cloudflare@latest my-app
+npm create cloudflare@latest -- my-app
 
-# Worker (API/WebSocket/Cron)
-npm create cloudflare@latest my-api -- --type=hello-world --ts
+# Worker (recommended for new static, framework, full-stack, and API projects)
+npm create cloudflare@latest -- my-api --type=hello-world --lang=ts
 
-# Pages (static/SSG/full-stack)
-npm create cloudflare@latest my-site -- --type=web-app --framework=astro --platform=pages
+# Framework app on Workers
+npm create cloudflare@latest -- my-site --framework=astro
+
+# Existing/intentional Pages workflow
+npm create cloudflare@latest -- --platform=pages
 ```
 
 ## Platform Decision Tree
@@ -20,37 +23,31 @@ npm create cloudflare@latest my-site -- --type=web-app --framework=astro --platf
 ```
 What are you building?
 
+├─ New static site / SPA / SSG / documentation
+│   └─ Workers Static Assets (default)
+
+├─ New full-stack or framework app
+│   └─ Workers (default) - follow the framework's Workers guide
+│       ├─ Next.js → vinext on Workers
+│       └─ Remix → React Router on Workers
+
 ├─ API / WebSocket / Cron / Email handler
-│   └─ Workers (default) - no --platform flag needed
-│       npm create cloudflare@latest my-api -- --type=hello-world
+│   └─ Workers (default)
 
-├─ Static site / SSG / Documentation
-│   └─ Pages - requires --platform=pages
-│       npm create cloudflare@latest my-site -- --type=web-app --framework=astro --platform=pages
+├─ Existing Pages project or confirmed Pages-only requirement
+│   └─ Pages - explicitly add --platform=pages
 
-├─ Full-stack app (Next.js/Remix/SvelteKit)
-│   ├─ Need Durable Objects, Queues, or Workers-only features?
-│   │   └─ Workers (default)
-│   └─ Otherwise use Pages for git integration and branch previews
-│       └─ Add --platform=pages
-
-└─ Convert existing project
-    └─ npm create cloudflare@latest . -- --type=pre-existing --existing-script=./src/worker.ts
+└─ Clone an existing deployed Worker
+    └─ npm create cloudflare@latest -- . --type=pre-existing --existing-script=my-worker
 ```
 
-**Critical:** Pages projects require `--platform=pages` flag. Without it, C3 defaults to Workers.
+**Default to Workers for new projects.** Workers supports Git integration and branch preview URLs through Workers Builds. Use `--platform=pages` only when the customer deliberately needs Pages; omitting it correctly creates a Workers project.
 
 ## Interactive Flow
 
-When run without flags, C3 prompts in this order:
+C3 prompts for the inputs required by the selected starter. Expect a project directory, a Worker starter or framework, framework-specific questions, Git initialization, and optional deployment. Prompts vary as C3 and third-party framework CLIs evolve, so do not depend on a fixed order.
 
-1. **Project name** - Directory to create (defaults to current dir with `.`)
-2. **Application type** - `hello-world`, `web-app`, `demo`, `pre-existing`, `remote-template`
-3. **Platform** - `workers` (default) or `pages` (for web apps only)
-4. **Framework** - If web-app: `next`, `remix`, `astro`, `react-router`, `solid`, `svelte`, etc.
-5. **TypeScript** - `yes` (recommended) or `no`
-6. **Git** - Initialize repository? `yes` or `no`
-7. **Deploy** - Deploy now? `yes` or `no` (requires `wrangler login`)
+Workers is the default target. C3 enters its Pages flow only when `--platform=pages` is explicitly supplied.
 
 ## Installation Methods
 

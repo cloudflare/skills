@@ -185,11 +185,13 @@ export default defineEventHandler(async (event) => {
 });
 ```
 
-**⚠️ Framework Status** (2026):
-- ✅ **Supported**: SvelteKit, Astro, Nuxt, Qwik, Solid Start
-- ❌ **Deprecated**: Next.js (`@cloudflare/next-on-pages`), Remix (`@remix-run/cloudflare-pages`)
+**Framework target guidance** (2026):
+- **New projects**: Use the framework's [Workers guide](https://developers.cloudflare.com/workers/framework-guides/). Workers is the recommended target for new static, SSR, and full-stack applications.
+- **Existing Pages projects**: SvelteKit, Astro, Nuxt, Qwik, and Solid Start Pages integrations can continue to be maintained.
+- **Next.js**: Use [vinext on Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/) for full-stack applications; Pages supports static exports.
+- **Remix**: Migrate to [React Router on Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/react-router/).
 
-For deprecated frameworks, see [gotchas.md](./gotchas.md#framework-specific) for migration options.
+See [gotchas.md](./gotchas.md#framework-specific) for migration details.
 
 [Framework Guides](https://developers.cloudflare.com/pages/framework-guides/)
 

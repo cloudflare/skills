@@ -110,12 +110,9 @@ Use request duration to measure Smart Placement impact.
 - Worker primarily serves static assets or cached content
 - Backend services are globally distributed (no single optimal location)
 - Worker has minimal backend communication
-- Using Pages with `assets.run_worker_first = true`
+- A Workers Static Assets application uses `run_worker_first`, but whole-script placement does not match its desired edge/compute split
 
-**Typical improvements when Smart Placement helps:**
-- 20-50% reduction in request duration for database-heavy Workers
-- 30-60% reduction for Workers making multiple backend API calls
-- Larger improvements when backend is geographically concentrated
+Do not assume a fixed improvement or regression. Compare the measured request-duration cohorts for the deployed workload.
 
 ## Monitoring Commands
 

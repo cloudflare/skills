@@ -1,6 +1,8 @@
 # Cloudflare Pages
 
-JAMstack platform for full-stack apps on Cloudflare's global network.
+Supported platform for existing Pages applications and Pages-specific workflows on Cloudflare's global network.
+
+> **Starting a new project?** Use [Workers Static Assets](../static-assets/) for static sites, SPAs, SSG, SSR, and full-stack applications. Workers is Cloudflare's primary application platform; Pages continues to work, but new features and optimizations are focused on Workers.
 
 ## Key Features
 
@@ -24,21 +26,25 @@ npx wrangler pages deploy ./dist --project-name=my-project --branch=staging
 
 ### 3. C3 CLI
 ```bash
-npm create cloudflare@latest my-app
-# Select framework → auto-setup + deploy
+npm create cloudflare@latest -- --platform=pages
+# Use only when intentionally creating a Pages project
 ```
 
-## vs Workers
+## Pages vs Workers
 
-- **Pages**: Static sites, JAMstack, frameworks, git workflow, file-based routing
-- **Workers**: Pure APIs, complex routing, WebSockets, scheduled tasks, email handlers
-- **Combine**: Pages Functions use Workers runtime, can bind to Workers
+- **Default for new applications**: Workers with Static Assets, including static-only sites, SPAs, SSG, SSR, APIs, and full-stack frameworks
+- **Workers developer workflow**: Workers Builds supports GitHub/GitLab builds, deploy hooks, build caching, and preview URLs
+- **Choose Pages when required**: Existing Pages projects, custom branch aliases, richer branch deploy controls, native Pages Functions file-based routing/plugins, independently configured production and preview bindings, or a custom domain outside a Cloudflare-managed zone
+- **Broader Workers capabilities**: Gradual deployments, remote development, richer observability, Cron Triggers, direct Durable Objects, queue consumers, and additional bindings
+- **Interoperability**: Pages Functions use the Workers runtime and can bind to a separate Worker
+
+See the live [Pages-to-Workers compatibility matrix](https://developers.cloudflare.com/workers/static-assets/migration-guides/migrate-from-pages/#compatibility-matrix) before choosing between them.
 
 ## Quick Start
 
 ```bash
 # Create
-npm create cloudflare@latest
+npm create cloudflare@latest -- --platform=pages
 
 # Local dev
 npx wrangler pages dev ./dist
@@ -65,7 +71,7 @@ npx wrangler pages deployment tail --project-name=my-project
 
 ## Reading Order
 
-**New to Pages?** Start here:
+**Maintaining an existing Pages project?** Start here:
 1. README.md (you are here) - Overview & quick start
 2. [configuration.md](./configuration.md) - Project setup, wrangler.jsonc, bindings
 3. [api.md](./api.md) - Functions API, routing, context
