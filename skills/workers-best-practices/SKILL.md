@@ -1,32 +1,24 @@
 ---
 name: workers-best-practices
-description: Reviews and authors Cloudflare Workers code against production best practices. Load when writing new Workers, reviewing Worker code, configuring wrangler.jsonc, or checking for common Workers anti-patterns (streaming, floating promises, global state, secrets, bindings, observability). Biases towards retrieval from Cloudflare docs over pre-trained knowledge.
+description: Reviews and authors Cloudflare Workers code against production best practices. Load when writing new Workers, reviewing Worker code, configuring wrangler.jsonc, or checking for common Workers anti-patterns (streaming, floating promises, global state, secrets, bindings, observability).
 ---
 
-Your knowledge of Cloudflare Workers APIs, types, and configuration may be outdated. **Prefer retrieval over pre-training** for any Workers code task — writing or reviewing.
+Produce Workers code and reviews that are correct for the project's deployed runtime, safe under Workers platform constraints, and supported by proportionate evidence.
 
-## Retrieval Sources
+## Establish the Project Contract
 
-Fetch the **latest** versions before writing or reviewing Workers code. Do not rely on baked-in knowledge for API signatures, config fields, or binding shapes.
+Start with the project itself: its compatibility date and flags, pinned Wrangler and Workers types, generated environment types, configuration, package lockfile, tests, and established patterns. These define the contract an existing deployment must satisfy.
 
-| Source | How to retrieve | Use for |
-|--------|----------------|---------|
-| Workers best practices | Fetch `https://developers.cloudflare.com/workers/best-practices/workers-best-practices/` | Canonical rules, patterns, anti-patterns |
-| Workers types | See `references/review.md` for retrieval steps | API signatures, handler types, binding types |
-| Wrangler config schema | `node_modules/wrangler/config-schema.json` | Config fields, binding shapes, allowed values |
-| Cloudflare docs | Search tool or `https://developers.cloudflare.com/workers/` | API reference, compatibility dates/flags |
+Do not silently judge pinned code against a newer platform version. When proposing an upgrade, distinguish problems in the current contract from opportunities that require changing a dependency, compatibility date, or flag.
 
-## FIRST: Fetch Latest References
+Retrieve authoritative Cloudflare documentation or current published types when:
 
-Before reviewing or writing Workers code, retrieve the current best practices page and relevant type definitions. If the project's `node_modules` has an older version, **prefer the latest published version**.
+- the relevant API or configuration contract is absent, ambiguous, or disputed locally;
+- the task explicitly targets the latest platform behavior or a version upgrade;
+- a finding depends on behavior that may have changed since the pinned version; or
+- the consequence of guessing is material and local validation cannot settle it.
 
-```bash
-# Fetch latest workers types
-mkdir -p /tmp/workers-types-latest && \
-  npm pack @cloudflare/workers-types --pack-destination /tmp/workers-types-latest && \
-  tar -xzf /tmp/workers-types-latest/cloudflare-workers-types-*.tgz -C /tmp/workers-types-latest
-# Types at /tmp/workers-types-latest/package/index.d.ts
-```
+Use the narrowest useful source: the installed type declarations or Wrangler schema for pinned behavior, and the official Workers documentation or release information for current behavior. Record the applicable version, compatibility date, or flag when it affects the conclusion. Do not download packages merely to begin a routine task.
 
 ## Reference Documentation
 
@@ -100,16 +92,11 @@ mkdir -p /tmp/workers-types-latest && \
 | `implements` on platform base classes (instead of `extends`) | Legacy — loses `this.ctx`, `this.env`. Applies to DurableObject, WorkerEntrypoint, Workflow |
 | `env.X` inside platform base class | Should be `this.env.X` in classes extending DurableObject, WorkerEntrypoint, etc. |
 
-## Review Workflow
+## Apply Judgment
 
-1. **Retrieve** — fetch latest best practices page, workers types, and wrangler schema
-2. **Read full files** — not just diffs; context matters for binding access patterns
-3. **Check types** — binding access, handler signatures, no `any`, no unsafe casts (see `references/review.md`)
-4. **Check config** — compatibility_date, nodejs_compat, observability, secrets, binding-code consistency
-5. **Check patterns** — streaming, floating promises, global state, serialization boundaries
-6. **Check security** — crypto usage, secret handling, timing-safe comparisons, error handling
-7. **Validate with tools** — `npx tsc --noEmit`, lint for `no-floating-promises`
-8. **Reference rules** — see `references/rules.md` for each rule's correct pattern
+Inspect enough surrounding code and configuration to understand binding access, runtime boundaries, and deployment assumptions. Focus the review or implementation on risks relevant to the change: types and binding consistency, streaming and memory use, promise lifetime, cross-request state, serialization, secrets and cryptography, observability, and explicit error handling.
+
+Validate in proportion to the change. Prefer the project's own typecheck, tests, lint rules, and Wrangler validation. For a review, report only findings supported by code, local contracts, tool output, or a directly relevant official source. See `references/review.md` for deeper review guidance and `references/rules.md` for Workers-specific patterns.
 
 ## Scope
 
@@ -121,7 +108,7 @@ This skill covers Workers-specific best practices and code review. For related t
 
 ## Principles
 
-- **Be certain.** Retrieve before flagging. If unsure about an API, config field, or pattern, fetch the docs first.
+- **Be certain.** Verify uncertain API or configuration claims against the applicable local contract or authoritative documentation before flagging them.
 - **Provide evidence.** Reference line numbers, tool output, or docs links.
 - **Focus on what developers will copy.** Workers code in examples and docs gets pasted into production.
 - **Correctness over completeness.** A concise example that works beats a comprehensive one with errors.

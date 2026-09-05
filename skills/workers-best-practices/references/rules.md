@@ -2,7 +2,7 @@
 
 Each rule has an imperative summary, what to check, the correct pattern, and an anti-pattern where applicable. Code examples are plain TypeScript — no MDX components.
 
-When a rule involves config fields or API signatures that may evolve, a **Retrieve** callout reminds you to check the latest docs or types before flagging. All doc paths are relative to `https://developers.cloudflare.com`.
+When a rule involves config fields or API signatures that may evolve, a **Retrieve** callout identifies an official source to consult when the project's local contract is insufficient or the task targets current behavior. All doc paths are relative to `https://developers.cloudflare.com`.
 
 ---
 
@@ -238,7 +238,7 @@ export class AuthService extends WorkerEntrypoint {
 const auth = await env.AUTH_SERVICE.verifyToken(token);
 ```
 
-**Retrieve**: verify `WorkerEntrypoint` import path and signature against latest `@cloudflare/workers-types`.
+**Retrieve**: verify the `WorkerEntrypoint` import path and signature against the types applicable to the project or requested target version.
 
 ### Use Hyperdrive for external database connections
 
