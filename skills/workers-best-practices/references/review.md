@@ -1,6 +1,6 @@
-# Code Review — Workers
+# Workers Type and Runtime Checks
 
-How to review Workers code for type correctness, API usage, config validity, and best practices. This is self-contained — do not assume access to other skills.
+Consult the sections relevant to the affected bindings, handlers, configuration, or serialization boundaries. Use the project's installed types and compatibility settings as the target.
 
 ## Retrieval
 
@@ -53,16 +53,6 @@ Verify affected signatures against the project's target type definitions; consul
 
 Flag `env.X` inside a class extending a platform base class. Flag `this.env.X` inside a module export handler.
 
-### Type integrity rules
-
-| Rule | Detail |
-|------|--------|
-| No `any` | Never on binding types, handler params, or API responses |
-| No double-casting | `as unknown as T` hides real incompatibilities — fix the underlying design |
-| Justify suppressions | `@ts-ignore`/`@ts-expect-error` must include a comment explaining why |
-| Prefer `satisfies` | Use `satisfies ExportedHandler<Env>` over `as` — validates without widening |
-| Validate, do not assert | Schema or type guard for untyped data (JSON, parsed bodies), not `as` |
-
 ### Stale class patterns
 
 Old patterns survive in codebases long after APIs change.
@@ -106,20 +96,6 @@ For executable examples, verify: `name`, `compatibility_date`, `main`. Check the
 
 ---
 
-## Anti-Patterns to Flag
-
-See the full anti-patterns table in `SKILL.md`. The type-specific ones to watch for during review:
-
-- **`any` on `Env` or handler params** — defeats type safety for all downstream binding access
-- **`as unknown as T`** — hides real type incompatibilities; fix the underlying design
-- **`@ts-ignore`/`@ts-expect-error` without explanation** — masks errors silently; require a justifying comment
-- **`implements` instead of `extends` on platform base classes** — legacy pattern; loses `this.ctx`, `this.env`
-- **`env.X` inside class body** — should be `this.env.X` in platform base classes
-- **`this.env.X` in module export handler** — should be `env.X` parameter
-- **Non-serializable values across boundaries** — `Response`, `Error` in step/queue compiles but fails at runtime
-
----
-
 ## Serialization Boundaries
 
 Data crossing these boundaries must be structured-clone serializable:
@@ -132,26 +108,3 @@ Data crossing these boundaries must be structured-clone serializable:
 Non-serializable types to flag: `Response`, `Request`, `Error`, functions, class instances with methods, `Map`/`Set`, `Symbol`.
 
 Valid: plain objects, arrays, strings, numbers, booleans, null, `ArrayBuffer`, `Date`.
-
----
-
-## Review Process
-
-1. **Establish scope and target** — start with the requested diff, files, or behavior and the relevant project versions/configuration. Read surrounding handlers, classes, binding declarations, and callers when needed to establish impact; expand to full files when that context is necessary.
-2. **Categorize code** — determines what to check:
-   - **Illustrative** (concept demo, comments for most logic): verify correct API names and realistic signatures
-   - **Demonstrative** (functional snippet, would work in context): verify syntax, correct APIs, correct binding access
-   - **Executable** (standalone, runs without modification): verify compiles, runs, includes imports and config
-3. **Investigate affected behavior** — apply relevant type, config, binding-access, streaming, promise-lifetime, state, serialization, and security checks. Retrieve missing evidence using the sources above; a full review can cover all applicable categories, while a focused review stays within its requested scope.
-4. **Validate proportionally** — use existing project commands that can resolve the identified concern. Type-check changes to types or binding contracts; inspect or lint affected async paths for floating promises; run relevant runtime tests for behavior changes. Preserve required repository checks, but do not install a new linter or run an unrelated full suite as a review prerequisite. Comments or prose-only changes generally need static inspection. Report checks that could not run and their consequences.
-5. **Report supported findings** — connect each issue to the affected execution path and concrete impact, citing file lines, tool output, or documentation. Separate upgrade suggestions from defects in the configured target. For requested fixes, correct failures caused by the change and rerun affected checks before reporting completion.
-
-### Output format
-
-```
-**[SEVERITY]** Brief description
-`file.ts:42` — explanation with evidence
-Suggested fix: `code`
-```
-
-Severity: **CRITICAL** (security, data loss, crash) | **HIGH** (type error, wrong API, broken config) | **MEDIUM** (missing validation, edge case) | **LOW** (style, minor improvement)

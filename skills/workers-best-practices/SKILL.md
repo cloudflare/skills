@@ -19,7 +19,7 @@ Consult only the sources needed for the task. A newer published type package doe
 ## Reference Documentation
 
 - [references/rules.md](references/rules.md) — consult relevant patterns when authoring or assessing affected Workers behavior
-- [references/review.md](references/review.md) — review process and targeted type/config validation; use for code reviews or when those checks are needed
+- [references/review.md](references/review.md) — Workers-specific type, binding, config, and serialization checks; consult the sections relevant to the task
 
 ## Rules Quick Reference
 
@@ -88,9 +88,9 @@ Consult only the sources needed for the task. A newer published type package doe
 | `implements` on platform base classes (instead of `extends`) | Legacy — loses `this.ctx`, `this.env`. Applies to DurableObject, WorkerEntrypoint, Workflow |
 | `env.X` inside platform base class | Should be `this.env.X` in classes extending DurableObject, WorkerEntrypoint, etc. |
 
-## Review Workflow
+## Validation
 
-For a requested review, follow the [review process](references/review.md#review-process). For implementation work, use the relevant patterns and validate the changed behavior with the project's existing checks; a narrow edit does not require a full Workers audit.
+Use the project's existing checks for affected Workers behavior: type-check binding or handler contract changes, and run relevant runtime tests for behavior changes. Preserve required repository checks; a narrow edit does not require a full Workers audit.
 
 ## Scope
 
@@ -99,10 +99,3 @@ This skill covers Workers-specific best practices and code review. For related t
 - **Durable Objects**: load the `durable-objects` skill
 - **Workflows**: see [Rules of Workflows](https://developers.cloudflare.com/workflows/build/rules-of-workflows/)
 - **Wrangler CLI commands**: load the `wrangler` skill
-
-## Principles
-
-- **Be certain.** Establish findings from the affected code and its configured target. If an API, config field, or pattern remains uncertain, retrieve the relevant docs or types before flagging it.
-- **Provide evidence.** Reference line numbers, tool output, or docs links.
-- **Focus on what developers will copy.** Workers code in examples and docs gets pasted into production.
-- **Correctness over completeness.** A concise example that works beats a comprehensive one with errors.
