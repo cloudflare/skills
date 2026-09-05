@@ -105,10 +105,3 @@ This plugin includes Cloudflare's main [remote MCP server](https://developers.cl
 | cloudflare | Access the Cloudflare API and current developer documentation through the Code Mode MCP server |
 
 Cloudflare also publishes product-specific MCP servers. This plugin intentionally bundles only the main `cloudflare` server.
-
-## Resources
-
-- [Cloudflare Agents Documentation](https://developers.cloudflare.com/agents/)
-- [Cloudflare MCP Guide](https://developers.cloudflare.com/agents/model-context-protocol/)
-- [Agents SDK Repository](https://github.com/cloudflare/agents)
-- [Agents Starter Template](https://github.com/cloudflare/agents-starter)
