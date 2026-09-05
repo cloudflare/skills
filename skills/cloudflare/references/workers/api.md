@@ -54,6 +54,8 @@ const key = env.API_KEY;
 
 ## Cache API
 
+Prefer [Workers Cache](https://developers.cloudflare.com/workers/cache/) for eligible HTTP response caching. Use the [Cache API](https://developers.cloudflare.com/workers/runtime-apis/cache/) below when explicit in-Worker cache operations are needed.
+
 ```typescript
 const cache = caches.default;
 let response = await cache.match(request);
