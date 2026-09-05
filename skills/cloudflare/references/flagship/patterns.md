@@ -205,11 +205,11 @@ curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
   "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/flagship/apps/$FLAGSHIP_APP_ID/flags?limit=50" | jq .
 ```
 
-If `nextCursor` is non-null, fetch the next page:
+If `result_info.cursor` is non-null, fetch the next page:
 
 ```bash
 curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
-  "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/flagship/apps/$FLAGSHIP_APP_ID/flags?limit=50&cursor=<nextCursor>" | jq .
+  "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/flagship/apps/$FLAGSHIP_APP_ID/flags?limit=50&cursor=<cursor>" | jq .
 ```
 
 ### Update a Flag (Full Replace)
@@ -219,7 +219,7 @@ Updates use PUT with the full `FlagDefinition`. Always GET first, modify, then P
 ```bash
 # 1. Read current flag
 FLAG=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
-  "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/flagship/apps/$FLAGSHIP_APP_ID/flags/new-feature" | jq '.data')
+  "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/flagship/apps/$FLAGSHIP_APP_ID/flags/new-feature" | jq '.result')
 
 # 2. Modify (e.g., enable the flag)
 UPDATED=$(echo "$FLAG" | jq '.enabled = true')
@@ -239,7 +239,7 @@ Read-modify-write to set `enabled: true`:
 ```bash
 BASE="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/flagship/apps/$FLAGSHIP_APP_ID/flags"
 
-FLAG=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "$BASE/new-feature" | jq '.data')
+FLAG=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "$BASE/new-feature" | jq '.result')
 UPDATED=$(echo "$FLAG" | jq '.enabled = true')
 echo "$UPDATED" | curl -s -X PUT \
   -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
@@ -254,7 +254,7 @@ Same pattern, set `enabled: false`. The flag immediately returns its default var
 ```bash
 BASE="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/flagship/apps/$FLAGSHIP_APP_ID/flags"
 
-FLAG=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "$BASE/new-feature" | jq '.data')
+FLAG=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "$BASE/new-feature" | jq '.result')
 UPDATED=$(echo "$FLAG" | jq '.enabled = false')
 echo "$UPDATED" | curl -s -X PUT \
   -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
@@ -269,7 +269,7 @@ Append a rule to the existing rules array. Pick a priority that doesn't collide 
 ```bash
 BASE="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/flagship/apps/$FLAGSHIP_APP_ID/flags"
 
-FLAG=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "$BASE/new-feature" | jq '.data')
+FLAG=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "$BASE/new-feature" | jq '.result')
 UPDATED=$(echo "$FLAG" | jq '.rules += [{
   "priority": 2,
   "conditions": [{ "attribute": "plan", "operator": "equals", "value": "enterprise" }],
@@ -288,7 +288,7 @@ Update the rollout percentage on an existing rule (e.g., rule at index 0):
 ```bash
 BASE="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/flagship/apps/$FLAGSHIP_APP_ID/flags"
 
-FLAG=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "$BASE/gradual-rollout" | jq '.data')
+FLAG=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "$BASE/gradual-rollout" | jq '.result')
 UPDATED=$(echo "$FLAG" | jq '.rules[0].rollout.percentage = 50')
 echo "$UPDATED" | curl -s -X PUT \
   -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
@@ -301,7 +301,7 @@ echo "$UPDATED" | curl -s -X PUT \
 ```bash
 BASE="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/flagship/apps/$FLAGSHIP_APP_ID/flags"
 
-FLAG=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "$BASE/new-feature" | jq '.data')
+FLAG=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "$BASE/new-feature" | jq '.result')
 UPDATED=$(echo "$FLAG" | jq '.default_variation = "on"')
 echo "$UPDATED" | curl -s -X PUT \
   -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
@@ -314,7 +314,7 @@ echo "$UPDATED" | curl -s -X PUT \
 ```bash
 BASE="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/flagship/apps/$FLAGSHIP_APP_ID/flags"
 
-FLAG=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "$BASE/checkout-flow" | jq '.data')
+FLAG=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "$BASE/checkout-flow" | jq '.result')
 UPDATED=$(echo "$FLAG" | jq '.variations["treatment-c"] = "minimal"')
 echo "$UPDATED" | curl -s -X PUT \
   -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
@@ -329,7 +329,7 @@ Remove a rule by filtering on priority:
 ```bash
 BASE="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/flagship/apps/$FLAGSHIP_APP_ID/flags"
 
-FLAG=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "$BASE/new-feature" | jq '.data')
+FLAG=$(curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "$BASE/new-feature" | jq '.result')
 UPDATED=$(echo "$FLAG" | jq '.rules = [.rules[] | select(.priority != 2)]')
 echo "$UPDATED" | curl -s -X PUT \
   -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
@@ -404,6 +404,51 @@ Gradually roll out to 10% of users:
   }
 }
 ```
+
+### A/B/n (Multi-Variant) Testing
+
+To split traffic across N variants, create one rule per variant with **cumulative** rollout percentages. Flagship evaluates rules in priority order. If a rule's conditions match but the user misses that rule's rollout percentage, evaluation continues to the next rule. Use the same stable rollout attribute on every rule so each user is compared against the same bucket as the thresholds increase.
+
+The example uses `conditions: []` because the rules are intended to match every context. For sticky user assignment, callers must still pass the configured bucketing attribute (`targetingKey` here); otherwise Flagship uses a random bucket per request.
+
+For example, to split traffic 30% / 40% / 30% across variants A, B, and C:
+
+| Variant | Share | Cumulative threshold |
+|---------|-------|----------------------|
+| A       | 30%   | 30                   |
+| B       | 40%   | 70                   |
+| C       | 30%   | 100                  |
+
+```json
+"rules": [
+  {
+    "priority": 1,
+    "conditions": [],
+    "serve_variation": "variant-a",
+    "rollout": { "percentage": 30, "attribute": "targetingKey" }
+  },
+  {
+    "priority": 2,
+    "conditions": [],
+    "serve_variation": "variant-b",
+    "rollout": { "percentage": 70, "attribute": "targetingKey" }
+  },
+  {
+    "priority": 3,
+    "conditions": [],
+    "serve_variation": "variant-c",
+    "rollout": { "percentage": 100, "attribute": "targetingKey" }
+  }
+]
+```
+
+Key points:
+- Rules are evaluated lowest-priority-number first. A user who falls into rule 1's 0-30% bucket gets `variant-a` and is not evaluated further.
+- Rule 2's 70% threshold covers the next 40% of users (31-70%).
+- Rule 3's 100% threshold catches the remaining 30% (71-100%).
+- Always set the last rule to `100` so every context with the bucketing attribute is assigned a variant.
+- For sticky A/B/n assignment, pass a stable `targetingKey` or configured bucketing attribute. Without it, rollout assignment is random per request, which can be useful for request-level sampling but is usually wrong for user experiments.
+- A percentage rollout match reports reason `SPLIT` in evaluation details.
 
 ### Progressive Rollout Workflow
 

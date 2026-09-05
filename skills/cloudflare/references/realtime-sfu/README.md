@@ -62,4 +62,4 @@ Get `CALLS_APP_ID` and `CALLS_APP_SECRET` from dashboard, then see configuration
 - [Orange Source](https://github.com/cloudflare/orange)
 - [Calls Examples](https://github.com/cloudflare/calls-examples)
 - [API Reference](https://developers.cloudflare.com/api/resources/calls/)
-- [RealtimeKit Docs](https://developers.cloudflare.com/workers-ai/realtimekit/)
+- [RealtimeKit Docs](https://developers.cloudflare.com/realtime/realtimekit/)

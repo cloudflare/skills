@@ -84,7 +84,7 @@ GROUP BY blob1 ORDER BY requests DESC LIMIT 20
 
 -- Error rate
 SELECT blob1, COUNT(*) AS total,
-  SUM(CASE WHEN blob3 LIKE '5%' THEN 1 ELSE 0 END) AS errors
+  SUM(if(blob3 LIKE '5%', 1, 0)) AS errors
 FROM api_requests WHERE timestamp >= NOW() - INTERVAL '1' HOUR
 GROUP BY blob1 HAVING total > 50
 

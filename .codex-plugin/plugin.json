@@ -1,0 +1,50 @@
+{
+  "name": "cloudflare",
+  "version": "1.0.0",
+  "description": "Build, test, and deploy applications on Cloudflare with platform guidance Skills and the Cloudflare MCP server.",
+  "author": {
+    "name": "Cloudflare",
+    "email": "support@cloudflare.com",
+    "url": "https://www.cloudflare.com/products/workers/"
+  },
+  "homepage": "https://developers.cloudflare.com/",
+  "repository": "https://github.com/cloudflare/skills",
+  "license": "Apache-2.0",
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "durable-objects",
+    "agents",
+    "mcp",
+    "wrangler",
+    "serverless",
+    "compute",
+    "storage",
+    "applications"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Cloudflare",
+    "shortDescription": "Cloudflare platform and MCP",
+    "longDescription": "Build, review, and operate on Cloudflare with guidance for Workers, Durable Objects, Agents SDK, Cloudflare One, Wrangler, web performance, Turnstile, and more, plus the Cloudflare Code Mode MCP server for live account, API, and documentation workflows.",
+    "developerName": "Cloudflare",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://developers.cloudflare.com/",
+    "privacyPolicyURL": "https://www.cloudflare.com/privacypolicy/",
+    "termsOfServiceURL": "https://www.cloudflare.com/website-terms/",
+    "defaultPrompt": [
+      "Build a Cloudflare Worker or agent with the right SDK and Wrangler setup",
+      "Review this Cloudflare project for production Workers best practices",
+      "Use Cloudflare skills and MCP to inspect or deploy this project"
+    ],
+    "brandColor": "#F6821F",
+    "composerIcon": "./logo.svg",
+    "logo": "./logo.svg",
+    "screenshots": []
+  }
+}

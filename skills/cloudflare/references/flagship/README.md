@@ -42,6 +42,8 @@ Feature flag service for controlling feature visibility without redeploying code
 | Design targeting rules & rollouts | `patterns.md` → `gotchas.md` |
 | Debug flag evaluation issues | `gotchas.md` → `api.md` |
 
+REST API note: management endpoints use Cloudflare v4 envelopes (`result`, `result_info`, `errors`) and snake_case fields. The `/evaluate` endpoint is the exception: it is not enveloped and returns OpenFeature-style camelCase.
+
 ## In This Reference
 
 - **[api.md](./api.md)** — REST API endpoints, binding methods, OpenFeature SDK, schemas
@@ -51,6 +53,7 @@ Feature flag service for controlling feature visibility without redeploying code
 
 ## See Also
 
-- **[../workers/](../workers/)** — Workers runtime (Flagship runs inside Workers)
+- **[Flagship API reference](https://developers.cloudflare.com/api/resources/flagship/)** — Source of truth for REST API paths, envelopes, and response fields
+- **[Workers docs](https://developers.cloudflare.com/workers/)** — Workers runtime (Flagship runs inside Workers)
 - **[../kv/](../kv/)** — KV storage (Flagship uses KV infrastructure for flag delivery)
-- **[../wrangler/](../wrangler/)** — Wrangler CLI for deployment and config
+- **[Wrangler docs](https://developers.cloudflare.com/workers/wrangler/)** — Wrangler CLI for deployment and config

@@ -2,6 +2,8 @@
 
 ## Multi-Tier Caching
 
+For eligible HTTP response caching, prefer [Workers Cache](https://developers.cloudflare.com/workers/cache/). Use the KV caching pattern below when you need a persistent application-data cache and can accept [KV's eventual consistency](https://developers.cloudflare.com/kv/concepts/how-kv-works/).
+
 ```typescript
 // Memory → KV → Origin (3-tier cache)
 const memoryCache = new Map<string, { data: any; expires: number }>();

@@ -1,23 +1,22 @@
 # DO Storage Testing
 
-Testing Durable Objects with storage using `vitest-pool-workers`.
+Testing Durable Objects with storage using `@cloudflare/vitest-plugin`.
 
 ## Setup
 
+These examples assume an ESM project (`"type": "module"` in `package.json`). See the [current Vitest setup](https://developers.cloudflare.com/workers/testing/vitest-integration/write-your-first-test/) for prerequisites and migration guidance.
+
 **vitest.config.ts:**
 ```typescript
-import { defineWorkersConfig } from "@cloudflare/vitest-pool-workers/config";
+import { cloudflareTest } from "@cloudflare/vitest-plugin";
+import { defineConfig } from "vitest/config";
 
-export default defineWorkersConfig({
-  test: {
-    poolOptions: {
-      workers: { wrangler: { configPath: "./wrangler.toml" } }
-    }
-  }
+export default defineConfig({
+  plugins: [cloudflareTest({ wrangler: { configPath: "./wrangler.toml" } })],
 });
 ```
 
-**package.json:** Add `@cloudflare/vitest-pool-workers` and `vitest` to devDependencies
+**package.json:** Add `@cloudflare/vitest-plugin` and `vitest@^4.1.0` to devDependencies
 
 ## Basic Testing
 

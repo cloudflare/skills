@@ -136,6 +136,8 @@ OpenFeature.addHooks(new LoggingHook(), new TelemetryHook());
 
 ## REST API (Flag Management)
 
+Source of truth: [Cloudflare Flagship API reference](https://developers.cloudflare.com/api/resources/flagship/). Use it to verify REST paths, envelopes, response fields, and permission wording before relying on examples here.
+
 ### FIRST: Check Prerequisites
 
 Before making any REST API calls (create, read, update, delete, toggle flags), verify these environment variables are set:
@@ -162,14 +164,23 @@ Base URL: `https://api.cloudflare.com/client/v4/accounts/{account_id}/flagship`
 
 Authentication: `Authorization: Bearer <API_TOKEN>`
 
-Response envelope:
+Management endpoints use the Cloudflare v4 envelope. On success, the payload is under `result`; errors are an array under `errors`.
 
-```json
+```jsonc
 // Success
-{ "success": true, "data": <T> }
+{ "success": true, "result": <T>, "errors": [], "messages": [] }
+
+// Paginated success
+{
+  "success": true,
+  "result": [<T>],
+  "result_info": { "count": 50, "cursor": "next-cursor-or-null" },
+  "errors": [],
+  "messages": []
+}
 
 // Error
-{ "success": false, "error": "message" }
+{ "success": false, "result": null, "errors": [{ "message": "message" }], "messages": [] }
 ```
 
 ### App Endpoints
@@ -201,16 +212,63 @@ App name constraints: alphanumeric + hyphens + underscores, 1-64 chars.
 GET /apps/{app_id}/evaluate?flagKey=<key>&<context-attrs>
 ```
 
-Requires an API token with `flagship:evaluate` permission. Context attributes passed as query params. Returns:
+Requires an API token with the `com.cloudflare.account.flagship.evaluate` permission. Context attributes passed as query params. This endpoint is not wrapped in the management envelope; the SDK contract returns OpenFeature-style camelCase:
 
 ```json
 {
   "flagKey": "my-flag",
   "value": true,
   "variant": "on",
-  "reason": "TARGETING_MATCH"
+  "reason": "SPLIT"
 }
 ```
+
+Reasons: `TARGETING_MATCH`, `SPLIT`, `DEFAULT`, `DISABLED`.
+
+### Management Response Payloads
+
+Management endpoints are wrapped in the Cloudflare v4 envelope shown above. Common `.result` payloads:
+
+**App result**
+
+```json
+{
+  "id": "app-uuid",
+  "name": "my-app",
+  "created_at": "2026-06-09T12:00:00.000Z",
+  "updated_at": "2026-06-09T12:00:00.000Z",
+  "updated_by": "user@example.com"
+}
+```
+
+**Flag result**
+
+```json
+{
+  "key": "my-flag",
+  "type": "boolean",
+  "default_variation": "off",
+  "variations": { "on": true, "off": false },
+  "rules": [],
+  "description": "Enables the new feature",
+  "enabled": true,
+  "updated_at": "2026-06-09T12:00:00.000Z",
+  "updated_by": "user@example.com"
+}
+```
+
+**Changelog entry**
+
+```json
+{
+  "flag_key": "my-flag",
+  "event": "update",
+  "after": { "key": "my-flag", "default_variation": "off", "variations": { "on": true, "off": false }, "rules": [], "enabled": true },
+  "diff": { "enabled": { "from": false, "to": true } }
+}
+```
+
+Changelog entries include the full flag state after the change. `update` entries also include `diff`.
 
 ---
 
@@ -325,7 +383,7 @@ Nesting supported up to 6 levels deep.
 |-------------|---------|
 | 200 | Success (read/update/delete) |
 | 201 | Created (create) |
-| 400 | Validation error (check `error` field) |
+| 400 | Validation error (check `errors[].message`) |
 | 401 | Invalid or missing token |
 | 404 | Flag or app not found |
 | 409 | Flag key already exists (create) |

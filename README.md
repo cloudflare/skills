@@ -6,6 +6,19 @@ A collection of [Agent Skills](https://www.anthropic.com/engineering/equipping-a
 
 These skills work with any agent that supports the Agent Skills standard, including Claude Code, Cursor, Droid, OpenCode, OpenAI Codex, and Pi.
 
+Use the native plugin where supported to install both Cloudflare guidance and the Cloudflare MCP server. Agents that only support the Agent Skills standard can install the skills separately.
+
+### Codex
+
+Install from the Cloudflare plugin marketplace:
+
+```sh
+codex plugin marketplace add cloudflare/skills
+codex plugin add cloudflare@cloudflare
+```
+
+Start a new Codex session after installation.
+
 ### Claude Code
 
 Install using the [plugin marketplace](https://code.claude.com/docs/en/discover-plugins#add-from-github):
@@ -14,6 +27,16 @@ Install using the [plugin marketplace](https://code.claude.com/docs/en/discover-
 /plugin marketplace add cloudflare/skills
 /plugin install cloudflare@cloudflare
 ```
+
+### VS Code / GitHub Copilot
+
+Install directly from this repository:
+
+1. Enable `chat.plugins.enabled` in VS Code settings.
+2. Open the Command Palette and run **Chat: Install Plugin From Source**.
+3. Enter `https://github.com/cloudflare/skills`.
+
+For marketplace installation or troubleshooting, see [VS Code's agent plugin documentation](https://code.visualstudio.com/docs/agent-customization/agent-plugins).
 
 ### Cursor
 
@@ -64,26 +87,33 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 
 | Skill | Useful for |
 |-------|------------|
-| cloudflare | Comprehensive platform skill covering Workers, Pages, storage (KV, D1, R2), AI (Workers AI, Vectorize, Agents SDK), networking (Tunnel, Spectrum), security (WAF, DDoS), and IaC (Terraform, Pulumi) |
+| cloudflare | Helps agents discover which Cloudflare products fit their needs, then find the right skills and docs |
 | agents-sdk | Building stateful AI agents with state, scheduling, RPC, MCP servers, email, and streaming chat |
 | durable-objects | Stateful coordination (chat rooms, games, booking), RPC, SQLite, alarms, WebSockets |
-| sandbox-sdk | Secure code execution for AI code execution, code interpreters, CI/CD systems, and interactive dev environments |
+| sandbox-next | Sandbox on `@cloudflare/sandbox@next` (1.0 preview); recommended for new projects |
+| sandbox-stable | Sandbox on the current stable `@cloudflare/sandbox` package |
+| sandbox-migrate-to-next | Port a stable Sandbox app to `@cloudflare/sandbox@next` |
 | wrangler | Deploying and managing Workers, KV, R2, D1, Vectorize, Queues, Workflows |
 | web-perf | Auditing Core Web Vitals (FCP, LCP, TBT, CLS), render-blocking resources, network chains |
-| building-mcp-server-on-cloudflare | Building remote MCP servers with tools, OAuth, and deployment |
-| building-ai-agent-on-cloudflare | Building AI agents with state, WebSockets, and tool integration |
+
+## Cloudflare One
+
+Short, retrieval-first skills for [Cloudflare One](https://developers.cloudflare.com/cloudflare-one/) work.
+
+| Skill | Useful for |
+|-------|------------|
+| cloudflare-one | Designing, configuring, troubleshooting, or reviewing Cloudflare One deployments across Access, Gateway, WARP, Tunnel, Magic WAN, DLP, CASB, posture, and identity |
+| cloudflare-one-migrations | Migration assessments, policy mapping, rollout plans, and gap analysis for Zscaler, Palo Alto, legacy VPN/SWG, and SASE migrations to Cloudflare One |
 
 ## MCP Servers
 
-This plugin includes [Cloudflare's remote MCP servers](https://developers.cloudflare.com/agents/model-context-protocol/mcp-servers-for-cloudflare/) for enhanced functionality:
+This plugin includes Cloudflare's main [remote MCP server](https://developers.cloudflare.com/agents/model-context-protocol/cloudflare/servers-for-cloudflare/) for enhanced functionality:
 
 | Server | Purpose |
 |--------|---------|
-| cloudflare-api | Manage Cloudflare account resources, zones, and settings |
-| cloudflare-docs | Up-to-date Cloudflare documentation and reference |
-| cloudflare-bindings | Build Workers applications with storage, AI, and compute primitives |
-| cloudflare-builds | Manage and get insights into Workers builds |
-| cloudflare-observability | Debug and analyze application logs and analytics |
+| cloudflare | Access the Cloudflare API and current developer documentation through the Code Mode MCP server |
+
+Cloudflare also publishes product-specific MCP servers. This plugin intentionally bundles only the main `cloudflare` server.
 
 ## Resources
 
