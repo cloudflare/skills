@@ -96,5 +96,5 @@ const accountId = new pulumi.Config("cloudflare").require("accountId");
 
 ## See Also
 - [terraform](../terraform/) - Alternative IaC for Cloudflare
-- [wrangler](../wrangler/) - CLI deployment alternative
-- [workers](../workers/) - Worker runtime documentation
+- [wrangler](https://developers.cloudflare.com/workers/wrangler/) - CLI deployment alternative
+- [workers](https://developers.cloudflare.com/workers/) - Worker runtime documentation
