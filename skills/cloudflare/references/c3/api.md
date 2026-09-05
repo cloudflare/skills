@@ -50,18 +50,17 @@ CF_TELEMETRY_DISABLED=1     # Disable telemetry
 
 ## Examples
 
+For framework apps, follow [Framework Setup](README.md#framework-setup).
+
 ```bash
 # TypeScript Worker
 npm create cloudflare@latest my-api -- --type=hello-world --lang=ts --no-deploy
-
-# Next.js on Pages
-npm create cloudflare@latest my-app -- --type=web-app --framework=next --platform=pages --ts
 
 # Astro blog
 npm create cloudflare@latest my-blog -- --type=web-app --framework=astro --ts --deploy
 
 # CI: non-interactive
-npm create cloudflare@latest my-app -- --type=web-app --framework=next --ts --no-git --no-deploy
+npm create cloudflare@latest my-api -- --type=hello-world --lang=ts --no-git --no-deploy
 
 # GitHub template
 npm create cloudflare@latest -- --template=cloudflare/templates/worker-openapi
