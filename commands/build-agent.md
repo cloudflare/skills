@@ -38,7 +38,7 @@ When this command is invoked:
 3. **Implement agent class**: extend `Agent` or `AIChatAgent` depending on use case
 4. **Wire routing**: `routeAgentRequest` in the default export
 5. **Build client**: `useAgent` + `useAgentChat` React hooks
-6. **Deploy**: `npx wrangler deploy`
+6. **Deploy**: Follow the [Wrangler skill](../skills/wrangler/SKILL.md) for the project's build workflow, deployment target, and validation; see [Agents deployment](https://developers.cloudflare.com/agents/getting-started/quick-start/#deploy-to-cloudflare).
 
 ## Key Decision: Agent vs AIChatAgent vs Think
 
