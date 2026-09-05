@@ -60,3 +60,5 @@ Expected exit code: 0. File-oriented rules targets install the hosted `prompt.md
 The consuming test harness must pass the widget secret through standard input. It must not export it or place it in a command argument.
 
 (`run-all.sh` is not bundled with this skill; the cases above are intended to be wired into the consuming agent's own test harness, or run by hand after a deploy.)
+
+Offline helper checks are available in `test_helpers.py`: run `python -m unittest discover -s skills/turnstile-spin/tests -v` from the repository root. They use synthetic responses and never contact Cloudflare. The live cases above remain separate.
