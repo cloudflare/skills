@@ -1,6 +1,6 @@
 ---
 name: agents-sdk
-description: Build AI agents on Cloudflare Workers using the Agents SDK. Load when creating stateful agents, durable workflows, real-time WebSocket apps, scheduled tasks, MCP servers, chat applications, voice agents, or browser automation. Covers Agent class, state management, callable RPC, Workflows, durable execution, queues, retries, observability, and React hooks. Biases towards retrieval from Cloudflare docs over pre-trained knowledge.
+description: Build, debug, or review Cloudflare Agents SDK applications using the agents package.
 ---
 
 # Cloudflare Agents SDK
@@ -25,27 +25,27 @@ Cloudflare docs: https://developers.cloudflare.com/agents/
 | HTTP/WebSockets | [WebSockets](https://developers.cloudflare.com/agents/api-reference/websockets/) | Lifecycle hooks, hibernation |
 | Chat agents | [Chat agents](https://developers.cloudflare.com/agents/api-reference/chat-agents/) | `AIChatAgent`, streaming, tools, persistence |
 | Client SDK | [Client SDK](https://developers.cloudflare.com/agents/api-reference/client-sdk/) | `useAgent`, `useAgentChat`, React hooks |
-| Client tools | [Client tools](https://developers.cloudflare.com/agents/api-reference/client-tools/) | Client-side tools, `autoContinueAfterToolResult` |
-| Server-driven messages | [Trigger patterns](https://developers.cloudflare.com/agents/api-reference/trigger-patterns/) | `saveMessages`, `waitUntilStable`, server-initiated turns |
-| Resumable streaming | [Resumable streaming](https://developers.cloudflare.com/agents/api-reference/resumable-streaming/) | Stream recovery on disconnect |
+| Client tools | [Client tools](https://developers.cloudflare.com/agents/harnesses/think/client-tools/) | Client-side tools, `autoContinueAfterToolResult` |
+| Server-driven messages | [Autonomous responses](https://developers.cloudflare.com/agents/communication-channels/chat/autonomous-responses/) | `saveMessages`, `waitUntilStable`, server-initiated turns |
+| Resumable streaming | [Chat agents](https://developers.cloudflare.com/agents/communication-channels/chat/chat-agents/#resumable-streaming) | Stream recovery on disconnect |
 | Email | [Email](https://developers.cloudflare.com/agents/api-reference/email/) | Email routing, secure reply resolver |
 | MCP client | [MCP client](https://developers.cloudflare.com/agents/api-reference/mcp-client-api/) | Connecting to MCP servers |
 | MCP server | [MCP server](https://developers.cloudflare.com/agents/api-reference/mcp-agent-api/) | Building MCP servers with `McpAgent` |
-| MCP transports | [MCP transports](https://developers.cloudflare.com/agents/api-reference/mcp-transports/) | Streamable HTTP, SSE, RPC transport options |
-| Securing MCP servers | [Securing MCP](https://developers.cloudflare.com/agents/api-reference/securing-mcp-servers/) | OAuth, proxy MCP, hardening |
+| MCP transports | [MCP transports](https://developers.cloudflare.com/agents/model-context-protocol/protocol/transport/) | Streamable HTTP, SSE, RPC transport options |
+| Securing MCP servers | [Securing MCP](https://developers.cloudflare.com/agents/model-context-protocol/guides/securing-mcp-server/) | OAuth, proxy MCP, hardening |
 | Human-in-the-loop | [Human-in-the-loop](https://developers.cloudflare.com/agents/concepts/human-in-the-loop/) | Approval flows, `needsApproval`, workflows |
 | Durable execution | [Durable execution](https://developers.cloudflare.com/agents/api-reference/durable-execution/) | `runFiber()`, `stash()`, surviving DO eviction |
 | Queue | [Queue](https://developers.cloudflare.com/agents/api-reference/queue-tasks/) | Built-in FIFO queue, `queue()` |
 | Retries | [Retries](https://developers.cloudflare.com/agents/api-reference/retries/) | `this.retry()`, backoff/jitter |
 | Observability | [Observability](https://developers.cloudflare.com/agents/api-reference/observability/) | Diagnostics-channel events |
-| Push notifications | [Push notifications](https://developers.cloudflare.com/agents/api-reference/push-notifications/) | Web Push + VAPID from agents |
-| Webhooks | [Webhooks](https://developers.cloudflare.com/agents/api-reference/webhooks/) | Receiving external webhooks |
-| Cross-domain auth | [Cross-domain auth](https://developers.cloudflare.com/agents/api-reference/cross-domain-authentication/) | WebSocket auth, tokens, CORS |
+| Push notifications | [Push notifications](https://developers.cloudflare.com/agents/communication-channels/webhooks/push-notifications/) | Web Push + VAPID from agents |
+| Webhooks | [Webhooks](https://developers.cloudflare.com/agents/communication-channels/webhooks/) | Receiving external webhooks |
+| Cross-domain auth | [Cross-domain auth](https://developers.cloudflare.com/agents/runtime/operations/cross-domain-authentication/) | WebSocket auth, tokens, CORS |
 | Readonly connections | [Readonly](https://developers.cloudflare.com/agents/api-reference/readonly-connections/) | `shouldConnectionBeReadonly` |
 | Voice | [Voice](https://developers.cloudflare.com/agents/api-reference/voice/) | Experimental STT/TTS, `withVoice` |
 | Browse the web | [Browser tools](https://developers.cloudflare.com/agents/api-reference/browse-the-web/) | Experimental CDP browser automation |
 | Think | [Think](https://developers.cloudflare.com/agents/api-reference/think/) | Experimental higher-level chat agent class |
-| Migrations | [AI SDK v5](https://developers.cloudflare.com/agents/guides/migration-to-ai-sdk-v5/), [AI SDK v6](https://developers.cloudflare.com/agents/guides/migration-to-ai-sdk-v6/) | Upgrading `@cloudflare/ai-chat` |
+| Migrations | [AI SDK v5](https://github.com/cloudflare/agents/blob/main/docs/agents/migration-to-ai-sdk-v5.md), [AI SDK v6](https://github.com/cloudflare/agents/blob/main/docs/agents/migration-to-ai-sdk-v6.md) | Upgrading `@cloudflare/ai-chat` |
 
 ## Capabilities
 

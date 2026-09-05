@@ -1,6 +1,6 @@
 ---
 name: workers-best-practices
-description: Reviews and authors Cloudflare Workers code against production best practices. Load when writing new Workers, reviewing Worker code, configuring wrangler.jsonc, or checking for common Workers anti-patterns (streaming, floating promises, global state, secrets, bindings, observability). Retrieves current documentation when affected APIs, configuration, runtime behavior, or limits are uncertain.
+description: Write or review Cloudflare Workers runtime code for production reliability. Use wrangler for CLI commands and deployment configuration.
 ---
 
 Use the project's installed versions, generated types, and Wrangler compatibility settings as the baseline for existing code. Retrieve current Cloudflare sources when the affected API, configuration, runtime behavior, or limit needs verification.
