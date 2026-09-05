@@ -1,2 +1,6 @@
 pr.md
 TODO.md
+
+__pycache__/
+*.py[cod]
+.venv/
