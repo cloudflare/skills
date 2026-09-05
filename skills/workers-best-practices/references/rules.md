@@ -271,15 +271,15 @@ async fetch(request: Request, env: Env): Promise<Response> {
 
 ### Enable Workers Logs and Traces
 
-Enable `observability` in wrangler config before deploying to production. Use `head_sampling_rate` to control volume and cost. Use structured JSON logging — `console.log(JSON.stringify({...}))` — so logs are searchable. Use `console.error` for errors (appears at error severity in the dashboard).
+Enable Workers Logs and Traces in Wrangler config before deploying to production. Set `observability.enabled` and `observability.traces.enabled` to `true`; the top-level setting alone does not enable traces. Use `head_sampling_rate` to control volume and cost. Use structured JSON logging — `console.log(JSON.stringify({...}))` — so logs are searchable. Use `console.error` for errors (appears at error severity in the dashboard).
 
-**Check**: `observability.enabled` is `true` in config. Logging uses structured JSON, not string concatenation.
+**Check**: logs and traces are enabled in the target deployment environment, with neither disabled by an environment override. Check `observability.enabled`, `observability.logs.enabled`, and `observability.traces.enabled`, accounting for their defaults. Logging uses structured JSON, not string concatenation.
 
 ```jsonc
 {
   "observability": {
     "enabled": true,
-    "logs": { "head_sampling_rate": 1 },
+    "logs": { "enabled": true, "head_sampling_rate": 1 },
     "traces": { "enabled": true, "head_sampling_rate": 0.01 }
   }
 }
@@ -299,7 +299,7 @@ Anti-pattern:
 console.log("Got a request to " + url.pathname);
 ```
 
-**Retrieve**: `/workers/observability/logs/workers-logs/` and `/workers/observability/traces/` for current config options.
+**Retrieve**: [Workers Logs](https://developers.cloudflare.com/workers/observability/logs/workers-logs/) and [Traces](https://developers.cloudflare.com/workers/observability/traces/) for current config options.
 
 ---
 

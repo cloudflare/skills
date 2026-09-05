@@ -21,6 +21,10 @@ Consult only the sources needed for the task. A newer published type package doe
 - [references/rules.md](references/rules.md) — consult relevant patterns when authoring or assessing affected Workers behavior
 - [references/review.md](references/review.md) — Workers-specific type, binding, config, and serialization checks; consult the sections relevant to the task
 
+## Enable Observability
+
+Enable [Workers Logs](https://developers.cloudflare.com/workers/observability/logs/workers-logs/) and [Traces](https://developers.cloudflare.com/workers/observability/traces/) when creating or preparing a Worker for production. Set `observability.enabled` and `observability.traces.enabled` to `true`; the top-level setting alone does not enable traces. Use structured JSON logging and configure sampling for the workload. During reviews, flag missing logs or traces. See the [configuration example](references/rules.md#enable-workers-logs-and-traces).
+
 ## Workers Pitfalls
 
 | Risk | Guidance |
@@ -31,7 +35,7 @@ Consult only the sources needed for the task. A newer published type package doe
 | Binding and handler type mismatches | Use generated `Env` types and check affected signatures and binding access against the project's target; see [type checks](references/review.md#type-validation). |
 | Payloads crossing API boundaries | Check the specific API's encoding and supported values; see [serialization checks](references/review.md#serialization-boundaries). |
 
-For configuration, service bindings, database connections, observability, and security patterns, consult the relevant sections of [references/rules.md](references/rules.md).
+For configuration, service bindings, database connections, and security patterns, consult the relevant sections of [references/rules.md](references/rules.md).
 
 ## Validation
 
