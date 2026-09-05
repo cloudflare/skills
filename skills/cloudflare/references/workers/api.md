@@ -52,19 +52,9 @@ await env.MY_QUEUE.send({ timestamp: Date.now() });
 const key = env.API_KEY;
 ```
 
-## Cache API
+## Caching
 
-```typescript
-const cache = caches.default;
-let response = await cache.match(request);
-
-if (!response) {
-  response = await fetch(request);
-  response = new Response(response.body, response);
-  response.headers.set('Cache-Control', 'max-age=3600');
-  ctx.waitUntil(cache.put(request, response.clone()));  // Clone before caching
-}
-```
+Prefer [Workers Cache](https://developers.cloudflare.com/workers/cache/). Its [advanced patterns](https://developers.cloudflare.com/workers/cache/examples/) cover cached inner entrypoints, authenticated responses, and invalidation on writes; explicit cache control does not require switching to Cache API. Use the [Cache API](https://developers.cloudflare.com/workers/runtime-apis/cache/) only for a concrete requirement Workers Cache cannot meet after checking those patterns and its [limitations](https://developers.cloudflare.com/workers/cache/limitations/).
 
 ## HTMLRewriter
 

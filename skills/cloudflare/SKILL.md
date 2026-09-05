@@ -54,7 +54,7 @@ Need to run code?
 
 ```
 Need storage?
-├─ Key-value (config, sessions, cache) → kv/
+├─ Key-value (config, sessions, application data) → kv/
 ├─ Relational SQL → d1/ (SQLite) or hyperdrive/ (existing Postgres/MySQL)
 ├─ Object/file storage (S3-compatible) → r2/
 ├─ Versioned file trees (repos, build outputs, checkpoints) → artifacts/
@@ -67,6 +67,8 @@ Need storage?
 ├─ Serverless SQL analytics over Iceberg tables → r2-sql/
 └─ Persistent cache (long-term retention) → cache-reserve/
 ```
+
+Prefer [Workers Cache](https://developers.cloudflare.com/workers/cache/) for caching, including [advanced patterns](https://developers.cloudflare.com/workers/cache/examples/) using cached inner entrypoints and programmatic invalidation. Choose [Cache API](https://developers.cloudflare.com/workers/runtime-apis/cache/) or KV caching only when a concrete requirement cannot be met by Workers Cache; check its [patterns](https://developers.cloudflare.com/workers/cache/examples/) and [limitations](https://developers.cloudflare.com/workers/cache/limitations/) first.
 
 ### "I need AI/ML"
 
