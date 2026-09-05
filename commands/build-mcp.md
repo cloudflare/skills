@@ -1,5 +1,5 @@
 ---
-description: Build a remote MCP server on Cloudflare using McpAgent
+description: Build a remote MCP server on Cloudflare using the Agents SDK handler API
 argument-hint: [mcp-description]
 allowed-tools: [Read, Glob, Grep, Bash, Write, Edit, WebFetch]
 ---
@@ -17,55 +17,20 @@ When this command is invoked:
 1. Read the skill file at `agents-sdk/SKILL.md` for core SDK guidance
 2. Read `agents-sdk/references/mcp.md` for MCP client and server APIs, transports, and securing
 3. Read `agents-sdk/references/configuration.md` for wrangler setup
-4. Fetch https://developers.cloudflare.com/agents/api-reference/mcp-agent-api/ for the latest McpAgent API
+4. Fetch https://developers.cloudflare.com/agents/model-context-protocol/apis/handler-api/ for the current handler API and supported dependency versions
 5. For OAuth/security, fetch https://developers.cloudflare.com/agents/api-reference/securing-mcp-servers/
 
 ## Scaffold Steps
 
 1. **Create project**: `npx create-cloudflare@latest --template cloudflare/agents-starter` (or start fresh)
-2. **Install MCP SDK**: `npm install @modelcontextprotocol/sdk zod`
-3. **Configure wrangler.jsonc**: DO binding + `new_sqlite_classes` migration for the McpAgent class
-4. **Implement McpAgent**: extend `McpAgent`, create `McpServer`, register tools in `init()`
-5. **Serve transport**: `MyMCP.serve("/mcp", { binding: "MyMCP" })` (Streamable HTTP, recommended)
+2. **Install MCP SDK**: install `agents`, `zod`, and the exact `@modelcontextprotocol/server` version supported by the installed Agents release
+3. **Configure wrangler.jsonc**: set the Worker entrypoint and compatibility date; a stateless MCP handler needs no DO binding or migration
+4. **Implement server factory**: create a fresh SDK v2 `McpServer` and register tools inside the factory
+5. **Serve transport**: invoke `createMcpHandler(createServer)(request, env, ctx)` inside the Worker object `fetch()` export
 6. **Test**: `npx @modelcontextprotocol/inspector@latest`
 7. **Deploy**: `npx wrangler deploy`
 
-## Quick Reference
-
-```typescript
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { McpAgent } from "agents/mcp";
-import { z } from "zod";
-
-export class MyMCP extends McpAgent<Env, State, {}> {
-  server = new McpServer({ name: "my-mcp", version: "1.0.0" });
-  initialState = { counter: 0 };
-
-  async init() {
-    this.server.registerTool("my_tool", {
-      description: "Does something useful",
-      inputSchema: { query: z.string() }
-    }, async ({ query }) => ({
-      content: [{ text: `Result: ${query}`, type: "text" }]
-    }));
-  }
-}
-
-// Entry point
-export default {
-  fetch(request: Request, env: Env, ctx: ExecutionContext) {
-    return MyMCP.serve("/mcp", { binding: "MyMCP" }).fetch(request, env, ctx);
-  }
-};
-```
-
-## Transport Options
-
-| Transport | Method | Use for |
-|-----------|--------|---------|
-| Streamable HTTP | `MyMCP.serve("/mcp")` | External/public clients (recommended) |
-| SSE | `MyMCP.serveSSE("/sse")` | Legacy clients only (deprecated) |
-| RPC | `addMcpServer(name, env.Binding)` | Same-Worker internal calls |
+For the server implementation and transport guidance, use `agents-sdk/references/mcp.md`. For existing `McpAgent` servers or older pinned SDKs, follow the [migration guide](https://developers.cloudflare.com/agents/model-context-protocol/guides/migrate-to-mcp-sdk-v2/) before changing state or session behavior.
 
 ## Example Usage
 

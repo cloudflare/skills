@@ -30,7 +30,7 @@ Cloudflare docs: https://developers.cloudflare.com/agents/
 | Resumable streaming | [Chat agents](https://developers.cloudflare.com/agents/communication-channels/chat/chat-agents/#resumable-streaming) | Stream recovery on disconnect |
 | Email | [Email](https://developers.cloudflare.com/agents/api-reference/email/) | Email routing, secure reply resolver |
 | MCP client | [MCP client](https://developers.cloudflare.com/agents/api-reference/mcp-client-api/) | Connecting to MCP servers |
-| MCP server | [MCP server](https://developers.cloudflare.com/agents/api-reference/mcp-agent-api/) | Building MCP servers with `McpAgent` |
+| MCP server | [MCP server](https://developers.cloudflare.com/agents/model-context-protocol/apis/handler-api/) | Building MCP servers with `createMcpHandler` |
 | MCP transports | [MCP transports](https://developers.cloudflare.com/agents/model-context-protocol/protocol/transport/) | Streamable HTTP, SSE, RPC transport options |
 | Securing MCP servers | [Securing MCP](https://developers.cloudflare.com/agents/model-context-protocol/guides/securing-mcp-server/) | OAuth, proxy MCP, hardening |
 | Human-in-the-loop | [Human-in-the-loop](https://developers.cloudflare.com/agents/concepts/human-in-the-loop/) | Approval flows, `needsApproval`, workflows |
@@ -58,7 +58,7 @@ The Agents SDK provides:
 - **Durable execution** — `runFiber()` / `stash()` for work that survives DO eviction
 - **Queue** — Built-in FIFO queue with retries via `queue()`
 - **Retries** — `this.retry()` with exponential backoff and jitter
-- **MCP integration** — Connect to MCP servers or build your own with `McpAgent`
+- **MCP integration** — Connect to MCP servers or build your own with `createMcpHandler`
 - **Email handling** — Receive and reply to emails with secure routing
 - **Streaming chat** — `AIChatAgent` with resumable streams, message persistence, tools
 - **Server-driven messages** — `saveMessages`, `waitUntilStable` for proactive agent turns
