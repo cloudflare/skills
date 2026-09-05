@@ -17,19 +17,11 @@ Fetch the **latest** information before writing or reviewing Wrangler commands a
 | Wrangler config schema | `node_modules/wrangler/config-schema.json` | Config fields, binding shapes, allowed values |
 | Cloudflare docs | Search tool or `https://developers.cloudflare.com/workers/` | API reference, compatibility dates/flags |
 
-## FIRST: Check if Wrangler is installed, and if not, install it
+## Installation when needed
 
-Check if Wrangler is installed by running:
+For tasks that require running Wrangler, check the project's package manifest, lockfile, and scripts for its existing installation and version. Use the project's package manager and local command runner; a missing global `wrangler` command does not mean the project lacks Wrangler.
 
-```bash
-wrangler --version  # Requires v4.x+
-```
-
-If Wrangler is not installed, you should install it by running:
-
-```bash
-npm install -D wrangler@latest
-```
+Restore declared dependencies with the existing lockfile when needed. Add Wrangler as a development dependency only if the requested work requires it and it is not already declared. Preserve the project's package manager and version constraints; upgrade only when the task requires a newer version. Reviews and advice alone do not require installation.
 
 Wherever possible, you should use Wrangler instead of manually constructing API requests.
 
@@ -887,7 +879,7 @@ curl http://localhost:8787/__scheduled
 
 | Issue | Solution |
 |-------|----------|
-| `command not found: wrangler` | Install: `npm install -D wrangler` |
+| `command not found: wrangler` | Use the project-local runner; see Installation when needed before adding a dependency |
 | Auth errors | Run `wrangler login` |
 | Startup time limit exceeded | Run `wrangler check startup` to profile startup and generate CPU profiles |
 | Type errors after config change | Run `wrangler types` |

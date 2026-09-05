@@ -22,14 +22,25 @@ wrangler email sending
 
 ## Domain Setup
 
+Use this setup when configuring the requested account service. Receiving uses Email Routing; sending uses Email Sending. Code-only work and reviews do not require enabling either service. Use the project's existing Wrangler installation and package manager for the CLI examples.
+
 ### Via Dashboard
 
 1. Navigate to **Compute & AI** > **Email Service** > **Email Sending** (or **Email Routing**)
 2. Select **Onboard Domain** > choose domain > **Add records and onboard**
 
-This auto-adds SPF (TXT) and DKIM (CNAME/TXT) records. DNS usually propagates within 5-15 minutes.
+Email Sending onboarding auto-adds SPF (TXT) and DKIM (CNAME/TXT) records. Follow Email Routing's setup for its required records. DNS usually propagates within 5-15 minutes.
 
 ### Via CLI
+
+For receiving/routing setup:
+
+```bash
+npx wrangler email routing enable yourdomain.com
+npx wrangler email routing dns get yourdomain.com
+```
+
+For sending setup:
 
 ```bash
 npx wrangler email sending enable yourdomain.com
@@ -38,7 +49,7 @@ npx wrangler email sending dns get yourdomain.com   # Verify records
 
 ## Local Development
 
-Add `"remote": true` to send real emails during `wrangler dev`:
+When live sending is part of the requested test, add `"remote": true` to send real emails during `wrangler dev`:
 
 ```jsonc
 { "send_email": [{ "name": "EMAIL", "remote": true }] }

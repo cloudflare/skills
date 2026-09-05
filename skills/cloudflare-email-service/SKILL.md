@@ -20,14 +20,6 @@ Cloudflare Email Service lets you send transactional emails and route incoming e
 | Workers types | `https://www.npmjs.com/package/@cloudflare/workers-types` | Type signatures, binding shapes |
 | Agents SDK docs | Fetch `docs/email.md` from `https://github.com/cloudflare/agents/tree/main/docs` | Email handling in Agents SDK |
 
-## FIRST: Check Prerequisites
-
-Before writing any email code, verify the basics are in place:
-
-1. **Domain onboarded?** Run `npx wrangler email sending list` to see which domains have email sending enabled. If the domain isn't listed, run `npx wrangler email sending enable userdomain.com` or see [cli-and-mcp.md](references/cli-and-mcp.md) for full setup instructions.
-2. **Binding configured?** Look for `send_email` in `wrangler.jsonc` (for Workers)
-3. **postal-mime installed?** Run `npm ls postal-mime` (only needed for receiving/parsing emails)
-
 ## What Do You Need?
 
 Start here. Find your situation, then follow the link for full details.
@@ -42,9 +34,15 @@ Start here. Find your situation, then follow the link for full details.
 | **Set up Email Sending or Email Routing** | `wrangler email sending enable` / `wrangler email routing enable`, or Dashboard | [cli-and-mcp.md](references/cli-and-mcp.md) |
 | **Improve deliverability, avoid spam folders** | Authentication, content, compliance | [deliverability.md](references/deliverability.md) |
 
+## Prerequisites for the selected workflow
+
+- **Receiving/routing:** Use the routing configuration and `email()` handler guidance in [routing.md](references/routing.md). Receiving alone does not require Email Sending onboarding or a `send_email` binding. Check for a MIME parser such as `postal-mime` only if parsing is part of the implementation.
+- **Sending:** A sending domain must be onboarded before a live send. Check its account status when setting up or diagnosing sending, for example with `wrangler email sending list`. Enable a missing domain only when account setup is within the requested scope; see [cli-and-mcp.md](references/cli-and-mcp.md). For the Workers binding path, check `send_email`; for REST, use the API-token setup instead.
+- **Code-only work, reviews, or advice:** Account access and onboarding are not prerequisites. Implement the requested code and report any remaining deployment prerequisite. Add parser or other dependencies only when required, preserving the project's package manager, lockfile, and compatible versions. Use the existing project-local Wrangler runner for CLI commands.
+
 ## Quick Start — Workers Binding
 
-Add the binding to `wrangler.jsonc`, then call `env.EMAIL.send()`. The `from` domain must be onboarded via `npx wrangler email sending enable yourdomain.com`.
+For the sending binding path, add the binding to `wrangler.jsonc`, then call `env.EMAIL.send()`. Before a live send, the `from` domain must be onboarded; follow the sending prerequisites above.
 
 ```jsonc
 // wrangler.jsonc

@@ -70,21 +70,11 @@ The Agents SDK provides:
 - **Browser tools** (experimental) — CDP-powered browsing via `agents/browser`
 - **Think** (experimental) — Higher-level chat agent via `@cloudflare/think`
 
-## FIRST: Verify Installation
+## Dependencies when needed
 
-```bash
-npm ls agents  # Should show agents package
-```
+When implementing or running Agents SDK code, inspect the project's manifest and lockfile for `agents` and the packages needed by the requested feature. Restore declared dependencies with the existing lockfile if needed. Add missing dependencies only for the requested implementation, using the project's package manager and compatible version constraints; preserve existing versions unless the task requires an upgrade. Reviews and advice alone do not require installation.
 
-If not installed:
-```bash
-npm install agents
-```
-
-For chat agents:
-```bash
-npm install agents @cloudflare/ai-chat ai @ai-sdk/react
-```
+Chat implementations may also need `@cloudflare/ai-chat` and `ai`; add `@ai-sdk/react` only for a React client that uses it. Installation commands in references are examples to adapt to the project, not prerequisites for loading the skill.
 
 ## Wrangler Configuration
 
