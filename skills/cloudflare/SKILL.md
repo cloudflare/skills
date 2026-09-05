@@ -1,12 +1,6 @@
 ---
 name: cloudflare
 description: Choose Cloudflare products and look up platform references, including products without a dedicated skill. Use product-specific skills for their specialized workflows.
-references:
-  - workers
-  - pages
-  - d1
-  - durable-objects
-  - workers-ai
 ---
 
 # Cloudflare Platform Skill
