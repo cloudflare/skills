@@ -13,4 +13,4 @@ Fetch the relevant current documentation before implementing or reviewing change
 | Diagnose concurrency, limits, and billing | [Troubleshooting](gotchas.md) |
 | Verify storage behavior in the Workers runtime | [Testing](testing.md) |
 
-For object routing, WebSockets, and coordination design, see [Durable Objects](../durable-objects/README.md).
+For object routing, WebSockets, and coordination design, see the [Durable Objects skill](../../../durable-objects/SKILL.md).
