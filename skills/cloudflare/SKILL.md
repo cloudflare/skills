@@ -130,7 +130,7 @@ Prefer [Workers Cache](https://developers.cloudflare.com/workers/cache/) for cac
 - Inspect the existing project and its pinned package versions before choosing an API or configuration shape.
 - Retrieve current Cloudflare documentation when details may have changed. Use installed types and `node_modules/wrangler/config-schema.json` when they represent the project's pinned version.
 - Preserve the project's architecture and make the smallest change that satisfies the request.
-- Treat numeric limits, pricing, compatibility flags, and security requirements as time-sensitive.
+- Check current Cloudflare docs before relying on limits, prices, compatibility flags, or security requirements; these can change.
 - Validate in proportion to the change: use the project's checks, then exercise the affected behavior when practical.
 
 Cloudflare documentation: <https://developers.cloudflare.com/>
