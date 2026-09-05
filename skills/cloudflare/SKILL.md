@@ -134,6 +134,16 @@ Need analytics?
 Need IaC? → pulumi/ (Pulumi), terraform/ (Terraform), or api/ (REST API)
 ```
 
+## Cross-product guides
+
+For tasks spanning products, fetch the matching developer guide before implementation.
+
+| Task | Developer guide |
+|------|-----------------|
+| Query SQL from a Worker | [Workers + D1](https://developers.cloudflare.com/d1/get-started/) |
+| Send bucket change notifications to a queue | [R2 + Queues](https://developers.cloudflare.com/r2/buckets/event-notifications/) |
+| Generate and search text embeddings | [Workers + Workers AI + Vectorize](https://developers.cloudflare.com/vectorize/get-started/embeddings/) |
+
 ## Product Index
 
 ### Feature Flags
