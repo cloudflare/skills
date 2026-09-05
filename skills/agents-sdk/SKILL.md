@@ -23,8 +23,8 @@ Cloudflare docs: https://developers.cloudflare.com/agents/
 | Scheduling | [Schedule tasks](https://developers.cloudflare.com/agents/api-reference/schedule-tasks/) | `schedule()`, `scheduleEvery()`, cron |
 | Workflows | [Run workflows](https://developers.cloudflare.com/agents/api-reference/run-workflows/) | `AgentWorkflow`, durable multi-step tasks |
 | HTTP/WebSockets | [WebSockets](https://developers.cloudflare.com/agents/api-reference/websockets/) | Lifecycle hooks, hibernation |
-| Chat agents | [Chat agents](https://developers.cloudflare.com/agents/api-reference/chat-agents/) | `AIChatAgent`, streaming, tools, persistence |
-| Client SDK | [Client SDK](https://developers.cloudflare.com/agents/api-reference/client-sdk/) | `useAgent`, `useAgentChat`, React hooks |
+| Chat agents | [Chat agents](https://developers.cloudflare.com/agents/communication-channels/chat/chat-agents/) | `AIChatAgent`, streaming, tools, persistence |
+| Client SDK | [Client SDK](https://developers.cloudflare.com/agents/communication-channels/chat/client-sdk/) | `useAgent`, `AgentClient`, state, RPC, HTTP |
 | Client tools | [Client tools](https://developers.cloudflare.com/agents/harnesses/think/client-tools/) | Client-side tools, `autoContinueAfterToolResult` |
 | Server-driven messages | [Autonomous responses](https://developers.cloudflare.com/agents/communication-channels/chat/autonomous-responses/) | `saveMessages`, `waitUntilStable`, server-initiated turns |
 | Resumable streaming | [Chat agents](https://developers.cloudflare.com/agents/communication-channels/chat/chat-agents/#resumable-streaming) | Stream recovery on disconnect |
@@ -33,7 +33,7 @@ Cloudflare docs: https://developers.cloudflare.com/agents/
 | MCP server | [MCP server](https://developers.cloudflare.com/agents/model-context-protocol/apis/handler-api/) | Building MCP servers with `createMcpHandler` |
 | MCP transports | [MCP transports](https://developers.cloudflare.com/agents/model-context-protocol/protocol/transport/) | Streamable HTTP, SSE, RPC transport options |
 | Securing MCP servers | [Securing MCP](https://developers.cloudflare.com/agents/model-context-protocol/guides/securing-mcp-server/) | OAuth, proxy MCP, hardening |
-| Human-in-the-loop | [Human-in-the-loop](https://developers.cloudflare.com/agents/concepts/human-in-the-loop/) | Approval flows, `needsApproval`, workflows |
+| Human-in-the-loop | [Human-in-the-loop](https://developers.cloudflare.com/agents/concepts/agentic-patterns/human-in-the-loop/) | Workflow approvals, elicitation, timeout handling |
 | Durable execution | [Durable execution](https://developers.cloudflare.com/agents/api-reference/durable-execution/) | `runFiber()`, `stash()`, surviving DO eviction |
 | Queue | [Queue](https://developers.cloudflare.com/agents/api-reference/queue-tasks/) | Built-in FIFO queue, `queue()` |
 | Retries | [Retries](https://developers.cloudflare.com/agents/api-reference/retries/) | `this.retry()`, backoff/jitter |
@@ -168,26 +168,7 @@ Custom routing: use `getAgentByName(env.MyAgent, "instance-id")` then `agent.fet
 
 ## React Client
 
-```tsx
-import { useAgent } from "agents/react";
-
-function App() {
-  const [state, setLocalState] = useState({ count: 0 });
-
-  const agent = useAgent({
-    agent: "Counter",
-    name: "my-instance",
-    onStateUpdate: (newState) => setLocalState(newState),
-    onIdentity: (name, agentType) => console.log(`Connected to ${name}`)
-  });
-
-  return (
-    <button onClick={() => agent.setState({ count: state.count + 1 })}>
-      Count: {state.count}
-    </button>
-  );
-}
-```
+Read [client-sdk.md](references/client-sdk.md) for client selection and current connection examples. For chat UI and tools, also read [streaming-chat.md](references/streaming-chat.md).
 
 ## References
 
