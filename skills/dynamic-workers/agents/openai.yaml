@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dynamic Workers"
+  short_description: "Run isolated dynamic Workers"
+  default_prompt: "Use $dynamic-workers to execute generated code safely with Cloudflare Worker Loaders."

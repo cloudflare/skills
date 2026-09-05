@@ -17,10 +17,11 @@ Your knowledge of Durable Objects APIs and configuration may be outdated. **Pref
 | API Reference | https://developers.cloudflare.com/durable-objects/api/ |
 | Best Practices | https://developers.cloudflare.com/durable-objects/best-practices/ |
 | Examples | https://developers.cloudflare.com/durable-objects/examples/ |
+| Changelog | https://developers.cloudflare.com/changelog/ |
 
 Fetch the relevant doc page when implementing features.
 
-## When to Use
+## Scope
 
 - Creating new Durable Object classes for stateful coordination
 - Implementing RPC methods, alarms, or WebSocket handlers
@@ -118,6 +119,8 @@ export default {
 5. **Use RPC methods** - Not fetch() handler (compatibility date >= 2024-04-03)
 6. **Persist first, cache second** - Always write to storage before updating in-memory state
 7. **One alarm per DO** - `setAlarm()` replaces any existing alarm
+8. **Use location hints sparingly** - Default placement is usually best; hints are best-effort and only apply when an object is created
+9. **Know keepalive behavior** - Active outbound TCP sockets and outbound WebSockets can keep a DO alive, but only within current platform limits
 
 ## Anti-Patterns (NEVER)
 

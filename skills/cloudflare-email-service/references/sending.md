@@ -1,5 +1,16 @@
 # Sending Emails — Workers Binding & Agents SDK
 
+## Contents
+- Workers Binding
+- send()
+- Attachments
+- Custom Headers
+- Legacy EmailMessage API
+- Agents SDK Email
+- Error Handling
+- Restricted Bindings
+
+
 Send emails from Cloudflare Workers using the native binding, or from AI agents using the Agents SDK. If your app is NOT on Workers, use the [REST API](rest-api.md) instead.
 
 ## Workers Binding

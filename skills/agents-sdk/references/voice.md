@@ -1,6 +1,6 @@
 # Voice (Experimental)
 
-Fetch https://developers.cloudflare.com/agents/api-reference/voice/ for complete documentation.
+Fetch https://developers.cloudflare.com/agents/communication-channels/voice/ for complete documentation.
 
 `@cloudflare/voice` — real-time speech-to-text and text-to-speech for agents. Audio streams over WebSocket.
 
@@ -51,10 +51,11 @@ export class VoiceAgent extends withVoice(Agent)<Env> {
 ```tsx
 import { useVoiceAgent } from "@cloudflare/voice/react";
 
-function VoiceUI() {
+function VoiceUI({ outputDeviceId }: { outputDeviceId?: string }) {
   const { isConnected, isSpeaking, connect, disconnect } = useVoiceAgent({
     agent: "VoiceAgent",
-    name: "session-1"
+    name: "session-1",
+    outputDeviceId
   });
 
   return <button onClick={isConnected ? disconnect : connect}>
@@ -62,6 +63,8 @@ function VoiceUI() {
   </button>;
 }
 ```
+
+Use `outputDeviceId` when the browser supports speaker selection. Framework-agnostic clients can switch later with `client.setOutputDevice()`. Browsers without speaker-selection support keep using the default output device and should surface the non-fatal output-device error state.
 
 ## STT/TTS Providers
 

@@ -5,7 +5,7 @@
   "author": {
     "name": "Cloudflare",
     "email": "support@cloudflare.com",
-    "url": "https://workers.cloudflare.com"
+    "url": "https://www.cloudflare.com/products/workers/"
   },
   "keywords": ["cloudflare", "workers", "durable-objects", "agents", "mcp", "wrangler", "serverless", "compute", "storage", "applications"],
   "logo": "logo.svg"

@@ -1,6 +1,6 @@
 # Callable Methods
 
-Fetch https://developers.cloudflare.com/agents/api-reference/callable-methods/ for complete documentation.
+Fetch https://developers.cloudflare.com/agents/runtime/lifecycle/callable-methods/ for complete documentation.
 
 ## Overview
 
@@ -82,7 +82,7 @@ const methods = await agent.call("getCallableMethods", []);
 // Returns: ["greet", "processData", "streamResults", ...]
 ```
 
-## When to Use
+## Fit
 
 | Scenario | Use |
 |----------|-----|

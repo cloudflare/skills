@@ -1,5 +1,17 @@
 # Cloudflare Workers Best Practices
 
+## Contents
+- Wrangler Configuration
+- TypeScript Types
+- Worker Handler Pattern
+- Request Validation
+- Observability & Logging
+- Error Handling
+- CORS Handling
+- Secrets Management
+- Development Commands
+
+
 High-level guidance for Workers that invoke Durable Objects.
 
 ## Wrangler Configuration
@@ -297,11 +309,11 @@ export default {
     }
 
     const response = await handleRequest(request, env);
-    
+
     // Add CORS headers to response
     const newHeaders = new Headers(response.headers);
     Object.entries(corsHeaders()).forEach(([k, v]) => newHeaders.set(k, v));
-    
+
     return new Response(response.body, {
       status: response.status,
       headers: newHeaders,

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cloudflare One"
+  short_description: "Design and troubleshoot Zero Trust"
+  default_prompt: "Use $cloudflare-one to design, configure, troubleshoot, or review a Cloudflare One deployment."

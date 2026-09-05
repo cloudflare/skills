@@ -1,0 +1,12 @@
+interface:
+  display_name: "Browser Run"
+  short_description: "Automate browsers on Cloudflare"
+  default_prompt: "Use $browser-run to add Cloudflare Browser Run automation to this Worker."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "cloudflare"
+      description: "Cloudflare API Code Mode MCP server for Browser Run account workflows"
+      transport: "streamable_http"
+      url: "https://mcp.cloudflare.com/mcp"

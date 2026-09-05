@@ -1,6 +1,13 @@
 # State & Scheduling
 
-Fetch https://developers.cloudflare.com/agents/api-reference/store-and-sync-state/ and https://developers.cloudflare.com/agents/api-reference/schedule-tasks/ for complete documentation.
+## Contents
+- State Management
+- SQL API
+- Scheduling
+- Lifecycle Callbacks
+
+
+Fetch https://developers.cloudflare.com/agents/runtime/lifecycle/state/ and https://developers.cloudflare.com/agents/runtime/execution/schedule-tasks/ for complete documentation.
 
 ## State Management
 
@@ -9,7 +16,7 @@ State persists to SQLite and broadcasts to connected clients automatically.
 ### Define Typed State
 
 ```typescript
-type State = { 
+type State = {
   count: number;
   items: string[];
 };
@@ -55,7 +62,7 @@ import { useAgent } from "agents/react";
 
 function App() {
   const [state, setLocalState] = useState<State>({ count: 0 });
-  
+
   const agent = useAgent<State>({
     agent: "MyAgent",
     name: "instance-1",

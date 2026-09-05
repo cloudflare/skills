@@ -1,6 +1,6 @@
 # Durable Execution
 
-Fetch https://developers.cloudflare.com/agents/api-reference/durable-execution/ for complete documentation.
+Fetch https://developers.cloudflare.com/agents/runtime/execution/durable-execution/ for complete documentation.
 
 Fibers let agent work survive Durable Object eviction. Progress is checkpointed to SQLite; on recovery, you decide what to do.
 

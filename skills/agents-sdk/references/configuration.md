@@ -1,6 +1,6 @@
 # Configuration
 
-Fetch https://developers.cloudflare.com/agents/api-reference/configuration/ for complete documentation.
+Fetch https://developers.cloudflare.com/agents/runtime/operations/configuration/ for complete documentation.
 
 ## Wrangler Config (`wrangler.jsonc`)
 

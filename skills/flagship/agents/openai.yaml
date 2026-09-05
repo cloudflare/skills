@@ -1,0 +1,4 @@
+interface:
+  display_name: "Flagship"
+  short_description: "Manage Cloudflare feature flags"
+  default_prompt: "Use $flagship to build or manage Cloudflare Flagship feature flags."

@@ -63,12 +63,15 @@ The Agents SDK provides:
 - **Streaming chat** — `AIChatAgent` with resumable streams, message persistence, tools
 - **Server-driven messages** — `saveMessages`, `waitUntilStable` for proactive agent turns
 - **React hooks** — `useAgent`, `useAgentChat` for client apps
+- **Agent Skills** (experimental) — On-demand instructions, resources, and scripts for Think via `agents:skills`, R2, or manifests
+- **Messengers** — Think-owned webhook routing and durable replies for providers such as Telegram
 - **Observability** — `diagnostics_channel` events for state, RPC, schedule, lifecycle
 - **Push notifications** — Web Push + VAPID delivery from agents
 - **Webhooks** — Receive and verify external webhooks
 - **Voice** (experimental) — STT/TTS via `@cloudflare/voice`
-- **Browser tools** (experimental) — CDP-powered browsing via `agents/browser`
-- **Think** (experimental) — Higher-level chat agent via `@cloudflare/think`
+- **Browser Run tools** — CDP-powered browsing through Browser Run and `agents/browser`
+- **Code Mode** — Generated code orchestration through Worker Loader-backed Dynamic Workers
+- **Think** — Higher-level chat agent via `@cloudflare/think`, including scheduled tasks and durable `step.prompt()` workflows
 
 ## FIRST: Verify Installation
 
@@ -84,6 +87,11 @@ npm install agents
 For chat agents:
 ```bash
 npm install agents @cloudflare/ai-chat ai @ai-sdk/react
+```
+
+For Think agents:
+```bash
+npm install agents @cloudflare/think @cloudflare/ai-chat ai
 ```
 
 ## Wrangler Configuration
@@ -196,7 +204,9 @@ Read [client-sdk.md](references/client-sdk.md) for client selection and current 
 - **[references/observability.md](references/observability.md)** — Diagnostics-channel events
 
 ### Experimental
-- **[references/think.md](references/think.md)** — `@cloudflare/think` higher-level chat agent
+- **[references/think.md](references/think.md)** — `@cloudflare/think`, Agent Skills, messengers, scheduled tasks, Think Workflows
 - **[references/voice.md](references/voice.md)** — `@cloudflare/voice` STT/TTS
 - **[references/codemode.md](references/codemode.md)** — Code Mode for tool orchestration
 - **[references/browse-the-web.md](references/browse-the-web.md)** — CDP browser tools
+
+For browser automation details beyond Agents SDK wiring, load `browser-run`. For Worker Loader, generated-code, or egress-control details, load `dynamic-workers`.

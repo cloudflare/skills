@@ -1,10 +1,20 @@
 # Codemode (Experimental)
 
-Fetch https://developers.cloudflare.com/agents/api-reference/codemode/ for complete documentation.
+## Contents
+- Fit
+- Setup
+- Usage
+- With MCP Tools
+- How It Works
+- Network Isolation
+- Limitations
 
-Codemode lets LLMs write and execute code that orchestrates your tools, instead of calling them one at a time. The LLM gets a single "write code" tool; generated JavaScript runs in an isolated Worker sandbox.
 
-## When to Use
+Fetch https://developers.cloudflare.com/agents/model-context-protocol/protocol/codemode/ and https://developers.cloudflare.com/dynamic-workers/ for complete documentation.
+
+Codemode lets LLMs write and execute code that orchestrates your tools, instead of calling them one at a time. Current Code Mode uses `createCodemodeRuntime`, connectors, and a durable execution log. Generated JavaScript runs in a Worker Loader-backed Dynamic Worker sandbox.
+
+## Fit
 
 | Scenario | Use Codemode? |
 |----------|---------------|
@@ -25,46 +35,35 @@ Codemode lets LLMs write and execute code that orchestrates your tools, instead 
 }
 ```
 
+Load `dynamic-workers` when the task involves raw Worker Loader APIs, custom sandbox bindings, egress control, Tail Worker logging, Dynamic Workflows, or Durable Object facets.
+
 ### Install
 
 ```bash
-npm install @cloudflare/codemode ai zod
+npm install @cloudflare/codemode ai
 ```
 
 ## Usage
 
 ```typescript
-import { createCodeTool } from "@cloudflare/codemode/ai";
-import { DynamicWorkerExecutor } from "@cloudflare/codemode";
-import { streamText, tool, convertToModelMessages } from "ai";
-import { z } from "zod";
-
-const tools = {
-  getWeather: tool({
-    description: "Get weather for a location",
-    inputSchema: z.object({ location: z.string() }),
-    execute: async ({ location }) => `Weather: ${location} 72°F`
-  }),
-  sendEmail: tool({
-    description: "Send an email",
-    inputSchema: z.object({ to: z.string(), subject: z.string(), body: z.string() }),
-    execute: async ({ to, subject, body }) => `Email sent to ${to}`
-  })
-};
+import { createCodemodeRuntime, DynamicWorkerExecutor } from "@cloudflare/codemode";
+import { streamText, convertToModelMessages } from "ai";
 
 export class MyAgent extends Agent<Env, State> {
   async onChatMessage() {
-    const executor = new DynamicWorkerExecutor({
-      loader: this.env.LOADER
+    const runtime = createCodemodeRuntime({
+      ctx: this.ctx,
+      executor: new DynamicWorkerExecutor({ loader: this.env.LOADER }),
+      connectors: [
+        // Add connector instances that expose typed globals to generated code.
+      ]
     });
-
-    const codemode = createCodeTool({ tools, executor });
 
     const result = streamText({
       model,
       system: "You are a helpful assistant.",
       messages: await convertToModelMessages(this.messages),
-      tools: { codemode }
+      tools: { codemode: runtime.tool() }
     });
 
     return result.toUIMessageStreamResponse();
@@ -72,39 +71,42 @@ export class MyAgent extends Agent<Env, State> {
 }
 ```
 
-## With MCP Tools
+## With Connectors And MCP Tools
 
 ```typescript
-const codemode = createCodeTool({
-  tools: {
-    ...myTools,
-    ...this.mcp.getAITools()
-  },
-  executor
+const runtime = createCodemodeRuntime({
+  ctx: this.ctx,
+  executor: new DynamicWorkerExecutor({ loader: this.env.LOADER }),
+  connectors: [
+    // Add connector instances that expose typed globals to generated code.
+  ]
 });
 ```
 
 ## How It Works
 
-1. `createCodeTool` generates TypeScript type definitions from your tools
-2. The LLM writes an async arrow function calling `codemode.toolName(args)`
-3. Code runs in an isolated Worker sandbox via `DynamicWorkerExecutor`
-4. Tool calls route back to the host via Workers RPC
-5. External `fetch()` is blocked by default — sandbox can only call your tools
+1. `createCodemodeRuntime` builds one `codemode` tool from typed connectors and any tool surfaces supported by current docs.
+2. The model discovers capabilities, writes code against typed globals, and can reuse saved snippets.
+3. Code runs in a Dynamic Worker sandbox via `DynamicWorkerExecutor`.
+4. Tool and connector calls route back to the host through Workers RPC.
+5. The durable execution log lets approved or completed calls replay instead of re-running after interruption.
 
 ## Network Isolation
 
 ```typescript
 const executor = new DynamicWorkerExecutor({
   loader: env.LOADER,
-  globalOutbound: null           // default — fully isolated
+  globalOutbound: null           // isolate generated code from the public network
   // globalOutbound: env.MY_SERVICE  // route through a Fetcher
 });
 ```
 
+Raw Dynamic Workers inherit parent network access when `globalOutbound` is omitted. Code Mode executors should be configured so generated code can only use the tools or gateways you intentionally expose.
+
 ## Limitations
 
 - Experimental — API may change
-- `needsApproval` tools execute immediately in sandbox (no approval pause yet)
+- Approval-gated actions can pause execution and resume after approval; retrieve current docs before wiring UX around pending approvals.
 - JavaScript execution only
 - Requires `worker_loaders` binding
+- Generated code still needs input/output bounds, logging, and safe tool descriptions

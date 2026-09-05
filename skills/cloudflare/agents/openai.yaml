@@ -1,0 +1,12 @@
+interface:
+  display_name: "Cloudflare Platform"
+  short_description: "Route broad Cloudflare platform work"
+  default_prompt: "Use $cloudflare to route this Cloudflare platform task to the right current docs and focused skill."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "cloudflare"
+      description: "Cloudflare API Code Mode MCP server for account and API workflows"
+      transport: "streamable_http"
+      url: "https://mcp.cloudflare.com/mcp"

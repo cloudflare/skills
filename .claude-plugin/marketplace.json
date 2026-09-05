@@ -1,9 +1,9 @@
 {
-  "$schema": "https://code.claude.com/schemas/marketplace.json",
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "cloudflare",
   "owner": {
     "name": "Cloudflare",
-    "url": "https://workers.cloudflare.com"
+    "url": "https://www.cloudflare.com/products/workers/"
   },
   "plugins": [
     {

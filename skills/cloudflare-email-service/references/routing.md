@@ -1,5 +1,14 @@
 # Receiving & Routing Inbound Email
 
+## Contents
+- Email Handler
+- ForwardableEmailMessage
+- Core Operations
+- Parsing Emails
+- Store and Reply Later (Human-in-the-Loop)
+- Gotchas
+
+
 Handle incoming emails sent to your domain via a Worker's `email()` handler. Forward, reply, reject, or parse emails programmatically.
 
 For full API details, see the [Email Routing docs](https://developers.cloudflare.com/email-service/api/route-emails/email-handler/).
@@ -91,7 +100,7 @@ async email(message, env, ctx) {
 
 ## Parsing Emails
 
-Use [postal-mime](https://www.npmjs.com/package/postal-mime) to parse raw MIME content:
+Use [postal-mime](https://postal-mime.postalsys.com) to parse raw MIME content:
 
 ```typescript
 import PostalMime from "postal-mime";

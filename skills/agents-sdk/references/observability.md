@@ -1,6 +1,6 @@
 # Observability
 
-Fetch https://developers.cloudflare.com/agents/api-reference/observability/ for complete documentation.
+Fetch https://developers.cloudflare.com/agents/runtime/operations/observability/ for complete documentation.
 
 Agents emit structured events via Node.js `diagnostics_channel`. Subscribe in development or forward via Tail Workers in production.
 

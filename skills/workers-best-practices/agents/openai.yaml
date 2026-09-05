@@ -1,0 +1,4 @@
+interface:
+  display_name: "Workers Best Practices"
+  short_description: "Review production Workers code"
+  default_prompt: "Use $workers-best-practices to write or review Cloudflare Workers code against production best practices."

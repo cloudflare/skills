@@ -1,0 +1,4 @@
+interface:
+  display_name: "Workflows"
+  short_description: "Build durable Cloudflare workflows"
+  default_prompt: "Use $workflows to build a durable multi-step Cloudflare Workflow."

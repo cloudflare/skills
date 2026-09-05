@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web Performance"
+  short_description: "Audit Core Web Vitals and speed"
+  default_prompt: "Use $web-perf to audit and improve this page's Core Web Vitals and load performance."

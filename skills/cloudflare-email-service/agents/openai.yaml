@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cloudflare Email Service"
+  short_description: "Send and route transactional email"
+  default_prompt: "Use $cloudflare-email-service to build or debug Cloudflare Email Service sending, routing, or deliverability."

@@ -42,7 +42,7 @@ Install from the Cursor Marketplace or add manually via **Settings > Rules > Add
 
 ### npx skills
 
-Install using the [`npx skills`](https://skills.sh) CLI:
+Install using the [`npx skills`](https://www.skills.sh/) CLI:
 
 ```
 npx skills add https://github.com/cloudflare/skills
@@ -55,10 +55,10 @@ Clone this repo and copy the skill folders into the appropriate directory for yo
 | Agent | Skill Directory | Docs |
 |-------|-----------------|------|
 | Claude Code | `~/.claude/skills/` | [docs](https://code.claude.com/docs/en/skills) |
-| Cursor | `~/.cursor/skills/` | [docs](https://cursor.com/docs/context/skills) |
+| Cursor | `~/.cursor/skills/` | [docs](https://cursor.com/docs/skills) |
 | OpenCode | `~/.config/opencode/skills/` | [docs](https://opencode.ai/docs/skills/) |
-| OpenAI Codex | `~/.codex/skills/` | [docs](https://developers.openai.com/codex/skills/) |
-| Pi | `~/.pi/agent/skills/` | [docs](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent#skills) |
+| OpenAI Codex | `~/.codex/skills/` | [docs](https://developers.openai.com/codex/skills) |
+| Pi | `~/.pi/agent/skills/` | [docs](https://github.com/earendil-works/pi/tree/main/packages/coding-agent#skills) |
 
 ## Commands
 
@@ -77,12 +77,19 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 |-------|------------|
 | cloudflare | Helps agents discover which Cloudflare products fit their needs, then find the right skills and docs |
 | agents-sdk | Building stateful AI agents with state, scheduling, RPC, MCP servers, email, and streaming chat |
+| browser-run | Browser automation on Cloudflare with screenshots, PDFs, crawlers, CDP, Playwright, Puppeteer, Live View, and WebMCP |
+| cloudflare-email-service | Transactional email sending, Email Routing, Workers email bindings, REST email API, and deliverability |
+| dynamic-workers | Runtime-loaded Workers, Worker Loader bindings, generated-code execution, egress control, and dynamic sandboxing |
 | durable-objects | Stateful coordination (chat rooms, games, booking), RPC, SQLite, alarms, WebSockets |
 | sandbox-next | Sandbox on `@cloudflare/sandbox@next` (1.0 preview); recommended for new projects |
 | sandbox-stable | Sandbox on the current stable `@cloudflare/sandbox` package |
 | sandbox-migrate-to-next | Port a stable Sandbox app to `@cloudflare/sandbox@next` |
 | wrangler | Deploying and managing Workers, KV, R2, D1, Vectorize, Queues, Workflows |
 | web-perf | Auditing Core Web Vitals (FCP, LCP, TBT, CLS), render-blocking resources, network chains |
+| flagship | Cloudflare feature flags, typed values, targeting rules, percentage rollouts, Workers evaluation, and API automation |
+| workflows | Durable multi-step Workers applications with retries, sleeps, events, rollback, and instance management |
+| workers-best-practices | Reviewing and authoring production Workers code, bindings, generated types, streaming, secrets, and observability |
+| turnstile-spin | Set up, repair, or migrate Turnstile in an existing frontend and backend |
 
 ## Cloudflare One
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Durable Objects"
+  short_description: "Build stateful edge coordination"
+  default_prompt: "Use $durable-objects to build or review Cloudflare Durable Objects."

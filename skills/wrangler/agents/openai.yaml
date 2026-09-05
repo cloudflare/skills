@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wrangler"
+  short_description: "Run Cloudflare CLI workflows"
+  default_prompt: "Use $wrangler to choose, run, or review Cloudflare Wrangler commands and configuration."

@@ -1,5 +1,14 @@
 # Email Deliverability & Best Practices
 
+## Contents
+- What Cloudflare Handles
+- Bounce Handling
+- Suppression Lists
+- Your Responsibilities
+- Monitoring Deliverability
+- Metrics to Watch
+
+
 For full details, see the [deliverability docs](https://developers.cloudflare.com/email-service/concepts/deliverability/) and [email authentication docs](https://developers.cloudflare.com/email-service/concepts/email-authentication/). All the monitoring endpoints below can be called via the [REST API](rest-api.md), [Wrangler CLI, or the Cloudflare MCP server](cli-and-mcp.md).
 
 ## What Cloudflare Handles

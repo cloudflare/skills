@@ -1,6 +1,15 @@
 # Email Handling
 
-Fetch https://developers.cloudflare.com/agents/api-reference/email/ for complete documentation.
+## Contents
+- Overview
+- Wrangler Configuration
+- Basic Email Handler
+- Routing Emails
+- Resolvers
+- Utilities
+
+
+Fetch https://developers.cloudflare.com/agents/communication-channels/email/ for complete documentation.
 
 ## Overview
 

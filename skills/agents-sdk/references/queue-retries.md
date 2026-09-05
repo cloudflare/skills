@@ -1,6 +1,6 @@
 # Queue & Retries
 
-Fetch https://developers.cloudflare.com/agents/api-reference/queue-tasks/ and https://developers.cloudflare.com/agents/api-reference/retries/ for complete documentation.
+Fetch https://developers.cloudflare.com/agents/runtime/execution/queue-tasks/ and https://developers.cloudflare.com/agents/runtime/execution/retries/ for complete documentation.
 
 ## Built-in Queue
 

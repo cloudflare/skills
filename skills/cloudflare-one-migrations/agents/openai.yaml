@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cloudflare One Migrations"
+  short_description: "Plan migrations to Cloudflare One"
+  default_prompt: "Use $cloudflare-one-migrations to assess and plan this Cloudflare One migration."

@@ -1,6 +1,6 @@
 # Routing
 
-Fetch https://developers.cloudflare.com/agents/api-reference/routing/ for complete documentation.
+Fetch https://developers.cloudflare.com/agents/runtime/communication/routing/ for complete documentation.
 
 ## Default URL Pattern
 

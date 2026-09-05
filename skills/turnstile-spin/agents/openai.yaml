@@ -1,0 +1,4 @@
+interface:
+  display_name: "Turnstile Spin"
+  short_description: "Set up Turnstile end to end"
+  default_prompt: "Use $turnstile-spin to set up or repair Cloudflare Turnstile protection for this project."

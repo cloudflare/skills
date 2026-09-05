@@ -1,6 +1,15 @@
 # Workflows Integration
 
-Fetch https://developers.cloudflare.com/agents/api-reference/run-workflows/ for complete documentation.
+## Contents
+- Overview
+- AgentWorkflow Base Class
+- Wrangler Configuration
+- Agent Methods for Workflows
+- Lifecycle Callbacks
+- Human-in-the-Loop
+
+
+Fetch https://developers.cloudflare.com/agents/runtime/execution/run-workflows/ for complete documentation.
 
 ## Overview
 

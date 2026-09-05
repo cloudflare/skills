@@ -1,5 +1,13 @@
 # CLI, MCP, and Project Setup
 
+## Contents
+- Wrangler Email Commands
+- Domain Setup
+- Local Development
+- Cloudflare MCP Server
+- Sending from CLI / Agents
+
+
 Manage Cloudflare Email Service from the command line and coding agents.
 
 For full CLI reference, run `npx wrangler email --help`. For Dashboard setup, see the [getting started docs](https://developers.cloudflare.com/email-service/get-started/).

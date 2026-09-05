@@ -1,6 +1,15 @@
 # Sending Emails — REST API
 
-Send emails via HTTP requests from any application. If your app runs on Cloudflare Workers, use the [Workers binding](sending.md) instead — simpler and more performant.
+## Contents
+- Endpoint
+- Authentication
+- Request Fields
+- Examples
+- Response
+- Error Handling
+
+
+Send emails via HTTP requests from any application. If your app runs on Cloudflare Workers, use the [Workers binding](sending.md) instead — simpler and more performant. If an existing external app already speaks SMTP, use [SMTP submission](smtp.md).
 
 For the full OpenAPI specification, refer to the [Email Sending API reference](https://developers.cloudflare.com/api/resources/email_sending/methods/send).
 
