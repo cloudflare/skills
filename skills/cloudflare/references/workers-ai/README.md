@@ -21,4 +21,4 @@ If a topic is missing, use the [Workers AI documentation index](https://develope
 
 - [Vectorize](../vectorize/): vector storage and retrieval.
 - [AI Gateway](../ai-gateway/): inference analytics, caching, and request controls.
-- [Workers](../workers/): runtime and application hosting.
+- [Workers](https://developers.cloudflare.com/workers/): runtime and application hosting.

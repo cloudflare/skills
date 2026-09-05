@@ -79,4 +79,4 @@ export default {
 ## See Also
 - [smart-placement](../smart-placement/) - Optimize multi-query Workers near databases
 - [d1](../d1/) - Serverless SQLite alternative for edge-native apps
-- [workers](../workers/) - Worker runtime with database bindings
+- [workers](https://developers.cloudflare.com/workers/) - Worker runtime with database bindings
