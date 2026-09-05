@@ -89,7 +89,7 @@ async queue(batch: MessageBatch, env: Env) {
 
 ## See Also
 
-- [workers](../workers/) - Worker runtime and fetch handlers
+- [workers](https://developers.cloudflare.com/workers/) - Worker runtime and fetch handlers
 - [kv](../kv/) - Metadata storage for R2 objects
 - [d1](../d1/) - Store R2 URLs in relational database
 - [queues](../queues/) - Process R2 uploads asynchronously

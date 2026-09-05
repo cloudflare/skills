@@ -72,6 +72,6 @@ These reference files cover API shapes, code patterns, and debugging — things 
 - [gotchas.md](./gotchas.md) - Timeouts, limits, debugging strategies
 
 ## See Also
-- [durable-objects](../durable-objects/) - Alternative stateful approach
+- [durable-objects](https://developers.cloudflare.com/durable-objects/) - Alternative stateful approach
 - [queues](../queues/) - Message-driven workflows
-- [workers](../workers/) - Entry point for workflow instances
+- [workers](https://developers.cloudflare.com/workers/) - Entry point for workflow instances

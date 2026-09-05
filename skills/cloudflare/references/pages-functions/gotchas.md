@@ -82,6 +82,7 @@ bindings, headers, redirects, domains, and previews before changing traffic.
 - [Workers pricing](https://developers.cloudflare.com/workers/platform/pricing/)
 - [Migrate from Pages](https://developers.cloudflare.com/workers/static-assets/migration-guides/migrate-from-pages/)
 - [Examples](https://github.com/cloudflare/pages-example-projects)
+- [Framework guides](https://developers.cloudflare.com/pages/framework-guides/)
 - [Discord](https://discord.gg/cloudflaredev)
 
 **See also:** [configuration.md](./configuration.md) for TypeScript setup | [patterns.md](./patterns.md) for middleware/auth | [api.md](./api.md) for bindings

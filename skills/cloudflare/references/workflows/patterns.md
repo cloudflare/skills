@@ -80,20 +80,19 @@ export class ApprovalWorkflow extends WorkflowEntrypoint<Env, Params> {
 
 ## Testing Workflows
 
+These examples assume an ESM project (`"type": "module"` in `package.json`). See the [current Vitest setup](https://developers.cloudflare.com/workers/testing/vitest-integration/write-your-first-test/) for prerequisites and migration guidance.
+
+Install `@cloudflare/vitest-plugin` and `vitest@^4.1.0` as dev dependencies.
+
 ### Setup
 
 ```typescript
 // vitest.config.ts
-import { defineWorkersConfig } from '@cloudflare/vitest-pool-workers/config';
+import { cloudflareTest } from '@cloudflare/vitest-plugin';
+import { defineConfig } from 'vitest/config';
 
-export default defineWorkersConfig({
-  test: {
-    poolOptions: {
-      workers: {
-        wrangler: { configPath: './wrangler.jsonc' }
-      }
-    }
-  }
+export default defineConfig({
+  plugins: [cloudflareTest({ wrangler: { configPath: './wrangler.jsonc' } })],
 });
 ```
 

@@ -96,4 +96,4 @@ curl "http://localhost:8787/__scheduled?cron=*/5+*+*+*+*"
 
 ## See Also
 - [workflows](../workflows/) - Alternative for long-running scheduled tasks
-- [workers](../workers/) - Worker runtime documentation
+- [workers](https://developers.cloudflare.com/workers/) - Worker runtime documentation
