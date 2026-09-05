@@ -338,7 +338,7 @@ export default {
 
 A Promise that is not `await`ed, `return`ed, or passed to `ctx.waitUntil()` is a floating promise. Causes: dropped results, swallowed errors, unfinished work. The runtime may terminate the isolate before it completes.
 
-**Check**: async calls in the affected execution path are awaited, returned, or attached to the appropriate lifetime. Use the project's existing floating-promise lint check when available and relevant; otherwise inspect the promise paths directly. Adding lint tooling is a separate change, not a prerequisite for reviewing this behavior.
+**Check**: async calls in the affected execution path are awaited, returned, or attached to the appropriate lifetime. Use the project's existing floating-promise lint check, such as Oxlint's [typescript/no-floating-promises](https://oxc.rs/docs/guide/usage/linter/rules/typescript/no-floating-promises.html), when available and relevant; otherwise inspect the promise paths directly. Adding lint tooling is a separate change, not a prerequisite for reviewing this behavior.
 
 ```ts
 // Correct: await when you need the result
