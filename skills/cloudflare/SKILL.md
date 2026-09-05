@@ -107,19 +107,19 @@ For **Dynamic Workers**, use the [product docs](https://developers.cloudflare.co
 
 For **Cloudflare for SaaS**, use the [product docs](https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/) directly; there is no bundled product reference. Follow the guides for custom hostname onboarding, hostname and certificate validation, and fallback origins. Check plan requirements for apex domains and other advanced configurations.
 
-The folder in parentheses is under `references/`. Start with its `README.md`; open `configuration.md`, `api.md`, `patterns.md`, or `gotchas.md` only when the task needs that detail.
+Each link below opens a bundled product reference. Start with that README and follow its links to configuration, APIs, patterns, or gotchas only when the task needs that detail.
 
-- Compute: Workflows (`workflows`), Containers (`containers`), Workers for Platforms (`workers-for-platforms`), Cron Triggers (`cron-triggers`), Tail Workers (`tail-workers`), Snippets (`snippets`), Smart Placement (`smart-placement`).
-- Existing Pages deployments: Pages (`pages`), Pages Functions (`pages-functions`). For new sites and apps, use Workers and Workers Static Assets.
-- Storage and data: KV (`kv`), D1 (`d1`), R2 (`r2`), Artifacts (`artifacts`), Queues (`queues`), Hyperdrive (`hyperdrive`), Durable Object storage (`do-storage`), Secrets Store (`secrets-store`), Pipelines (`pipelines`), R2 Data Catalog (`r2-data-catalog`), R2 SQL (`r2-sql`), Cache Reserve (`cache-reserve`).
-- AI: Workers AI (`workers-ai`), Vectorize (`vectorize`), AI Gateway (`ai-gateway`), AI Search (`ai-search`).
-- Networking: Tunnel (`tunnel`), Spectrum (`spectrum`), TURN (`turn`), Network Interconnect (`network-interconnect`), Argo Smart Routing (`argo-smart-routing`), Workers VPC (`workers-vpc`).
-- Security: WAF (`waf`), DDoS protection (`ddos`), Bot Management (`bot-management`), API Shield (`api-shield`).
-- Media and content: Images (`images`), Stream (`stream`), Browser Run (`browser-rendering`), Zaraz (`zaraz`).
-- Realtime: RealtimeKit (`realtimekit`), Realtime SFU (`realtime-sfu`).
-- Analytics and developer tools: GraphQL Analytics API (`graphql-api`), Analytics Engine (`analytics-engine`), Web Analytics (`web-analytics`), Observability (`observability`), Miniflare (`miniflare`), C3 (`c3`), workerd (`workerd`), Workers Playground (`workers-playground`).
-- Infrastructure as code: Pulumi (`pulumi`), Terraform (`terraform`), REST API (`api`).
-- Other services: Flagship (`flagship`), Email Routing (`email-routing`), Email Workers (`email-workers`), Static Assets (`static-assets`), Bindings (`bindings`).
+- Compute: [Workflows](references/workflows/README.md), [Containers](references/containers/README.md), [Workers for Platforms](references/workers-for-platforms/README.md), [Cron Triggers](references/cron-triggers/README.md), [Tail Workers](references/tail-workers/README.md), [Snippets](references/snippets/README.md), [Smart Placement](references/smart-placement/README.md).
+- Existing Pages deployments: [Pages](references/pages/README.md), [Pages Functions](references/pages-functions/README.md). For new sites and apps, use Workers and Workers Static Assets.
+- Storage and data: [KV](references/kv/README.md), [D1](references/d1/README.md), [R2](references/r2/README.md), [Artifacts](references/artifacts/README.md), [Queues](references/queues/README.md), [Hyperdrive](references/hyperdrive/README.md), [Durable Object storage](references/do-storage/README.md), [Secrets Store](references/secrets-store/README.md), [Pipelines](references/pipelines/README.md), [R2 Data Catalog](references/r2-data-catalog/README.md), [R2 SQL](references/r2-sql/README.md), [Cache Reserve](references/cache-reserve/README.md).
+- AI: [Workers AI](references/workers-ai/README.md), [Vectorize](references/vectorize/README.md), [AI Gateway](references/ai-gateway/README.md), [AI Search](references/ai-search/README.md).
+- Networking: [Tunnel](references/tunnel/README.md), [Spectrum](references/spectrum/README.md), [TURN](references/turn/README.md), [Network Interconnect](references/network-interconnect/README.md), [Argo Smart Routing](references/argo-smart-routing/README.md), [Workers VPC](references/workers-vpc/README.md).
+- Security: [WAF](references/waf/README.md), [DDoS protection](references/ddos/README.md), [Bot Management](references/bot-management/README.md), [API Shield](references/api-shield/README.md).
+- Media and content: [Images](references/images/README.md), [Stream](references/stream/README.md), [Browser Run](references/browser-rendering/README.md), [Zaraz](references/zaraz/README.md).
+- Realtime: [RealtimeKit](references/realtimekit/README.md), [Realtime SFU](references/realtime-sfu/README.md).
+- Analytics and developer tools: [GraphQL Analytics API](references/graphql-api/README.md), [Analytics Engine](references/analytics-engine/README.md), [Web Analytics](references/web-analytics/README.md), [Observability](references/observability/README.md), [Miniflare](references/miniflare/README.md), [C3](references/c3/README.md), [workerd](references/workerd/README.md), [Workers Playground](references/workers-playground/README.md).
+- Infrastructure as code: [Pulumi](references/pulumi/README.md), [Terraform](references/terraform/README.md), [REST API](references/api/README.md).
+- Other services: [Flagship](references/flagship/README.md), [Email Routing](references/email-routing/README.md), [Email Workers](references/email-workers/README.md), [Static Assets](references/static-assets/README.md), [Bindings](references/bindings/README.md).
 
 ## Caching
 
