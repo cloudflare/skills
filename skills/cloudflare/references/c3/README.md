@@ -1,108 +1,29 @@
 # C3 (create-cloudflare)
 
-Official CLI for scaffolding Cloudflare Workers and, when explicitly requested, Pages projects with framework-aware setup and deployment.
+C3 scaffolds applications for Cloudflare Workers and, when explicitly requested, Pages. Use it for new projects, framework setup, remote templates, and cloning an existing deployed Worker.
 
-## Quick Start
+## Choose the Platform
 
-```bash
-# Interactive (recommended for first-time)
-npm create cloudflare@latest -- my-app
+Default new static, full-stack, framework, and API applications to Workers. Use Pages only for an existing Pages application or a confirmed Pages-only requirement; read the [Pages-to-Workers migration guide](https://developers.cloudflare.com/workers/static-assets/migration-guides/migrate-from-pages/) before recreating an existing project.
 
-# Worker (recommended for new static, framework, full-stack, and API projects)
-npm create cloudflare@latest -- my-api --type=hello-world --lang=ts
+## Create the Project
 
-# Framework app on Workers
-npm create cloudflare@latest -- my-site --framework=astro
+Use the project's package manager and follow the current [C3 CLI documentation](https://developers.cloudflare.com/pages/get-started/c3/); npm requires `--` before arguments passed to C3. For framework projects, follow the relevant [Workers framework guide](https://developers.cloudflare.com/workers/framework-guides/) instead of caching framework names or setup commands here.
 
-# Existing/intentional Pages workflow
-npm create cloudflare@latest -- --platform=pages
-```
+Before running C3, confirm the destination directory and whether it should initialize Git, deploy, or open the deployed application. Read the current [CLI arguments](https://developers.cloudflare.com/pages/get-started/c3/#cli-arguments) before scripting C3 or using it non-interactively.
 
-## Platform Decision Tree
+## Templates and Existing Projects
 
-```
-What are you building?
+For remote templates or existing projects, follow the current [Workers get-started guide](https://developers.cloudflare.com/workers/get-started/guide/) and inspect the maintained [C3 templates](https://github.com/cloudflare/workers-sdk/tree/main/packages/create-cloudflare/templates). Do not assume a cached template layout or accepted repository syntax.
 
-├─ New static site / SPA / SSG / documentation
-│   └─ Workers Static Assets (default)
+## Inspect the Generated Project
 
-├─ New full-stack or framework app
-│   └─ Workers (default) - follow the framework's Workers guide
-│       ├─ Next.js → vinext on Workers
-│       └─ Remix → React Router on Workers
+Treat the generated `package.json` scripts and Wrangler configuration as the source of truth because output varies by starter and framework. Use the [Wrangler configuration docs](https://developers.cloudflare.com/workers/wrangler/configuration/) when changing bindings or other generated settings, and regenerate types when the project exposes a type-generation script.
 
-├─ API / WebSocket / Cron / Email handler
-│   └─ Workers (default)
+## CI and Authentication
 
-├─ Existing Pages project or confirmed Pages-only requirement
-│   └─ Pages - explicitly add --platform=pages
+Make deployment and Git initialization explicit. Supply credentials through the CI secret tool, never committed files or command output, and follow the [Workers CI/CD guidance](https://developers.cloudflare.com/workers/ci-cd/external-cicd/).
 
-└─ Clone an existing deployed Worker
-    └─ npm create cloudflare@latest -- . --type=pre-existing --existing-script=my-worker
-```
+## Telemetry and Troubleshooting
 
-**Default to Workers for new projects.** Workers supports Git integration and branch preview URLs through Workers Builds. Use `--platform=pages` only when the customer deliberately needs Pages; omitting it correctly creates a Workers project.
-
-## Interactive Flow
-
-C3 prompts for the inputs required by the selected starter. Expect a project directory, a Worker starter or framework, framework-specific questions, Git initialization, and optional deployment. Prompts vary as C3 and third-party framework CLIs evolve, so do not depend on a fixed order.
-
-Workers is the default target. C3 enters its Pages flow only when `--platform=pages` is explicitly supplied.
-
-## Installation Methods
-
-```bash
-# NPM
-npm create cloudflare@latest
-
-# Yarn
-yarn create cloudflare
-
-# PNPM
-pnpm create cloudflare@latest
-```
-
-## In This Reference
-
-| File | Purpose | Use When |
-|------|---------|----------|
-| **api.md** | Complete CLI flag reference | Scripting, CI/CD, advanced usage |
-| **configuration.md** | Generated files, bindings, types | Understanding output, customization |
-| **patterns.md** | Workflows, CI/CD, monorepos | Real-world integration |
-| **gotchas.md** | Troubleshooting failures | Deployment blocked, errors |
-
-## Reading Order
-
-| Task | Read |
-|------|------|
-| Create first project | README only |
-| Set up CI/CD | README → api → patterns |
-| Debug failed deploy | gotchas |
-| Understand generated files | configuration |
-| Full CLI reference | api |
-| Create custom template | patterns → configuration |
-| Convert existing project | README → patterns |
-
-## Post-Creation
-
-```bash
-cd my-app
-
-# Local dev with hot reload
-npm run dev
-
-# Generate TypeScript types for bindings
-npm run cf-typegen
-
-# Deploy to Cloudflare
-npm run deploy
-```
-
-## See Also
-
-- **workers/README.md** - Workers runtime, bindings, APIs
-- **workers-ai/README.md** - AI/ML models
-- **pages/README.md** - Pages-specific features
-- **wrangler/README.md** - Wrangler CLI beyond initial setup
-- **d1/README.md** - SQLite database
-- **r2/README.md** - Object storage
+Use C3's documented [telemetry controls](https://developers.cloudflare.com/pages/get-started/c3/#telemetry) rather than an environment-variable implementation detail. Diagnose failures from current `--help` and command output; consult the [C3 source](https://github.com/cloudflare/workers-sdk/tree/main/packages/create-cloudflare) when exact behavior is not documented.
