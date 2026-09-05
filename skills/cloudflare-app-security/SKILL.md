@@ -26,7 +26,7 @@ Before writing expressions, inspect existing rules, order, scope, and the accoun
 | Traffic flood or a DDoS rule false positive | [DDoS protection](https://developers.cloudflare.com/ddos-protection/) | Inspect the automatic mitigation and use the documented customization for the affected layer and plan. Do not infer an attack from volume alone. |
 | API inventory, schema, token, or client-certificate enforcement | [API Shield](https://developers.cloudflare.com/api-shield/) | Follow the specific feature and availability links; preserve the API's current authentication and schema contract. |
 
-For form-token verification, use `turnstile-spin` when installed, or the [Turnstile documentation](https://developers.cloudflare.com/turnstile/). For identity-based access policies, use `cloudflare-one` when installed, or the [Access documentation](https://developers.cloudflare.com/cloudflare-one/access/). Do not expand traffic protection into an application authentication rewrite or repository vulnerability scan.
+For form-token verification, use `turnstile-spin` when installed, or the [Turnstile documentation](https://developers.cloudflare.com/turnstile/). For identity-based access policies, use `cloudflare-one` when installed, or the [Access documentation](https://developers.cloudflare.com/cloudflare-one/access-controls/). Do not expand traffic protection into an application authentication rewrite or repository vulnerability scan.
 
 ## Make a bounded change
 
