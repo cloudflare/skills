@@ -18,7 +18,7 @@ Cloudflare Email Service lets you send transactional emails and route incoming e
 | Cloudflare docs | Cloudflare MCP `docs` tool or URL `https://developers.cloudflare.com/email-service/` | API reference, limits, pricing, latest features |
 | REST API spec | `https://developers.cloudflare.com/api/resources/email_sending` | OpenAPI spec for the Email Sending REST API |
 | Workers types | `https://www.npmjs.com/package/@cloudflare/workers-types` | Type signatures, binding shapes |
-| Agents SDK docs | Fetch `docs/email.md` from `https://github.com/cloudflare/agents/tree/main/docs` | Email handling in Agents SDK |
+| Agents SDK docs | [Email agent walkthrough](https://developers.cloudflare.com/agents/examples/email-agent/) | Email handling in Agents SDK |
 
 ## FIRST: Check Prerequisites
 
@@ -42,39 +42,9 @@ Start here. Find your situation, then follow the link for full details.
 | **Set up Email Sending or Email Routing** | `wrangler email sending enable` / `wrangler email routing enable`, or Dashboard | [cli-and-mcp.md](references/cli-and-mcp.md) |
 | **Improve deliverability, avoid spam folders** | Authentication, content, compliance | [deliverability.md](references/deliverability.md) |
 
-## Quick Start — Workers Binding
+## Sending Workflow
 
-Add the binding to `wrangler.jsonc`, then call `env.EMAIL.send()`. The `from` domain must be onboarded via `npx wrangler email sending enable yourdomain.com`.
-
-```jsonc
-// wrangler.jsonc
-{ "send_email": [{ "name": "EMAIL" }] }
-```
-
-```typescript
-const response = await env.EMAIL.send({
-  to: "user@example.com",
-  from: { email: "welcome@yourdomain.com", name: "My App" },
-  subject: "Welcome!",
-  html: "<h1>Welcome!</h1>",
-  text: "Welcome!",
-});
-```
-
-The binding is recommended for Workers — no API keys needed. If a user specifically requests the REST API from within a Worker (e.g., they already have an API token workflow), that works too — see [rest-api.md](references/rest-api.md).
-
-See [sending.md](references/sending.md) for the full API, batch sends, attachments, custom headers, restricted bindings, and Agents SDK integration.
-
-## Quick Start — REST API
-
-For apps outside Workers, or within Workers if the user explicitly requests it. Key differences from the Workers binding:
-
-- Endpoint: `POST https://api.cloudflare.com/client/v4/accounts/{account_id}/email/sending/send`
-- `from` object uses `address` (not `email`): `{ "address": "...", "name": "..." }`
-- `replyTo` is `reply_to` (snake_case)
-- Response returns `{ delivered: [], permanent_bounces: [], queued: [] }` (not `messageId`)
-
-See [rest-api.md](references/rest-api.md) for curl examples, response format, and error handling.
+Prefer the binding for Workers; use REST for external apps or when explicitly requested. Read [sending.md](references/sending.md) or [rest-api.md](references/rest-api.md) to retrieve the documentation for the selected task before writing code. These guides cover setup, recipients, attachments, headers, limits, response handling, and errors; the Workers guide also covers Agents SDK integration and types matched to the project configuration.
 
 ## Common Mistakes
 
@@ -96,8 +66,8 @@ See [rest-api.md](references/rest-api.md) for curl examples, response format, an
 
 Read the reference that matches your situation. You don't need all of them.
 
-- **[references/sending.md](references/sending.md)** — Workers binding API, attachments, Agents SDK email. For Workers or Agents SDK.
-- **[references/rest-api.md](references/rest-api.md)** — REST endpoint, curl examples, error handling. For apps NOT on Workers.
+- **[references/sending.md](references/sending.md)** — Documentation map for Workers binding, attachments, and Agents SDK email.
+- **[references/rest-api.md](references/rest-api.md)** — Documentation map for HTTP sending, request schemas, responses, and errors.
 - **[references/routing.md](references/routing.md)** — Inbound `email()` handler, forwarding, replying, parsing. For receiving emails.
 - **[references/cli-and-mcp.md](references/cli-and-mcp.md)** — Domain setup, wrangler commands, MCP tools. For first-time setup.
 - **[references/deliverability.md](references/deliverability.md)** — SPF/DKIM/DMARC, bounces, suppressions, best practices.
