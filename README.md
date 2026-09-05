@@ -68,6 +68,7 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 |-------|------------|
 | cloudflare | Helps agents discover which Cloudflare products fit their needs, then find the right skills and docs |
 | agents-sdk | Building stateful AI agents with state, scheduling, RPC, MCP servers, email, and streaming chat |
+| cloudflare-workflows | Durable multi-step jobs, approval flows, scheduled pipelines, retries, and instance debugging |
 | durable-objects | Stateful coordination (chat rooms, games, booking), RPC, SQLite, alarms, WebSockets |
 | sandbox-next | Sandbox on `@cloudflare/sandbox@next` (1.0 preview); recommended for new projects |
 | sandbox-stable | Sandbox on the current stable `@cloudflare/sandbox` package |
