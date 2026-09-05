@@ -1,10 +1,10 @@
 # Skill validation cases
 
-These cases match the assertions in the Turnstile Spin PRD. Run them after editing this skill to confirm an agent loading it can still execute the wizard end-to-end.
+These cases cover the security and runtime outcomes required by Turnstile Spin. Run them after editing this skill to confirm an agent can still complete an end-to-end integration.
 
 ## Test 1: Dummy Siteverify returns a structured error
 
-Step 10's `validate.sh` sends a deliberately-invalid token directly to `challenges.cloudflare.com/turnstile/v0/siteverify` using the captured secret. The expected response is `success: false` with `error-codes: ["invalid-input-response"]`. Anything else means the secret is wrong or the widget is misconfigured.
+`validate.sh` sends a deliberately-invalid token directly to `challenges.cloudflare.com/turnstile/v0/siteverify` using the captured secret. The expected response is `success: false` with `error-codes: ["invalid-input-response"]`. Anything else means the secret is wrong or the widget is misconfigured.
 
 ```sh
 printf '%s' "$WIDGET_SECRET" |
@@ -42,18 +42,6 @@ Inspect every generated frontend and backend pair:
 ## Test 4: Same-page retries reset the correct widget
 
 Native forms that navigate do not need reset logic. For each same-page flow, verify that the code retains the widget ID returned by `turnstile.render()` and calls `turnstile.reset(widgetId)` after the request completes. Multiple protected surfaces must not share a widget ID or reset without an ID.
-
-## Test 5: Skill persists to a bundle location
-
-After Step 11:
-
-```sh
-test -f .claude/skills/turnstile-spin/SKILL.md \
-  || test -f .codex/skills/turnstile-spin/SKILL.md \
-  || test -f .opencode/skills/turnstile-spin/SKILL.md
-```
-
-Expected exit code: 0. File-oriented rules targets install the hosted `prompt.md` directly instead of using `persist-skill.sh`.
 
 ## Running all cases
 

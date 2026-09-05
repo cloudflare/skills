@@ -8,11 +8,11 @@ End-to-end setup skill for Cloudflare Turnstile. Loads when an agent is asked to
 
 | File                              | Purpose                                                                |
 | --------------------------------- | ---------------------------------------------------------------------- |
-| `SKILL.md`                        | Main wizard instructions for the agent                                 |
+| `SKILL.md`                        | Outcome, security, and validation guidance for the agent                |
 | `scripts/auth-probe.sh`           | Probes the customer's Cloudflare API token for Turnstile scope         |
 | `scripts/widget-create.sh`        | Creates the Turnstile widget via the Cloudflare API                    |
-| `scripts/validate.sh`             | Dummy-siteverify + hostname check at the end of the wizard             |
-| `scripts/persist-skill.sh`        | Installs the canonical skill bundle into the user's repo               |
+| `scripts/validate.sh`             | Dummy-siteverify and hostname checks                                   |
+| `scripts/persist-skill.sh`        | Optional helper for an explicitly requested local installation         |
 | `references/vanilla-html.md`      | Code snippet for static / vanilla HTML projects                        |
 | `references/nextjs-app.md`        | Code snippet for Next.js App Router projects                           |
 | `references/nextjs-pages.md`      | Code snippet for Next.js Pages Router projects                         |
@@ -38,11 +38,11 @@ mkdir -p .claude/skills/turnstile-spin && \
   -o .claude/skills/turnstile-spin/SKILL.md
 ```
 
-The single-file install does not include `scripts/` or `references/`; the hosted prompt fetches those on demand with `fetch_spin_script`. `scripts/persist-skill.sh` requires the cloned bundle above and cannot be used from a single-file install. For other agents, see the table in [`SKILL.md`](./SKILL.md#step-11--persist-the-skill).
+The single-file install does not include `scripts/` or `references/`; the hosted prompt fetches those on demand with `fetch_spin_script`. `scripts/persist-skill.sh` requires the cloned bundle above and cannot be used from a single-file install. The setup workflow does not prompt users to persist the skill; this helper is only for an explicitly requested local installation.
 
 ## Keep the hosted prompt in sync
 
-Any behavioral change to `SKILL.md` must also be applied to `public/turnstile/spin/prompt.md` in the `cloudflare-docs` repository. The hosted file adds bootstrap instructions, but its wizard, security boundaries, recovery flow, and validation requirements must match this skill.
+Any behavioral change to `SKILL.md` must also be applied to `public/turnstile/spin/prompt.md` in the `cloudflare-docs` repository. The hosted file adds bootstrap instructions, but its outcomes, security boundaries, recovery flow, and validation requirements must match this skill.
 
 ## Related
 
