@@ -1,89 +1,22 @@
 # Cloudflare Agents SDK
 
-Cloudflare Agents SDK enables building AI-powered agents on Durable Objects with state, WebSockets, SQL, scheduling, and AI integration.
+Use the Agents SDK when a Workers application needs persistent per-instance state, real-time clients, scheduled work, or AI chat. For focused SDK implementation or debugging, use the repository's [Agents SDK skill](../../../agents-sdk/SKILL.md) when available.
 
-## Core Value
-Build stateful, globally distributed AI agents with persistent memory, real-time connections, scheduled tasks, and async workflows.
+Read the linked Cloudflare documentation before writing code; check installed SDK versions when adapting an existing application.
 
-## When to Use
-- Persistent state + memory required
-- Real-time WebSocket connections
-- Long-running workflows (minutes/hours)
-- Chat interfaces with AI models
-- Scheduled/recurring tasks with state
-- DB queries with agent state
+## Choose the starting point
 
-## What Type of Agent?
-
-| Use Case | Class | Key Features |
-|----------|-------|--------------|
-| AI chat interface | `AIChatAgent` | Auto-streaming, tools, message history, resumable |
-| MCP tool provider | `Agent` + MCP | Expose tools to AI systems |
-| Custom logic/routing | `Agent` | Full control, WebSockets, email, SQL |
-| Real-time collaboration | `Agent` | WebSocket state, broadcasts |
-| Email processing | `Agent` | `onEmail()` handler |
-
-## Quick Start
-
-**AI Chat Agent:**
-```typescript
-import { AIChatAgent } from "@cloudflare/ai-chat";
-import { openai } from "@ai-sdk/openai";
-
-export class ChatAgent extends AIChatAgent<Env> {
-  async onChatMessage(onFinish) {
-    return this.streamText({
-      model: openai("gpt-4"),
-      messages: this.messages,
-      onFinish,
-    });
-  }
-}
-```
-
-**Base Agent:**
-```typescript
-import { Agent } from "agents";
-
-export class MyAgent extends Agent<Env> {
-  onStart() {
-    this.sql`CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY)`;
-  }
-  
-  async onRequest(request: Request) {
-    return Response.json({ state: this.state });
-  }
-}
-```
-
-## Reading Order
-
-| Task | Files to Read |
+| Task | Documentation |
 |------|---------------|
-| Quick start | README only |
-| Build chat agent | README → api.md (AIChatAgent) → patterns.md |
-| Setup project | README → configuration.md |
-| Add React frontend | README → api.md (Client Hooks) → patterns.md |
-| Build MCP server | api.md (MCP) → patterns.md |
-| Background tasks | api.md (Scheduling, Task Queue) → patterns.md |
-| Debug issues | gotchas.md |
+| Create an agent | [Quick start](https://developers.cloudflare.com/agents/getting-started/quick-start/) |
+| Add agents to a Workers application | [Add to an existing project](https://developers.cloudflare.com/agents/getting-started/add-to-existing-project/) |
+| AI chat with history, streaming, and tools | [Chat agents](https://developers.cloudflare.com/agents/communication-channels/chat/chat-agents/) |
+| Custom stateful logic or real-time collaboration | [Agents API](https://developers.cloudflare.com/agents/runtime/agents-api/) |
+| Expose tools through MCP | [MCP handler APIs](https://developers.cloudflare.com/agents/model-context-protocol/apis/handler-api/) |
 
-## Package Entry Points
+## Task references
 
-| Import | Purpose |
-|--------|---------|
-| `agents` | Server-side Agent classes, lifecycle |
-| `agents/react` | `useAgent()` hook for WebSocket connections |
-| `agents/ai-react` | `useAgentChat()` hook for AI chat UIs |
-
-## In This Reference
-- [configuration.md](./configuration.md) - SDK setup, wrangler config, routing
-- [api.md](./api.md) - Agent classes, lifecycle, client hooks
-- [patterns.md](./patterns.md) - Common workflows, best practices
-- [gotchas.md](./gotchas.md) - Common issues, limits
-
-## See Also
-- durable-objects - Agent infrastructure
-- d1 - External database integration
-- workers-ai - AI model integration
-- vectorize - Vector search for RAG patterns
+- [Configuration](configuration.md): bindings, deployment, request and email routing.
+- [APIs](api.md): state, SQL, RPC, clients, and MCP integration.
+- [Patterns](patterns.md): chat tools, collaboration, and background processing.
+- [Troubleshooting](gotchas.md): persistence, connections, configuration errors, and limits.
