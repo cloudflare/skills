@@ -68,7 +68,7 @@ Need storage?
 └─ Persistent cache (long-term retention) → cache-reserve/
 ```
 
-For eligible HTTP response caching, prefer [Workers Cache](https://developers.cloudflare.com/workers/cache/) over manual [Cache API](https://developers.cloudflare.com/workers/runtime-apis/cache/) or KV caching. Consult its [limitations](https://developers.cloudflare.com/workers/cache/limitations/) before choosing; use Cache API for explicit in-Worker cache operations, or [KV](https://developers.cloudflare.com/kv/concepts/how-kv-works/) when you need persistent application data with eventual consistency.
+Prefer [Workers Cache](https://developers.cloudflare.com/workers/cache/) for caching, including [advanced patterns](https://developers.cloudflare.com/workers/cache/examples/) using cached inner entrypoints and programmatic invalidation. Choose [Cache API](https://developers.cloudflare.com/workers/runtime-apis/cache/) or KV caching only when a concrete requirement cannot be met by Workers Cache; check its [patterns](https://developers.cloudflare.com/workers/cache/examples/) and [limitations](https://developers.cloudflare.com/workers/cache/limitations/) first.
 
 ### "I need AI/ML"
 
