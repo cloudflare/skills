@@ -5,7 +5,7 @@ description: Use when porting a Cloudflare Sandbox app from stable @cloudflare/s
 
 # Migrate stable → Sandbox SDK 1.0 preview (`@next`)
 
-**Perform** the port. Follow the steps in order. Depth lives in docs—fetch the linked page when a step needs detail.
+**Perform** the authorized local port through validation. Resolve production cutover separately, after the changes are concrete and reviewable. Depth lives in docs—fetch the linked page when a step needs detail.
 
 Human guide: [Migrate](https://developers.cloudflare.com/sandbox/1-0-preview/migrate/) · [1.0 preview](https://developers.cloudflare.com/sandbox/1-0-preview/)
 
@@ -17,13 +17,12 @@ Existing apps should migrate **when you can**, so you are ready when 1.0 becomes
 
 ## Workflow
 
-1. **Review** hard rules and the replacement map  
-2. **Audit** the codebase; list hits and target shapes  
-3. **Clarify** with the user (cutover, bridge, Python image, unclear sites)  
-4. **Upgrade** package, image, and code  
-5. **Validate**  
+1. **Review and audit** the hard rules, replacement map, and affected code. Infer bridge and interpreter requirements from the project.
+2. **Upgrade locally** the package, image, and code within the requested scope. Resolve missing consequential details only for the changes that depend on them.
+3. **Validate locally**, fix migration defects, and rerun the affected checks.
+4. **Prepare cutover** details and a reviewable result. Deploy only when the exact target and disruptive rollout are explicitly authorized.
 
-Stop after any step that needs a user decision.
+A pending deployment decision does not block the local port. If another decision is needed, pause its dependent work and continue independent changes and validation. A request to migrate code does not by itself authorize a production deployment.
 
 ## Hard rules
 
@@ -62,12 +61,15 @@ rg 'SANDBOX_TRANSPORT|transport:|setTransport|enableDefaultSession|createSession
 
 Also: string `exec(`, `cd` then a later `exec`, bare `createCodeContext` / `runCode` on `Sandbox`.
 
-## Clarify (ask when needed)
+## Resolve Local Requirements
 
-- OK to cut production with `--containers-rollout=immediate` (live processes/terminals/streams may stop)?  
-- Self-deployed bridge? Leave on stable.  
-- Python interpreter → **`-python`** image variant?  
-- Call sites not covered by the map?  
+Inspect dependencies, images, configuration, and call sites before asking:
+
+- **Self-deployed bridge:** leave it on stable. If it shares dependencies or an image with the migrating app, isolate the targets before upgrading; ask when the intended split is unclear.
+- **Python interpreter:** preserve existing Python use with the matching **`-python`** preview image. Ask only when the code and configuration leave the requirement unclear.
+- **Unmapped call sites:** inspect the linked migration documentation and installed preview types. Ask about application behavior only when it cannot be inferred and materially changes the port.
+
+Collect unresolved choices together when practical. Production rollout timing and interruption approval belong to the cutover step after local validation.
 
 ## Upgrade
 
@@ -149,17 +151,9 @@ const result = await clone.output({ encoding: "utf8" });
 
 Delete transport settings entirely. Remove session APIs. Isolate users with **separate sandbox IDs**.
 
-### Deploy cutover
+## Validate Locally
 
-Staging/branch first. Production is **one** deploy of matching Worker + image:
-
-```sh
-npx wrangler deploy --containers-rollout=immediate
-```
-
-Leave `rollout_active_grace_period` at default `0` (or set `0` if raised). After cutover, pre-deploy process/terminal IDs are invalid. Details: [Migrate](https://developers.cloudflare.com/sandbox/1-0-preview/migrate/) · [Container rollouts](https://developers.cloudflare.com/containers/platform-details/rollouts/)
-
-## Validate
+Use the checks relevant to the migrated features in a local or disposable environment. Fix failures caused by the port and rerun the affected checks without asking for approval at each iteration. If a runtime or dependency is unavailable, finish the checks that can run and report the remaining validation as pending. Do not use production as an implicit smoke-test target.
 
 1. Lockfile + Dockerfile on the same `@next` line  
 2. Typecheck against `@next`  
@@ -168,7 +162,20 @@ Leave `rollout_active_grace_period` at default `0` (or set `0` if raised). After
 5. Errors distinguished: unavailable / interrupted-RPC / stale / local wait  
 6. No live secrets in sandbox env  
 7. Grep again for removed APIs  
-8. Production used `--containers-rollout=immediate`  
+
+## Production Cutover
+
+After local work is ready, summarize the changes and validation, then resolve the exact account, Worker, environment/configuration, and matching image. State that immediate rollout can interrupt live processes, terminals, and streams and invalidates their existing IDs. If explicit authorization already covers that target and interruption, reuse it; otherwise ask immediately before deployment. Keep any deployment pending while completing the local migration deliverable.
+
+Use staging or a branch environment first when available and authorized. Production is **one** deploy of matching Worker + image, using the resolved target arguments:
+
+```sh
+npx wrangler deploy --containers-rollout=immediate
+```
+
+Leave `rollout_active_grace_period` at default `0` (or set `0` if raised). After cutover, pre-deploy process/terminal IDs are invalid. Details: [Migrate](https://developers.cloudflare.com/sandbox/1-0-preview/migrate/) · [Container rollouts](https://developers.cloudflare.com/containers/platform-details/rollouts/)
+
+When deployment is authorized and performed, verify the intended target used `--containers-rollout=immediate` with matching package and image, then run the applicable authorized post-deploy checks. Report deployment and runtime verification separately from local validation; do not claim production cutover occurred when it remains pending.
 
 Then day-to-day work uses **`sandbox-next`**.
 
