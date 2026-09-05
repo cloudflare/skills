@@ -87,4 +87,4 @@ These are non-obvious and prevent most failures — see [gotchas.md](gotchas.md)
 
 - [r2-data-catalog](../r2-data-catalog/) — Iceberg sink destination
 - [r2-sql](../r2-sql/) — query the ingested data
-- [r2](../r2/) · [queues](../queues/) · [workers](../workers/)
+- [r2](../r2/) · [queues](../queues/) · [workers](https://developers.cloudflare.com/workers/)

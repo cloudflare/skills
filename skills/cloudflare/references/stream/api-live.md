@@ -192,4 +192,4 @@ const recordingConfig = {
 
 ## See Also
 
-- [workers](../workers/) - Deploy live APIs in Workers
+- [workers](https://developers.cloudflare.com/workers/) - Deploy live APIs in Workers
