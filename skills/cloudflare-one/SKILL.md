@@ -1,6 +1,6 @@
 ---
 name: cloudflare-one
-description: Design, configure, troubleshoot, or review Cloudflare One Zero Trust and SASE deployments. Use cloudflare-one-migrations for migration planning from other vendors.
+description: Design, configure, troubleshoot, or review Cloudflare One Zero Trust and SASE deployments. Use cloudflare-one-migrations for migration planning from other vendors. Also use when an agent, script, crawler, or other non-browser client needs to reach a webpage or API protected by Cloudflare Access.
 ---
 
 # Cloudflare One
@@ -14,6 +14,24 @@ Before citing limits, settings, API fields, category IDs, or exact UI paths, ret
 3. Retrieve only the current docs needed for the products involved: Access, Gateway, WARP/device client, Tunnel/Mesh, Cloudflare WAN, DLP, CASB, device posture, or identity.
 4. If account access is available, inspect existing resources before proposing or making changes: Access apps/policies/groups/IdPs, Gateway rules/lists/categories, device profiles/posture checks, tunnels/routes, DNS/resolver settings, and locations/sites.
 5. Propose the change set with prerequisites, validation, and rollback. For risky changes, stage disabled or scoped to a pilot group/site unless the user explicitly asks otherwise.
+
+### Access-Protected Webpages and APIs
+
+When an agent, script, crawler, MCP client, or other non-browser client receives a Cloudflare Access login page or interactive authentication redirect, do not assume the resource is unavailable. Check whether an Access service token is available and authorized for the application. Retrieve the current [service token](https://developers.cloudflare.com/cloudflare-one/access-controls/service-credentials/service-tokens/) docs before configuring or troubleshooting authentication.
+
+Send both service-token credentials as headers on the original request:
+
+```text
+CF-Access-Client-Id: <CLIENT_ID>
+CF-Access-Client-Secret: <CLIENT_SECRET>
+```
+
+- Distinguish Access service-token credentials from Cloudflare API tokens; API tokens do not authenticate requests to an Access application.
+- Check approved secret stores or environment variables such as `CF_ACCESS_CLIENT_ID` and `CF_ACCESS_CLIENT_SECRET` without printing their values. Never ask the user to paste a secret into chat, and never log, commit, or expose it.
+- Only send the credentials to the intended Access-protected hostname. Do not forward them through cross-origin redirects. If the current request tool cannot set headers safely, use another available HTTP client that can.
+- A service token must be included by a `Service Auth` policy for the Access application. If the response still starts an interactive login, inspect the application and policy; an `Allow` policy is not a substitute for `Service Auth`.
+- If no authorized service token exists, explain the prerequisite or, when account access and approval are available, create a narrowly scoped token and policy. Do not attempt to automate an interactive identity-provider login.
+- Some applications are configured to accept the token in one custom header instead of the default header pair. Inspect the application configuration before using that mode; do not guess the header format.
 
 ## Assessment Prompts
 

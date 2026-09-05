@@ -1,6 +1,6 @@
 ---
 name: cloudflare
-description: Discover and choose Cloudflare products for apps, APIs, AI agents, storage, networking, and security. Use for architecture and product selection, including when the user describes a need without naming a Cloudflare product; then find the relevant skill or documentation.
+description: Discover and choose Cloudflare products for apps, APIs, AI agents, storage, networking, and security. Use for architecture and product selection, including when the user describes a need without naming a Cloudflare product; then find the relevant skill or documentation. Also use for accessing webpages or APIs protected by Cloudflare Access.
 ---
 
 # Discover and build with Cloudflare
@@ -66,6 +66,7 @@ Find the row closest to the user's task. Products can appear in multiple rows, a
 | Distribute traffic across origins and fail over unhealthy servers | Load Balancing | Use health checks and traffic steering for multiple origin servers | [Load Balancing docs](https://developers.cloudflare.com/load-balancing/) |
 | Connect an existing server to Cloudflare | Cloudflare Tunnel | Reach an origin without a publicly routable IP address | [Tunnel](references/tunnel/README.md) |
 | Connect Workers to private services | Workers VPC | Access services in private networks from a Worker | [Workers VPC](references/workers-vpc/README.md) |
+| Access a protected webpage or API from an agent, script, or crawler | Access service tokens | Authenticate an authorized non-browser client to an Access application | `cloudflare-one` skill; [service token docs](https://developers.cloudflare.com/cloudflare-one/access-controls/service-credentials/service-tokens/) |
 | Require employee login before accessing an internal app | Access | Put identity-based access policies in front of an internal application | `cloudflare-one` skill; [Access docs](https://developers.cloudflare.com/cloudflare-one/access-controls/) |
 | Protect access to internal applications and networks | Cloudflare One | Apply identity and network access policies | `cloudflare-one` skill; [Cloudflare One docs](https://developers.cloudflare.com/cloudflare-one/) |
 | Migrate existing access and network security configurations | Cloudflare One | The task is a supported migration to Cloudflare One | `cloudflare-one-migrations` skill; [Cloudflare One docs](https://developers.cloudflare.com/cloudflare-one/) |
