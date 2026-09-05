@@ -12,7 +12,9 @@ The user invoked this command with: $ARGUMENTS
 
 ## Instructions
 
-Read `agents-sdk/SKILL.md` for SDK guidance and `agents-sdk/references/mcp.md` for the relevant developer documentation. Follow the linked server and security guides for scaffolding, dependency versions, implementation, and authentication; use the migration guide when adapting an existing server. Validate the requested tools and endpoint locally before deployment.
+Resolve the Markdown links below relative to this command file.
+
+Read the [Agents SDK skill](../skills/agents-sdk/SKILL.md) for SDK guidance and the [MCP reference](../skills/agents-sdk/references/mcp.md) for the relevant developer documentation. Follow the linked server and security guides for scaffolding, dependency versions, implementation, and authentication; use the migration guide when adapting an existing server. Validate the requested tools and endpoint locally before deployment.
 
 ## Example Usage
 
