@@ -32,7 +32,6 @@ Find the row closest to the user's task. Products can appear in multiple rows, a
 | Move a Pages project to Workers | Workers + Workers Static Assets | The task calls for migrating the hosting platform | [Pages migration guide](https://developers.cloudflare.com/workers/static-assets/migration-guides/migrate-from-pages/) |
 | Let customers deploy code on your platform | Workers for Platforms | Run and manage customer Workers with per-customer controls | [Workers for Platforms](references/workers-for-platforms/README.md) |
 | Let customers use their own domains with your app | Cloudflare for SaaS | Manage custom hostnames, TLS certificates, and origin routing; check hostname validation and apex-domain plan requirements. Combine with Workers for Platforms when customers also deploy code | [SaaS docs](https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/) |
-| Provision Cloudflare accounts for customers or teams | Tenant | Manage multiple accounts and their services; check access requirements | [Tenant docs](https://developers.cloudflare.com/tenant/) |
 | Connect a Worker to storage or another service | Bindings | Give the Worker access to configured resources through its environment | [Bindings](references/bindings/README.md) |
 | Run containerized services or Linux software | Containers | The workload needs a container image or software outside the Workers runtime | [Containers](references/containers/README.md) |
 | Execute generated or untrusted code, build Code Mode tools, or create on-demand previews | Dynamic Workers | Load code at runtime in isolated Workers; check bindings, egress controls, and resource limits. Choose Sandbox when execution needs Linux or shell tools | [Dynamic Workers docs](https://developers.cloudflare.com/dynamic-workers/) |
@@ -44,11 +43,12 @@ Find the row closest to the user's task. Products can appear in multiple rows, a
 | Connect to an existing PostgreSQL or MySQL database | Hyperdrive | Keep the existing database and optimize connections from Workers | [Hyperdrive](references/hyperdrive/README.md) |
 | Distribute configuration or other key-value data | KV | Read-heavy key-value access fits the workload's consistency requirements | [KV](references/kv/README.md) |
 | Store uploads, downloads, or large objects | R2 | Store files by object key; pair with D1 when searchable metadata needs SQL | [R2](references/r2/README.md) |
-| Store versioned file trees, agent checkpoints, or repositories | Artifacts | Files need versioning and Git-compatible access | [Artifacts](references/artifacts/README.md) |
+| Store versioned file trees, agent checkpoints, or repositories | Artifacts | Files need versioning and Git-compatible access; currently closed beta, so confirm access before implementation | [Artifacts](references/artifacts/README.md) |
 | Ingest event streams into a data lake | Pipelines | Transform and deliver streaming records into R2 | [Pipelines](references/pipelines/README.md) |
 | Manage Iceberg tables in R2 | R2 Data Catalog | Organize tables for a data lake and compatible query engines | [R2 Data Catalog](references/r2-data-catalog/README.md) |
 | Query a data lake with SQL | R2 SQL | Analyze data in R2 Data Catalog rather than transactional application records | [R2 SQL](references/r2-sql/README.md) |
 | Cache application responses | Workers Cache | Default for application caching; check the patterns and limitations before choosing alternatives | [Workers Cache](https://developers.cloudflare.com/workers/cache/); see caching guidance below |
+| Accelerate an existing website and control cached content | Cache/CDN | Configure caching for a proxied origin using Cache Rules, expiration settings, and purging | [Cache/CDN docs](https://developers.cloudflare.com/cache/) |
 | Keep origin content in a persistent cache | Cache Reserve | Reduce origin fetches with persistent CDN cache storage | [Cache Reserve](references/cache-reserve/README.md) |
 | Process jobs asynchronously or buffer bursts of work | Queues | Decouple producers and consumers; use Workflows for durable multi-step orchestration | [Queues](references/queues/README.md) |
 | Run a job that retries, waits, and resumes across steps | Workflows | Coordinate durable multi-step business processes | [Workflows](references/workflows/README.md) |
@@ -59,18 +59,21 @@ Find the row closest to the user's task. Products can appear in multiple rows, a
 | Observe and control requests to AI providers | AI Gateway | Add inference analytics, caching, and request controls | [AI Gateway](references/ai-gateway/README.md) |
 | Build stateful agents with tools, scheduling, or chat | Agents SDK | Implement agent behavior on Cloudflare; add Dynamic Workers or Sandbox for the required execution runtime | `agents-sdk` skill; [Agents docs](https://developers.cloudflare.com/agents/) |
 | Build durable agents with TypeScript hooks | Flue | Use an open agent framework with Cloudflare and Node.js targets | [Flue](https://flueframework.com/); [getting started](https://flueframework.com/docs/guide/getting-started/); [Cloudflare target](https://flueframework.com/docs/guide/cloudflare-target/) |
-| Remember users and context across conversations | Agent Memory | Extract and recall durable memories; currently private beta, so verify access | [Agent Memory docs](https://developers.cloudflare.com/agent-memory/) |
 | Expose tools through a remote MCP server | Workers + Agents SDK | Publish tools for MCP clients, with authentication appropriate to the service | `agents-sdk` skill, its `references/mcp.md`; [MCP docs](https://developers.cloudflare.com/agents/model-context-protocol/) |
-| Give an agent an identity for payments | Cloudflare Wallets | Reserve and use a stable wallet handle for the account and its agents; check current capabilities | [Wallets docs](https://developers.cloudflare.com/wallets/) |
 | Automate browsers, take screenshots, or extract rendered pages | Browser Run | The task requires a browser rather than a plain HTTP request | [Browser Run](references/browser-rendering/README.md) |
+| Connect a domain, configure DNS records, or troubleshoot resolution | DNS | Manage authoritative records and choose whether traffic is proxied through Cloudflare | [DNS docs](https://developers.cloudflare.com/dns/) |
+| Configure HTTPS and certificates | SSL/TLS | Secure connections from visitors to Cloudflare and from Cloudflare to the origin | [SSL/TLS docs](https://developers.cloudflare.com/ssl/) |
+| Distribute traffic across origins and fail over unhealthy servers | Load Balancing | Use health checks and traffic steering for multiple origin servers | [Load Balancing docs](https://developers.cloudflare.com/load-balancing/) |
 | Connect an existing server to Cloudflare | Cloudflare Tunnel | Reach an origin without a publicly routable IP address | [Tunnel](references/tunnel/README.md) |
 | Connect Workers to private services | Workers VPC | Access services in private networks from a Worker | [Workers VPC](references/workers-vpc/README.md) |
+| Require employee login before accessing an internal app | Access | Put identity-based access policies in front of an internal application | `cloudflare-one` skill; [Access docs](https://developers.cloudflare.com/cloudflare-one/access-controls/) |
 | Protect access to internal applications and networks | Cloudflare One | Apply identity and network access policies | `cloudflare-one` skill; [Cloudflare One docs](https://developers.cloudflare.com/cloudflare-one/) |
 | Migrate existing access and network security configurations | Cloudflare One | The task is a supported migration to Cloudflare One | `cloudflare-one-migrations` skill; [Cloudflare One docs](https://developers.cloudflare.com/cloudflare-one/) |
 | Proxy a TCP or UDP application | Spectrum | Protect and accelerate non-HTTP application traffic | [Spectrum](references/spectrum/README.md) |
 | Connect a network directly to Cloudflare | Network Interconnect | Dedicated network connectivity is required | [Network Interconnect](references/network-interconnect/README.md) |
 | Improve routing across the network | Argo Smart Routing | Optimize traffic paths to the origin | [Argo Smart Routing](references/argo-smart-routing/README.md) |
 | Reduce Worker-to-backend latency | Smart Placement | Place Worker execution closer to the backends it calls | [Smart Placement](references/smart-placement/README.md) |
+| Redirect URLs, rewrite paths or headers, or change origin routing | Rules | Use Redirect, Transform, or Origin Rules when configuration can express the required behavior | [Rules docs](https://developers.cloudflare.com/rules/) |
 | Make small HTTP request or response changes | Snippets | Lightweight edge logic meets the need | [Snippets](references/snippets/README.md) |
 | Protect forms from automated abuse | Turnstile | Add bot challenges and server-side token validation | `turnstile-spin` skill; [Turnstile docs](https://developers.cloudflare.com/turnstile/) |
 | Filter malicious web requests | WAF | Apply application-layer rules and managed protections | [WAF](references/waf/README.md) |
@@ -81,8 +84,6 @@ Find the row closest to the user's task. Products can appear in multiple rows, a
 | Store a Worker's API keys and credentials | Workers secrets | Bind secrets to a Worker without committing values to source | `wrangler` skill; [secrets docs](https://developers.cloudflare.com/workers/configuration/secrets/) |
 | Share managed secrets across services | Secrets Store | Manage reusable account-level secrets | [Secrets Store](references/secrets-store/README.md) |
 | Control where data is processed and stored | Data Localization Suite | Evaluate regional processing and storage controls against the actual requirements | [Data Localization docs](https://developers.cloudflare.com/data-localization/) |
-| Separate a client's identity from HTTP request contents | Privacy Gateway | The application needs an Oblivious HTTP relay architecture | [Privacy Gateway docs](https://developers.cloudflare.com/privacy-gateway/) |
-| Proxy traffic while protecting client privacy | Privacy Proxy | The integration needs a MASQUE-based forward proxy | [Privacy Proxy docs](https://developers.cloudflare.com/privacy-proxy/) |
 | Prove a claim without identifying or tracking the user | Privacy Pass | Use privacy-preserving tokens in a supported integration | [Privacy Pass docs](https://developers.cloudflare.com/privacy-pass/) |
 | Store, resize, transform, and deliver images | Cloudflare Images | Use managed image processing and delivery | [Images](references/images/README.md) |
 | Encode, store, and deliver live or on-demand video | Stream | Use managed video infrastructure | [Stream](references/stream/README.md) |
@@ -117,7 +118,7 @@ For example, a file-upload app can use Workers for its API, R2 for files, D1 for
 
 ## Find guidance for a task not listed here
 
-Use the [Cloudflare product directory](https://developers.cloudflare.com/directory/?group=Developer+platform) for additional products and their current docs. Follow links to the specific feature or API involved. Use [Choose a data or storage product](https://developers.cloudflare.com/workers/platform/storage-options/) for storage tradeoffs, and the product's limits, pricing, and migration guides when evaluating scale, cost, or an upgrade. This table maps common tasks and the directory's products; it does not enumerate every possible application.
+Use the [Cloudflare product directory](https://developers.cloudflare.com/directory/) for additional products and their current docs. Follow links to the specific feature or API involved. Use [Choose a data or storage product](https://developers.cloudflare.com/workers/platform/storage-options/) for storage tradeoffs, and the product's limits, pricing, and migration guides when evaluating scale, cost, or an upgrade. This table maps common tasks to selected Cloudflare products; it does not enumerate every possible application.
 
 ## Caching
 
