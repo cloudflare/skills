@@ -60,15 +60,6 @@ Clone this repo and copy the skill folders into the appropriate directory for yo
 | OpenAI Codex | `~/.codex/skills/` | [docs](https://developers.openai.com/codex/skills/) |
 | Pi | `~/.pi/agent/skills/` | [docs](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent#skills) |
 
-## Commands
-
-Commands are user-invocable slash commands that you explicitly call.
-
-| Command | Description |
-|---------|-------------|
-| `/cloudflare:build-agent` | Build an AI agent on Cloudflare using the Agents SDK |
-| `/cloudflare:build-mcp` | Build an MCP server on Cloudflare |
-
 ## Skills
 
 Skills are contextual and auto-loaded based on your conversation. When a request matches a skill's triggers, the agent loads and applies the relevant skill to provide accurate, up-to-date guidance.
