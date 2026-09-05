@@ -8,6 +8,4 @@ For changes to skills, commands, or bundled references:
 - Link directly to the relevant product or workflow page. Prefer links over duplicated API signatures, limits, pricing, configuration, or examples that can become stale.
 - When correcting outdated reference content, replace it with a short pointer to the current documentation where possible.
 - If the required guidance is missing from `developers.cloudflare.com`, describe the documentation gap in the pull request rather than adding unsupported guidance to a skill.
-- Include the source URLs you checked and any validation performed in the pull request description.
 
-The maintainers listed in [CODEOWNERS](CODEOWNERS) own review of these changes. Keep documentation maintenance with the affected change.
