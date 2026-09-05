@@ -27,6 +27,7 @@ Help agents discover what they can build with Cloudflare and choose the products
 | Run a multi-step job that must retry, wait, and resume | **Workflows**; use **Cron Triggers** when the need is simply to start work on a schedule |
 | Run containerized services or software needing a Linux environment | **Containers**; use **Sandbox SDK** for isolated code execution and interactive development environments |
 | Let customers deploy their own code on your platform | **Workers for Platforms** |
+| Let customers use their own domains with your SaaS application | **[Cloudflare for SaaS](https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/)** for custom hostnames, TLS certificates, and routing to your application; combine with **Workers for Platforms** when customers also deploy their own code |
 | Make small HTTP request or response changes | **Snippets** |
 
 ### Store and move data
@@ -101,6 +102,8 @@ For work spanning products, keep the overall product recommendation here and use
 ## Find product references
 
 For **Dynamic Workers**, use the [product docs](https://developers.cloudflare.com/dynamic-workers/) and [documentation index](https://developers.cloudflare.com/dynamic-workers/llms.txt) directly; there is no bundled product reference. Retrieve the relevant API, bindings, egress control, and resource-limit guidance before implementing.
+
+For **Cloudflare for SaaS**, use the [product docs](https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/) directly; there is no bundled product reference. Follow the guides for custom hostname onboarding, hostname and certificate validation, and fallback origins. Check plan requirements for apex domains and other advanced configurations.
 
 The folder in parentheses is under `references/`. Start with its `README.md`; open `configuration.md`, `api.md`, `patterns.md`, or `gotchas.md` only when the task needs that detail.
 
