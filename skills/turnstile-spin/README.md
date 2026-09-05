@@ -2,13 +2,18 @@
 
 End-to-end setup skill for Cloudflare Turnstile. Loads when an agent is asked to add Turnstile, set up CAPTCHA, or protect a form from bots.
 
-`SKILL.md` is the canonical machine-readable behavior. The hosted prompt at [`developers.cloudflare.com/turnstile/spin/prompt.md`](https://developers.cloudflare.com/turnstile/spin/prompt.md) packages the same behavior for agents that do not have this bundle installed. Product requirements come from the [Turnstile documentation](https://developers.cloudflare.com/turnstile/).
+`SKILL.md` and its linked workflow references define the canonical machine-readable behavior. The hosted prompt at [`developers.cloudflare.com/turnstile/spin/prompt.md`](https://developers.cloudflare.com/turnstile/spin/prompt.md) packages the same behavior for agents that do not have this bundle installed. Product requirements come from the [Turnstile documentation](https://developers.cloudflare.com/turnstile/).
 
 ## Layout
 
 | File                              | Purpose                                                                |
 | --------------------------------- | ---------------------------------------------------------------------- |
-| `SKILL.md`                        | Main wizard instructions for the agent                                 |
+| `SKILL.md`                        | Workflow router and shared security constraints                                 |
+| `references/creation.md`          | Widget creation, validation, and persistence workflow                   |
+| `references/existing-widget.md`   | Guarded secret retrieval and storage                                   |
+| `references/integration.md`       | Frontend/backend contract and framework snippet routing                |
+| `references/migration.md`         | reCAPTCHA and hCaptcha migration details                               |
+| `references/edge-cases.md`        | Account, domain, and validation troubleshooting                         |
 | `scripts/auth-probe.sh`           | Probes the customer's Cloudflare API token for Turnstile scope         |
 | `scripts/widget-create.sh`        | Creates the Turnstile widget via the Cloudflare API                    |
 | `scripts/validate.sh`             | Dummy-siteverify + hostname check at the end of the wizard             |
@@ -38,11 +43,11 @@ mkdir -p .claude/skills/turnstile-spin && \
   -o .claude/skills/turnstile-spin/SKILL.md
 ```
 
-The single-file install does not include `scripts/` or `references/`; the hosted prompt fetches those on demand with `fetch_spin_script`. `scripts/persist-skill.sh` requires the cloned bundle above and cannot be used from a single-file install. For other agents, see the table in [`SKILL.md`](./SKILL.md#step-11--persist-the-skill).
+The single-file install does not include `scripts/` or `references/`; the hosted prompt fetches those on demand with `fetch_spin_script`. `scripts/persist-skill.sh` requires the cloned bundle above and cannot be used from a single-file install. For other agents, see [skill persistence](references/creation.md#persist-skill).
 
 ## Keep the hosted prompt in sync
 
-Any behavioral change to `SKILL.md` must also be applied to `public/turnstile/spin/prompt.md` in the `cloudflare-docs` repository. The hosted file adds bootstrap instructions, but its wizard, security boundaries, recovery flow, and validation requirements must match this skill.
+Any behavioral change to `SKILL.md` or its workflow references must also be applied to `public/turnstile/spin/prompt.md` in the `cloudflare-docs` repository. The hosted file adds bootstrap instructions, but its wizard, security boundaries, recovery flow, and validation requirements must match this skill.
 
 ## Related
 
