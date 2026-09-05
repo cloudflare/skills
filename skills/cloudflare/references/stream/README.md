@@ -109,6 +109,6 @@ curl -X POST \
 
 ## See Also
 
-- [workers](../workers/) - Deploy Stream APIs in Workers
+- [workers](https://developers.cloudflare.com/workers/) - Deploy Stream APIs in Workers
 - [pages](../pages/) - Integrate Stream with Pages
 - [workers-ai](../workers-ai/) - AI-generate captions

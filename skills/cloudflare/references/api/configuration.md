@@ -157,4 +157,4 @@ account_id = "your-account-id"
 
 - [api.md](./api.md) - Client initialization, authentication
 - [gotchas.md](./gotchas.md) - Rate limits, timeout errors
-- [Wrangler Reference](../wrangler/) - CLI tool details
+- [Wrangler Reference](https://developers.cloudflare.com/workers/wrangler/) - CLI tool details
