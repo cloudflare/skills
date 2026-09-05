@@ -1,13 +1,6 @@
 ---
 name: turnstile-spin
 description: Set up, repair, or migrate to Cloudflare Turnstile bot verification in an existing frontend and backend, including server-side Siteverify.
-references:
-  - vanilla-html
-  - nextjs-app
-  - nextjs-pages
-  - astro
-  - sveltekit
-  - hugo
 ---
 
 # Turnstile Spin skill
@@ -17,6 +10,19 @@ Turns the prompt "set up Turnstile" into a working end-to-end integration: a wid
 You are the agent. Run the wizard below by invoking the scripts under `scripts/` and branching on their JSON output. The scripts hold the deterministic logic (API calls, retry/error handling); your job is orchestration, codebase reading, confirmation, and the frontend + backend edits.
 
 This file is the canonical machine-readable behavior. Product requirements come from the [Turnstile documentation](https://developers.cloudflare.com/turnstile/), and the hosted prompt must mirror this behavior.
+
+## Framework references
+
+Read the reference for the existing frontend when wiring the integration:
+
+| Frontend | Reference |
+|---|---|
+| Vanilla HTML | [vanilla-html](references/vanilla-html.md) |
+| Next.js App Router | [nextjs-app](references/nextjs-app.md) |
+| Next.js Pages Router | [nextjs-pages](references/nextjs-pages.md) |
+| Astro | [astro](references/astro.md) |
+| SvelteKit | [sveltekit](references/sveltekit.md) |
+| Hugo | [hugo](references/hugo.md) |
 
 ## When to load this skill
 
