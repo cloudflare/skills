@@ -106,7 +106,7 @@ Find the row closest to the user's task. Products can appear in multiple rows, a
 | Release a feature gradually or target user groups | Flagship | Change feature availability with targeting and percentage rollouts | [Flagship](references/flagship/README.md) |
 | Manage infrastructure as code | Terraform or Pulumi | Use Terraform for declarative configuration or Pulumi for infrastructure in programming languages | [Terraform](references/terraform/README.md); [Pulumi](references/pulumi/README.md) |
 | Automate account or product configuration through an API | Cloudflare REST API | Manage resources programmatically; prefer bindings for supported operations inside Workers | [REST API](references/api/README.md) |
-| Debug failures and trace application requests | Workers Logs and Traces | Investigate runtime errors and execution paths | [Observability](references/observability/README.md) |
+| Debug failures and trace application requests | Local Explorer, Workers Logs and Traces | Verify request flows and binding state locally, or investigate deployed runtime errors | `workers-development` skill; [Observability](references/observability/README.md) |
 | Process Worker execution events in code | Tail Workers | Build custom log or exception processing | [Tail Workers](references/tail-workers/README.md) |
 | Export Worker logs to another system | Workers Logpush | Deliver logs to a supported external destination | [Logpush docs](https://developers.cloudflare.com/workers/observability/logs/logpush/) |
 | Measure custom application events | Workers Analytics Engine | Analyze high-cardinality event data written from Workers | [Analytics Engine](references/analytics-engine/README.md) |
