@@ -2,17 +2,17 @@
 
 Each rule has an imperative summary, what to check, the correct pattern, and an anti-pattern where applicable. Code examples are plain TypeScript — no MDX components.
 
-When a rule involves config fields or API signatures that may evolve, a **Retrieve** callout reminds you to check the latest docs or types before flagging. All doc paths are relative to `https://developers.cloudflare.com`.
+Apply the rules relevant to the requested task. A **Retrieve** callout points to evidence for an uncertain config field, API signature, runtime behavior, or limit; it is not a requirement to fetch every linked page. Use the project's installed types and compatibility settings as the baseline for existing code. All doc paths are relative to `https://developers.cloudflare.com`.
 
 ---
 
 ## Configuration
 
-### Keep compatibility_date current
+### Set an explicit compatibility_date
 
-Set `compatibility_date` to today on new projects. Update periodically on existing ones to access new APIs and fixes.
+Set `compatibility_date` to today on new projects. For existing projects, preserve the configured date and flags unless the requested change requires different compatibility behavior or an upgrade is requested.
 
-**Check**: `compatibility_date` exists. Flag if older than 6 months.
+**Check**: `compatibility_date` exists and supports the affected feature with the configured flags. Age alone does not establish a defect; assess compatibility changes before recommending an update.
 
 ```jsonc
 // wrangler.jsonc
@@ -238,7 +238,7 @@ export class AuthService extends WorkerEntrypoint {
 const auth = await env.AUTH_SERVICE.verifyToken(token);
 ```
 
-**Retrieve**: verify `WorkerEntrypoint` import path and signature against latest `@cloudflare/workers-types`.
+**Retrieve**: verify uncertain `WorkerEntrypoint` import paths or signatures against the project's target types, consulting current docs when runtime compatibility needs clarification.
 
 ### Use Hyperdrive for external database connections
 
@@ -338,15 +338,7 @@ export default {
 
 A Promise that is not `await`ed, `return`ed, or passed to `ctx.waitUntil()` is a floating promise. Causes: dropped results, swallowed errors, unfinished work. The runtime may terminate the isolate before it completes.
 
-**Check**: every `fetch()`, `env.*.put()`, `env.*.send()`, and any other async call is handled. Enable `no-floating-promises` lint rule.
-
-```bash
-# ESLint
-npx eslint --rule '{"@typescript-eslint/no-floating-promises": "error"}' src/
-
-# oxlint
-npx oxlint --deny typescript/no-floating-promises src/
-```
+**Check**: async calls in the affected execution path are awaited, returned, or attached to the appropriate lifetime. Use the project's existing floating-promise lint check when available and relevant; otherwise inspect the promise paths directly. Adding lint tooling is a separate change, not a prerequisite for reviewing this behavior.
 
 ```ts
 // Correct: await when you need the result

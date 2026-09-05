@@ -17,14 +17,16 @@ globs:
 
 # Cloudflare Workers
 
-STOP. Your knowledge of Cloudflare Workers APIs and limits may be outdated. Always retrieve current documentation before any Workers, KV, R2, D1, Durable Objects, Queues, Vectorize, AI, or Agents SDK task.
+Apply this guidance when the affected code runs on Workers or uses a Cloudflare binding/API; matching a JavaScript or TypeScript glob alone does not make unrelated code a Workers task.
+
+For existing code, use the project's installed versions, generated types, Wrangler configuration, compatibility date, and flags as the baseline. Retrieve current documentation when an affected API signature, configuration field, runtime behavior, or limit is uncertain or the task requests current guidance. Read the relevant source/configuration and expand context as needed; routine edits do not require fetching every product's docs or reviewing full files.
 
 ## Docs
 
 - https://developers.cloudflare.com/workers/
 - Cloudflare MCP (`docs` tool): `https://mcp.cloudflare.com/mcp`
 
-For all limits and quotas, retrieve from the product's `/platform/limits/` page.
+When citing or relying on a limit or quota, verify it on the product's `/platform/limits/` page.
 
 ## Commands
 
@@ -36,6 +38,8 @@ For all limits and quotas, retrieve from the product's `/platform/limits/` page.
 
 Run `wrangler types` after changing bindings in wrangler.jsonc.
 
+Use the project's existing validation commands for the affected behavior and preserve required repository checks. Type-check binding/type changes and test relevant runtime paths; a prose or comment edit does not by itself require type-checking or linting. Fix failures caused by the requested change and rerun affected checks before reporting completion.
+
 ## Node.js Compatibility
 
 If you encounter `Dynamic require of "X" is not supported` or missing Node.js APIs:
@@ -43,7 +47,7 @@ If you encounter `Dynamic require of "X" is not supported` or missing Node.js AP
 ```jsonc
 {
   "compatibility_flags": ["nodejs_compat"],
-  "compatibility_date": "YYYY-MM-DD" // Use today's date
+  "compatibility_date": "YYYY-MM-DD" // Preserve the project date if it supports the required APIs
 }
 ```
 

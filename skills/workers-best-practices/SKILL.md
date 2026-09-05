@@ -3,11 +3,11 @@ name: workers-best-practices
 description: Reviews and authors Cloudflare Workers code against production best practices. Load when writing new Workers, reviewing Worker code, configuring wrangler.jsonc, or checking for common Workers anti-patterns (streaming, floating promises, global state, secrets, bindings, observability). Biases towards retrieval from Cloudflare docs over pre-trained knowledge.
 ---
 
-Your knowledge of Cloudflare Workers APIs, types, and configuration may be outdated. **Prefer retrieval over pre-training** for any Workers code task — writing or reviewing.
+Use the project's installed versions, generated types, and Wrangler compatibility settings as the baseline for existing code. Retrieve current Cloudflare sources when the affected API, configuration, runtime behavior, or limit needs verification.
 
 ## Retrieval Sources
 
-Fetch the **latest** versions before writing or reviewing Workers code. Do not rely on baked-in knowledge for API signatures, config fields, or binding shapes.
+Consult only the sources needed for the task. A newer published type package does not supersede the project's configured target; distinguish a defect in that target from a possible upgrade.
 
 | Source | How to retrieve | Use for |
 |--------|----------------|---------|
@@ -16,22 +16,10 @@ Fetch the **latest** versions before writing or reviewing Workers code. Do not r
 | Wrangler config schema | `node_modules/wrangler/config-schema.json` | Config fields, binding shapes, allowed values |
 | Cloudflare docs | Search tool or `https://developers.cloudflare.com/workers/` | API reference, compatibility dates/flags |
 
-## FIRST: Fetch Latest References
-
-Before reviewing or writing Workers code, retrieve the current best practices page and relevant type definitions. If the project's `node_modules` has an older version, **prefer the latest published version**.
-
-```bash
-# Fetch latest workers types
-mkdir -p /tmp/workers-types-latest && \
-  npm pack @cloudflare/workers-types --pack-destination /tmp/workers-types-latest && \
-  tar -xzf /tmp/workers-types-latest/cloudflare-workers-types-*.tgz -C /tmp/workers-types-latest
-# Types at /tmp/workers-types-latest/package/index.d.ts
-```
-
 ## Reference Documentation
 
-- `references/rules.md` — all best practice rules with code examples and anti-patterns
-- `references/review.md` — type validation, config validation, binding access patterns, review process
+- [references/rules.md](references/rules.md) — consult relevant patterns when authoring or assessing affected Workers behavior
+- [references/review.md](references/review.md) — review process and targeted type/config validation; use for code reviews or when those checks are needed
 
 ## Rules Quick Reference
 
@@ -39,7 +27,7 @@ mkdir -p /tmp/workers-types-latest && \
 
 | Rule | Summary |
 |------|---------|
-| Compatibility date | Set `compatibility_date` to today on new projects; update periodically on existing ones |
+| Compatibility date | Set `compatibility_date` to today on new projects; assess existing code against its configured date and flags |
 | nodejs_compat | Enable the `nodejs_compat` flag — many libraries depend on Node.js built-ins |
 | wrangler types | Run `wrangler types` to generate `Env` — never hand-write binding interfaces |
 | Secrets | Use `wrangler secret put`, never hardcode secrets in config or source |
@@ -102,14 +90,7 @@ mkdir -p /tmp/workers-types-latest && \
 
 ## Review Workflow
 
-1. **Retrieve** — fetch latest best practices page, workers types, and wrangler schema
-2. **Read full files** — not just diffs; context matters for binding access patterns
-3. **Check types** — binding access, handler signatures, no `any`, no unsafe casts (see `references/review.md`)
-4. **Check config** — compatibility_date, nodejs_compat, observability, secrets, binding-code consistency
-5. **Check patterns** — streaming, floating promises, global state, serialization boundaries
-6. **Check security** — crypto usage, secret handling, timing-safe comparisons, error handling
-7. **Validate with tools** — `npx tsc --noEmit`, lint for `no-floating-promises`
-8. **Reference rules** — see `references/rules.md` for each rule's correct pattern
+For a requested review, follow the [review process](references/review.md#review-process). For implementation work, use the relevant patterns and validate the changed behavior with the project's existing checks; a narrow edit does not require a full Workers audit.
 
 ## Scope
 
@@ -121,7 +102,7 @@ This skill covers Workers-specific best practices and code review. For related t
 
 ## Principles
 
-- **Be certain.** Retrieve before flagging. If unsure about an API, config field, or pattern, fetch the docs first.
+- **Be certain.** Establish findings from the affected code and its configured target. If an API, config field, or pattern remains uncertain, retrieve the relevant docs or types before flagging it.
 - **Provide evidence.** Reference line numbers, tool output, or docs links.
 - **Focus on what developers will copy.** Workers code in examples and docs gets pasted into production.
 - **Correctness over completeness.** A concise example that works beats a comprehensive one with errors.

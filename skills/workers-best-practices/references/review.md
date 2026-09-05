@@ -4,39 +4,23 @@ How to review Workers code for type correctness, API usage, config validity, and
 
 ## Retrieval
 
-Prefer retrieval over pre-training. Types, config schemas, and APIs change with compatibility dates and new bindings.
+Use the project's configured runtime and dependency versions as the baseline. Retrieve additional sources only for affected behavior that needs verification; types, schemas, and APIs can vary with versions and compatibility settings.
 
 ### Workers types
 
-Fetch the latest `@cloudflare/workers-types` before reviewing. The project may have an older version installed.
+Start with the generated types or installed type package actually referenced by the project's TypeScript configuration. Check the relevant declaration and package version when a signature or binding shape is in question. If dependencies are absent, use the manifest/lockfile to identify the target version and consult matching published declarations or docs as needed.
 
-```bash
-mkdir -p /tmp/workers-types-latest && \
-  npm pack @cloudflare/workers-types --pack-destination /tmp/workers-types-latest && \
-  tar -xzf /tmp/workers-types-latest/cloudflare-workers-types-*.tgz -C /tmp/workers-types-latest
-# Types are at /tmp/workers-types-latest/package/index.d.ts
-```
+Use the project's existing `wrangler types` command when a binding/configuration change requires regenerating types. A read-only review can inspect the existing declarations and note evidence of drift without changing generated files.
 
-Search this file for the specific type, class, or interface under review. Do not guess type names.
-
-Alternative: `npx wrangler types` generates a typed `Env` interface from the local wrangler config.
-
-Fallback: read `node_modules/@cloudflare/workers-types/index.d.ts`. Note the installed version.
+Consult newer published types when the task involves an upgrade, a new feature, or a discrepancy needing investigation. Confirm compatibility with the configured target before recommending their APIs; do not silently replace the installed version as the review baseline.
 
 ### Wrangler config schema
 
-The authoritative schema is bundled with wrangler as `config-schema.json` (JSON Schema draft-07).
-
-```bash
-# Read from local node_modules
-cat node_modules/wrangler/config-schema.json
-```
-
-Do not guess field names or structures — look them up.
+Use the schema bundled with the project's Wrangler version at `node_modules/wrangler/config-schema.json`. Search the affected field or binding definition and follow its references as needed; reading the entire schema is not a prerequisite. If unavailable locally, consult the matching version's schema or docs.
 
 ### Cloudflare docs
 
-Use the Cloudflare docs search tool if available, or fetch from `https://developers.cloudflare.com/workers/`. The best practices page lives at `/workers/best-practices/workers-best-practices/`.
+For uncertain APIs, runtime semantics, compatibility requirements, or limits, use the Cloudflare docs search tool or retrieve the relevant page under `https://developers.cloudflare.com/workers/`. The best practices page lives at `/workers/best-practices/workers-best-practices/`. Reuse sufficient evidence already available for the task rather than fetching the same references before every edit.
 
 ---
 
@@ -51,7 +35,7 @@ Use the Cloudflare docs search tool if available, or fetch from `https://develop
 
 ### Handler and class signatures
 
-Verify against current type definitions — do not assume signatures are stable.
+Verify affected signatures against the project's target type definitions; consult current docs if runtime support or compatibility remains uncertain.
 
 - Correct import path (most Workers platform classes import from `"cloudflare:workers"`)
 - Generic type parameter on base classes (e.g., `DurableObject<Env>`)
@@ -91,7 +75,7 @@ Old patterns survive in codebases long after APIs change.
 
 ### Required fields
 
-For executable examples, verify: `name`, `compatibility_date`, `main`. Check the schema for current required fields.
+For executable examples, verify: `name`, `compatibility_date`, `main`. Check the target Wrangler schema when required fields are in question.
 
 ### Config format
 
@@ -110,7 +94,7 @@ For executable examples, verify: `name`, `compatibility_date`, `main`. Check the
 
 | Check | What to look for |
 |-------|-----------------|
-| Stale `compatibility_date` | Should be recent; use `$today` placeholder in docs |
+| Compatibility date and flags | Verify support for the affected feature under the configured settings; use `$today` for new-project examples |
 | Missing DO migrations | Every new DO class needs a migration entry |
 | Binding name mismatch | Config `binding`/`name` must match `env.X` in code |
 | Secrets in config | Never in `vars` — use `wrangler secret put` |
@@ -150,18 +134,14 @@ Valid: plain objects, arrays, strings, numbers, booleans, null, `ArrayBuffer`, `
 
 ## Review Process
 
-1. **Retrieve** — fetch latest workers types, wrangler schema, and best practices page
-2. **Read full files** — not just diffs; context matters for binding access patterns
-3. **Categorize code** — determines what to check:
+1. **Establish scope and target** — start with the requested diff, files, or behavior and the relevant project versions/configuration. Read surrounding handlers, classes, binding declarations, and callers when needed to establish impact; expand to full files when that context is necessary.
+2. **Categorize code** — determines what to check:
    - **Illustrative** (concept demo, comments for most logic): verify correct API names and realistic signatures
    - **Demonstrative** (functional snippet, would work in context): verify syntax, correct APIs, correct binding access
    - **Executable** (standalone, runs without modification): verify compiles, runs, includes imports and config
-4. **Check types** — binding access pattern, handler signatures, no `any`, no unsafe casts
-5. **Check config** — compatibility_date, nodejs_compat, observability, secrets, binding-code consistency
-6. **Check patterns** — streaming, floating promises, global state, serialization boundaries
-7. **Check security** — crypto usage, secret handling, timing-safe comparisons, error handling
-8. **Validate with tools** — `npx tsc --noEmit`, lint for `no-floating-promises`
-9. **Assess risk** — HIGH (auth, crypto, bindings), MEDIUM (business logic, config), LOW (style, comments)
+3. **Investigate affected behavior** — apply relevant type, config, binding-access, streaming, promise-lifetime, state, serialization, and security checks. Retrieve missing evidence using the sources above; a full review can cover all applicable categories, while a focused review stays within its requested scope.
+4. **Validate proportionally** — use existing project commands that can resolve the identified concern. Type-check changes to types or binding contracts; inspect or lint affected async paths for floating promises; run relevant runtime tests for behavior changes. Preserve required repository checks, but do not install a new linter or run an unrelated full suite as a review prerequisite. Comments or prose-only changes generally need static inspection. Report checks that could not run and their consequences.
+5. **Report supported findings** — connect each issue to the affected execution path and concrete impact, citing file lines, tool output, or documentation. Separate upgrade suggestions from defects in the configured target. For requested fixes, correct failures caused by the change and rerun affected checks before reporting completion.
 
 ### Output format
 
