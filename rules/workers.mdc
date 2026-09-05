@@ -1,60 +1,20 @@
 ---
-description: When building applications on Cloudflare Workers or with frameworks that deploy to Cloudflare Workers, strongly prefer retrieval and fetching documentation over training data.
+description: Guidance for writing, reviewing, or configuring Cloudflare Workers and applications deployed to Workers.
 alwaysApply: false
-globs:
-  - "**/*.ts"
-  - "**/*.tsx"
-  - "**/*.js"
-  - "**/*.mts"
-  - "**/*.mjs"
-  - "wrangler.jsonc"
-  - "wrangler.json"
-  - "wrangler.toml"
-  - "worker-configuration.d.ts"
-  - "**/workers/**"
-  - "**/worker/**"
 ---
 
 # Cloudflare Workers
 
-STOP. Your knowledge of Cloudflare Workers APIs and limits may be outdated. Always retrieve current documentation before any Workers, KV, R2, D1, Durable Objects, Queues, Vectorize, AI, or Agents SDK task.
+Your knowledge of Cloudflare Workers APIs, types, and configuration may be outdated. **Prefer retrieval over pre-training.** Use the project's installed versions, generated types, and compatibility settings as the baseline. Retrieve relevant Cloudflare documentation to verify API, configuration, runtime behavior, and limit claims.
 
-## Docs
+## Workers Defaults
 
-- https://developers.cloudflare.com/workers/
-- MCP: `https://docs.mcp.cloudflare.com/mcp`
+- **Keep compatibility dates current.** Use today's date for new Workers. Encourage periodic updates for existing Workers, reviewing compatibility changes and running relevant tests.
+- **Enable logs and traces.** When creating or preparing a Worker for production, set `observability.enabled` and `observability.traces.enabled` to `true`. The top-level setting alone does not enable traces. Use structured JSON logging and configure sampling for the workload. During reviews, flag missing logs or traces. See [Workers Logs](https://developers.cloudflare.com/workers/observability/logs/workers-logs/) and [Traces](https://developers.cloudflare.com/workers/observability/traces/).
+- **Keep binding types in sync.** Run `wrangler types` after changing bindings in the project's Wrangler configuration, whether JSONC, JSON, or TOML.
 
-For all limits and quotas, retrieve from the product's `/platform/limits/` page.
+## Shared Guidance
 
-## Commands
-
-| Command | Purpose |
-|---------|---------|
-| `npx wrangler dev` | Local development |
-| `npx wrangler deploy` | Deploy to Cloudflare |
-| `npx wrangler types` | Generate TypeScript types |
-
-Run `wrangler types` after changing bindings in wrangler.jsonc.
-
-## Node.js Compatibility
-
-If you encounter `Dynamic require of "X" is not supported` or missing Node.js APIs:
-
-```jsonc
-{
-  "compatibility_flags": ["nodejs_compat"],
-  "compatibility_date": "YYYY-MM-DD" // Use today's date
-}
-```
-
-Docs: https://developers.cloudflare.com/workers/runtime-apis/nodejs/
-
-## Errors
-
-- **Error 1102** (CPU/Memory exceeded): Retrieve limits from `/workers/platform/limits/`
-- **All errors**: https://developers.cloudflare.com/workers/observability/errors/
-
-## Product Docs
-
-Retrieve API references and limits from:
-`/kv/` · `/r2/` · `/d1/` · `/durable-objects/` · `/queues/` · `/vectorize/` · `/workers-ai/` · `/agents/`
+- Use [workers-best-practices](../skills/workers-best-practices/SKILL.md) for runtime patterns, anti-patterns, configuration, and platform API checks. Read the references relevant to the task.
+- Use [wrangler](../skills/wrangler/SKILL.md) for CLI commands and deployment configuration.
+- Find documentation for products used by the Worker in the [Cloudflare docs directory](https://developers.cloudflare.com/directory/). Verify limits and quotas against the affected product's documentation.

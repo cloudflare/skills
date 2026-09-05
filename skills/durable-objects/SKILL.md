@@ -1,6 +1,6 @@
 ---
 name: durable-objects
-description: Create and review Cloudflare Durable Objects. Use when building stateful coordination (chat rooms, multiplayer games, booking systems), implementing RPC methods, SQLite storage, alarms, WebSockets, or reviewing DO code for best practices. Covers Workers integration, wrangler config, and testing with Vitest. Biases towards retrieval from Cloudflare docs over pre-trained knowledge.
+description: Build, debug, or review Cloudflare Durable Objects code for persistent state and coordination.
 ---
 
 # Durable Objects
@@ -26,13 +26,13 @@ Fetch the relevant doc page when implementing features.
 - Implementing RPC methods, alarms, or WebSocket handlers
 - Reviewing existing DO code for best practices
 - Configuring wrangler.jsonc/toml for DO bindings and migrations
-- Writing tests with `@cloudflare/vitest-pool-workers`
+- Writing tests with Cloudflare’s Vitest integration
 - Designing sharding strategies and parent-child relationships
 
 ## Reference Documentation
 
 - `./references/rules.md` - Core rules, storage, concurrency, RPC, alarms
-- `./references/testing.md` - Vitest setup, unit/integration tests, alarm testing
+- [Testing reference](./references/testing.md) - Current Vitest documentation, migration choices, and test selection
 - `./references/workers.md` - Workers handlers, types, wrangler config, observability
 
 Search: `blockConcurrencyWhile`, `idFromName`, `getByName`, `setAlarm`, `sql.exec`
@@ -170,17 +170,6 @@ async alarm(): Promise<void> {
 await this.ctx.storage.deleteAlarm();
 ```
 
-## Testing Quick Start
+## Testing
 
-```typescript
-import { env } from "cloudflare:test";
-import { describe, it, expect } from "vitest";
-
-describe("MyDO", () => {
-  it("should work", async () => {
-    const stub = env.MY_DO.getByName("test");
-    const result = await stub.addItem("test");
-    expect(result).toBe(1);
-  });
-});
-```
+Read the [testing reference](./references/testing.md) before configuring a suite or writing Durable Object tests. It routes to current setup, APIs, and examples and identifies the behavior to cover.

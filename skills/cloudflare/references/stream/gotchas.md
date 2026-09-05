@@ -127,4 +127,4 @@ async function uploadWithErrorHandling(url: string, file: File) {
 
 ## See Also
 
-- [workers](../workers/) - Deploy Stream APIs securely
+- [workers](https://developers.cloudflare.com/workers/) - Deploy Stream APIs securely

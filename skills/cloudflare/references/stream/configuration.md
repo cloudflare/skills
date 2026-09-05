@@ -137,5 +137,5 @@ const playerParams = new URLSearchParams({
 
 ## See Also
 
-- [wrangler](../wrangler/) - Wrangler CLI and configuration
-- [workers](../workers/) - Deploy Stream APIs in Workers
+- [wrangler](https://developers.cloudflare.com/workers/wrangler/) - Wrangler CLI and configuration
+- [workers](https://developers.cloudflare.com/workers/) - Deploy Stream APIs in Workers

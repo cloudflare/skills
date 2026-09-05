@@ -1,0 +1,26 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "cloudflare",
+  "version": "1.0.0",
+  "description": "Build, test, and deploy applications on Cloudflare with platform guidance Skills and the Cloudflare MCP server.",
+  "author": {
+    "name": "Cloudflare",
+    "email": "support@cloudflare.com",
+    "url": "https://www.cloudflare.com/products/workers/"
+  },
+  "homepage": "https://developers.cloudflare.com/",
+  "repository": "https://github.com/cloudflare/skills",
+  "license": "Apache-2.0",
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "durable-objects",
+    "agents",
+    "mcp",
+    "wrangler",
+    "serverless",
+    "compute",
+    "storage",
+    "applications"
+  ]
+}

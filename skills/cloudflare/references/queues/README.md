@@ -91,6 +91,6 @@ See [gotchas.md](./gotchas.md) for detailed solutions.
 
 ## See Also
 
-- [workers](../workers/) - Worker runtime for producers/consumers
+- [workers](https://developers.cloudflare.com/workers/) - Worker runtime for producers/consumers
 - [r2](../r2/) - Process R2 event notifications via queues
 - [d1](../d1/) - Batch write to D1 from queue consumers
