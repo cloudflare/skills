@@ -86,14 +86,7 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 | cloudflare-email-service | Implementing or troubleshooting Email Sending, Email Routing, and delivery configuration |
 | turnstile-spin | Setting up, repairing, or migrating Turnstile bot verification, including server-side Siteverify |
 | web-perf | Auditing Core Web Vitals (FCP, LCP, TBT, CLS), render-blocking resources, network chains |
-
-## Cloudflare One
-
-Short, retrieval-first skills for [Cloudflare One](https://developers.cloudflare.com/cloudflare-one/) work.
-
-| Skill | Useful for |
-|-------|------------|
-| cloudflare-one | Designing, configuring, troubleshooting, or reviewing Cloudflare One deployments across Access, Gateway, WARP, Tunnel, Magic WAN, DLP, CASB, posture, and identity |
+| cloudflare-one | Designing, configuring, troubleshooting, or reviewing [Cloudflare One](https://developers.cloudflare.com/cloudflare-one/) deployments across Access, Gateway, WARP, Tunnel, Magic WAN, DLP, CASB, posture, and identity |
 | cloudflare-one-migrations | Migration assessments, policy mapping, rollout plans, and gap analysis for Zscaler, Palo Alto, legacy VPN/SWG, and SASE migrations to Cloudflare One |
 
 ## MCP Servers
