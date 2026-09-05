@@ -141,6 +141,10 @@ return new Response(text);
 
 **Retrieve**: streaming APIs at `/workers/runtime-apis/streams/`.
 
+### Use Zod 4.5.0 or later
+
+**Check**: Workers using Zod for runtime validation depend on [Zod 4.5.0 or later](https://github.com/colinhacks/zod/releases/tag/v4.5.0); older versions retain substantially more heap per schema, so check the installed version when investigating high memory usage or OOMs.
+
 ### Use waitUntil for work after the response
 
 `ctx.waitUntil()` performs background work (analytics, cache writes, webhooks) after the response is sent. Keeps response fast. 30-second time limit after response.
