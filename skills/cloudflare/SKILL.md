@@ -22,6 +22,23 @@ Fetch the **latest** information before citing specific numbers, API signatures,
 
 When a reference file and the docs disagree, **trust the docs**. This is especially important for: numeric limits, pricing tiers, type signatures, and configuration options.
 
+## Specialized workflows
+
+When a dedicated skill is available in the current installation, use it for the workflow below. For skills-only installations that omit it, use the product references in this skill and current documentation.
+
+| Request | Skill |
+|---|---|
+| Build an AI agent or remote MCP server on Cloudflare | agents-sdk |
+| Write or review production Workers | workers-best-practices |
+| Run Wrangler commands or configure deployment | wrangler |
+| Build stateful coordination with Durable Objects | durable-objects |
+| Send transactional email or route incoming email | cloudflare-email-service |
+| Add or repair Turnstile on an existing form/backend | turnstile-spin |
+| Plan or operate Zero Trust/SASE | cloudflare-one |
+| Migrate another VPN/SWG/SASE platform | cloudflare-one-migrations |
+| Use Sandbox stable, preview, or migrate between them | sandbox-stable, sandbox-next, sandbox-migrate-to-next |
+| Diagnose website loading or interaction performance | web-perf |
+
 ## Quick Decision Trees
 
 ### "I need feature flags"

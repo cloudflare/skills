@@ -62,7 +62,7 @@ Clone this repo and copy the skill folders into the appropriate directory for yo
 
 ## Commands
 
-Commands are user-invocable slash commands that you explicitly call.
+These Claude Code plugin commands are explicitly invoked shortcuts. Other clients can ask for the same workflows through the `agents-sdk` skill; portable Agent Plugins only discover skills and MCP servers, not `commands/`.
 
 | Command | Description |
 |---------|-------------|
@@ -83,8 +83,9 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 | sandbox-migrate-to-next | Port a stable Sandbox app to `@cloudflare/sandbox@next` |
 | wrangler | Deploying and managing Workers, KV, R2, D1, Vectorize, Queues, Workflows |
 | web-perf | Auditing Core Web Vitals (FCP, LCP, TBT, CLS), render-blocking resources, network chains |
-| building-mcp-server-on-cloudflare | Building remote MCP servers with tools, OAuth, and deployment |
-| building-ai-agent-on-cloudflare | Building AI agents with state, WebSockets, and tool integration |
+| workers-best-practices | Writing, reviewing, and configuring production Workers |
+| cloudflare-email-service | Email Sending, Email Routing, and delivery configuration |
+| turnstile-spin | Adding, repairing, or migrating Turnstile verification in an existing frontend and backend |
 
 ## Cloudflare One
 

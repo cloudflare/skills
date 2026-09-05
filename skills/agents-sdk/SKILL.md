@@ -1,11 +1,17 @@
 ---
 name: agents-sdk
-description: Build, debug, or review Cloudflare Agents SDK applications using the agents package.
+description: Build, debug, or review AI agents and remote MCP servers on Cloudflare using the Agents SDK, including tools, authentication, and deployment.
 ---
 
 # Cloudflare Agents SDK
 
 Your knowledge of the Agents SDK may be outdated. **Prefer retrieval over pre-training** for any Agents SDK task.
+
+## Build workflows
+
+For a new AI agent, read [configuration](references/configuration.md) and [routing](references/routing.md), then the references for the requested capabilities below. Inspect an existing project's dependencies and setup before adding to it.
+
+For a remote MCP server, start with [MCP](references/mcp.md). Follow its linked server and security guides for the handler API, tools, authentication, and migrations. Validate the requested tools and endpoint locally before deployment. These workflows are available directly through this skill, including clients without slash-command support.
 
 ## Retrieval Sources
 
