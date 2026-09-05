@@ -144,4 +144,4 @@ curl -I https://example.com/asset.jpg | grep -i cache
 
 ## See Also
 - [r2](../r2/) - Cache Reserve built on R2 storage
-- [workers](../workers/) - Workers integration with Cache API
+- [workers](https://developers.cloudflare.com/workers/) - Workers integration with Cache API

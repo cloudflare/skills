@@ -129,5 +129,5 @@ wrangler dev --persist-to=./.wrangler/state
 
 ## See Also
 
-- [workers](../workers/) - Worker runtime and fetch handler patterns
+- [workers](https://developers.cloudflare.com/workers/) - Worker runtime and fetch handler patterns
 - [hyperdrive](../hyperdrive/) - Connection pooling for external databases
