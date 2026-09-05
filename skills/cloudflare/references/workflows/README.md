@@ -1,77 +1,23 @@
 # Cloudflare Workflows
 
-Durable multi-step applications with automatic retries, state persistence, and long-running execution.
+Use Workflows for durable, multi-step jobs that must retry, wait, and resume without losing completed work. An instance is one execution; steps define persistence and retry boundaries.
 
-## What It Does
+Fetch the relevant current documentation before implementing. API shapes, configuration, testing helpers, limits, and examples belong in the docs rather than in this reference.
 
-- Chain steps with automatic retry logic
-- Persist state between steps (minutes → weeks)
-- Handle failures without losing progress
-- Wait for external events/approvals
-- Sleep without consuming resources
-
-**Available:** Free & Paid Workers plans
-
-## Core Concepts
-
-**Workflow**: Class extending `WorkflowEntrypoint` with `run` method
-**Instance**: Single execution with unique ID & independent state
-**Steps**: Independently retriable units via `step.do()` - API calls, DB queries, AI invocations
-**State**: Persisted from step returns; step name = cache key
-
-## Quick Start
-
-```typescript
-import { WorkflowEntrypoint, WorkflowStep, WorkflowEvent } from 'cloudflare:workers';
-
-type Env = { MY_WORKFLOW: Workflow; DB: D1Database };
-type Params = { userId: string };
-
-export class MyWorkflow extends WorkflowEntrypoint<Env, Params> {
-  async run(event: WorkflowEvent<Params>, step: WorkflowStep) {
-    const user = await step.do('fetch user', async () => {
-      return await this.env.DB.prepare('SELECT * FROM users WHERE id = ?')
-        .bind(event.payload.userId).first();
-    });
-    
-    await step.sleep('wait 7 days', '7 days');
-    
-    await step.do('send reminder', async () => {
-      await sendEmail(user.email, 'Reminder!');
-    });
-  }
-}
-```
-
-## Key Features
-
-- **Durability**: Failed steps don't re-run successful ones
-- **Retries**: Configurable backoff (constant/linear/exponential)
-- **Events**: `waitForEvent()` for webhooks/approvals (configurable timeout)
-- **Sleep**: `sleep()` / `sleepUntil()` for scheduling
-- **Parallel**: `Promise.all()` for concurrent steps
-- **Idempotency**: Check-then-execute patterns
-
-## Retrieval
-
-These reference files cover API shapes, code patterns, and debugging — things that are stable. For **limits, pricing, and other values that change**, always fetch the latest from the official docs:
-
-- **Limits:** https://developers.cloudflare.com/workflows/reference/limits/
-- **Pricing:** https://developers.cloudflare.com/workflows/reference/pricing/
-- **Workers API:** https://developers.cloudflare.com/workflows/build/workers-api/
-
-## Reading Order
-
-**Getting Started:** configuration.md → api.md → patterns.md  
-**Troubleshooting:** gotchas.md
+- **Start a project:** [Build your first Workflow](https://developers.cloudflare.com/workflows/get-started/guide/) covers scaffolding, configuration, deployment, and a first instance.
+- **Design durable execution:** [Rules of Workflows](https://developers.cloudflare.com/workflows/build/rules-of-workflows/) covers step boundaries, replay, state, and idempotency.
+- **Implement or manage an instance:** [Workers API](https://developers.cloudflare.com/workflows/build/workers-api/) covers steps, instance operations, parameters, and return types.
+- **Check capacity and cost:** fetch [limits](https://developers.cloudflare.com/workflows/reference/limits/) and [pricing](https://developers.cloudflare.com/workflows/reference/pricing/) for the target plan.
 
 ## In This Reference
-- [configuration.md](./configuration.md) - wrangler.jsonc setup, step config, bindings
-- [api.md](./api.md) - Step APIs, instance management, sleep/parameters
-- [patterns.md](./patterns.md) - Common workflows, testing, orchestration
-- [gotchas.md](./gotchas.md) - Timeouts, limits, debugging strategies
+
+- [configuration.md](./configuration.md) — setup, bindings, retry configuration, and local development
+- [api.md](./api.md) — steps, instance lifecycle, events, CLI, and REST operations
+- [patterns.md](./patterns.md) — design decisions, examples, orchestration, and tests
+- [gotchas.md](./gotchas.md) — failures, timeouts, replay, and capacity investigation
 
 ## See Also
-- [durable-objects](https://developers.cloudflare.com/durable-objects/) - Alternative stateful approach
-- [queues](../queues/) - Message-driven workflows
-- [workers](https://developers.cloudflare.com/workers/) - Entry point for workflow instances
+
+- [Durable Objects](https://developers.cloudflare.com/durable-objects/) — stateful coordination
+- [Queues](../queues/README.md) — asynchronous message delivery
+- [Workers](https://developers.cloudflare.com/workers/) — application entry points that trigger instances
