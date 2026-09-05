@@ -1,6 +1,6 @@
 ---
 name: nextjs-on-cloudflare
-description: Build, migrate, or deploy Next.js applications on Cloudflare Workers using vinext. Use when choosing a Next.js deployment approach on Cloudflare or starting a new Next.js project there; routes implementation to vinext's upstream skills and docs.
+description: Build, migrate, and deploy Next.js apps on Cloudflare Workers with vinext. Use when starting a project, moving an existing Next.js app to Cloudflare, choosing between vinext and OpenNext, or setting up vinext for Workers. Routes setup, migration, and deployment to maintained upstream skills and docs.
 ---
 
 # Next.js on Cloudflare
