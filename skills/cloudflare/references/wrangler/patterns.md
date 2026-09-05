@@ -98,13 +98,17 @@ describe("API", () => {
 
 ### Testing with Vitest
 
-Install: `npm install -D vitest @cloudflare/vitest-pool-workers`
+These examples assume an ESM project (`"type": "module"` in `package.json`). See the [current Vitest setup](https://developers.cloudflare.com/workers/testing/vitest-integration/write-your-first-test/) for prerequisites and migration guidance.
+
+Install: `npm install -D vitest@^4.1.0 @cloudflare/vitest-plugin`
 
 **vitest.config.ts:**
 ```typescript
-import { defineWorkersConfig } from "@cloudflare/vitest-pool-workers/config";
-export default defineWorkersConfig({
-  test: { poolOptions: { workers: { wrangler: { configPath: "./wrangler.jsonc" } } } }
+import { cloudflareTest } from "@cloudflare/vitest-plugin";
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({
+  plugins: [cloudflareTest({ wrangler: { configPath: "./wrangler.jsonc" } })],
 });
 ```
 

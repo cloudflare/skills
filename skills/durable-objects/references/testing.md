@@ -1,28 +1,25 @@
 # Testing Durable Objects
 
-Use `@cloudflare/vitest-pool-workers` to test DOs inside the Workers runtime.
+Use `@cloudflare/vitest-plugin` to test DOs inside the Workers runtime.
 
 ## Setup
+
+These examples assume an ESM project (`"type": "module"` in `package.json`). See the [current Vitest setup](https://developers.cloudflare.com/workers/testing/vitest-integration/write-your-first-test/) for prerequisites and migration guidance.
 
 ### Install Dependencies
 
 ```bash
-npm i -D vitest@~3.2.0 @cloudflare/vitest-pool-workers
+npm i -D vitest@^4.1.0 @cloudflare/vitest-plugin
 ```
 
 ### vitest.config.ts
 
 ```typescript
-import { defineWorkersConfig } from "@cloudflare/vitest-pool-workers/config";
+import { cloudflareTest } from "@cloudflare/vitest-plugin";
+import { defineConfig } from "vitest/config";
 
-export default defineWorkersConfig({
-  test: {
-    poolOptions: {
-      workers: {
-        wrangler: { configPath: "./wrangler.toml" },
-      },
-    },
-  },
+export default defineConfig({
+  plugins: [cloudflareTest({ wrangler: { configPath: "./wrangler.toml" } })],
 });
 ```
 
@@ -33,7 +30,7 @@ export default defineWorkersConfig({
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "moduleResolution": "bundler",
-    "types": ["@cloudflare/vitest-pool-workers"]
+    "types": ["@cloudflare/vitest-plugin/types"]
   },
   "include": ["./**/*.ts", "../src/worker-configuration.d.ts"]
 }
@@ -149,7 +146,6 @@ describe("DO listing", () => {
     await env.COUNTER.get(id2).increment();
     
     const ids = await listDurableObjectIds(env.COUNTER);
-    expect(ids.length).toBe(2);
     expect(ids.some(id => id.equals(id1))).toBe(true);
     expect(ids.some(id => id.equals(id2))).toBe(true);
   });
@@ -199,25 +195,7 @@ async alarm(): Promise<void> {
 
 ## Test Isolation
 
-Each test gets isolated storage automatically. DOs from one test don't affect others:
-
-```typescript
-describe("Isolation", () => {
-  it("first test creates DO", async () => {
-    const stub = env.COUNTER.getByName("isolated");
-    await stub.increment();
-    expect(await stub.getCount()).toBe(1);
-  });
-
-  it("second test has fresh state", async () => {
-    const ids = await listDurableObjectIds(env.COUNTER);
-    expect(ids.length).toBe(0); // Previous test's DO is gone
-    
-    const stub = env.COUNTER.getByName("isolated");
-    expect(await stub.getCount()).toBe(0); // Fresh instance
-  });
-});
-```
+Storage is isolated per test file, not per test. Use a unique Durable Object name per test or explicitly reset its state. See [isolation and concurrency](https://developers.cloudflare.com/workers/testing/vitest-integration/isolation-and-concurrency/).
 
 ## SQLite Storage Testing
 
