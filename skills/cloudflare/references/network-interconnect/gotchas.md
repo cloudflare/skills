@@ -62,7 +62,7 @@ await client.networkInterconnects.slots.list({
 ### 400 Bad Request: "invalid facility code"
 
 **Cause:** Typo or unsupported facility  
-**Solution:** Check [locations PDF](https://developers.cloudflare.com/network-interconnect/static/cni-locations-2026-01.pdf) for valid codes
+**Solution:** Check [locations PDF](https://developers.cloudflare.com/network-interconnect/static/cni-locations-05-may-2026.pdf) for valid codes
 
 ### 403 Forbidden: "Enterprise plan required"
 

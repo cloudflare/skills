@@ -123,5 +123,5 @@ See [gotchas.md](./gotchas.md) for complete limits and troubleshooting.
 ## Reference
 
 - [TCP Sockets API Documentation](https://developers.cloudflare.com/workers/runtime-apis/tcp-sockets/)
-- [Connect to databases guide](https://developers.cloudflare.com/workers/tutorials/connect-to-postgres/)
+- [Connect to databases guide](https://developers.cloudflare.com/workers/tutorials/postgres/)
 - [Cloudflare Tunnel setup](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/)
