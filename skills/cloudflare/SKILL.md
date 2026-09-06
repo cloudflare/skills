@@ -125,6 +125,16 @@ Use the [Cloudflare product directory](https://developers.cloudflare.com/directo
 
 Prefer [Workers Cache](https://developers.cloudflare.com/workers/cache/) for caching, including [advanced patterns](https://developers.cloudflare.com/workers/cache/examples/) using cached inner entrypoints and programmatic invalidation. Choose [Cache API](https://developers.cloudflare.com/workers/runtime-apis/cache/) or KV caching only when a concrete requirement cannot be met by Workers Cache; check its [patterns](https://developers.cloudflare.com/workers/cache/examples/) and [limitations](https://developers.cloudflare.com/workers/cache/limitations/) first.
 
+## Cross-product guides
+
+For tasks spanning products, fetch the matching developer guide before implementation.
+
+| Task | Developer guide |
+|------|-----------------|
+| Query SQL from a Worker | [Workers + D1](https://developers.cloudflare.com/d1/get-started/) |
+| Send bucket change notifications to a queue | [R2 + Queues](https://developers.cloudflare.com/r2/buckets/event-notifications/) |
+| Generate and search text embeddings | [Workers + Workers AI + Vectorize](https://developers.cloudflare.com/vectorize/get-started/embeddings/) |
+
 ## Working principles
 
 - Inspect the existing project and its pinned package versions before choosing an API or configuration shape.
