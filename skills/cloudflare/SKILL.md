@@ -54,7 +54,7 @@ Find the row closest to the user's task. Products can appear in multiple rows, a
 | Process jobs asynchronously or buffer bursts of work | Queues | Decouple producers and consumers; use Workflows for durable multi-step orchestration | [Queues](references/queues/README.md) |
 | Run a job that retries, waits, and resumes across steps | Workflows | Coordinate durable multi-step business processes | [Workflows](references/workflows/README.md) |
 | Start a Worker on a recurring schedule | Cron Triggers | Trigger scheduled work; combine with Queues or Workflows for the work itself | [Cron Triggers](references/cron-triggers/README.md) |
-| Run language, embedding, image, or speech models | Workers AI | Use managed inference; verify model capabilities, schemas, and pricing | [Workers AI](references/workers-ai/README.md) |
+| Run language, embedding, image, or speech models | Workers AI | Use managed inference; verify model capabilities, schemas, and pricing | `workers-ai` skill; [Workers AI](references/workers-ai/README.md) |
 | Add managed search or answers over your content | AI Search | Use a managed retrieval-augmented generation pipeline | [AI Search](references/ai-search/README.md) |
 | Build custom semantic search or retrieval | Vectorize + Workers AI | Control embeddings, indexing, and retrieval rather than using a managed pipeline | [Vectorize](references/vectorize/README.md); [Workers AI](references/workers-ai/README.md) |
 | Observe and control requests to AI providers | AI Gateway | Add inference analytics, caching, and request controls | [AI Gateway](references/ai-gateway/README.md) |
