@@ -45,7 +45,7 @@ Native forms that navigate do not need reset logic. For each same-page flow, ver
 
 ## Test 5: Skill persists to a bundle location
 
-After Step 11:
+When the user requests Step 11, verify the selected client destination contains the full executing bundle. An installed plugin should skip persistence. Example destinations:
 
 ```sh
 test -f .claude/skills/turnstile-spin/SKILL.md \
@@ -53,7 +53,7 @@ test -f .claude/skills/turnstile-spin/SKILL.md \
   || test -f .opencode/skills/turnstile-spin/SKILL.md
 ```
 
-Expected exit code: 0. File-oriented rules targets install the hosted `prompt.md` directly instead of using `persist-skill.sh`.
+Expected exit code: 0 for a requested copy. Compare the copied files with the executing bundle; no remote revision should be fetched. File-oriented rules targets install the hosted `prompt.md` directly instead of using `persist-skill.sh`.
 
 ## Running all cases
 

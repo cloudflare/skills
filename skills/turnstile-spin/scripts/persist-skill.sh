@@ -2,7 +2,7 @@
 # Persists the canonical Spin skill bundle into the current project.
 
 set +x
-set -uo pipefail
+set -euo pipefail
 
 unset CLOUDFLARE_API_TOKEN CF_API_TOKEN CLOUDFLARE_API_KEY CF_API_KEY
 unset CLOUDFLARE_EMAIL CF_API_EMAIL WIDGET_SECRET TURNSTILE_SECRET
@@ -31,7 +31,7 @@ if [[ "$(basename "$PATH_ARG")" != "SKILL.md" ]]; then
   exit 2
 fi
 
-for command_name in git python3; do
+for command_name in python3; do
   command -v "$command_name" >/dev/null 2>&1 || {
     echo "persist-skill: $command_name is required" >&2
     echo "{\"status\":\"error\",\"reason\":\"${command_name}_not_available\"}"
@@ -52,33 +52,10 @@ if [[ -e "$TARGET_DIR" ]] && ! python3 -I -c 'import os,sys; raise SystemExit(0 
   exit 1
 fi
 
-if ! TEMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/turnstile-spin-persist.XXXXXX")"; then
-  echo "persist-skill: could not create a temporary directory" >&2
-  echo '{"status":"error","reason":"temporary_directory_failed"}'
-  exit 1
-fi
-trap 'rm -rf "$TEMP_DIR"' EXIT
-
-if ! git -c core.hooksPath=/dev/null clone \
-  --quiet \
-  --depth 1 \
-  --filter=blob:none \
-  --sparse \
-  "https://github.com/cloudflare/skills.git" \
-  "$TEMP_DIR/repo"; then
-  echo "persist-skill: clone failed" >&2
-  echo '{"status":"error","reason":"clone_failed"}'
-  exit 1
-fi
-if ! git -C "$TEMP_DIR/repo" -c core.hooksPath=/dev/null sparse-checkout set skills/turnstile-spin; then
-  echo "persist-skill: sparse checkout failed" >&2
-  echo '{"status":"error","reason":"sparse_checkout_failed"}'
-  exit 1
-fi
-
-SOURCE_DIR="$TEMP_DIR/repo/skills/turnstile-spin"
+# Copy the bundle containing this executing helper, including when invoked via a symlink.
+SOURCE_DIR="$(python3 -I -c 'import pathlib,sys; print(pathlib.Path(sys.argv[1]).resolve().parent.parent)' "${BASH_SOURCE[0]}")"
 if [[ ! -f "$SOURCE_DIR/SKILL.md" ]]; then
-  echo "persist-skill: canonical bundle is missing SKILL.md" >&2
+  echo 'persist-skill: executing bundle is missing SKILL.md' >&2
   echo '{"status":"error","reason":"skill_missing"}'
   exit 1
 fi
@@ -88,12 +65,18 @@ import pathlib
 import shutil
 import sys
 
-source = pathlib.Path(sys.argv[1])
-target = pathlib.Path(sys.argv[2])
+source = pathlib.Path(sys.argv[1]).resolve()
+target = pathlib.Path(sys.argv[2]).resolve()
+# Never recurse into a destination inside the source, or copy links outside the bundle.
+if target == source or source in target.parents:
+    raise SystemExit("persist-skill: target must be outside the executing bundle")
+for entry in source.rglob("*"):
+    if entry.is_symlink():
+        raise SystemExit("persist-skill: bundle contains a symlink; copy a regular-file bundle")
 if target.exists():
     target.rmdir()
 target.parent.mkdir(parents=True, exist_ok=True)
-shutil.copytree(source, target, dirs_exist_ok=False)
+shutil.copytree(source, target, dirs_exist_ok=False, ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
 for script in (target / "scripts").glob("*.sh"):
     script.chmod(0o755)
 PY
