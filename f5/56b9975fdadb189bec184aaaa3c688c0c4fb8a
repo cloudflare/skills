@@ -1,0 +1,17 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "f556b9975fdadb189bec184aaaa3c688c0c4fb8a",
+  "prompts": {},
+  "sessions": {
+    "s_79d1419836562e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a06ed6-e948-7300-ba5d-b38be03eed87",
+        "model": "unknown"
+      },
+      "human_author": "Matt TK Taylor <matttaylor@cloudflare.com>"
+    }
+  }
+}
