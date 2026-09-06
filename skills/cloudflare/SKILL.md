@@ -52,7 +52,7 @@ Find the row closest to the user's task. Products can appear in multiple rows, a
 | Accelerate an existing website and control cached content | Cache/CDN | Configure caching for a proxied origin using Cache Rules, expiration settings, and purging | [Cache/CDN docs](https://developers.cloudflare.com/cache/) |
 | Keep origin content in a persistent cache | Cache Reserve | Reduce origin fetches with persistent CDN cache storage | [Cache Reserve](references/cache-reserve/README.md) |
 | Process jobs asynchronously or buffer bursts of work | Queues | Decouple producers and consumers; use Workflows for durable multi-step orchestration | [Queues](references/queues/README.md) |
-| Run a job that retries, waits, and resumes across steps | Workflows | Coordinate durable multi-step business processes | [Workflows](references/workflows/README.md) |
+| Run a job that retries, waits, and resumes across steps | Workflows | Coordinate durable multi-step business processes | `cloudflare-workflows` skill; [Workflows](references/workflows/README.md) |
 | Start a Worker on a recurring schedule | Cron Triggers | Trigger scheduled work; combine with Queues or Workflows for the work itself | [Cron Triggers](references/cron-triggers/README.md) |
 | Run language, embedding, image, or speech models | Workers AI | Use managed inference; verify model capabilities, schemas, and pricing | [Workers AI](references/workers-ai/README.md) |
 | Add managed search or answers over your content | AI Search | Use a managed retrieval-augmented generation pipeline | [AI Search](references/ai-search/README.md) |
