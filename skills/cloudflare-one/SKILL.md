@@ -7,6 +7,10 @@ description: Design, configure, troubleshoot, or review Cloudflare One Zero Trus
 
 Before citing limits, settings, API fields, category IDs, or exact UI paths, retrieve current information from the [Cloudflare One docs](https://developers.cloudflare.com/cloudflare-one/), the Cloudflare docs MCP server, or the Cloudflare API schema.
 
+**Resolve doc URLs, do not guess them.** Cloudflare One's docs have been reorganized repeatedly and its section names are not predictable — pages sit under `access-controls/access-settings/`, `team-and-resources/`, and `traffic-policies/` in ways that are easy to get wrong. Appending a guessed slug to a known parent path (for example `access-controls/policies/session-management/`) generally returns a 404, not a redirect.
+
+When you need a page whose exact URL is not already linked in this skill or returned by the docs MCP server, fetch `https://developers.cloudflare.com/cloudflare-one/llms.txt` (~140KB — grep it, do not read it whole) and take the URL verbatim. `https://developers.cloudflare.com/llms.txt` is the index across all products. Append `index.md` to any page URL, or send `Accept: text/markdown`, to get the Markdown source.
+
 ## Workflow
 
 1. Classify the ask: architecture, configuration, troubleshooting, migration, or review.

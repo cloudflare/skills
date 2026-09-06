@@ -135,3 +135,16 @@ Prefer [Workers Cache](https://developers.cloudflare.com/workers/cache/) for cac
 
 Cloudflare documentation: <https://developers.cloudflare.com/>
 Cloudflare changelog: <https://developers.cloudflare.com/changelog/>
+
+### Never guess a docs URL
+
+Docs paths get reorganized, and a plausible-looking path is usually a 404 rather than a redirect. Do not build a URL by appending a guessed slug to a known parent.
+
+If you do not already have the exact URL — from this skill, from `cloudflare-docs` search, or from a search result — resolve it first:
+
+1. Fetch `https://developers.cloudflare.com/llms.txt` (~16KB) for the index of every product.
+2. Fetch that product's `llms.txt` for its full page list, and take the URL verbatim.
+
+Any page is also retrievable as Markdown by appending `index.md` to its URL, or by sending an `Accept: text/markdown` header. Prefer the Markdown form when you only need the content.
+
+If a fetch does 404, do not retry variations of the guess — go to the product's `llms.txt` and find the real path.
