@@ -1,0 +1,12 @@
+{
+  "name": "cloudflare",
+  "version": "1.0.0",
+  "description": "Skills for the Cloudflare developer platform: Workers, Durable Objects, Agents SDK, MCP servers, Wrangler CLI, and web performance",
+  "author": {
+    "name": "Cloudflare",
+    "email": "support@cloudflare.com",
+    "url": "https://workers.cloudflare.com"
+  },
+  "keywords": ["cloudflare", "workers", "durable-objects", "agents", "mcp", "wrangler", "serverless", "compute", "storage", "applications"],
+  "logo": "logo.svg"
+}
