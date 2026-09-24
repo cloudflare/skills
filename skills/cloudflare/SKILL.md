@@ -20,6 +20,8 @@ Help agents discover what they can build with Cloudflare and choose the products
 
 Find the row closest to the user's task. Products can appear in multiple rows, and a solution can combine products. Read the linked reference or docs before implementing; load named skills when installed. Local links open bundled references: start with the README, then follow configuration, API, pattern, or gotcha links as needed. If a named skill is unavailable, use the relevant product docs through the [Cloudflare directory](https://developers.cloudflare.com/directory/); sibling skills are optional.
 
+Before manually configuring an app for Workers or creating bound resources, load the [Wrangler skill](../wrangler/SKILL.md#apply-the-change): Wrangler can automatically configure supported apps and provision resources on deploy.
+
 | What you need to do | Product or tool to consider | When to choose it | Skill or reference |
 | --- | --- | --- | --- |
 | Choose the building blocks for an AI application | AI overview | Compare Cloudflare's AI services before choosing inference, retrieval, or agent tooling | [AI docs](https://developers.cloudflare.com/ai/) |
