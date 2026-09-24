@@ -53,23 +53,29 @@ const expectedHostnames = new Set(
 export const POST: APIRoute = async ({ request, clientAddress }) => {
 	const form = await request.formData();
 	const token = form.get("cf-turnstile-response");
-	if (typeof token !== "string" || expectedHostnames.size === 0) {
+	if (typeof token !== "string" || token.length === 0 || token.length > 2048 || expectedHostnames.size === 0) {
 		return new Response("forbidden", { status: 403 });
 	}
 
-	const verify = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-		method: "POST",
-		headers: { "Content-Type": "application/x-www-form-urlencoded" },
-		body: new URLSearchParams({
-			secret: import.meta.env.TURNSTILE_SECRET,
-			response: token,
-			remoteip: clientAddress,
-		}),
-	});
-	const result = await verify.json();
+	let result;
+	try {
+		const verify = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+			method: "POST",
+			headers: { "Content-Type": "application/x-www-form-urlencoded" },
+			signal: AbortSignal.timeout(10_000),
+			body: new URLSearchParams({
+				secret: import.meta.env.TURNSTILE_SECRET,
+				response: token,
+				remoteip: clientAddress,
+			}),
+		});
+		if (!verify.ok) throw new Error("Siteverify failed");
+		result = await verify.json();
+	} catch {
+		return new Response("forbidden", { status: 403 });
+	}
 	if (
-		verify.ok !== true ||
-		result.success !== true ||
+		result?.success !== true ||
 		result.action !== "signup" ||
 		!expectedHostnames.has(result.hostname)
 	) {
@@ -86,7 +92,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 If the project uses Astro Actions, call siteverify from the action:
 
 ```ts title="src/actions/index.ts"
-import { defineAction } from "astro:actions";
+import { ActionError, defineAction } from "astro:actions";
 import { z } from "astro:schema";
 
 const expectedHostnames = new Set(
@@ -104,24 +110,33 @@ export const server = {
 			"cf-turnstile-response": z.string(),
 		}),
 		handler: async (input, ctx) => {
-			if (expectedHostnames.size === 0) throw new Error("Verification failed");
-			const verify = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-				method: "POST",
-				headers: { "Content-Type": "application/x-www-form-urlencoded" },
-				body: new URLSearchParams({
-					secret: import.meta.env.TURNSTILE_SECRET,
-					response: input["cf-turnstile-response"],
-					remoteip: ctx.clientAddress,
-				}),
-			});
-			const result = await verify.json();
+			const token = input["cf-turnstile-response"];
+			if (typeof token !== "string" || token.length === 0 || token.length > 2048 || expectedHostnames.size === 0) {
+				throw new ActionError({ code: "FORBIDDEN", message: "Verification failed" });
+			}
+			let result;
+			try {
+				const verify = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+					method: "POST",
+					headers: { "Content-Type": "application/x-www-form-urlencoded" },
+					signal: AbortSignal.timeout(10_000),
+					body: new URLSearchParams({
+						secret: import.meta.env.TURNSTILE_SECRET,
+						response: input["cf-turnstile-response"],
+						remoteip: ctx.clientAddress,
+					}),
+				});
+				if (!verify.ok) throw new Error("Siteverify failed");
+				result = await verify.json();
+			} catch {
+				throw new ActionError({ code: "FORBIDDEN", message: "Verification failed" });
+			}
 			if (
-				verify.ok !== true ||
-				result.success !== true ||
+				result?.success !== true ||
 				result.action !== "signup" ||
 				!expectedHostnames.has(result.hostname)
 			) {
-				throw new Error("Verification failed");
+				throw new ActionError({ code: "FORBIDDEN", message: "Verification failed" });
 			}
 			// process signup
 		},

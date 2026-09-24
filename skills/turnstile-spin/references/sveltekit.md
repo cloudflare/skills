@@ -75,23 +75,29 @@ export const actions: Actions = {
 	default: async ({ request, getClientAddress }) => {
 		const data = await request.formData();
 		const token = data.get("cf-turnstile-response");
-		if (typeof token !== "string" || expectedHostnames.size === 0) {
+		if (typeof token !== "string" || token.length === 0 || token.length > 2048 || expectedHostnames.size === 0) {
 			return fail(403, { error: "Verification failed" });
 		}
 
-		const verify = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-			method: "POST",
-			headers: { "Content-Type": "application/x-www-form-urlencoded" },
-			body: new URLSearchParams({
-				secret: TURNSTILE_SECRET,
-				response: token,
-				remoteip: getClientAddress(),
-			}),
-		});
-		const result = await verify.json();
+		let result;
+		try {
+			const verify = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+				method: "POST",
+				headers: { "Content-Type": "application/x-www-form-urlencoded" },
+				signal: AbortSignal.timeout(10_000),
+				body: new URLSearchParams({
+					secret: TURNSTILE_SECRET,
+					response: token,
+					remoteip: getClientAddress(),
+				}),
+			});
+			if (!verify.ok) throw new Error("Siteverify failed");
+			result = await verify.json();
+		} catch {
+			return fail(403, { error: "Verification failed" });
+		}
 		if (
-			verify.ok !== true ||
-			result.success !== true ||
+			result?.success !== true ||
 			result.action !== "signup" ||
 			!expectedHostnames.has(result.hostname)
 		) {
@@ -131,22 +137,28 @@ const expectedHostnames = new Set(
 
 export const POST: RequestHandler = async ({ request, getClientAddress }) => {
 	const { token } = await request.json();
-	if (expectedHostnames.size === 0) {
+	if (typeof token !== "string" || token.length === 0 || token.length > 2048 || expectedHostnames.size === 0) {
 		return new Response("forbidden", { status: 403 });
 	}
-	const verify = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-		method: "POST",
-		headers: { "Content-Type": "application/x-www-form-urlencoded" },
-		body: new URLSearchParams({
-			secret: TURNSTILE_SECRET,
-			response: token,
-			remoteip: getClientAddress(),
-		}),
-	});
-	const result = await verify.json();
+	let result;
+	try {
+		const verify = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+			method: "POST",
+			headers: { "Content-Type": "application/x-www-form-urlencoded" },
+			signal: AbortSignal.timeout(10_000),
+			body: new URLSearchParams({
+				secret: TURNSTILE_SECRET,
+				response: token,
+				remoteip: getClientAddress(),
+			}),
+		});
+		if (!verify.ok) throw new Error("Siteverify failed");
+		result = await verify.json();
+	} catch {
+		return new Response("forbidden", { status: 403 });
+	}
 	if (
-		verify.ok !== true ||
-		result.success !== true ||
+		result?.success !== true ||
 		result.action !== "signup" ||
 		!expectedHostnames.has(result.hostname)
 	) {

@@ -51,23 +51,29 @@ export async function onRequestPost({ request, env }) {
 			.map((h) => h.trim())
 			.filter(Boolean),
 	);
-	if (expectedHostnames.size === 0) {
+	if (typeof token !== "string" || token.length === 0 || token.length > 2048 || expectedHostnames.size === 0) {
 		return new Response("forbidden", { status: 403 });
 	}
 
-	const r = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-		method: "POST",
-		headers: { "Content-Type": "application/x-www-form-urlencoded" },
-		body: new URLSearchParams({
-			secret: env.TURNSTILE_SECRET,
-			response: token,
-			remoteip: request.headers.get("CF-Connecting-IP"),
-		}),
-	});
-	const result = await r.json();
+	let result;
+	try {
+		const r = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+			method: "POST",
+			headers: { "Content-Type": "application/x-www-form-urlencoded" },
+			signal: AbortSignal.timeout(10_000),
+			body: new URLSearchParams({
+				secret: env.TURNSTILE_SECRET,
+				response: token,
+				remoteip: request.headers.get("CF-Connecting-IP"),
+			}),
+		});
+		if (!r.ok) throw new Error("Siteverify failed");
+		result = await r.json();
+	} catch {
+		return new Response("forbidden", { status: 403 });
+	}
 	if (
-		r.ok !== true ||
-		result.success !== true ||
+		result?.success !== true ||
 		result.action !== "subscribe" ||
 		!expectedHostnames.has(result.hostname)
 	) {

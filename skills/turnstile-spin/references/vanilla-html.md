@@ -40,22 +40,30 @@ const expectedHostnames = new Set(
 		.map((h) => h.trim())
 		.filter(Boolean),
 );
-if (expectedHostnames.size === 0) return res.status(403).end();
-
 const token = req.body['cf-turnstile-response'];
-const r = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-	method: 'POST',
-	headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-	body: new URLSearchParams({
-		secret: process.env.TURNSTILE_SECRET,
-		response: token,
-		remoteip: req.ip,
-	}),
-});
-const result = await r.json();
+if (typeof token !== 'string' || token.length === 0 || token.length > 2048 || expectedHostnames.size === 0) {
+	return res.status(403).end();
+}
+
+let result;
+try {
+	const r = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+		signal: AbortSignal.timeout(10_000),
+		body: new URLSearchParams({
+			secret: process.env.TURNSTILE_SECRET,
+			response: token,
+			remoteip: req.ip,
+		}),
+	});
+	if (!r.ok) throw new Error('Siteverify failed');
+	result = await r.json();
+} catch {
+	return res.status(403).end();
+}
 if (
-	r.ok !== true ||
-	result.success !== true ||
+	result?.success !== true ||
 	result.action !== 'subscribe' ||
 	!expectedHostnames.has(result.hostname)
 ) {
@@ -68,26 +76,40 @@ Equivalent calls in other backend languages (each also compares `result.hostname
 
 ```ruby
 # Ruby
-require 'net/http'; require 'uri'; require 'json'; require 'set'
+require 'net/http'; require 'uri'; require 'json'; require 'set'; require 'openssl'
 expected_hostnames = (ENV['TURNSTILE_HOSTNAMES'] || '').split(',').map(&:strip).reject(&:empty?).to_set
-halt 403 if expected_hostnames.empty?
-res = Net::HTTP.post_form(URI('https://challenges.cloudflare.com/turnstile/v0/siteverify'),
-  secret: ENV['TURNSTILE_SECRET'], response: params['cf-turnstile-response'], remoteip: request.ip)
-result = JSON.parse(res.body)
-halt 403 unless res.is_a?(Net::HTTPSuccess) && result['success'] == true && result['action'] == 'subscribe' && expected_hostnames.include?(result['hostname'])
+token = params['cf-turnstile-response']
+halt 403 if !token.is_a?(String) || token.empty? || token.length > 2048 || expected_hostnames.empty?
+begin
+  uri = URI('https://challenges.cloudflare.com/turnstile/v0/siteverify')
+  req = Net::HTTP::Post.new(uri)
+  req.set_form_data(secret: ENV['TURNSTILE_SECRET'], response: token, remoteip: request.ip)
+  res = Net::HTTP.start(uri.host, uri.port, use_ssl: true, open_timeout: 10, read_timeout: 10) { |http| http.request(req) }
+  halt 403 unless res.is_a?(Net::HTTPSuccess)
+  result = JSON.parse(res.body)
+rescue SocketError, SystemCallError, Timeout::Error, IOError, OpenSSL::SSL::SSLError, JSON::ParserError
+  halt 403
+end
+halt 403 unless result.is_a?(Hash) && result['success'] == true && result['action'] == 'subscribe' && expected_hostnames.include?(result['hostname'])
 ```
 
 ```python
 # Python (requests)
 expected_hostnames = {h.strip() for h in os.environ.get('TURNSTILE_HOSTNAMES', '').split(',') if h.strip()}
-if not expected_hostnames:
+token = form.get('cf-turnstile-response')
+if not isinstance(token, str) or not token or len(token) > 2048 or not expected_hostnames:
     return '', 403
-r = requests.post('https://challenges.cloudflare.com/turnstile/v0/siteverify',
-    data={'secret': os.environ['TURNSTILE_SECRET'],
-          'response': form['cf-turnstile-response'],
-          'remoteip': request.remote_addr})
-result = r.json()
-if (not r.ok or result.get('success') is not True or result.get('action') != 'subscribe'
+try:
+    r = requests.post('https://challenges.cloudflare.com/turnstile/v0/siteverify',
+        data={'secret': os.environ['TURNSTILE_SECRET'],
+              'response': token,
+              'remoteip': request.remote_addr},
+        timeout=10)
+    r.raise_for_status()
+    result = r.json()
+except (requests.RequestException, ValueError):
+    return '', 403
+if (not isinstance(result, dict) or result.get('success') is not True or result.get('action') != 'subscribe'
         or result.get('hostname') not in expected_hostnames):
     return '', 403
 ```
