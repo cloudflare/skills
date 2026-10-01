@@ -15,10 +15,10 @@ Cloudflare Email Service lets you send transactional emails and route incoming e
 
 | Source | How to retrieve | Use for |
 |--------|----------------|---------|
-| Cloudflare docs | Cloudflare MCP `docs` tool or URL `https://developers.cloudflare.com/email-service/` | API reference, limits, pricing, latest features |
-| REST API spec | `https://developers.cloudflare.com/api/resources/email_sending` | OpenAPI spec for the Email Sending REST API |
+| Cloudflare docs | Cloudflare MCP `docs` tool or URL `https://developers.cloudflare.com/email-service/index.md` | API reference, limits, pricing, latest features |
+| REST API spec | `https://developers.cloudflare.com/api/resources/email_sending/index.md` | OpenAPI spec for the Email Sending REST API |
 | Workers types | `https://www.npmjs.com/package/@cloudflare/workers-types` | Type signatures, binding shapes |
-| Agents SDK docs | [Email agent walkthrough](https://developers.cloudflare.com/agents/examples/email-agent/) | Email handling in Agents SDK |
+| Agents SDK docs | [Email agent walkthrough](https://developers.cloudflare.com/agents/examples/email-agent/index.md) | Email handling in Agents SDK |
 
 ## FIRST: Check Prerequisites
 
@@ -35,7 +35,7 @@ Start here. Find your situation, then follow the link for full details.
 | I want to... | Path | Reference |
 |--------------|------|-----------|
 | **Send emails from a Cloudflare Worker** | Workers binding (no API keys needed) | [sending.md](references/sending.md) |
-| **Send emails from an AI agent built with [Cloudflare Agents SDK](https://developers.cloudflare.com/agents/)** | `onEmail()` + `replyToEmail()` in Agent class | [sending.md](references/sending.md) |
+| **Send emails from an AI agent built with [Cloudflare Agents SDK](https://developers.cloudflare.com/agents/index.md)** | `onEmail()` + `replyToEmail()` in Agent class | [sending.md](references/sending.md) |
 | **Send emails from an external app or agent** (Node.js, Go, Python, etc.) | REST API with Bearer token | [rest-api.md](references/rest-api.md) |
 | **Send emails from a coding agent** (Claude Code, Cursor, Copilot, etc.) | MCP tools, wrangler CLI, or REST API | [cli-and-mcp.md](references/cli-and-mcp.md) |
 | **Receive and process incoming emails** (Email Routing) | Workers `email()` handler | [routing.md](references/routing.md) |

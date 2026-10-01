@@ -4,10 +4,10 @@ Use direct generation when the supplied context fits the selected model and retr
 
 | Task | Documentation |
 |------|---------------|
-| Build retrieval with Workers AI, Vectorize, and document storage | [RAG tutorial](https://developers.cloudflare.com/workers-ai/guides/tutorials/build-a-retrieval-augmented-generation-ai/) |
-| Stream responses or integrate tool calling in an SDK application | [AI SDK integration](https://developers.cloudflare.com/workers-ai/configuration/ai-sdk/) |
-| Constrain generated JSON | [JSON mode](https://developers.cloudflare.com/workers-ai/features/json-mode/) |
-| Add caching, retries, or model fallbacks | [Caching](https://developers.cloudflare.com/ai-gateway/features/caching/), [request handling](https://developers.cloudflare.com/ai-gateway/configuration/request-handling/), and [dynamic routing](https://developers.cloudflare.com/ai-gateway/features/dynamic-routing/) |
+| Build retrieval with Workers AI, Vectorize, and document storage | [RAG tutorial](https://developers.cloudflare.com/workers-ai/guides/tutorials/build-a-retrieval-augmented-generation-ai/index.md) |
+| Stream responses or integrate tool calling in an SDK application | [AI SDK integration](https://developers.cloudflare.com/workers-ai/configuration/ai-sdk/index.md) |
+| Constrain generated JSON | [JSON mode](https://developers.cloudflare.com/workers-ai/features/json-mode/index.md) |
+| Add caching, retries, or model fallbacks | [Caching](https://developers.cloudflare.com/ai-gateway/features/caching/index.md), [request handling](https://developers.cloudflare.com/ai-gateway/configuration/request-handling/index.md), and [dynamic routing](https://developers.cloudflare.com/ai-gateway/features/dynamic-routing/index.md) |
 
 Treat tutorial models as examples; select models using the [model criteria](./README.md#choose-a-model). For RAG, embed queries and documents with compatible models and match the index dimensions to the embeddings. Budget for retrieval and embedding work as well as generation.
 

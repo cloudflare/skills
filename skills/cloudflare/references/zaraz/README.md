@@ -102,9 +102,9 @@ What do you need?
 
 ## Reference
 
-- [Zaraz Docs](https://developers.cloudflare.com/zaraz/)
-- [Web API](https://developers.cloudflare.com/zaraz/web-api/)
-- [Managed Components](https://developers.cloudflare.com/zaraz/advanced/load-custom-managed-component/)
+- [Zaraz Docs](https://developers.cloudflare.com/zaraz/index.md)
+- [Web API](https://developers.cloudflare.com/zaraz/web-api/index.md)
+- [Managed Components](https://developers.cloudflare.com/zaraz/advanced/load-custom-managed-component/index.md)
 
 ---
 

@@ -62,7 +62,7 @@ await client.networkInterconnects.slots.list({
 ### 400 Bad Request: "invalid facility code"
 
 **Cause:** Typo or unsupported facility  
-**Solution:** Check [locations PDF](https://developers.cloudflare.com/network-interconnect/static/cni-locations-05-may-2026.pdf) for valid codes
+**Solution:** Check [locations PDF](https://developers.cloudflare.com/network-interconnect/locations/index.md) for valid codes
 
 ### 403 Forbidden: "Enterprise plan required"
 
@@ -100,7 +100,7 @@ await client.networkInterconnects.slots.list({
 ### GCP: "BGP routes not propagating"
 
 **Cause:** BGP routes from GCP Cloud Router **ignored by design**  
-**Solution:** Use [static routes](https://developers.cloudflare.com/magic-wan/configuration/manually/how-to/configure-routes/#configure-static-routes) in Magic WAN instead
+**Solution:** Use [static routes](https://developers.cloudflare.com/cloudflare-wan/configuration/how-to/configure-routes/index.md#configure-static-routes) in Magic WAN instead
 
 ### GCP: "Cannot query VLAN attachment status via API"
 

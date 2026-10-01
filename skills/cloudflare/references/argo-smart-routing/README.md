@@ -84,7 +84,7 @@ console.log(`Argo enabled: ${result.value}`);
 
 ## See Also
 
-- [Cloudflare Argo Smart Routing Docs](https://developers.cloudflare.com/argo-smart-routing/)
-- [Cloudflare Smart Shield](https://developers.cloudflare.com/smart-shield/)
-- [Spectrum Documentation](https://developers.cloudflare.com/spectrum/)
-- [Tiered Cache](https://developers.cloudflare.com/cache/how-to/tiered-cache/)
+- [Cloudflare Argo Smart Routing Docs](https://developers.cloudflare.com/argo-smart-routing/index.md)
+- [Cloudflare Smart Shield](https://developers.cloudflare.com/smart-shield/index.md)
+- [Spectrum Documentation](https://developers.cloudflare.com/spectrum/index.md)
+- [Tiered Cache](https://developers.cloudflare.com/cache/how-to/tiered-cache/index.md)

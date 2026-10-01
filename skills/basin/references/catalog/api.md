@@ -4,11 +4,11 @@ Use the Iceberg REST catalog through an engine for table reads and writes; use t
 
 | Task | Documentation |
 |------|---------------|
-| Enable or disable catalogs; inspect status, credentials, namespaces, tables, and maintenance configuration | [Basin Catalog control-plane API](https://developers.cloudflare.com/api/resources/r2_data_catalog/) — select the affected operation for its schema, pagination, and namespace encoding |
-| Connect and create tables through Python | [PyIceberg configuration](https://developers.cloudflare.com/basin-catalog/config-examples/pyiceberg/) |
-| Connect, create, write, and query through Spark | [PySpark configuration](https://developers.cloudflare.com/basin-catalog/config-examples/spark-python/) |
-| Plan automatic compaction and snapshot expiration | [Table maintenance](https://developers.cloudflare.com/basin-catalog/table-maintenance/) |
-| Delete rows, tables, or associated files | [Deleting data](https://developers.cloudflare.com/basin-catalog/deleting-data/) |
+| Enable or disable catalogs; inspect status, credentials, namespaces, tables, and maintenance configuration | [Basin Catalog control-plane API](https://developers.cloudflare.com/api/resources/r2_data_catalog/index.md) — select the affected operation for its schema, pagination, and namespace encoding |
+| Connect and create tables through Python | [PyIceberg configuration](https://developers.cloudflare.com/basin-catalog/config-examples/pyiceberg/index.md) |
+| Connect, create, write, and query through Spark | [PySpark configuration](https://developers.cloudflare.com/basin-catalog/config-examples/spark-python/index.md) |
+| Plan automatic compaction and snapshot expiration | [Table maintenance](https://developers.cloudflare.com/basin-catalog/table-maintenance/index.md) |
+| Delete rows, tables, or associated files | [Deleting data](https://developers.cloudflare.com/basin-catalog/deleting-data/index.md) |
 
 For engine-specific operations beyond these Cloudflare examples, follow the upstream engine documentation linked from the relevant configuration guide and check the installed version. Do not infer engine method signatures from the control-plane API.
 

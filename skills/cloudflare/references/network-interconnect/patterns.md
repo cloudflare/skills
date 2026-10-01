@@ -161,6 +161,6 @@ const tertiary = await client.networkInterconnects.interconnects.create({
 
 ## Resources
 
-- [Magic Transit Docs](https://developers.cloudflare.com/magic-transit/)
-- [Magic WAN Docs](https://developers.cloudflare.com/magic-wan/)
-- [Argo Smart Routing](https://developers.cloudflare.com/argo-smart-routing/)
+- [Magic Transit Docs](https://developers.cloudflare.com/magic-transit/index.md)
+- [Magic WAN Docs](https://developers.cloudflare.com/cloudflare-wan/index.md)
+- [Argo Smart Routing](https://developers.cloudflare.com/argo-smart-routing/index.md)

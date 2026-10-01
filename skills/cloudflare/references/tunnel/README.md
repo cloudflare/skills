@@ -4,10 +4,10 @@ Use Tunnel to connect origin services to Cloudflare. Inspect the existing tunnel
 
 | Task | Documentation |
 | --- | --- |
-| Create a remotely-managed tunnel or a temporary development tunnel | [Setup](https://developers.cloudflare.com/tunnel/setup/) |
-| Maintain a tunnel managed through local files | [Create a locally-managed tunnel](https://developers.cloudflare.com/tunnel/advanced/local-management/create-local-tunnel/) |
-| Publish an application and check protocol requirements | [Routing](https://developers.cloudflare.com/tunnel/routing/) |
-| Choose private networking, Workers VPC, or Access integration | [Integrations](https://developers.cloudflare.com/tunnel/integrations/) |
+| Create a remotely-managed tunnel or a temporary development tunnel | [Setup](https://developers.cloudflare.com/tunnel/get-started/index.md) |
+| Maintain a tunnel managed through local files | [Create a locally-managed tunnel](https://developers.cloudflare.com/tunnel/features/locally-managed-tunnels/create-local-tunnel/index.md) |
+| Publish an application and check protocol requirements | [Routing](https://developers.cloudflare.com/tunnel/concepts/routing/index.md) |
+| Choose private networking, Workers VPC, or Access integration | [Integrations](https://developers.cloudflare.com/tunnel/integrations/index.md) |
 
 Decide whether the goal is a public application, authenticated private access, or connectivity from a Worker. Then identify who owns configuration and how it will be deployed; multiple environments alone do not require local management.
 

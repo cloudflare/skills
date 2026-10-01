@@ -1,6 +1,6 @@
 # Basin Pipelines API Reference
 
-Code templates and verified behavior. For the full SQL function set and HTTP status semantics, pull `https://developers.cloudflare.com/basin-pipelines/sql-reference/` and the streams docs.
+Code templates and verified behavior. For the full SQL function set and HTTP status semantics, pull `https://developers.cloudflare.com/basin-pipelines/sql-reference/index.md` and the streams docs.
 
 ## Worker Binding Interface
 
@@ -21,7 +21,7 @@ export default {
 - `send()` takes an **array**, returns `Promise<void>` (no confirmation payload).
 - Throws on network errors — wrap in try/catch or use `ctx.waitUntil()` for fire-and-forget.
 - Validation errors are **not** thrown here (deferred during processing — see [gotchas.md](gotchas.md)).
-- Payload/rate limits apply — check `https://developers.cloudflare.com/basin-pipelines/platform/limits/` before sizing batches.
+- Payload/rate limits apply — check `https://developers.cloudflare.com/basin-pipelines/platform/limits/index.md` before sizing batches.
 
 ## HTTP Ingest
 
@@ -79,7 +79,7 @@ curl -X DELETE "$BASE_URL/streams/{id}"   -H "Authorization: Bearer $API_TOKEN"
 
 ## Pipeline SQL (Transforms)
 
-Row-level only — no GROUP BY/aggregation. CTEs (`WITH`) and `UNNEST` are supported. Full function list: `https://developers.cloudflare.com/basin-pipelines/sql-reference/`.
+Row-level only — no GROUP BY/aggregation. CTEs (`WITH`) and `UNNEST` are supported. Full function list: `https://developers.cloudflare.com/basin-pipelines/sql-reference/index.md`.
 
 ```sql
 -- Passthrough / filter / enrich

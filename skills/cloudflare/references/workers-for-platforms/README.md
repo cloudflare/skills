@@ -82,8 +82,8 @@ Worker mode?
 | [gotchas.md](./gotchas.md) | Limits, isolation issues, best practices | Debugging, production prep |
 
 ## See Also
-- [workers](https://developers.cloudflare.com/workers/) - Core Workers runtime documentation
-- [durable-objects](https://developers.cloudflare.com/durable-objects/) - Stateful multi-tenant patterns
-- [sandbox](https://developers.cloudflare.com/sandbox/) - Alternative for untrusted code execution
-- [Reference Architecture: Programmable Platforms](https://developers.cloudflare.com/reference-architecture/diagrams/serverless/programmable-platforms/)
-- [Reference Architecture: AI Vibe Coding Platform](https://developers.cloudflare.com/reference-architecture/diagrams/ai/ai-vibe-coding-platform/)
+- [workers](https://developers.cloudflare.com/workers/index.md) - Core Workers runtime documentation
+- [durable-objects](https://developers.cloudflare.com/durable-objects/index.md) - Stateful multi-tenant patterns
+- [sandbox](https://developers.cloudflare.com/sandbox/index.md) - Alternative for untrusted code execution
+- [Reference Architecture: Programmable Platforms](https://developers.cloudflare.com/reference-architecture/diagrams/serverless/programmable-platforms/index.md)
+- [Reference Architecture: AI Vibe Coding Platform](https://developers.cloudflare.com/reference-architecture/diagrams/ai/ai-vibe-coding-platform/index.md)

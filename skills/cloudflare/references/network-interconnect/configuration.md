@@ -12,9 +12,9 @@ See [README.md](README.md) for overview.
    - **Cloud**: Order Direct Connect/Cloud Interconnect, send LOA+VLAN to CF
 4. **Configure** (Week 3): Both sides configure per doc
 5. **Test** (Week 3-4): Ping, verify BGP, check routes
-6. **Health checks** (Week 4): Configure [Magic Transit](https://developers.cloudflare.com/magic-transit/how-to/configure-tunnel-endpoints/#add-tunnels) or [Magic WAN](https://developers.cloudflare.com/magic-wan/configuration/manually/how-to/configure-tunnel-endpoints/#add-tunnels) health checks
+6. **Health checks** (Week 4): Configure [Magic Transit](https://developers.cloudflare.com/magic-transit/how-to/configure-tunnel-endpoints/index.md#add-tunnels) or [Magic WAN](https://developers.cloudflare.com/cloudflare-wan/configuration/how-to/configure-tunnel-endpoints/index.md#add-tunnels) health checks
 7. **Activate** (Week 4): Route traffic, verify flow
-8. **Monitor**: Enable [maintenance notifications](https://developers.cloudflare.com/network-interconnect/monitoring-and-alerts/#enable-cloudflare-status-maintenance-notification)
+8. **Monitor**: Enable [maintenance notifications](https://developers.cloudflare.com/network-interconnect/monitoring-and-alerts/index.md#enable-cloudflare-status-maintenance-notification)
 
 ## BGP Configuration
 
@@ -51,7 +51,7 @@ VLAN: 100
 5. Send to CF account team
 6. Wait ~4 weeks
 
-**Post-setup:** Add [static routes](https://developers.cloudflare.com/magic-wan/configuration/manually/how-to/configure-routes/#configure-static-routes) to Magic WAN. Enable [bidirectional health checks](https://developers.cloudflare.com/magic-wan/configuration/manually/how-to/configure-tunnel-endpoints/#legacy-bidirectional-health-checks).
+**Post-setup:** Add [static routes](https://developers.cloudflare.com/cloudflare-wan/configuration/how-to/configure-routes/index.md#configure-static-routes) to Magic WAN. Enable [bidirectional health checks](https://developers.cloudflare.com/cloudflare-wan/configuration/how-to/configure-tunnel-endpoints/index.md#legacy-bidirectional-health-checks).
 
 ### GCP Cloud Interconnect (Beta)
 
@@ -61,7 +61,7 @@ VLAN: 100
 3. Enter VLAN attachment pairing key
 4. Confirm order
 
-**Routing to GCP:** Add [static routes](https://developers.cloudflare.com/magic-wan/configuration/manually/how-to/configure-routes/#configure-static-routes). BGP routes from GCP Cloud Router **ignored**.
+**Routing to GCP:** Add [static routes](https://developers.cloudflare.com/cloudflare-wan/configuration/how-to/configure-routes/index.md#configure-static-routes). BGP routes from GCP Cloud Router **ignored**.
 
 **Routing to CF:** Configure [custom learned routes](https://cloud.google.com/network-connectivity/docs/router/how-to/configure-custom-learned-routes) in Cloud Router. Request prefixes from CF account team.
 

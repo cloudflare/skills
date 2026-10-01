@@ -75,7 +75,7 @@ await client.magicTransit.tunnels.update(accountId, tunnelId, {
 });
 ```
 
-Rates: `high` | `medium` | `low`. Types: `request` | `reply`. See [Magic Transit docs](https://developers.cloudflare.com/magic-transit/how-to/configure-tunnel-endpoints/#add-tunnels).
+Rates: `high` | `medium` | `low`. Types: `request` | `reply`. See [Magic Transit docs](https://developers.cloudflare.com/magic-transit/how-to/configure-tunnel-endpoints/index.md#add-tunnels).
 
 ## Settings
 
@@ -194,6 +194,6 @@ curl "https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/cni/interconne
 
 ## Resources
 
-- [API Docs](https://developers.cloudflare.com/api/resources/network_interconnects/)
+- [API Docs](https://developers.cloudflare.com/api/resources/network_interconnects/index.md)
 - [TypeScript SDK](https://github.com/cloudflare/cloudflare-typescript)
 - [Python SDK](https://github.com/cloudflare/cloudflare-python)

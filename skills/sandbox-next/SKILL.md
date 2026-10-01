@@ -5,7 +5,7 @@ description: Build or maintain Cloudflare Sandbox apps on @cloudflare/sandbox@ne
 
 # Sandbox SDK — `@next` (1.0 preview)
 
-Isolated Linux environments on [Cloudflare Containers](https://developers.cloudflare.com/containers/), driven from Workers.
+Isolated Linux environments on [Cloudflare Containers](https://developers.cloudflare.com/containers/index.md), driven from Workers.
 
 **Prefer preview docs and installed `@next` types over memory.** APIs change; this skill is a gate, a contract, and a retrieval map—not a full manual.
 
@@ -24,11 +24,11 @@ Before writing code, inspect the app:
 | ------------ | ------ |
 | Default `@cloudflare/sandbox` (no `@next`) | **Stop.** Load **`sandbox-stable`**. Do not apply this skill’s APIs. |
 | User wants to port stable → `@next` | **Stop.** Load **`sandbox-migrate-to-next`**. |
-| Self-deployed **bridge** only | Bridge is **not** on the 1.0 preview line yet. Keep bridge on stable package + image. [Bridge (stable)](https://developers.cloudflare.com/sandbox/bridge/) |
+| Self-deployed **bridge** only | Bridge is **not** on the 1.0 preview line yet. Keep bridge on stable package + image. [Bridge (stable)](https://developers.cloudflare.com/sandbox/sdk/bridge/index.md) |
 
 Never mix an `@next` Worker package with a stable container image (or the reverse).
 
-Skills install: [Agent setup](https://developers.cloudflare.com/agent-setup/) · [cloudflare/skills](https://github.com/cloudflare/skills)
+Skills install: [Agent setup](https://developers.cloudflare.com/agent-setup/index.md) · [cloudflare/skills](https://github.com/cloudflare/skills)
 
 ## 2. Contract — non-negotiables
 
@@ -67,22 +67,22 @@ Fetch the page before implementing. Installed `@next` types win over guesses.
 
 | You need to… | Open |
 | ------------ | ---- |
-| Orient / choose preview | [1.0 preview overview](https://developers.cloudflare.com/sandbox/1-0-preview/) |
-| First Worker, wrangler, Dockerfile | [Get started](https://developers.cloudflare.com/sandbox/1-0-preview/get-started/) |
-| `exec`, handles, readiness, durability | [Process execution](https://developers.cloudflare.com/sandbox/1-0-preview/processes/) |
-| Process API signatures | [Processes API](https://developers.cloudflare.com/sandbox/1-0-preview/api/processes/) |
-| Sandbox ID vs container vs sleep/destroy | [Lifecycle](https://developers.cloudflare.com/sandbox/1-0-preview/lifecycle/) |
-| `cwd` / `env` / `setEnvVars` | [Environment](https://developers.cloudflare.com/sandbox/1-0-preview/environment/) |
-| Interactive PTY / browser terminal | [Terminals](https://developers.cloudflare.com/sandbox/1-0-preview/terminals/) · [Terminals API](https://developers.cloudflare.com/sandbox/1-0-preview/api/terminals/) |
-| Python/JS code interpreter | [Interpreter](https://developers.cloudflare.com/sandbox/1-0-preview/interpreter/) · [Interpreter API](https://developers.cloudflare.com/sandbox/1-0-preview/api/interpreter/) |
-| Extensions model | [Extensions](https://developers.cloudflare.com/sandbox/1-0-preview/extensions/) |
-| Error classes and recovery | [Errors](https://developers.cloudflare.com/sandbox/1-0-preview/errors/) · [Errors API](https://developers.cloudflare.com/sandbox/1-0-preview/api/errors/) |
-| Common failures | [Troubleshooting](https://developers.cloudflare.com/sandbox/1-0-preview/troubleshooting/) |
-| API hub | [API reference](https://developers.cloudflare.com/sandbox/1-0-preview/api/) |
-| Files, mounts, backups, ports, tunnels, `proxyToSandbox` | Main docs for shared surfaces (ignore stable-only session/transport/`sandbox.terminal`): [Files](https://developers.cloudflare.com/sandbox/api/files/) · [Storage / mounts](https://developers.cloudflare.com/sandbox/api/storage/) · [Ports](https://developers.cloudflare.com/sandbox/api/ports/) · [Tunnels](https://developers.cloudflare.com/sandbox/api/tunnels/) · [Backups](https://developers.cloudflare.com/sandbox/api/backups/) · [Outbound traffic](https://developers.cloudflare.com/sandbox/guides/outbound-traffic/) · [Expose services](https://developers.cloudflare.com/sandbox/guides/expose-services/) · [Production](https://developers.cloudflare.com/sandbox/guides/production-deployment/) |
+| Orient / choose preview | [1.0 preview overview](https://developers.cloudflare.com/sandbox/index.md) |
+| First Worker, wrangler, Dockerfile | [Get started](https://developers.cloudflare.com/sandbox/index.md) |
+| `exec`, handles, readiness, durability | [Process execution](https://developers.cloudflare.com/sandbox/index.md) |
+| Process API signatures | [Processes API](https://developers.cloudflare.com/sandbox/index.md) |
+| Sandbox ID vs container vs sleep/destroy | [Lifecycle](https://developers.cloudflare.com/sandbox/index.md) |
+| `cwd` / `env` / `setEnvVars` | [Environment](https://developers.cloudflare.com/sandbox/index.md) |
+| Interactive PTY / browser terminal | [Terminals](https://developers.cloudflare.com/sandbox/index.md) · [Terminals API](https://developers.cloudflare.com/sandbox/index.md) |
+| Python/JS code interpreter | [Interpreter](https://developers.cloudflare.com/sandbox/index.md) · [Interpreter API](https://developers.cloudflare.com/sandbox/index.md) |
+| Extensions model | [Extensions](https://developers.cloudflare.com/sandbox/index.md) |
+| Error classes and recovery | [Errors](https://developers.cloudflare.com/sandbox/index.md) · [Errors API](https://developers.cloudflare.com/sandbox/index.md) |
+| Common failures | [Troubleshooting](https://developers.cloudflare.com/sandbox/index.md) |
+| API hub | [API reference](https://developers.cloudflare.com/sandbox/index.md) |
+| Files, mounts, backups, ports, tunnels, `proxyToSandbox` | Main docs for shared surfaces (ignore stable-only session/transport/`sandbox.terminal`): [Files](https://developers.cloudflare.com/sandbox/sdk/api/files/index.md) · [Storage / mounts](https://developers.cloudflare.com/sandbox/sdk/api/storage/index.md) · [Ports](https://developers.cloudflare.com/sandbox/sdk/api/ports/index.md) · [Tunnels](https://developers.cloudflare.com/sandbox/sdk/api/tunnels/index.md) · [Backups](https://developers.cloudflare.com/sandbox/sdk/api/backups/index.md) · [Outbound traffic](https://developers.cloudflare.com/sandbox/sdk/guides/outbound-traffic/index.md) · [Expose services](https://developers.cloudflare.com/sandbox/sdk/guides/expose-services/index.md) · [Production](https://developers.cloudflare.com/sandbox/sdk/guides/preview-urls-custom-domain/index.md) |
 | Example apps | [examples on `next`](https://github.com/cloudflare/sandbox-sdk/tree/next/examples) |
-| Still on stable package | **`sandbox-stable`** · [Main Sandbox docs](https://developers.cloudflare.com/sandbox/) |
-| Porting an existing stable app | **`sandbox-migrate-to-next`** · [Migrate](https://developers.cloudflare.com/sandbox/1-0-preview/migrate/) |
+| Still on stable package | **`sandbox-stable`** · [Main Sandbox docs](https://developers.cloudflare.com/sandbox/index.md) |
+| Porting an existing stable app | **`sandbox-migrate-to-next`** · [Migrate](https://developers.cloudflare.com/sandbox/sdk/migrate/index.md) |
 
 ## 4. Before you ship
 

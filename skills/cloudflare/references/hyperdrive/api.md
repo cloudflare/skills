@@ -6,21 +6,21 @@ Start with [README.md](./README.md) and [configuration.md](./configuration.md). 
 
 | Task | Official documentation |
 |------|------------------------|
-| PostgreSQL with node-postgres (`pg`), including binding connection string and parameterized queries | [node-postgres](https://developers.cloudflare.com/hyperdrive/examples/connect-to-postgres/postgres-drivers-and-libraries/node-postgres/) |
-| PostgreSQL with tagged-template queries and Postgres.js driver options | [Postgres.js](https://developers.cloudflare.com/hyperdrive/examples/connect-to-postgres/postgres-drivers-and-libraries/postgres-js/) |
-| MySQL with binding connection properties and Worker-specific driver options | [mysql2](https://developers.cloudflare.com/hyperdrive/examples/connect-to-mysql/mysql-drivers-and-libraries/mysql2/) |
-| Check database features, prepared statements, and library compatibility | [Supported databases and features](https://developers.cloudflare.com/hyperdrive/reference/supported-databases-and-features/) |
-| Generate binding and runtime TypeScript types | [Workers TypeScript](https://developers.cloudflare.com/workers/languages/typescript/) |
+| PostgreSQL with node-postgres (`pg`), including binding connection string and parameterized queries | [node-postgres](https://developers.cloudflare.com/hyperdrive/examples/connect-to-postgres/postgres-drivers-and-libraries/node-postgres/index.md) |
+| PostgreSQL with tagged-template queries and Postgres.js driver options | [Postgres.js](https://developers.cloudflare.com/hyperdrive/examples/connect-to-postgres/postgres-drivers-and-libraries/postgres-js/index.md) |
+| MySQL with binding connection properties and Worker-specific driver options | [mysql2](https://developers.cloudflare.com/hyperdrive/examples/connect-to-mysql/mysql-drivers-and-libraries/mysql2/index.md) |
+| Check database features, prepared statements, and library compatibility | [Supported databases and features](https://developers.cloudflare.com/hyperdrive/reference/supported-databases-and-features/index.md) |
+| Generate binding and runtime TypeScript types | [Workers TypeScript](https://developers.cloudflare.com/workers/languages/typescript/index.md) |
 
-Keep an existing supported driver when it fits the application. Choose by database engine and library integration needs; do not infer cache behavior from a driver's prepared-statement setting. Fetch [query caching](https://developers.cloudflare.com/hyperdrive/concepts/query-caching/) for cache eligibility and freshness controls.
+Keep an existing supported driver when it fits the application. Choose by database engine and library integration needs; do not infer cache behavior from a driver's prepared-statement setting. Fetch [query caching](https://developers.cloudflare.com/hyperdrive/concepts/query-caching/index.md) for cache eligibility and freshness controls.
 
 ## ORMs and query builders
 
 | Task | Official documentation |
 |------|------------------------|
-| Use Drizzle with PostgreSQL | [PostgreSQL Drizzle guide](https://developers.cloudflare.com/hyperdrive/examples/connect-to-postgres/postgres-drivers-and-libraries/drizzle-orm/) |
-| Use Drizzle with MySQL | [MySQL Drizzle guide](https://developers.cloudflare.com/hyperdrive/examples/connect-to-mysql/mysql-drivers-and-libraries/drizzle-orm/) |
-| Use Prisma with PostgreSQL | [Prisma guide](https://developers.cloudflare.com/hyperdrive/examples/connect-to-postgres/postgres-drivers-and-libraries/prisma-orm/) |
-| Assess another query builder, including Kysely | [Postgres.js integration notes](https://developers.cloudflare.com/hyperdrive/examples/connect-to-postgres/postgres-drivers-and-libraries/postgres-js/) and [database compatibility](https://developers.cloudflare.com/hyperdrive/reference/supported-databases-and-features/), then the library's current dialect documentation |
+| Use Drizzle with PostgreSQL | [PostgreSQL Drizzle guide](https://developers.cloudflare.com/hyperdrive/examples/connect-to-postgres/postgres-drivers-and-libraries/drizzle-orm/index.md) |
+| Use Drizzle with MySQL | [MySQL Drizzle guide](https://developers.cloudflare.com/hyperdrive/examples/connect-to-mysql/mysql-drivers-and-libraries/drizzle-orm/index.md) |
+| Use Prisma with PostgreSQL | [Prisma guide](https://developers.cloudflare.com/hyperdrive/examples/connect-to-postgres/postgres-drivers-and-libraries/prisma-orm/index.md) |
+| Assess another query builder, including Kysely | [Postgres.js integration notes](https://developers.cloudflare.com/hyperdrive/examples/connect-to-postgres/postgres-drivers-and-libraries/postgres-js/index.md) and [database compatibility](https://developers.cloudflare.com/hyperdrive/reference/supported-databases-and-features/index.md), then the library's current dialect documentation |
 
-An ORM still uses a database driver and inherits its Worker connection constraints. Keep clients scoped to the invocation using [connection lifecycle](https://developers.cloudflare.com/hyperdrive/concepts/connection-lifecycle/). When a library owns SQL for authentication or other fresh reads, pass a client using a cache-disabled configuration as described in [query caching](https://developers.cloudflare.com/hyperdrive/concepts/query-caching/).
+An ORM still uses a database driver and inherits its Worker connection constraints. Keep clients scoped to the invocation using [connection lifecycle](https://developers.cloudflare.com/hyperdrive/concepts/connection-lifecycle/index.md). When a library owns SQL for authentication or other fresh reads, pass a client using a cache-disabled configuration as described in [query caching](https://developers.cloudflare.com/hyperdrive/concepts/query-caching/index.md).

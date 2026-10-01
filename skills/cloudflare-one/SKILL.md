@@ -5,7 +5,7 @@ description: Design, configure, troubleshoot, or review Cloudflare One Zero Trus
 
 # Cloudflare One
 
-Before citing limits, settings, API fields, category IDs, or exact UI paths, retrieve current information from the [Cloudflare One docs](https://developers.cloudflare.com/cloudflare-one/), the Cloudflare docs MCP server, or the Cloudflare API schema.
+Before citing limits, settings, API fields, category IDs, or exact UI paths, retrieve current information from the [Cloudflare One docs](https://developers.cloudflare.com/cloudflare-one/index.md), the Cloudflare docs MCP server, or the Cloudflare API schema.
 
 ## Workflow
 
@@ -30,9 +30,9 @@ Use these to avoid jumping straight to configuration. Ask only the prompts relev
 
 ### Access and SaaS Federation
 
-- App shape: web app, API, SSH/RDP/VNC, database, SaaS app, public hostname, private IP, or private hostname. Retrieve [Access application type](https://developers.cloudflare.com/cloudflare-one/access-controls/applications/choose-application-type/) docs before choosing.
+- App shape: web app, API, SSH/RDP/VNC, database, SaaS app, public hostname, private IP, or private hostname. Retrieve [Access application type](https://developers.cloudflare.com/cloudflare-one/access-controls/applications/choose-application-type/index.md) docs before choosing.
 - Access model: clientless browser access, private networking with device client, peer to peer connectivity, service connections with service tokens or mutual TLS, or SaaS SSO federation.
-- Policy needs: user groups, device posture, session duration, mTLS, service tokens, and app launcher visibility. Retrieve [Access policy](https://developers.cloudflare.com/cloudflare-one/access-controls/policies/) docs before configuring selectors or evaluation order.
+- Policy needs: user groups, device posture, session duration, mTLS, service tokens, and app launcher visibility. Retrieve [Access policy](https://developers.cloudflare.com/cloudflare-one/access-controls/policies/index.md) docs before configuring selectors or evaluation order.
 - SaaS details: SAML vs OIDC support, ACS/redirect URLs, Entity IDs/client IDs, required attributes, and tenant-control requirements.
 
 ### Tunnel and Private Networking
@@ -40,39 +40,39 @@ Use these to avoid jumping straight to configuration. Ask only the prompts relev
 - Sites and segments: which data centers, VPCs, offices, or network segments need connectivity.
 - HA: dev/test single connector, production multiple connectors, or advanced multi-tunnel/site redundancy.
 - Runtime: where cloudflared or WARP Connector/Mesh will run: VM, container, Kubernetes, bare metal, or other target.
-- Egress: whether connectors can reach Cloudflare over the required outbound ports/protocols. Retrieve [Tunnel connectivity prechecks](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/troubleshoot-tunnels/connectivity-prechecks/) before naming exact endpoints.
+- Egress: whether connectors can reach Cloudflare over the required outbound ports/protocols. Retrieve [Tunnel connectivity prechecks](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/troubleshoot-tunnels/connectivity-prechecks/index.md) before naming exact endpoints.
 - Origin reachability: whether the connector can resolve and reach every private origin.
-- Routing: required CIDRs/hostnames, overlapping IP spaces, [virtual networks](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/private-net/cloudflared/tunnel-virtual-networks/), [Split Tunnels](https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/cloudflare-one-client/configure/route-traffic/split-tunnels/), and private DNS/[resolver policy](https://developers.cloudflare.com/cloudflare-one/traffic-policies/resolver-policies/) needs.
+- Routing: required CIDRs/hostnames, overlapping IP spaces, [virtual networks](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/private-net/cloudflared/tunnel-virtual-networks/index.md), [Split Tunnels](https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/cloudflare-one-client/configure/route-traffic/split-tunnels/index.md), and private DNS/[resolver policy](https://developers.cloudflare.com/cloudflare-one/traffic-policies/resolver-policies/index.md) needs.
 - Management model: prefer remotely managed/token-based tunnels for new deployments unless there is a clear reason for local config.
 
 ### Gateway, TLS, and DLP
 
-- Traffic controls: DNS categories, HTTP URL/path inspection, L4 ports/protocols, egress IP requirements, custom lists, and allow/block exceptions. Retrieve [Gateway traffic policy](https://developers.cloudflare.com/cloudflare-one/traffic-policies/) docs for current selectors and order of enforcement.
-- Identity: whether Gateway policies need user or group selectors, and whether users will be authenticated through WARP/IdP context. Check [Gateway identity selectors](https://developers.cloudflare.com/cloudflare-one/traffic-policies/identity-selectors/) and [SCIM provisioning](https://developers.cloudflare.com/cloudflare-one/team-and-resources/users/scim/) when groups are involved.
-- TLS inspection: root CA deployment path, certificate-pinned applications, compliance exceptions, and FIPS requirements. Retrieve [TLS decryption](https://developers.cloudflare.com/cloudflare-one/traffic-policies/http-policies/tls-decryption/) docs before enabling.
-- DLP: sensitive data types, channels to inspect, TLS inspection readiness, DLP profiles, payload logging requirements, and false-positive tolerance. Retrieve [DLP](https://developers.cloudflare.com/cloudflare-one/data-loss-prevention/) docs before creating enforcement.
+- Traffic controls: DNS categories, HTTP URL/path inspection, L4 ports/protocols, egress IP requirements, custom lists, and allow/block exceptions. Retrieve [Gateway traffic policy](https://developers.cloudflare.com/cloudflare-one/traffic-policies/index.md) docs for current selectors and order of enforcement.
+- Identity: whether Gateway policies need user or group selectors, and whether users will be authenticated through WARP/IdP context. Check [Gateway identity selectors](https://developers.cloudflare.com/cloudflare-one/traffic-policies/identity-selectors/index.md) and [SCIM provisioning](https://developers.cloudflare.com/cloudflare-one/team-and-resources/users/scim/index.md) when groups are involved.
+- TLS inspection: root CA deployment path, certificate-pinned applications, compliance exceptions, and FIPS requirements. Retrieve [TLS decryption](https://developers.cloudflare.com/cloudflare-one/traffic-policies/http-policies/tls-decryption/index.md) docs before enabling.
+- DLP: sensitive data types, channels to inspect, TLS inspection readiness, DLP profiles, payload logging requirements, and false-positive tolerance. Retrieve [DLP](https://developers.cloudflare.com/cloudflare-one/data-loss-prevention/index.md) docs before creating enforcement.
 
 ### CASB, Device Posture, and Risk
 
-- CASB: SaaS vendors, admin access level, scan policy, org size, remediation owner, and whether inline protection is also required. Retrieve [CASB findings](https://developers.cloudflare.com/cloudflare-one/cloud-and-saas-findings/manage-findings/) docs before recommending remediation.
+- CASB: SaaS vendors, admin access level, scan policy, org size, remediation owner, and whether inline protection is also required. Retrieve [CASB findings](https://developers.cloudflare.com/cloudflare-one/cloud-and-saas-findings/manage-findings/index.md) docs before recommending remediation.
 - Device posture: required checks, third-party EDR/MDM integrations, enrollment rules, device profiles, and split tunnel alignment.
-- Risk scoring: relevant behavior signals, false-positive sources such as VPNs or service accounts, and whether risk is for investigation or enforcement. Retrieve [user risk score](https://developers.cloudflare.com/cloudflare-one/team-and-resources/users/risk-score/) docs before using risk in policies.
+- Risk scoring: relevant behavior signals, false-positive sources such as VPNs or service accounts, and whether risk is for investigation or enforcement. Retrieve [user risk score](https://developers.cloudflare.com/cloudflare-one/team-and-resources/users/risk-score/index.md) docs before using risk in policies.
 
 ### Cloudflare WAN / Site Connectivity
 
-- Site topology, on-ramp type, route ownership, tunnel redundancy, static vs BGP-managed routes, network firewall needs, and appliance/profile ownership. Retrieve [Cloudflare WAN](https://developers.cloudflare.com/cloudflare-wan/) and [Cloudflare Network Firewall](https://developers.cloudflare.com/cloudflare-network-firewall/) docs before proposing site connectivity changes.
+- Site topology, on-ramp type, route ownership, tunnel redundancy, static vs BGP-managed routes, network firewall needs, and appliance/profile ownership. Retrieve [Cloudflare WAN](https://developers.cloudflare.com/cloudflare-wan/index.md) and [Cloudflare Network Firewall](https://developers.cloudflare.com/cloudflare-network-firewall/index.md) docs before proposing site connectivity changes.
 
 ## Guardrails
 
 - Access controls application authorization; Gateway controls traffic inspection/filtering. Use both when the requirement spans identity-aware app access and network/web security.
 - For new Access deployments, create policies through the reusable policy API (`/access/policies`) and attach them to applications. Do not send inline `policies` in an application create/update request unless the current API documentation explicitly requires an app-scoped policy.
 - Treat an app-scoped policy reported as `reusable: false` as legacy. Migrate existing policies with the documented `make_reusable` endpoint or replace them with reusable policies; do not create new legacy policies. Distinguish legacy policies from the deprecated legacy private-network application type.
-- Public hostname Access apps can be clientless. Private destination apps require WARP/Device client or another network on-ramp plus routes and DNS resolution. Retrieve [self-hosted private app](https://developers.cloudflare.com/cloudflare-one/access-controls/applications/non-http/self-hosted-private-app/) docs before configuring private destinations.
+- Public hostname Access apps can be clientless. Private destination apps require WARP/Device client or another network on-ramp plus routes and DNS resolution. Retrieve [self-hosted private app](https://developers.cloudflare.com/cloudflare-one/access-controls/applications/non-http/self-hosted-private-app/index.md) docs before configuring private destinations.
 - Cloudflare Tunnel is an off-ramp from a private network to Cloudflare. Cloudflare WAN and Mesh are other off-ramps which can also be on-ramps.
 - Group-based policies depend on IdP group claims or SCIM. If group sync is missing, do not invent group selectors.
-- Private hostnames need explicit DNS routing/resolution; creating an Access app alone is not enough. Use [resolver policies](https://developers.cloudflare.com/cloudflare-one/traffic-policies/resolver-policies/) and review [Connect a private hostname](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/private-net/cloudflared/connect-private-hostname/)
+- Private hostnames need explicit DNS routing/resolution; creating an Access app alone is not enough. Use [resolver policies](https://developers.cloudflare.com/cloudflare-one/traffic-policies/resolver-policies/index.md) and review [Connect a private hostname](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/private-net/cloudflared/connect-private-hostname/index.md)
 - HTTP inspection and DLP for encrypted web traffic require TLS inspection and planned Do Not Inspect exceptions.
-- Gateway DNS, Network, HTTP, and Egress policies have different evaluation semantics. Retrieve [order of enforcement](https://developers.cloudflare.com/cloudflare-one/traffic-policies/order-of-enforcement/) docs before explaining precedence.
+- Gateway DNS, Network, HTTP, and Egress policies have different evaluation semantics. Retrieve [order of enforcement](https://developers.cloudflare.com/cloudflare-one/traffic-policies/order-of-enforcement/index.md) docs before explaining precedence.
 - Start broad block/allow/DLP/TLS policies disabled limited to a pilot with specific target users or groups unless the user approves a wider rollout.
 
 ### Identity and Access
@@ -87,10 +87,10 @@ Use these to avoid jumping straight to configuration. Ask only the prompts relev
 
 ### Device Client Deployment
 
-- The [Cloudflare One device client](https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/cloudflare-one-client/) is the on-ramp for user devices. Two components control it: **enrollment rules** (who can connect) and **device profiles** (how the client behaves after enrollment).
+- The [Cloudflare One device client](https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/cloudflare-one-client/index.md) is the on-ramp for user devices. Two components control it: **enrollment rules** (who can connect) and **device profiles** (how the client behaves after enrollment).
 - The enrollment rule is an Access application of type `warp`, not a device setting. It accepts reusable Access policies. Look in Access for enrollment debugging, not Devices.
 - For headless or autonomous devices (services, kiosks, Linux hosts), use service token enrollment. Non-human devices authenticate as `non_identity@[team-domain].cloudflareaccess.com` and have no group membership - device profiles targeting IdP groups will not match them. Target headless devices explicitly with the non-identity email, specific conventions about the devices (OS information, etc.),or let them fall to the default profile.
-- Device profiles control connection mode, [split tunnel](https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/cloudflare-one-client/configure/route-traffic/split-tunnels/) configuration, user permissions (disable, switch lock), auto-reconnect, and captive portal behavior. Profiles are matched by user group or device attributes in precedence order - first match wins, default profile catches the rest.
+- Device profiles control connection mode, [split tunnel](https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/cloudflare-one-client/configure/route-traffic/split-tunnels/index.md) configuration, user permissions (disable, switch lock), auto-reconnect, and captive portal behavior. Profiles are matched by user group or device attributes in precedence order - first match wins, default profile catches the rest.
 - Split tunnel mode is the single most impactful client setting. Choose the mode based on the deployment goal:
 
   | Goal | Mode | Rationale |
@@ -103,7 +103,7 @@ Use these to avoid jumping straight to configuration. Ask only the prompts relev
 
 - Include vs exclude is per-profile, not per-entry. You cannot mix modes in the same profile. Switching modes mid-deployment requires re-evaluating every entry.
 - Split tunnel entries must align with tunnel routes bidirectionally. A CIDR in the include list without a matching tunnel route causes a black hole. A tunnel route without a matching device profile entry means traffic never enters the tunnel.
-- MDM parameters (`mdm.xml` / managed preferences) override dashboard-configured profile settings for any setting specified in the file. If dashboard changes appear to have no effect on managed devices, check MDM config. Retrieve [MDM deployment](https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/cloudflare-one-client/deployment/mdm-deployment/) docs for platform-specific file locations and parameters.
+- MDM parameters (`mdm.xml` / managed preferences) override dashboard-configured profile settings for any setting specified in the file. If dashboard changes appear to have no effect on managed devices, check MDM config. Retrieve [MDM deployment](https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/cloudflare-one-client/deployment/mdm-deployment/index.md) docs for platform-specific file locations and parameters.
 - If another VPN client or agent controls DNS on the device, the device client's DNS interception will conflict. In coexistence scenarios, use "traffic only" mode to avoid routing table and DNS conflicts.
 - Captive portal detection temporarily disconnects the client when it detects a portal (hotel WiFi, airport).  This is a common source of end-user friction and should be managed carefully.
 
@@ -112,7 +112,7 @@ Use these to avoid jumping straight to configuration. Ask only the prompts relev
 - Split tunnel mode changes the meaning of every route decision: Exclude mode sends traffic to Cloudflare when removed from excludes; Include mode sends traffic only when added to includes.
 - Virtual networks should be used primarily when IP subnets overlap and hostname-based routing is not used. It can be used to control other user connectivity behavior, but it is recommended to manage through security policies.
 - A healthy tunnel only proves cloudflared can reach Cloudflare. The tunnel must have appropriate published application routes, network routes, or hostname routes for connectivity to function.
-- Cloudflare Tunnel and Cloudflare Mesh can both be used to facilitate connectivity to internal networks. Cloudflare WAN can as well, but it is gated behind Enterprise subscriptions. Retrieve [choose an on-ramp](https://developers.cloudflare.com/learning-paths/secure-internet-traffic/connect-devices-networks/choose-on-ramp/) when deliberating between Tunnel types.
+- Cloudflare Tunnel and Cloudflare Mesh can both be used to facilitate connectivity to internal networks. Cloudflare WAN can as well, but it is gated behind Enterprise subscriptions. Retrieve [choose an on-ramp](https://developers.cloudflare.com/learning-paths/secure-internet-traffic/connect-devices-networks/choose-on-ramp/index.md) when deliberating between Tunnel types.
 - Run multiple cloudflared connectors for production HA, preferably on separate hosts. Token-based, remotely managed tunnels are the default for new deployments.
 
 ### Gateway, TLS, and DLP
@@ -127,7 +127,7 @@ Use these to avoid jumping straight to configuration. Ask only the prompts relev
 
 ### CASB, Risk, and Operations
 
-- API CASB is out-of-band and periodic. It does not provide real-time inline enforcement although some integrations support "remediation"; use Gateway granular application controls for inline CASB capability for supported applications. Retrieve [Granular application controls](https://developers.cloudflare.com/cloudflare-one/traffic-policies/http-policies/granular-controls/) when creating security policies for specific actions in specific SaaS applications.
+- API CASB is out-of-band and periodic. It does not provide real-time inline enforcement although some integrations support "remediation"; use Gateway granular application controls for inline CASB capability for supported applications. Retrieve [Granular application controls](https://developers.cloudflare.com/cloudflare-one/traffic-policies/http-policies/granular-controls/index.md) when creating security policies for specific actions in specific SaaS applications.
 - CASB findings are tied to specific assets and instances. Drill into affected assets before recommending remediation.
 - Use current Dashboard remediation guidance for CASB fixes. Most remediations happen in the SaaS admin console, not Cloudflare.
 - Large SaaS integrations can take 24-48 hours for initial scans. Reauthorizing can restart scan state; check credential health before reconnecting.
@@ -135,19 +135,19 @@ Use these to avoid jumping straight to configuration. Ask only the prompts relev
 
 ### Infrastructure Access
 
-- [Zero Trust Infrastructure Access](https://developers.cloudflare.com/cloudflare-one/access-controls/applications/non-http/infrastructure-apps/) (ZTIA) is the purpose-built offering for SSH access through the device client. It provides capabilities not available through self-hosted apps: keystroke logging, control over how users authenticate to the target machine, [short-lived certificates](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/use-cases/ssh/ssh-infrastructure-access/#generate-a-cloudflare-ssh-ca) that replace static SSH keys with ephemeral certs tied to Access identity, and lightweight privileged access management. Use Infrastructure Access apps for SSH when the device client is deployed.
-- [Browser Rendering](https://developers.cloudflare.com/cloudflare-one/access-controls/applications/non-http/browser-rendering/) provides clientless SSH, RDP, and VNC through the browser without requiring the device client. Clientless RDP includes session recording and file transfer controls. Use clientless access when a device client cannot be installed (contractors, partner access, unmanaged devices) - typically not as the default for managed users with the client installed.
-- [Audit SSH](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/use-cases/ssh/ssh-infrastructure-access/#enable-ssh-command-logging) is a Gateway Network policy action that logs SSH commands without blocking. It requires the session to be proxied through Cloudflare.
-- Short-lived certificates require CA configuration on the target host and `sshd` configured to trust the Cloudflare CA public key. Retrieve [short-lived certificate setup](https://developers.cloudflare.com/cloudflare-one/identity/users/short-lived-certificates/) docs before configuring.
+- [Zero Trust Infrastructure Access](https://developers.cloudflare.com/cloudflare-one/access-controls/applications/non-http/infrastructure-apps/index.md) (ZTIA) is the purpose-built offering for SSH access through the device client. It provides capabilities not available through self-hosted apps: keystroke logging, control over how users authenticate to the target machine, [short-lived certificates](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/use-cases/ssh/ssh-infrastructure-access/index.md#generate-a-cloudflare-ssh-ca) that replace static SSH keys with ephemeral certs tied to Access identity, and lightweight privileged access management. Use Infrastructure Access apps for SSH when the device client is deployed.
+- [Browser Rendering](https://developers.cloudflare.com/cloudflare-one/access-controls/applications/non-http/browser-rendering/index.md) provides clientless SSH, RDP, and VNC through the browser without requiring the device client. Clientless RDP includes session recording and file transfer controls. Use clientless access when a device client cannot be installed (contractors, partner access, unmanaged devices) - typically not as the default for managed users with the client installed.
+- [Audit SSH](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/use-cases/ssh/ssh-infrastructure-access/index.md#enable-ssh-command-logging) is a Gateway Network policy action that logs SSH commands without blocking. It requires the session to be proxied through Cloudflare.
+- Short-lived certificates require CA configuration on the target host and `sshd` configured to trust the Cloudflare CA public key. Retrieve [short-lived certificate setup](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/use-cases/ssh/ssh-infrastructure-access/index.md) docs before configuring.
 - For kubectl and database access behind private networks, use the device client with private destination routing. There is no Infrastructure Access or browser-rendered equivalent for arbitrary TCP protocols today.
 
 ### Logs, Analytics, and DEX
 
-- [Gateway activity logs](https://developers.cloudflare.com/cloudflare-one/analytics/logs/gateway-logs/) record DNS, HTTP, and Network policy decisions. Filter by rule name, user identity, destination, action, and time range. These are the primary troubleshooting tool for "why was this blocked/allowed."
-- [Access audit logs](https://developers.cloudflare.com/cloudflare-one/insights/logs/dashboard-logs/access-authentication-logs/) record authentication decisions per app - who authenticated, which policy matched, and session details. Use for verifying policy behavior and investigating access failures.
-- [Shadow IT discovery](https://developers.cloudflare.com/cloudflare-one/insights/analytics/shadow-it-discovery/) uses Gateway HTTP logs to surface unmanaged SaaS applications. Requires TLS inspection for HTTPS visibility.
-- [DEX (Digital Experience Monitoring)](https://developers.cloudflare.com/cloudflare-one/insights/dex/) provides fleet-level and per-device connectivity diagnostics. Use [DEX tests](https://developers.cloudflare.com/cloudflare-one/insights/dex/tests/) (HTTP, traceroute) to proactively monitor reachability to critical origins and internal apps. Fleet status shows device client health, connection mode, and connectivity state across the enrolled population.
-- [Logpush](https://developers.cloudflare.com/cloudflare-one/analytics/logs/logpush/) exports Gateway, Access, Network, and DEX logs to external SIEM or storage. Configure before go-live if the customer requires centralized log retention or compliance reporting.
+- [Gateway activity logs](https://developers.cloudflare.com/cloudflare-one/insights/logs/dashboard-logs/gateway-logs/index.md) record DNS, HTTP, and Network policy decisions. Filter by rule name, user identity, destination, action, and time range. These are the primary troubleshooting tool for "why was this blocked/allowed."
+- [Access audit logs](https://developers.cloudflare.com/cloudflare-one/insights/logs/dashboard-logs/access-authentication-logs/index.md) record authentication decisions per app - who authenticated, which policy matched, and session details. Use for verifying policy behavior and investigating access failures.
+- [Shadow IT discovery](https://developers.cloudflare.com/cloudflare-one/insights/analytics/shadow-it-discovery/index.md) uses Gateway HTTP logs to surface unmanaged SaaS applications. Requires TLS inspection for HTTPS visibility.
+- [DEX (Digital Experience Monitoring)](https://developers.cloudflare.com/cloudflare-one/insights/dex/index.md) provides fleet-level and per-device connectivity diagnostics. Use [DEX tests](https://developers.cloudflare.com/cloudflare-one/insights/dex/tests/index.md) (HTTP, traceroute) to proactively monitor reachability to critical origins and internal apps. Fleet status shows device client health, connection mode, and connectivity state across the enrolled population.
+- [Logpush](https://developers.cloudflare.com/cloudflare-one/insights/logs/logpush/index.md) exports Gateway, Access, Network, and DEX logs to external SIEM or storage. Configure before go-live if the customer requires centralized log retention or compliance reporting.
 - When troubleshooting, work from logs toward config: identify the log entry showing the failure (Gateway block, Access deny, tunnel error, DNS resolution miss), then trace back to the responsible rule, route, or policy.
 
 ### Cloudflare WAN / Site Connectivity

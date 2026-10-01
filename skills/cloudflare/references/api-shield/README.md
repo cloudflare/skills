@@ -39,6 +39,6 @@ API Shield: Enterprise-grade API security (Discovery, Schema Validation 2.0, JWT
 
 ## See Also
 
-- [API Shield Docs](https://developers.cloudflare.com/api-shield/)
-- [API Reference](https://developers.cloudflare.com/api/resources/api_gateway/)
+- [API Shield Docs](https://developers.cloudflare.com/api-shield/index.md)
+- [API Reference](https://developers.cloudflare.com/api/resources/api_gateway/index.md)
 - [OWASP API Security Top 10](https://owasp.org/www-project-api-security/)

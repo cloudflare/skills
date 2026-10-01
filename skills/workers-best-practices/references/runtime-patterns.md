@@ -133,7 +133,7 @@ async fetch(request: Request, env: Env): Promise<Response> {
 }
 ```
 
-**Retrieve**: `/queues/` and `/workflows/` for current APIs. For Workflow-specific rules, see [Rules of Workflows](https://developers.cloudflare.com/workflows/build/rules-of-workflows/).
+**Retrieve**: `/queues/` and `/workflows/` for current APIs. For Workflow-specific rules, see [Rules of Workflows](https://developers.cloudflare.com/workflows/build/rules-of-workflows/index.md).
 
 ### Use service bindings for Worker-to-Worker communication
 

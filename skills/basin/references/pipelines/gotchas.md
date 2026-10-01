@@ -1,6 +1,6 @@
 # Basin Pipelines Gotchas
 
-Non-obvious failure modes (not well covered by docs). For current limits and error semantics, pull `https://developers.cloudflare.com/basin-pipelines/platform/limits/`.
+Non-obvious failure modes (not well covered by docs). For current limits and error semantics, pull `https://developers.cloudflare.com/basin-pipelines/platform/limits/index.md`.
 
 ## Events accepted but never appear (most common)
 

@@ -136,4 +136,4 @@ Anti-pattern:
 console.log("Got a request to " + url.pathname);
 ```
 
-**Retrieve**: [Workers Logs](https://developers.cloudflare.com/workers/observability/logs/workers-logs/) and [Traces](https://developers.cloudflare.com/workers/observability/traces/) for current config options.
+**Retrieve**: [Workers Logs](https://developers.cloudflare.com/workers/observability/logs/workers-logs/index.md) and [Traces](https://developers.cloudflare.com/workers/observability/traces/index.md) for current config options.

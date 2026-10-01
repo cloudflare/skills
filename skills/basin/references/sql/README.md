@@ -8,15 +8,15 @@ For full function lists, data types, and pricing, **retrieve the live docs** —
 
 | Topic | URL |
 |-------|-----|
-| Overview / get started | `https://developers.cloudflare.com/basin-sql/get-started/` |
-| Query data | `https://developers.cloudflare.com/basin-sql/query-data/` |
-| SQL reference | `https://developers.cloudflare.com/basin-sql/sql-reference/` |
-| Aggregate functions | `https://developers.cloudflare.com/basin-sql/sql-reference/aggregate-functions/` |
-| Scalar functions | `https://developers.cloudflare.com/basin-sql/sql-reference/scalar-functions/` |
-| Complex types | `https://developers.cloudflare.com/basin-sql/sql-reference/complex-types/` |
-| Limitations & best practices | `https://developers.cloudflare.com/basin-sql/reference/limitations-best-practices/` |
-| Wrangler commands | `https://developers.cloudflare.com/basin-sql/reference/wrangler-commands/` |
-| Pricing | `https://developers.cloudflare.com/basin-sql/platform/pricing/` |
+| Overview / get started | `https://developers.cloudflare.com/basin-sql/get-started/index.md` |
+| Query data | `https://developers.cloudflare.com/basin-sql/query-data/index.md` |
+| SQL reference | `https://developers.cloudflare.com/basin-sql/sql-reference/index.md` |
+| Aggregate functions | `https://developers.cloudflare.com/basin-sql/sql-reference/aggregate-functions/index.md` |
+| Scalar functions | `https://developers.cloudflare.com/basin-sql/sql-reference/scalar-functions/index.md` |
+| Complex types | `https://developers.cloudflare.com/basin-sql/sql-reference/complex-types/index.md` |
+| Limitations & best practices | `https://developers.cloudflare.com/basin-sql/reference/limitations-best-practices/index.md` |
+| Wrangler commands | `https://developers.cloudflare.com/basin-sql/reference/wrangler-commands/index.md` |
+| Pricing | `https://developers.cloudflare.com/basin-sql/platform/pricing/index.md` |
 
 ## Connection Values
 

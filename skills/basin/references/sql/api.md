@@ -114,7 +114,7 @@ SELECT map_keys(meta), map_extract(meta, 'source') FROM ns.t;                   
 
 ## Errors
 
-Failed queries return `{"success": false, "errors": [{"code": ..., "message": ...}]}`. For error codes and troubleshooting, see `https://developers.cloudflare.com/basin-sql/troubleshooting/`.
+Failed queries return `{"success": false, "errors": [{"code": ..., "message": ...}]}`. For error codes and troubleshooting, see `https://developers.cloudflare.com/basin-sql/troubleshooting/index.md`.
 
 ## See Also
 

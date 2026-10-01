@@ -4,11 +4,11 @@ Define the destination contract and required event coverage before writing trans
 
 | Task | Documentation |
 | --- | --- |
-| Export supported telemetry without a custom consumer | [Exporting OpenTelemetry Data](https://developers.cloudflare.com/workers/observability/exporting-opentelemetry-data/) |
-| Process and forward custom execution events | [Tail Workers](https://developers.cloudflare.com/workers/observability/logs/tail-workers/) |
-| Aggregate metrics rather than retain individual events | [Analytics Engine from Tail Workers](https://developers.cloudflare.com/workers/observability/logs/tail-workers/#use-analytics-engine-for-aggregated-metrics) |
-| Choose filters based on execution and request fields | [Tail handler](https://developers.cloudflare.com/workers/runtime-apis/handlers/tail/) |
-| Review sensitive request data handling | [TailRequest](https://developers.cloudflare.com/workers/runtime-apis/handlers/tail/#tailrequest) |
+| Export supported telemetry without a custom consumer | [Exporting OpenTelemetry Data](https://developers.cloudflare.com/workers/observability/exporting-opentelemetry-data/index.md) |
+| Process and forward custom execution events | [Tail Workers](https://developers.cloudflare.com/workers/observability/logs/tail-workers/index.md) |
+| Aggregate metrics rather than retain individual events | [Analytics Engine from Tail Workers](https://developers.cloudflare.com/workers/observability/logs/tail-workers/index.md#use-analytics-engine-for-aggregated-metrics) |
+| Choose filters based on execution and request fields | [Tail handler](https://developers.cloudflare.com/workers/runtime-apis/handlers/tail/index.md) |
+| Review sensitive request data handling | [TailRequest](https://developers.cloudflare.com/workers/runtime-apis/handlers/tail/index.md#tailrequest) |
 
 Decide which producers, routes, failures, and successful requests each destination needs. If sampling is appropriate, specify how it affects the questions the data must answer. Minimize retained fields, test transformation and serialization against representative events, and check destination rejection behavior.
 

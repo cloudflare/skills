@@ -1,6 +1,6 @@
 # Email Handling
 
-Fetch https://developers.cloudflare.com/agents/api-reference/email/ for complete documentation.
+Fetch https://developers.cloudflare.com/agents/communication-channels/email/index.md for complete documentation.
 
 ## Overview
 

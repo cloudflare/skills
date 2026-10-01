@@ -147,7 +147,7 @@ const userWorker = env.DISPATCHER.get(sessionId, {}, { limits: { cpuMs: 5, subRe
 
 **VibeSDK:** For AI-powered code generation + deployment platforms, see [VibeSDK](https://github.com/cloudflare/vibesdk) - handles AI generation, sandbox execution, live preview, and deployment.
 
-Reference: [AI Vibe Coding Platform Architecture](https://developers.cloudflare.com/reference-architecture/diagrams/ai/ai-vibe-coding-platform/)
+Reference: [AI Vibe Coding Platform Architecture](https://developers.cloudflare.com/reference-architecture/diagrams/ai/ai-vibe-coding-platform/index.md)
 
 ### Edge Functions Platform
 ```typescript

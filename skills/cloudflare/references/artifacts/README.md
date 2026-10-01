@@ -17,7 +17,7 @@ Artifacts is a good fit when the same content needs to be addressable from **Wor
 
 Artifacts is especially useful for agent and automation workflows where each unit of work should have its own isolated repo and token.
 
-**Prefer retrieval over memory** for current availability, authentication details, route shapes, limits, and pricing. Start at `https://developers.cloudflare.com/artifacts/`.
+**Prefer retrieval over memory** for current availability, authentication details, route shapes, limits, and pricing. Start at `https://developers.cloudflare.com/artifacts/index.md`.
 
 ## When to Use Artifacts
 
@@ -61,7 +61,7 @@ Use the namespace-scoped Artifacts base URL plus a gateway JWT. For imports from
 | Create or manage repos from a Worker | README → configuration.md → api.md |
 | Integrate Artifacts from an external system | README → api.md |
 | Set up agent or sandbox workflows | README → configuration.md |
-| Verify exact auth, routes, limits, or pricing | Live docs first: `https://developers.cloudflare.com/artifacts/` |
+| Verify exact auth, routes, limits, or pricing | Live docs first: `https://developers.cloudflare.com/artifacts/index.md` |
 
 ## In This Reference
 
@@ -70,10 +70,10 @@ Use the namespace-scoped Artifacts base URL plus a gateway JWT. For imports from
 
 ## See Also
 
-- [Cloudflare Artifacts Docs](https://developers.cloudflare.com/artifacts/)
-- [Artifacts Git Protocol Docs](https://developers.cloudflare.com/artifacts/api/git-protocol/)
-- [ArtifactFS Docs](https://developers.cloudflare.com/artifacts/guides/artifact-fs/)
-- [Cloudflare Workers Docs](https://developers.cloudflare.com/workers/)
-- [Cloudflare Durable Objects Docs](https://developers.cloudflare.com/durable-objects/)
-- [Cloudflare R2 Docs](https://developers.cloudflare.com/r2/)
-- [Cloudflare D1 Docs](https://developers.cloudflare.com/d1/)
+- [Cloudflare Artifacts Docs](https://developers.cloudflare.com/artifacts/index.md)
+- [Artifacts Git Protocol Docs](https://developers.cloudflare.com/artifacts/api/git-protocol/index.md)
+- [ArtifactFS Docs](https://developers.cloudflare.com/artifacts/guides/artifact-fs/index.md)
+- [Cloudflare Workers Docs](https://developers.cloudflare.com/workers/index.md)
+- [Cloudflare Durable Objects Docs](https://developers.cloudflare.com/durable-objects/index.md)
+- [Cloudflare R2 Docs](https://developers.cloudflare.com/r2/index.md)
+- [Cloudflare D1 Docs](https://developers.cloudflare.com/d1/index.md)

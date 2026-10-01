@@ -1,6 +1,6 @@
 # Callable Methods
 
-Fetch https://developers.cloudflare.com/agents/api-reference/callable-methods/ for complete documentation.
+Fetch https://developers.cloudflare.com/agents/runtime/lifecycle/callable-methods/index.md for complete documentation.
 
 ## Overview
 

@@ -49,4 +49,4 @@ Cloudflare Spectrum provides security and acceleration for ANY TCP or UDP-based 
 
 ## See Also
 
-- [Cloudflare Docs](https://developers.cloudflare.com/spectrum/)
+- [Cloudflare Docs](https://developers.cloudflare.com/spectrum/index.md)

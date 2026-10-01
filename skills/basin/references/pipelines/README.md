@@ -8,16 +8,16 @@ This reference is a fast-start with verified code and gotchas. For limits, setti
 
 | Topic | URL |
 |-------|-----|
-| Overview / getting started | `https://developers.cloudflare.com/basin-pipelines/getting-started/` |
-| Streams (write, manage, Logpush) | `https://developers.cloudflare.com/basin-pipelines/streams/` |
-| Sinks | `https://developers.cloudflare.com/basin-pipelines/sinks/` |
-| Basin Pipelines & SQL transforms | `https://developers.cloudflare.com/basin-pipelines/pipelines/` |
-| SQL reference (statements, types) | `https://developers.cloudflare.com/basin-pipelines/sql-reference/` |
-| Wrangler commands | `https://developers.cloudflare.com/basin-pipelines/reference/wrangler-commands/` |
-| Terraform | `https://developers.cloudflare.com/basin-pipelines/reference/terraform/` |
-| Limits | `https://developers.cloudflare.com/basin-pipelines/platform/limits/` |
-| Pricing | `https://developers.cloudflare.com/basin-pipelines/platform/pricing/` |
-| Metrics (GraphQL) | `https://developers.cloudflare.com/basin-pipelines/observability/metrics/` |
+| Overview / getting started | `https://developers.cloudflare.com/basin-pipelines/getting-started/index.md` |
+| Streams (write, manage, Logpush) | `https://developers.cloudflare.com/basin-pipelines/streams/index.md` |
+| Sinks | `https://developers.cloudflare.com/basin-pipelines/sinks/index.md` |
+| Basin Pipelines & SQL transforms | `https://developers.cloudflare.com/basin-pipelines/pipelines/index.md` |
+| SQL reference (statements, types) | `https://developers.cloudflare.com/basin-pipelines/sql-reference/index.md` |
+| Wrangler commands | `https://developers.cloudflare.com/basin-pipelines/reference/wrangler-commands/index.md` |
+| Terraform | `https://developers.cloudflare.com/basin-pipelines/reference/terraform/index.md` |
+| Limits | `https://developers.cloudflare.com/basin-pipelines/platform/limits/index.md` |
+| Pricing | `https://developers.cloudflare.com/basin-pipelines/platform/pricing/index.md` |
+| Metrics (GraphQL) | `https://developers.cloudflare.com/basin-pipelines/observability/metrics/index.md` |
 
 ## Three Components
 
@@ -87,4 +87,4 @@ These are non-obvious and prevent most failures — see [gotchas.md](gotchas.md)
 
 - [Basin Catalog](../catalog/) — Iceberg sink destination
 - [Basin SQL](../sql/) — query the ingested data
-- [r2](https://developers.cloudflare.com/r2/) · [queues](https://developers.cloudflare.com/queues/) · [workers](https://developers.cloudflare.com/workers/)
+- [r2](https://developers.cloudflare.com/r2/index.md) · [queues](https://developers.cloudflare.com/queues/index.md) · [workers](https://developers.cloudflare.com/workers/index.md)

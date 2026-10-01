@@ -39,7 +39,7 @@ What are you building?
 
 ## Framework Setup
 
-Fetch the [Workers framework guide](https://developers.cloudflare.com/workers/framework-guides/) for the chosen framework before scaffolding or adapting an existing app. For Next.js, follow [Next.js on Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/); use the [Pages static export guide](https://developers.cloudflare.com/pages/framework-guides/nextjs/deploy-a-static-nextjs-site/) only when targeting a Next.js static export on Pages.
+Fetch the [Workers framework guide](https://developers.cloudflare.com/workers/framework-guides/index.md) for the chosen framework before scaffolding or adapting an existing app. For Next.js, follow [Next.js on Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/index.md); use the [Pages static export guide](https://developers.cloudflare.com/pages/framework-guides/nextjs/deploy-a-static-nextjs-site/index.md) only when targeting a Next.js static export on Pages.
 
 ## Interactive Flow
 

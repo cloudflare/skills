@@ -44,8 +44,8 @@ Check the API and encoding at each boundary. Structured clone support does not i
 
 | Boundary | What to check |
 |----------|---------------|
-| [Queue messages](https://developers.cloudflare.com/queues/configuration/javascript-apis/#queuescontenttype) | Match the body to `contentType`: `json` requires JSON-compatible data, `text` a string, `bytes` an `ArrayBuffer`, and `v8` supports structured-clone values such as `Map` and `Date`. Check the configured compatibility date when relying on the default encoding. |
-| [Workflow step results](https://developers.cloudflare.com/workflows/build/workers-api/) | Verify the step result against the documented serialization contract and the project's Workflow types before flagging a value. |
-| [Durable Object KV storage](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/#put-1) | `storage.put()` supports structured-clone values; do not apply a blanket ban on `Map` or `Set`. |
-| [Durable Object SQL](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/#exec) | Check bound parameters against the SQL API's supported types. Encode objects explicitly for the intended column representation. |
-| [WebSocket messages](https://developers.cloudflare.com/workers/runtime-apis/websockets/#send) | Use `send()` with a string, `ArrayBuffer`, or `ArrayBufferView`; encode objects, for example with `JSON.stringify()`. |
+| [Queue messages](https://developers.cloudflare.com/queues/configuration/javascript-apis/index.md#queuescontenttype) | Match the body to `contentType`: `json` requires JSON-compatible data, `text` a string, `bytes` an `ArrayBuffer`, and `v8` supports structured-clone values such as `Map` and `Date`. Check the configured compatibility date when relying on the default encoding. |
+| [Workflow step results](https://developers.cloudflare.com/workflows/build/workers-api/index.md) | Verify the step result against the documented serialization contract and the project's Workflow types before flagging a value. |
+| [Durable Object KV storage](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/index.md#do-kv-async-put) | `storage.put()` supports structured-clone values; do not apply a blanket ban on `Map` or `Set`. |
+| [Durable Object SQL](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/index.md#exec) | Check bound parameters against the SQL API's supported types. Encode objects explicitly for the intended column representation. |
+| [WebSocket messages](https://developers.cloudflare.com/workers/runtime-apis/websockets/index.md#send) | Use `send()` with a string, `ArrayBuffer`, or `ArrayBufferView`; encode objects, for example with `JSON.stringify()`. |

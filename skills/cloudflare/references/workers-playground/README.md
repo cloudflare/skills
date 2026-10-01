@@ -121,7 +121,7 @@ export default {
 
 ## See Also
 
-- [Cloudflare Workers Docs](https://developers.cloudflare.com/workers/)
-- [Workers Examples](https://developers.cloudflare.com/workers/examples/)
-- [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/)
-- [Workers API Reference](https://developers.cloudflare.com/workers/runtime-apis/)
+- [Cloudflare Workers Docs](https://developers.cloudflare.com/workers/index.md)
+- [Workers Examples](https://developers.cloudflare.com/workers/examples/index.md)
+- [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/index.md)
+- [Workers API Reference](https://developers.cloudflare.com/workers/runtime-apis/index.md)

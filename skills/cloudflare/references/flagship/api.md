@@ -136,7 +136,7 @@ OpenFeature.addHooks(new LoggingHook(), new TelemetryHook());
 
 ## REST API (Flag Management)
 
-Source of truth: [Cloudflare Flagship API reference](https://developers.cloudflare.com/api/resources/flagship/). Use it to verify REST paths, envelopes, response fields, and permission wording before relying on examples here.
+Source of truth: [Cloudflare Flagship API reference](https://developers.cloudflare.com/api/resources/flagship/index.md). Use it to verify REST paths, envelopes, response fields, and permission wording before relying on examples here.
 
 ### FIRST: Check Prerequisites
 

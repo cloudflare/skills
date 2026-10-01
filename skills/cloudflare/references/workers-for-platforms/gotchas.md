@@ -120,7 +120,7 @@ async function deployWithBackoff(deploy: () => Promise<void>, maxRetries = 3) {
 | Client API | 200 requests / sec | Per IP address |
 | GraphQL | Varies by query cost | Query complexity |
 
-See [Cloudflare API Rate Limits](https://developers.cloudflare.com/fundamentals/api/reference/limits/) for details.
+See [Cloudflare API Rate Limits](https://developers.cloudflare.com/fundamentals/api/reference/limits/index.md) for details.
 
 ## Operational Limits
 

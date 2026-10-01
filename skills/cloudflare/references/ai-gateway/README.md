@@ -14,14 +14,14 @@ Fetch the linked documentation before choosing endpoints, authentication headers
 | Add fallbacks, conditional routing, or traffic splits | [Dynamic routing](./dynamic-routing.md) |
 | Diagnose failed requests, caching, or missing logs | [Troubleshooting](./troubleshooting.md) |
 
-For new single-model calls, start with the [REST API](https://developers.cloudflare.com/ai-gateway/usage/rest-api/) or [Workers bindings](https://developers.cloudflare.com/ai-gateway/usage/worker-binding-methods/), depending on the runtime. Preserve provider-native integrations when their API shape is needed; use the corresponding [provider guide](https://developers.cloudflare.com/ai-gateway/usage/providers/).
+For new single-model calls, start with the [REST API](https://developers.cloudflare.com/ai-gateway/usage/rest-api/index.md) or [Workers bindings](https://developers.cloudflare.com/ai-gateway/usage/worker-binding-methods/index.md), depending on the runtime. Preserve provider-native integrations when their API shape is needed; use the corresponding [provider guide](https://developers.cloudflare.com/ai-gateway/usage/providers/index.md).
 
-The [legacy Unified API](https://developers.cloudflare.com/ai-gateway/usage/chat-completion/) is deprecated for single-model calls but remains required for dynamic routes. Check the task before changing an existing endpoint.
+The [legacy Unified API](https://developers.cloudflare.com/ai-gateway/usage/chat-completion/index.md) is deprecated for single-model calls but remains required for dynamic routes. Check the task before changing an existing endpoint.
 
 Gateway authentication and upstream provider credentials are separate concerns. Choose the endpoint first, then follow its authentication and billing requirements in [configuration](./configuration.md).
 
 ## Related references
 
 - [Workers AI](../workers-ai/README.md) — model inference.
-- [Agents SDK documentation](https://developers.cloudflare.com/agents/) — stateful agents.
+- [Agents SDK documentation](https://developers.cloudflare.com/agents/index.md) — stateful agents.
 - [Vectorize](../vectorize/README.md) — vector search.

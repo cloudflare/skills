@@ -6,12 +6,12 @@ Fetch the relevant current documentation before writing setup or test code:
 
 | Task | Documentation |
 |------|---------------|
-| Install compatible packages, configure Vitest and Wrangler, generate test types, run tests | [Write your first test](https://developers.cloudflare.com/workers/testing/vitest-integration/write-your-first-test/) |
-| Migrate an existing pool-based suite | [Migrate to Vitest plugin](https://developers.cloudflare.com/workers/testing/vitest-integration/migration-guides/migrate-to-vitest-plugin/) |
-| Configure bindings, runtime options, or multiple Workers | [Vitest configuration](https://developers.cloudflare.com/workers/testing/vitest-integration/configuration/) |
-| Test RPC, Worker HTTP routes, instance separation, SQLite storage, and alarms | [Testing Durable Objects](https://developers.cloudflare.com/durable-objects/examples/testing-with-durable-objects/) |
-| Inspect internals, enumerate instances, or trigger scheduled alarms with test helpers | [Test APIs](https://developers.cloudflare.com/workers/testing/vitest-integration/test-apis/) |
-| Choose state cleanup and concurrency behavior | [Isolation and concurrency](https://developers.cloudflare.com/workers/testing/vitest-integration/isolation-and-concurrency/) |
+| Install compatible packages, configure Vitest and Wrangler, generate test types, run tests | [Write your first test](https://developers.cloudflare.com/workers/testing/vitest-integration/write-your-first-test/index.md) |
+| Migrate an existing pool-based suite | [Migrate to Vitest plugin](https://developers.cloudflare.com/workers/testing/vitest-integration/migration-guides/migrate-to-vitest-plugin/index.md) |
+| Configure bindings, runtime options, or multiple Workers | [Vitest configuration](https://developers.cloudflare.com/workers/testing/vitest-integration/configuration/index.md) |
+| Test RPC, Worker HTTP routes, instance separation, SQLite storage, and alarms | [Testing Durable Objects](https://developers.cloudflare.com/durable-objects/examples/testing-with-durable-objects/index.md) |
+| Inspect internals, enumerate instances, or trigger scheduled alarms with test helpers | [Test APIs](https://developers.cloudflare.com/workers/testing/vitest-integration/test-apis/index.md) |
+| Choose state cleanup and concurrency behavior | [Isolation and concurrency](https://developers.cloudflare.com/workers/testing/vitest-integration/isolation-and-concurrency/index.md) |
 
 Choose tests around the behavior being changed:
 

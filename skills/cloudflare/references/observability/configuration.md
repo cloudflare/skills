@@ -4,13 +4,13 @@ Fetch the relevant guide before configuring the selected Worker and deployment e
 
 | Task | Maintained documentation |
 | --- | --- |
-| Enable persisted logs, structured JSON logging, and sampling | [Workers Logs](https://developers.cloudflare.com/workers/observability/logs/workers-logs/) |
-| Enable traces and set their sampling independently of logs | [Workers Traces](https://developers.cloudflare.com/workers/observability/traces/) |
-| Configure a named deployment environment | [Wrangler environments](https://developers.cloudflare.com/workers/wrangler/environments/) and the environment example in [Workers Logs](https://developers.cloudflare.com/workers/observability/logs/workers-logs/) |
-| Bind an Analytics Engine dataset and write its first data point | [Analytics Engine get started](https://developers.cloudflare.com/analytics/analytics-engine/get-started/) |
-| Connect a producer to a Tail Worker | [Configure Tail Workers](https://developers.cloudflare.com/workers/observability/logs/tail-workers/) |
-| Create a Logpush job, configure access, and enable Worker log delivery | [Workers Logpush](https://developers.cloudflare.com/workers/observability/logs/logpush/) |
-| Configure OTLP destinations, authentication, and local persistence | [Exporting OpenTelemetry data](https://developers.cloudflare.com/workers/observability/exporting-opentelemetry-data/) |
+| Enable persisted logs, structured JSON logging, and sampling | [Workers Logs](https://developers.cloudflare.com/workers/observability/logs/workers-logs/index.md) |
+| Enable traces and set their sampling independently of logs | [Workers Traces](https://developers.cloudflare.com/workers/observability/traces/index.md) |
+| Configure a named deployment environment | [Wrangler environments](https://developers.cloudflare.com/workers/wrangler/environments/index.md) and the environment example in [Workers Logs](https://developers.cloudflare.com/workers/observability/logs/workers-logs/index.md) |
+| Bind an Analytics Engine dataset and write its first data point | [Analytics Engine get started](https://developers.cloudflare.com/analytics/analytics-engine/get-started/index.md) |
+| Connect a producer to a Tail Worker | [Configure Tail Workers](https://developers.cloudflare.com/workers/observability/logs/tail-workers/index.md) |
+| Create a Logpush job, configure access, and enable Worker log delivery | [Workers Logpush](https://developers.cloudflare.com/workers/observability/logs/logpush/index.md) |
+| Configure OTLP destinations, authentication, and local persistence | [Exporting OpenTelemetry data](https://developers.cloudflare.com/workers/observability/exporting-opentelemetry-data/index.md) |
 
 ## Setup decisions
 

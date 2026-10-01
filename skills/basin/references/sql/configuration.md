@@ -1,6 +1,6 @@
 # Basin SQL Configuration
 
-Auth and setup. For the current permission matrix and wrangler flags, pull `https://developers.cloudflare.com/basin-sql/reference/wrangler-commands/` and the Basin Catalog manage-catalogs doc.
+Auth and setup. For the current permission matrix and wrangler flags, pull `https://developers.cloudflare.com/basin-sql/reference/wrangler-commands/index.md` and the Basin Catalog manage-catalogs doc.
 
 ## Prerequisites
 

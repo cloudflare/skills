@@ -10,7 +10,7 @@ Fetch the relevant documentation below before implementing. Treat current Cloudf
 - Use an HTTP pull consumer when processing runs in another environment; plan for polling, visibility timeouts, and acknowledgement leases.
 - Choose a message encoding the consumer can decode. Check serialization and compatibility-date behavior before sending existing application objects.
 
-See [How Queues works](https://developers.cloudflare.com/queues/reference/how-queues-works/) and [delivery guarantees](https://developers.cloudflare.com/queues/reference/delivery-guarantees/) before choosing ordering or deduplication strategies.
+See [How Queues works](https://developers.cloudflare.com/queues/reference/how-queues-works/index.md) and [delivery guarantees](https://developers.cloudflare.com/queues/reference/delivery-guarantees/index.md) before choosing ordering or deduplication strategies.
 
 ## Read by task
 
@@ -21,4 +21,4 @@ See [How Queues works](https://developers.cloudflare.com/queues/reference/how-qu
 | Buffer APIs, defer jobs, or integrate with storage and orchestration | [patterns.md](./patterns.md) |
 | Diagnose delivery failures, duplicates, or capacity issues | [gotchas.md](./gotchas.md) |
 
-For a first application, fetch [Getting started](https://developers.cloudflare.com/queues/get-started/). Retrieve [limits](https://developers.cloudflare.com/queues/platform/limits/) and [pricing](https://developers.cloudflare.com/queues/platform/pricing/) before sizing throughput, retention, or cost; plan-specific values are not maintained here.
+For a first application, fetch [Getting started](https://developers.cloudflare.com/queues/get-started/index.md). Retrieve [limits](https://developers.cloudflare.com/queues/platform/limits/index.md) and [pricing](https://developers.cloudflare.com/queues/platform/pricing/index.md) before sizing throughput, retention, or cost; plan-specific values are not maintained here.

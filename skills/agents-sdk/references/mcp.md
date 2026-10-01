@@ -6,8 +6,8 @@ Read the relevant current documentation for implementation details and supported
 
 | Task | Documentation |
 |------|---------------|
-| Build a server | [Handler API](https://developers.cloudflare.com/agents/model-context-protocol/apis/handler-api/) — server factories, Worker entrypoint, dependencies, and examples |
-| Migrate an existing server | [MCP SDK v2 migration](https://developers.cloudflare.com/agents/model-context-protocol/guides/migrate-to-mcp-sdk-v2/) — stateless migration and temporary legacy paths |
-| Connect to servers and use their tools | [Client API](https://developers.cloudflare.com/agents/model-context-protocol/apis/client-api/) — connections, OAuth, tools, resources, and retries |
-| Choose a transport | [Transports](https://developers.cloudflare.com/agents/model-context-protocol/protocol/transport/) — remote HTTP and existing RPC integrations |
-| Secure a server | [Securing MCP servers](https://developers.cloudflare.com/agents/model-context-protocol/guides/securing-mcp-server/) — OAuth and proxy security |
+| Build a server | [Handler API](https://developers.cloudflare.com/agents/model-context-protocol/apis/handler-api/index.md) — server factories, Worker entrypoint, dependencies, and examples |
+| Migrate an existing server | [MCP SDK v2 migration](https://developers.cloudflare.com/agents/model-context-protocol/guides/migrate-to-mcp-sdk-v2/index.md) — stateless migration and temporary legacy paths |
+| Connect to servers and use their tools | [Client API](https://developers.cloudflare.com/agents/model-context-protocol/apis/client-api/index.md) — connections, OAuth, tools, resources, and retries |
+| Choose a transport | [Transports](https://developers.cloudflare.com/agents/model-context-protocol/protocol/transport/index.md) — remote HTTP and existing RPC integrations |
+| Secure a server | [Securing MCP servers](https://developers.cloudflare.com/agents/model-context-protocol/guides/securing-mcp-server/index.md) — OAuth and proxy security |

@@ -67,7 +67,7 @@ Recommended handling:
 - Prefer short-lived tokens for handoff between systems
 - Revoke tokens that are no longer needed
 
-Verify the current token behavior and auth guidance in `https://developers.cloudflare.com/artifacts/` before building long-lived automation.
+Verify the current token behavior and auth guidance in `https://developers.cloudflare.com/artifacts/index.md` before building long-lived automation.
 
 ## Git Consumers
 

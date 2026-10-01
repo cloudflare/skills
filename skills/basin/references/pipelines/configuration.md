@@ -1,6 +1,6 @@
 # Basin Pipelines Configuration
 
-Templates for creating streams, sinks, and pipelines via CLI, REST, or Terraform. For the full flag/field list and allowed values, pull `https://developers.cloudflare.com/basin-pipelines/reference/wrangler-commands/` and the streams/sinks/pipelines docs.
+Templates for creating streams, sinks, and pipelines via CLI, REST, or Terraform. For the full flag/field list and allowed values, pull `https://developers.cloudflare.com/basin-pipelines/reference/wrangler-commands/index.md` and the streams/sinks/pipelines docs.
 
 ## Naming Rules
 
@@ -20,7 +20,7 @@ Schema is a JSON object with a `fields` array; each field has `name`, `type`, `r
 }
 ```
 
-Field types include `string`, `bool`, `int32/64`, `float32/64`, `timestamp`, `json`, `binary`, `list`, `struct` (with nested `items`/`fields`). For the authoritative type list, see `https://developers.cloudflare.com/basin-pipelines/sql-reference/sql-data-types/`.
+Field types include `string`, `bool`, `int32/64`, `float32/64`, `timestamp`, `json`, `binary`, `list`, `struct` (with nested `items`/`fields`). For the authoritative type list, see `https://developers.cloudflare.com/basin-pipelines/sql-reference/sql-data-types/index.md`.
 
 Unstructured streams (no schema) store everything in a single `value` column.
 
@@ -109,7 +109,7 @@ curl -X POST "$BASE_URL/pipelines" -H "Authorization: Bearer $API_TOKEN" \
 
 ## Terraform
 
-Resources: `cloudflare_pipeline_stream`, `cloudflare_pipeline_sink`, `cloudflare_pipeline`. For current attribute schemas pull `https://developers.cloudflare.com/basin-pipelines/reference/terraform/`.
+Resources: `cloudflare_pipeline_stream`, `cloudflare_pipeline_sink`, `cloudflare_pipeline`. For current attribute schemas pull `https://developers.cloudflare.com/basin-pipelines/reference/terraform/index.md`.
 
 ```hcl
 resource "cloudflare_pipeline_stream" "my_stream" {

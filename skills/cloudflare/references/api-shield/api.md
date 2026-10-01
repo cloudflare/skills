@@ -138,4 +138,4 @@ PUT /settings/graphql_protection               # Set: {max_depth,max_size}
 
 - [configuration.md](configuration.md) - Setup guides for all features
 - [patterns.md](patterns.md) - Firewall rules and common patterns
-- [API Gateway API Docs](https://developers.cloudflare.com/api/resources/api_gateway/)
+- [API Gateway API Docs](https://developers.cloudflare.com/api/resources/api_gateway/index.md)

@@ -65,4 +65,4 @@ Deploy via Dashboard (Rules → Snippets) or API/Terraform. See configuration.md
 
 ## See Also
 
-- [Cloudflare Docs](https://developers.cloudflare.com/rules/snippets/)
+- [Cloudflare Docs](https://developers.cloudflare.com/rules/snippets/index.md)

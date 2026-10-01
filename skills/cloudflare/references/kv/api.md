@@ -4,12 +4,12 @@ Read the relevant API page before implementing; it defines current options, resu
 
 | Task | Documentation |
 |------|---------------|
-| Read one or several keys; choose text, JSON, binary, or stream results | [Read key-value pairs](https://developers.cloudflare.com/kv/api/read-key-value-pairs/) |
-| Read metadata with values; tune read caching or coalesce related keys | [Read guidance](https://developers.cloudflare.com/kv/api/read-key-value-pairs/) |
-| Write values and metadata; set absolute expiration or a relative lifetime | [Write key-value pairs](https://developers.cloudflare.com/kv/api/write-key-value-pairs/) |
-| Delete a key | [Delete key-value pairs](https://developers.cloudflare.com/kv/api/delete-key-value-pairs/) |
-| Enumerate keys, filter by prefix, and paginate | [List keys](https://developers.cloudflare.com/kv/api/list-keys/) |
-| Access namespaces or perform bulk operations outside a Worker | [KV REST API](https://developers.cloudflare.com/api/resources/kv/) and [Wrangler KV commands](https://developers.cloudflare.com/kv/reference/kv-commands/) |
+| Read one or several keys; choose text, JSON, binary, or stream results | [Read key-value pairs](https://developers.cloudflare.com/kv/api/read-key-value-pairs/index.md) |
+| Read metadata with values; tune read caching or coalesce related keys | [Read guidance](https://developers.cloudflare.com/kv/api/read-key-value-pairs/index.md) |
+| Write values and metadata; set absolute expiration or a relative lifetime | [Write key-value pairs](https://developers.cloudflare.com/kv/api/write-key-value-pairs/index.md) |
+| Delete a key | [Delete key-value pairs](https://developers.cloudflare.com/kv/api/delete-key-value-pairs/index.md) |
+| Enumerate keys, filter by prefix, and paginate | [List keys](https://developers.cloudflare.com/kv/api/list-keys/index.md) |
+| Access namespaces or perform bulk operations outside a Worker | [KV REST API](https://developers.cloudflare.com/api/resources/kv/index.md) and [Wrangler KV commands](https://developers.cloudflare.com/kv/reference/kv-commands/index.md) |
 
 Handle missing values explicitly: JavaScript reads return `null` for absent keys; valid stored values can be falsy. Choose defaults separately from how you handle request failures.
 

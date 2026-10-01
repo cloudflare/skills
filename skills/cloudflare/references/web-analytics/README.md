@@ -136,6 +136,6 @@ Create custom tracking rules for advanced configurations:
 
 ## See Also
 
-- [Cloudflare Web Analytics Docs](https://developers.cloudflare.com/analytics/web-analytics/)
+- [Cloudflare Web Analytics Docs](https://developers.cloudflare.com/web-analytics/index.md)
 - [Core Web Vitals Guide](https://web.dev/vitals/)
 - [GraphQL Analytics API Reference](../graphql-api/) - Query server-side analytics (HTTP, Workers, DNS, Firewall, etc.) via GraphQL

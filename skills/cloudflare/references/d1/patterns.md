@@ -4,14 +4,14 @@ Use these guides to design the operation, then fetch [api.md](./api.md) for impl
 
 | Task | Current documentation |
 | --- | --- |
-| Design pagination, filters, joins, and aggregations | [Query a database](https://developers.cloudflare.com/d1/best-practices/query-d1/) and [supported SQL](https://developers.cloudflare.com/d1/sql-api/sql-statements/) |
-| Reduce scans and inspect query plans | [Use indexes](https://developers.cloudflare.com/d1/best-practices/use-indexes/) |
-| Batch writes or transform data | [Database API](https://developers.cloudflare.com/d1/worker-api/d1-database/) and [limits](https://developers.cloudflare.com/d1/platform/limits/) |
-| Store and query event metadata | [Query JSON](https://developers.cloudflare.com/d1/sql-api/query-json/) |
-| Evaluate a cache in front of D1 | [How KV works](https://developers.cloudflare.com/kv/concepts/how-kv-works/) |
-| Choose shared or per-tenant databases | [D1 FAQs](https://developers.cloudflare.com/d1/reference/faq/) and [limits](https://developers.cloudflare.com/d1/platform/limits/) |
-| Reduce read latency while preserving required consistency | [Read replication](https://developers.cloudflare.com/d1/best-practices/read-replication/) |
-| Plan point-in-time recovery or portable backups | [Time Travel](https://developers.cloudflare.com/d1/reference/time-travel/) and [import/export](https://developers.cloudflare.com/d1/best-practices/import-export-data/) |
+| Design pagination, filters, joins, and aggregations | [Query a database](https://developers.cloudflare.com/d1/best-practices/query-d1/index.md) and [supported SQL](https://developers.cloudflare.com/d1/sql-api/sql-statements/index.md) |
+| Reduce scans and inspect query plans | [Use indexes](https://developers.cloudflare.com/d1/best-practices/use-indexes/index.md) |
+| Batch writes or transform data | [Database API](https://developers.cloudflare.com/d1/worker-api/d1-database/index.md) and [limits](https://developers.cloudflare.com/d1/platform/limits/index.md) |
+| Store and query event metadata | [Query JSON](https://developers.cloudflare.com/d1/sql-api/query-json/index.md) |
+| Evaluate a cache in front of D1 | [How KV works](https://developers.cloudflare.com/kv/concepts/how-kv-works/index.md) |
+| Choose shared or per-tenant databases | [D1 FAQs](https://developers.cloudflare.com/d1/reference/faq/index.md) and [limits](https://developers.cloudflare.com/d1/platform/limits/index.md) |
+| Reduce read latency while preserving required consistency | [Read replication](https://developers.cloudflare.com/d1/best-practices/read-replication/index.md) |
+| Plan point-in-time recovery or portable backups | [Time Travel](https://developers.cloudflare.com/d1/reference/time-travel/index.md) and [import/export](https://developers.cloudflare.com/d1/best-practices/import-export-data/index.md) |
 
 Keep result sets bounded and pagination ordering deterministic. Choose indexes from actual query plans. When splitting a large operation into batches, account for the loss of whole-operation atomicity across batches.
 

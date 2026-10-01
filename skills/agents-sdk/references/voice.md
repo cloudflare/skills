@@ -1,6 +1,6 @@
 # Voice (Experimental)
 
-Fetch https://developers.cloudflare.com/agents/api-reference/voice/ for complete documentation.
+Fetch https://developers.cloudflare.com/agents/communication-channels/voice/index.md for complete documentation.
 
 `@cloudflare/voice` — real-time speech-to-text and text-to-speech for agents. Audio streams over WebSocket.
 

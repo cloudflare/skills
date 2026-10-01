@@ -1,6 +1,6 @@
 # Basin SQL Patterns
 
-Code templates for CLI, REST, and Worker access. For performance/partitioning best practices, pull `https://developers.cloudflare.com/basin-sql/reference/limitations-best-practices/`.
+Code templates for CLI, REST, and Worker access. For performance/partitioning best practices, pull `https://developers.cloudflare.com/basin-sql/reference/limitations-best-practices/index.md`.
 
 ## Wrangler CLI
 

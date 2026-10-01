@@ -4,10 +4,10 @@ Use Workflows for durable, multi-step jobs that must retry, wait, and resume wit
 
 Fetch the relevant current documentation before implementing. API shapes, configuration, testing helpers, limits, and examples belong in the docs rather than in this reference.
 
-- **Start a project:** [Build your first Workflow](https://developers.cloudflare.com/workflows/get-started/guide/) covers scaffolding, configuration, deployment, and a first instance.
-- **Design durable execution:** [Rules of Workflows](https://developers.cloudflare.com/workflows/build/rules-of-workflows/) covers step boundaries, replay, state, and idempotency.
-- **Implement or manage an instance:** [Workers API](https://developers.cloudflare.com/workflows/build/workers-api/) covers steps, instance operations, parameters, and return types.
-- **Check capacity and cost:** fetch [limits](https://developers.cloudflare.com/workflows/reference/limits/) and [pricing](https://developers.cloudflare.com/workflows/reference/pricing/) for the target plan.
+- **Start a project:** [Build your first Workflow](https://developers.cloudflare.com/workflows/get-started/guide/index.md) covers scaffolding, configuration, deployment, and a first instance.
+- **Design durable execution:** [Rules of Workflows](https://developers.cloudflare.com/workflows/build/rules-of-workflows/index.md) covers step boundaries, replay, state, and idempotency.
+- **Implement or manage an instance:** [Workers API](https://developers.cloudflare.com/workflows/build/workers-api/index.md) covers steps, instance operations, parameters, and return types.
+- **Check capacity and cost:** fetch [limits](https://developers.cloudflare.com/workflows/reference/limits/index.md) and [pricing](https://developers.cloudflare.com/workflows/reference/pricing/index.md) for the target plan.
 
 ## In This Reference
 
@@ -18,6 +18,6 @@ Fetch the relevant current documentation before implementing. API shapes, config
 
 ## See Also
 
-- [Durable Objects](https://developers.cloudflare.com/durable-objects/) — stateful coordination
+- [Durable Objects](https://developers.cloudflare.com/durable-objects/index.md) — stateful coordination
 - [Queues](../queues/README.md) — asynchronous message delivery
-- [Workers](https://developers.cloudflare.com/workers/) — application entry points that trigger instances
+- [Workers](https://developers.cloudflare.com/workers/index.md) — application entry points that trigger instances

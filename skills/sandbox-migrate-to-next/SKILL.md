@@ -7,9 +7,9 @@ description: Migrate Cloudflare Sandbox apps from stable @cloudflare/sandbox to 
 
 **Perform** the port. Follow the steps in order. Depth lives in docs—fetch the linked page when a step needs detail.
 
-Human guide: [Migrate](https://developers.cloudflare.com/sandbox/1-0-preview/migrate/) · [1.0 preview](https://developers.cloudflare.com/sandbox/1-0-preview/)
+Human guide: [Migrate](https://developers.cloudflare.com/sandbox/sdk/migrate/index.md) · [1.0 preview](https://developers.cloudflare.com/sandbox/index.md)
 
-**New projects** should start on `@next` (**`sandbox-next`**), not this skill. **Day-to-day stable work** → **`sandbox-stable`**. Deprecated-API cleanup **without** moving to `@next` → [2026 deprecation guide](https://developers.cloudflare.com/sandbox/guides/2026-deprecation/) first if needed.
+**New projects** should start on `@next` (**`sandbox-next`**), not this skill. **Day-to-day stable work** → **`sandbox-stable`**. Deprecated-API cleanup **without** moving to `@next` → [2026 deprecation guide](https://developers.cloudflare.com/sandbox/sdk/migrate/index.md) first if needed.
 
 Existing apps should migrate **when you can**, so you are ready when 1.0 becomes the stable release. Do **not** force production cutover without the user agreeing.
 
@@ -52,7 +52,7 @@ Stop after any step that needs a user decision.
 | String kill signals | Numeric only |
 | Files, mounts, backups, ports, tunnels, `proxyToSandbox` | Mostly unchanged (ignore session/transport bits on stable pages) |
 
-Depth: [Migrate](https://developers.cloudflare.com/sandbox/1-0-preview/migrate/) · after port, day-to-day → **`sandbox-next`**
+Depth: [Migrate](https://developers.cloudflare.com/sandbox/sdk/migrate/index.md) · after port, day-to-day → **`sandbox-next`**
 
 ## Audit
 
@@ -90,13 +90,13 @@ Apply replacements from the map. For each area, implement from the doc—not fro
 
 | Area | Doc |
 | ---- | --- |
-| Commands / handles / waits | [Processes](https://developers.cloudflare.com/sandbox/1-0-preview/processes/) · [Processes API](https://developers.cloudflare.com/sandbox/1-0-preview/api/processes/) |
-| `cwd` / `env` / secrets | [Environment](https://developers.cloudflare.com/sandbox/1-0-preview/environment/) · [Outbound traffic](https://developers.cloudflare.com/sandbox/guides/outbound-traffic/) |
-| Drop sessions | [Migrate](https://developers.cloudflare.com/sandbox/1-0-preview/migrate/) · [Lifecycle](https://developers.cloudflare.com/sandbox/1-0-preview/lifecycle/) |
-| Terminals | [Terminals](https://developers.cloudflare.com/sandbox/1-0-preview/terminals/) |
-| Interpreter | [Interpreter](https://developers.cloudflare.com/sandbox/1-0-preview/interpreter/) |
-| Errors | [Errors](https://developers.cloudflare.com/sandbox/1-0-preview/errors/) |
-| Durable job across requests | [Process execution — lifetime / durability](https://developers.cloudflare.com/sandbox/1-0-preview/processes/) |
+| Commands / handles / waits | [Processes](https://developers.cloudflare.com/sandbox/index.md) · [Processes API](https://developers.cloudflare.com/sandbox/index.md) |
+| `cwd` / `env` / secrets | [Environment](https://developers.cloudflare.com/sandbox/index.md) · [Outbound traffic](https://developers.cloudflare.com/sandbox/sdk/guides/outbound-traffic/index.md) |
+| Drop sessions | [Migrate](https://developers.cloudflare.com/sandbox/sdk/migrate/index.md) · [Lifecycle](https://developers.cloudflare.com/sandbox/index.md) |
+| Terminals | [Terminals](https://developers.cloudflare.com/sandbox/index.md) |
+| Interpreter | [Interpreter](https://developers.cloudflare.com/sandbox/index.md) |
+| Errors | [Errors](https://developers.cloudflare.com/sandbox/index.md) |
+| Durable job across requests | [Process execution — lifetime / durability](https://developers.cloudflare.com/sandbox/index.md) |
 
 **Commands (shape):**
 
@@ -157,7 +157,7 @@ Staging/branch first. Production is **one** deploy of matching Worker + image:
 npx wrangler deploy --containers-rollout=immediate
 ```
 
-Leave `rollout_active_grace_period` at default `0` (or set `0` if raised). After cutover, pre-deploy process/terminal IDs are invalid. Details: [Migrate](https://developers.cloudflare.com/sandbox/1-0-preview/migrate/) · [Container rollouts](https://developers.cloudflare.com/containers/platform-details/rollouts/)
+Leave `rollout_active_grace_period` at default `0` (or set `0` if raised). After cutover, pre-deploy process/terminal IDs are invalid. Details: [Migrate](https://developers.cloudflare.com/sandbox/sdk/migrate/index.md) · [Container rollouts](https://developers.cloudflare.com/containers/configuration/rollouts/index.md)
 
 ## Validate
 

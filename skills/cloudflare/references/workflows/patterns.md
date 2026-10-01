@@ -2,7 +2,7 @@
 
 ## Design Decisions
 
-Read [Rules of Workflows](https://developers.cloudflare.com/workflows/build/rules-of-workflows/) before choosing step boundaries or concurrency patterns.
+Read [Rules of Workflows](https://developers.cloudflare.com/workflows/build/rules-of-workflows/index.md) before choosing step boundaries or concurrency patterns.
 
 - Separate work into steps that can be retried independently. Persist results through step returns and keep side effects inside steps.
 - Make side effects safe to repeat. A retry can happen after an external write succeeds; use the destination's idempotency mechanism or atomic deduplication. A separate check followed by a write does not itself guarantee idempotency.
@@ -14,16 +14,16 @@ Read [Rules of Workflows](https://developers.cloudflare.com/workflows/build/rule
 
 | Task | Documentation |
 | --- | --- |
-| Process images with human approval; handle approval events and timeouts | [Human-in-the-loop image tagging](https://developers.cloudflare.com/workflows/examples/wait-for-event/) |
-| Implement a payment and notification sequence | [Pay cart and send invoice](https://developers.cloudflare.com/workflows/examples/send-invoices/) |
-| Export data to object storage | [Export and save D1 database](https://developers.cloudflare.com/workflows/examples/backup-d1/) |
-| Delay lifecycle follow-ups or retry transient failures | [Sleeping and retrying](https://developers.cloudflare.com/workflows/build/sleeping-and-retrying/) |
-| Schedule jobs or start child Workflows | [Trigger Workflows](https://developers.cloudflare.com/workflows/build/trigger-workflows/) |
-| Design parallel work, races, conditional steps, and batch creation | [Rules of Workflows](https://developers.cloudflare.com/workflows/build/rules-of-workflows/) |
+| Process images with human approval; handle approval events and timeouts | [Human-in-the-loop image tagging](https://developers.cloudflare.com/workflows/examples/wait-for-event/index.md) |
+| Implement a payment and notification sequence | [Pay cart and send invoice](https://developers.cloudflare.com/workflows/examples/send-invoices/index.md) |
+| Export data to object storage | [Export and save D1 database](https://developers.cloudflare.com/workflows/examples/backup-d1/index.md) |
+| Delay lifecycle follow-ups or retry transient failures | [Sleeping and retrying](https://developers.cloudflare.com/workflows/build/sleeping-and-retrying/index.md) |
+| Schedule jobs or start child Workflows | [Trigger Workflows](https://developers.cloudflare.com/workflows/build/trigger-workflows/index.md) |
+| Design parallel work, races, conditional steps, and batch creation | [Rules of Workflows](https://developers.cloudflare.com/workflows/build/rules-of-workflows/index.md) |
 
 ## Testing Workflows
 
-Fetch [Vitest setup](https://developers.cloudflare.com/workers/testing/vitest-integration/write-your-first-test/) for current dependencies and configuration, then use the [Workflow test APIs](https://developers.cloudflare.com/workers/testing/vitest-integration/test-apis/#workflows) for introspection, step/event mocks, sleep controls, and cleanup.
+Fetch [Vitest setup](https://developers.cloudflare.com/workers/testing/vitest-integration/write-your-first-test/index.md) for current dependencies and configuration, then use the [Workflow test APIs](https://developers.cloudflare.com/workers/testing/vitest-integration/test-apis/index.md#workflows) for introspection, step/event mocks, sleep controls, and cleanup.
 
 Test retry behavior, event arrival and timeout paths, and duplicate external effects. Use documented introspection waits to observe completion rather than assuming a newly created instance has finished.
 

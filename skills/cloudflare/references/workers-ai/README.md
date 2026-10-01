@@ -4,7 +4,7 @@ Use Workers AI for managed model inference from Workers or an external service. 
 
 ## Choose a model
 
-Start with the [model catalog](https://developers.cloudflare.com/workers-ai/models/) and open the selected model's page for its exact identifier, input/output schema, context window, and supported features. Compare candidates on the user's task, language, quality requirements, latency, and [current pricing](https://developers.cloudflare.com/workers-ai/platform/pricing/). Evaluate with representative inputs rather than treating model size as a quality or cost ranking.
+Start with the [model catalog](https://developers.cloudflare.com/workers-ai/models/index.md) and open the selected model's page for its exact identifier, input/output schema, context window, and supported features. Compare candidates on the user's task, language, quality requirements, latency, and [current pricing](https://developers.cloudflare.com/workers-ai/platform/pricing/index.md). Evaluate with representative inputs rather than treating model size as a quality or cost ranking.
 
 For tool use, streaming, or structured output, confirm support for the selected model and integration. For embeddings, check output dimensions and compatibility with the existing index; changing the model may require re-embedding stored documents, even if dimensions match.
 
@@ -21,4 +21,4 @@ If a topic is missing, use the [Workers AI documentation index](https://develope
 
 - [Vectorize](../vectorize/): vector storage and retrieval.
 - [AI Gateway](../ai-gateway/): inference analytics, caching, and request controls.
-- [Workers](https://developers.cloudflare.com/workers/): runtime and application hosting.
+- [Workers](https://developers.cloudflare.com/workers/index.md): runtime and application hosting.

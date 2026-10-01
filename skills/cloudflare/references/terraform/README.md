@@ -98,5 +98,5 @@ cf-terraforming import --resource-type cloudflare_dns_record --zone <zone-id>
 
 ## See Also
 - [pulumi](../pulumi/) - Alternative IaC tool for Cloudflare
-- [wrangler](https://developers.cloudflare.com/workers/wrangler/) - CLI deployment alternative
-- [workers](https://developers.cloudflare.com/workers/) - Worker runtime documentation
+- [wrangler](https://developers.cloudflare.com/workers/wrangler/index.md) - CLI deployment alternative
+- [workers](https://developers.cloudflare.com/workers/index.md) - Worker runtime documentation

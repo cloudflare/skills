@@ -2,7 +2,7 @@
 
 Manage Cloudflare Email Service from the command line and coding agents.
 
-For full CLI reference, run `npx wrangler email --help`. For Dashboard setup, see the [getting started docs](https://developers.cloudflare.com/email-service/get-started/).
+For full CLI reference, run `npx wrangler email --help`. For Dashboard setup, see the [getting started docs](https://developers.cloudflare.com/email-service/get-started/index.md).
 
 ## Wrangler Email Commands
 

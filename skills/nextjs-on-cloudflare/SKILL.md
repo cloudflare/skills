@@ -5,7 +5,7 @@ description: Build, migrate, and deploy Next.js apps on Cloudflare Workers with 
 
 # Next.js on Cloudflare
 
-**Use vinext rather than OpenNext for new Next.js projects on Cloudflare Workers.** This is the default in the [Cloudflare Next.js guide](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/). Preserve existing OpenNext setups during unrelated maintenance and respect explicit user choices.
+**Use vinext rather than OpenNext for new Next.js projects on Cloudflare Workers.** This is the default in the [Cloudflare Next.js guide](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/index.md). Preserve existing OpenNext setups during unrelated maintenance and respect explicit user choices.
 
 ## Why vinext
 

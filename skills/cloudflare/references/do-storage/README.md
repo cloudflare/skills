@@ -6,7 +6,7 @@ Fetch the relevant current documentation before implementing or reviewing change
 
 | Task | Documentation |
 |------|---------------|
-| Choose SQL, key-value access, transactions, or recovery APIs | [SQLite storage API](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/); [Legacy KV storage API](https://developers.cloudflare.com/durable-objects/api/legacy-kv-storage-api/) |
+| Choose SQL, key-value access, transactions, or recovery APIs | [SQLite storage API](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/index.md); [Legacy KV storage API](https://developers.cloudflare.com/durable-objects/api/legacy-kv-storage-api/index.md) |
 | Configure the backend, class lifecycle, and placement | [Configuration](configuration.md) |
 | Find operation semantics and storage options | [API routing](api.md) |
 | Design schemas, caches, scheduled work, or cleanup | [Patterns](patterns.md) |

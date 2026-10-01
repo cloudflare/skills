@@ -1,6 +1,6 @@
 # Basin SQL Gotchas
 
-Operational pitfalls. For the authoritative list of supported features, unsupported features, and recommended workarounds, pull `https://developers.cloudflare.com/basin-sql/reference/limitations-best-practices/` and `https://developers.cloudflare.com/basin-sql/troubleshooting/`.
+Operational pitfalls. For the authoritative list of supported features, unsupported features, and recommended workarounds, pull `https://developers.cloudflare.com/basin-sql/reference/limitations-best-practices/index.md` and `https://developers.cloudflare.com/basin-sql/troubleshooting/index.md`.
 
 ## Access
 

@@ -1,6 +1,6 @@
 # Basin Pipelines Patterns
 
-Code-first patterns. For observability dataset/field schemas and Logpush dataset lists, pull `https://developers.cloudflare.com/basin-pipelines/observability/metrics/` and `https://developers.cloudflare.com/basin-pipelines/streams/logpush/`.
+Code-first patterns. For observability dataset/field schemas and Logpush dataset lists, pull `https://developers.cloudflare.com/basin-pipelines/observability/metrics/index.md` and `https://developers.cloudflare.com/basin-pipelines/streams/logpush/index.md`.
 
 ## Fire-and-Forget Producer
 
