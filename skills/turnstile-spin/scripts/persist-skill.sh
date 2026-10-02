@@ -83,7 +83,7 @@ if [[ ! -f "$SOURCE_DIR/SKILL.md" ]]; then
   exit 1
 fi
 
-python3 -I - "$SOURCE_DIR" "$TARGET_DIR" <<'PY'
+if ! python3 -I - "$SOURCE_DIR" "$TARGET_DIR" <<'PY'
 import pathlib
 import shutil
 import sys
@@ -97,6 +97,11 @@ shutil.copytree(source, target, dirs_exist_ok=False)
 for script in (target / "scripts").glob("*.sh"):
     script.chmod(0o755)
 PY
+then
+  echo "persist-skill: bundle copy failed" >&2
+  echo '{"status":"error","reason":"copy_failed"}'
+  exit 1
+fi
 
 python3 -I - "$PATH_ARG" "$TARGET_DIR" <<'PY'
 import json
