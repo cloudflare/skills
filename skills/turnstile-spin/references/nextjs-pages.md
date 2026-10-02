@@ -42,26 +42,32 @@ export default async function handler(
 	res: NextApiResponse,
 ) {
 	const token = req.body["cf-turnstile-response"] ?? req.body.token;
-	if (expectedHostnames.size === 0) {
+	if (typeof token !== "string" || token.length === 0 || token.length > 2048 || expectedHostnames.size === 0) {
 		return res.status(403).json({ error: "Verification failed" });
 	}
 	const remoteip =
 		(req.headers["x-forwarded-for"] as string | undefined)?.split(",")[0] ??
 		req.socket.remoteAddress;
 
-	const verify = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-		method: "POST",
-		headers: { "Content-Type": "application/x-www-form-urlencoded" },
-		body: new URLSearchParams({
-			secret: process.env.TURNSTILE_SECRET!,
-			response: token,
-			...(remoteip ? { remoteip } : {}),
-		}),
-	});
-	const result = await verify.json();
+	let result;
+	try {
+		const verify = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+			method: "POST",
+			headers: { "Content-Type": "application/x-www-form-urlencoded" },
+			signal: AbortSignal.timeout(10_000),
+			body: new URLSearchParams({
+				secret: process.env.TURNSTILE_SECRET!,
+				response: token,
+				...(remoteip ? { remoteip } : {}),
+			}),
+		});
+		if (!verify.ok) throw new Error("Siteverify failed");
+		result = await verify.json();
+	} catch {
+		return res.status(403).json({ error: "Verification failed" });
+	}
 	if (
-		verify.ok !== true ||
-		result.success !== true ||
+		result?.success !== true ||
 		result.action !== "signup" ||
 		!expectedHostnames.has(result.hostname)
 	) {
