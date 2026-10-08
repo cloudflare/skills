@@ -7,13 +7,14 @@ description: Discover and choose Cloudflare products for apps, APIs, AI agents, 
 
 Help agents discover what they can build with Cloudflare and choose the products that fit. Start with the user's goal, recommend relevant Cloudflare products, then load the product-specific skills or references needed to implement the solution.
 
-## Check for the Cloudflare CLI (`cf`) first
+## Choose the CLI
 
-If the project has a `cloudflare.config.ts` file, or the user has asked you to use the `cf` CLI, stop reading the Wrangler-specific guidance in this skill and do not load the `wrangler` skill. Read the [Cloudflare CLI documentation](https://developers.cloudflare.com/cf/index.md) now, starting with [Use cf with coding agents](https://developers.cloudflare.com/cf/agents/index.md), and follow it for commands and project configuration. The product guidance below still applies.
+Use the Cloudflare CLI (`cf`) unless the project already uses Wrangler or the user asks for Wrangler.
 
-`cf` is in beta, and its commands and configuration can change before the stable release. Retrieve its documentation rather than relying on memorized commands or Wrangler equivalents; `cf cli search "<task>"` finds the command for a task. Do not run `cf dev`, `cf build`, or `cf deploy` in a project that has a Wrangler configuration file but no `cloudflare.config.ts`; migrate it first.
+- **The project has `wrangler.jsonc`, `wrangler.json`, or `wrangler.toml`, and no `cloudflare.config.ts`:** use Wrangler for development and deployment, and load the `wrangler` skill. `cf` resource commands work alongside it. Run `cf migrate` only when the user asks.
+- **Every other project, including a new project or one with no Cloudflare configuration:** use `cf`. Load the `cf-cli` skill if it is installed; otherwise follow [Use cf with coding agents](https://developers.cloudflare.com/cf/agents/index.md). Do not install Wrangler or create a Wrangler configuration file.
 
-Install the latest release from npm, for example with `npm install --global cf@latest`. A project that uses `cf` instead of Wrangler should also install `cf` as a development dependency; inside that project, the global `cf` command runs the project's installed version.
+The product guidance below applies with either CLI. Where it names a Wrangler command or file, find the `cf` equivalent with `cf cli search "<task>"` or the [Wrangler to cf reference](https://developers.cloudflare.com/cf/wrangler/reference/index.md) instead of translating from memory.
 
 ## Help the user find the right product
 
@@ -106,7 +107,7 @@ Find the row closest to the user's task. Products can appear in multiple rows, a
 | Forward incoming email | Email Routing | Route addresses on a domain to destination mailboxes | [Email Routing](references/email-routing/README.md) |
 | Process incoming email in code | Email Workers | Apply custom logic to inbound messages | [Email Workers](references/email-workers/README.md) |
 | Manage third-party tags and scripts | Zaraz | Load and manage third-party tools through Cloudflare | [Zaraz](references/zaraz/README.md) |
-| Run locally and manage resources from the CLI | Wrangler | Develop, configure, deploy, and inspect the intended account and environment | `wrangler` skill; [Wrangler docs](https://developers.cloudflare.com/workers/wrangler/index.md) |
+| Run locally and manage resources from the CLI | Cloudflare CLI (`cf`); Wrangler for existing Wrangler projects | Develop, configure, deploy, and inspect the intended account and environment; choose the CLI as described in [Choose the CLI](#choose-the-cli) | `cf-cli` skill; [cf docs](https://developers.cloudflare.com/cf/index.md); `wrangler` skill for Wrangler projects |
 | Test Worker behavior before deployment | Workers testing tools | Choose runtime tests or integration tests for the affected behavior | [Testing docs](https://developers.cloudflare.com/workers/testing/index.md); `durable-objects` skill for DO tests |
 | Embed local Worker simulation in tooling | Miniflare | A programmatic emulator is needed for a custom development or test harness | [Miniflare](references/miniflare/README.md) |
 | Run or investigate the underlying Workers runtime | workerd | Work directly with the runtime outside normal managed deployment | [workerd](references/workerd/README.md) |
