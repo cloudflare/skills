@@ -83,7 +83,7 @@ Find the row closest to the user's task. Products can appear in multiple rows, a
 | Proxy a TCP or UDP application | Spectrum | Protect and accelerate non-HTTP application traffic | [Spectrum docs](https://developers.cloudflare.com/spectrum/index.md) |
 | Connect a network directly to Cloudflare | Network Interconnect | Dedicated network connectivity is required | [Network Interconnect docs](https://developers.cloudflare.com/network-interconnect/index.md) |
 | Improve routing across the network | Argo Smart Routing | Optimize traffic paths to the origin | [Argo Smart Routing docs](https://developers.cloudflare.com/argo-smart-routing/index.md) |
-| Reduce Worker-to-backend latency | Smart Placement | Place Worker execution closer to the backends it calls | [Smart Placement](references/smart-placement/README.md) |
+| Reduce Worker-to-backend latency | Workers placement | Use explicit region hints for known regional databases, or traffic-based Smart Placement | [Workers placement](references/smart-placement/README.md) |
 | Redirect URLs, rewrite paths or headers, or change origin routing | Rules | Use Redirect, Transform, or Origin Rules when configuration can express the required behavior | [Rules docs](https://developers.cloudflare.com/rules/index.md) |
 | Make small HTTP request or response changes | Snippets | Lightweight edge logic meets the need | [Snippets docs](https://developers.cloudflare.com/rules/snippets/index.md) |
 | Protect forms from automated abuse | Turnstile | Add bot challenges and server-side token validation | `turnstile-spin` skill; [Turnstile docs](https://developers.cloudflare.com/turnstile/index.md) |

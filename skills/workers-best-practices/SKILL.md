@@ -27,6 +27,10 @@ Use today's date for new Workers. Encourage periodic updates for existing Worker
 
 Enable [Workers Logs](https://developers.cloudflare.com/workers/observability/logs/workers-logs/index.md) and [Traces](https://developers.cloudflare.com/workers/observability/traces/index.md) when creating or preparing a Worker for production. Set `observability.enabled` and `observability.traces.enabled` to `true`; the top-level setting alone does not enable traces. Use structured JSON logging and configure sampling for the workload. During reviews, flag missing logs or traces. See the [configuration example](references/configuration.md#enable-workers-logs-and-traces).
 
+## Place Compute Near Regional Databases
+
+For Workers that make multiple sequential queries to one regional database, configure explicit placement matching the database's provider and region before deployment. Ask for missing location information, preserve existing placement choices, and verify handler eligibility and deployed request duration. See [database placement](references/configuration.md#place-compute-near-regional-databases).
+
 ## Anti-Patterns to Flag
 
 | Anti-pattern | Consequence and preferred pattern |

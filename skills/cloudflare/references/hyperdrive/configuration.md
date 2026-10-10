@@ -15,7 +15,7 @@ See [README.md](./README.md) for the retrieval workflow. Fetch the relevant guid
 | Configure cache freshness or separate cached and fresh-read bindings | [Query caching](https://developers.cloudflare.com/hyperdrive/concepts/query-caching/index.md) |
 | Budget origin connections across configurations | [Tune connection pooling](https://developers.cloudflare.com/hyperdrive/configuration/tune-connection-pool/index.md) |
 | Choose local database access or remote Hyperdrive testing | [Local development](https://developers.cloudflare.com/hyperdrive/configuration/local-development/index.md) |
-| Evaluate Worker placement for multiple database round trips | [Smart Placement](https://developers.cloudflare.com/workers/configuration/placement/index.md) |
+| Place compute near a regional database | [Placement Hints](https://developers.cloudflare.com/workers/configuration/placement/index.md#configure-explicit-placement-hints) |
 
 ## Setup decisions
 
@@ -25,3 +25,13 @@ See [README.md](./README.md) for the retrieval workflow. Fetch the relevant guid
 - Local direct database access does not exercise Hyperdrive pooling or caching. Use the local-development guide's remote option when verifying those behaviors, and identify the database that option targets before running writes.
 
 See [api.md](./api.md) for drivers and [gotchas.md](./gotchas.md) for diagnosis.
+
+## Place compute near the database
+
+Fetch [Workers placement](https://developers.cloudflare.com/workers/configuration/placement/index.md) before configuring a database-backed Worker. For multiple sequential queries to one regional database, prefer an explicit region hint over waiting for Smart Placement to learn from traffic. Hyperdrive pools origin connections; its binding does not automatically configure Worker placement.
+
+- Establish the database's actual cloud provider and region from provider metadata or the user. The [Hyperdrive configuration API](https://developers.cloudflare.com/api/resources/hyperdrive/subresources/configs/methods/get/index.md) exposes origin connection information, not a cloud region. Do not treat the runtime binding's connection hostname as the database's location.
+- For PlanetScale, identify the branch used by the Hyperdrive origin and confirm its region. Retrieve the [Postgres](https://developers.cloudflare.com/hyperdrive/examples/connect-to-postgres/postgres-database-providers/planetscale-postgres/index.md) or [MySQL](https://developers.cloudflare.com/hyperdrive/examples/connect-to-mysql/mysql-database-providers/planetscale/index.md) guide. Do not infer the database region from a gateway hostname, especially when replica credentials can route to multiple regions.
+- When the region is known, set the explicit region hint in the project's existing configuration format. Retrieve the [CF configuration mapping](https://developers.cloudflare.com/cf/wrangler/reference/index.md) for `cloudflare.config.ts`, or use the installed Wrangler schema for Wrangler projects. Preserve existing placement choices; use one placement option per Worker.
+- If location is missing, ask for the provider and region. For unknown or multiple back-end locations, discuss [Smart Placement](https://developers.cloudflare.com/workers/configuration/placement/index.md#enable-smart-placement) and its traffic requirements. Host-based placement is experimental and requires a suitable single-homed endpoint; do not automatically copy an arbitrary origin hostname into it.
+- Check handler eligibility: placement affects fetch handlers, not RPC methods or named entrypoints. Verify request duration on deployed Workers with representative queries and caching. Local development does not validate production placement.
