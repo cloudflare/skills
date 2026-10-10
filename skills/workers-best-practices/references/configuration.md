@@ -104,6 +104,12 @@ An unused binding alone is not a finding; establish a concrete configuration or 
 
 For a new Durable Object class, verify its migration entry and exported class name against the target Wrangler schema.
 
+### Place compute near regional databases
+
+Hyperdrive connection pooling does not automatically place a Worker near its database. For multiple sequential queries to one regional database, identify the actual provider and region and configure an explicit region hint before deployment. Preserve explicit user placement choices and ask for missing region information rather than guessing from a connection hostname.
+
+Retrieve [Workers placement](https://developers.cloudflare.com/workers/configuration/placement/index.md) for supported options and handler limitations. Use [CF's configuration mapping](https://developers.cloudflare.com/cf/wrangler/reference/index.md) for `cloudflare.config.ts`, or the installed schema for Wrangler projects. Placement affects fetch handlers, not RPC methods or named entrypoints. For unknown or multiple back-end locations, consider Smart Placement with its traffic requirements. Compare request duration on deployed Workers using representative queries and cache behavior; local development does not measure production placement.
+
 ## Observability
 
 ### Enable Workers Logs and Traces

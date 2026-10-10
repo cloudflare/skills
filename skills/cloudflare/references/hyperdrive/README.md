@@ -20,6 +20,7 @@ Fetch the relevant official page before implementing. Driver versions, compatibi
 - Choose a driver for the database engine and existing application stack; verify supported versions and Worker requirements in its guide.
 - Create database clients inside each handler invocation. Hyperdrive manages the underlying origin pool; consult [connection lifecycle](https://developers.cloudflare.com/hyperdrive/concepts/connection-lifecycle/index.md) for cleanup behavior.
 - Choose caching by read freshness. Disabling caching still allows connection pooling; a write does not invalidate cached reads. See [query caching](https://developers.cloudflare.com/hyperdrive/concepts/query-caching/index.md).
+- For multiple sequential queries to one regional database, configure explicit Worker placement matching its provider and region before deployment. Hyperdrive does not automatically place the Worker near the origin. Follow [placement setup](./configuration.md#place-compute-near-the-database), preserving explicit user choices.
 
 ## See also
 
