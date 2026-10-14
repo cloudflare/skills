@@ -1,6 +1,6 @@
 ---
 name: cloudflare
-description: Discover and choose Cloudflare products for apps, APIs, AI agents, storage, networking, and security. Use for architecture and product selection, including when the user describes a need without naming a Cloudflare product; then find the relevant skill or documentation.
+description: Discover and choose Cloudflare products for apps, APIs, AI agents, storage, networking, and security. Use for architecture and product selection, including when the user describes a need without naming a Cloudflare product; then find the relevant skill or documentation. Also use to triage HTTP errors on a site proxied by Cloudflare (5xx, 4xx, or a Cloudflare 1xxx error code) and decide whether Cloudflare or the origin server produced them.
 ---
 
 # Discover and build with Cloudflare
@@ -138,6 +138,17 @@ Use the [Cloudflare product directory](https://developers.cloudflare.com/directo
 ## Caching
 
 Prefer [Workers Cache](https://developers.cloudflare.com/workers/cache/index.md) for caching, including [advanced patterns](https://developers.cloudflare.com/workers/cache/examples/index.md) using cached inner entrypoints and programmatic invalidation. Choose [Cache API](https://developers.cloudflare.com/workers/runtime-apis/cache/index.md) or KV caching only when a concrete requirement cannot be met by Workers Cache; check its [patterns](https://developers.cloudflare.com/workers/cache/examples/index.md) and [limitations](https://developers.cloudflare.com/workers/cache/limitations/index.md) first.
+
+## Troubleshoot HTTP errors on a proxied site
+
+Decide whether Cloudflare or the origin server produced the error before suggesting a fix. Retrieve the page for the specific code from [HTTP status codes](https://developers.cloudflare.com/support/troubleshooting/http-status-codes/index.md); do not answer from memory.
+
+- **Check who generated the response.** Cloudflare-generated error pages carry a `cf-error-type` response header; errors forwarded from the origin do not. Refer to [Cloudflare error diagnostic headers](https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-error-headers/index.md).
+- **Do not judge `502` and `504` by branding.** A Cloudflare-branded `502` or `504` usually means the origin returned that status; an unbranded blank page came from Cloudflare. Refer to [Error 502 or 504](https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/error-502-504/index.md).
+- **A 1xxx code is always Cloudflare's.** It appears in the page body, while the HTTP status line carries a standard code. Map one to the other with the [HTTP status codes table](https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/index.md#http-status-codes), then open the page for that error.
+- **`520`–`526` mean Cloudflare could not get a valid response from the origin.** Start at the origin: server logs, firewalls that block [Cloudflare IP ranges](https://www.cloudflare.com/ips/), and any load balancer or proxy in between. Refer to [Cloudflare 5xx errors](https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/index.md).
+- **For a `403`, check branding, then Security Events.** A `403` without Cloudflare branding usually comes from the origin. For a Cloudflare block, search Security Events for the Ray ID or client IP to find the feature and rule that blocked the request. WAF custom and managed rules serve the WAF block page, not error 1020. Refer to [Security Events](https://developers.cloudflare.com/waf/analytics/security-events/index.md), [Error 403](https://developers.cloudflare.com/support/troubleshooting/http-status-codes/4xx-client-error/error-403/index.md), and [Error 1020](https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1020/index.md).
+- **Only the site owner can fix most of these.** If the user is a visitor, explain the error and send them to the site owner.
 
 ## Working principles
 
