@@ -48,6 +48,19 @@ Install using the [`npx skills`](https://skills.sh) CLI:
 npx skills add https://github.com/cloudflare/skills
 ```
 
+### Autohand Code
+
+Install [Autohand Code CLI](https://autohand.ai/code/cli/) from the `autohand-cli` npm package, then install the skills for your user:
+
+```sh
+npm install -g autohand-cli
+npx skills add https://github.com/cloudflare/skills --agent autohand-code --global
+```
+
+Start a new `autohand` session after installation. Omit `--global` to install into the current project's `.autohand/skills/` directory instead.
+
+To connect the Cloudflare MCP server, follow the [Autohand Code setup instructions](https://github.com/cloudflare/mcp#autohand-code).
+
 ### Clone / Copy
 
 Clone this repo and copy the skill folders into the appropriate directory for your agent:
@@ -59,6 +72,7 @@ Clone this repo and copy the skill folders into the appropriate directory for yo
 | OpenCode | `~/.config/opencode/skills/` | [docs](https://opencode.ai/docs/skills/) |
 | OpenAI Codex | `~/.codex/skills/` | [docs](https://developers.openai.com/codex/skills/) |
 | Pi | `~/.pi/agent/skills/` | [docs](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent#skills) |
+| Autohand Code | `~/.autohand/skills/` | [docs](https://github.com/autohandai/code-cli/blob/main/docs/agent-skills.md) |
 
 ## Skills
 
