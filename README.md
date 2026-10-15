@@ -19,7 +19,7 @@ Start a new Codex session after installation.
 
 ### Claude Code
 
-Install using the [plugin marketplace](https://code.claude.com/docs/en/discover-plugins#add-from-github):
+Install using the [plugin marketplace](https://code.claude.com/docs/en/plugins/install#add-a-marketplace):
 
 ```
 /plugin marketplace add cloudflare/skills
@@ -58,7 +58,7 @@ Clone this repo and copy the skill folders into the appropriate directory for yo
 | Cursor | `~/.cursor/skills/` | [docs](https://cursor.com/docs/context/skills) |
 | OpenCode | `~/.config/opencode/skills/` | [docs](https://opencode.ai/docs/skills/) |
 | OpenAI Codex | `~/.codex/skills/` | [docs](https://developers.openai.com/codex/skills/) |
-| Pi | `~/.pi/agent/skills/` | [docs](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent#skills) |
+| Pi | `~/.pi/agent/skills/` | [docs](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/skills.md) |
 
 ## Skills
 
@@ -83,8 +83,8 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 | turnstile-spin | Setting up, repairing, or migrating Turnstile bot verification, including server-side Siteverify |
 | web-perf | Auditing Core Web Vitals (FCP, LCP, TBT, CLS), render-blocking resources, network chains |
 | cloudflare-one | Designing, configuring, troubleshooting, or reviewing [Cloudflare One](https://developers.cloudflare.com/cloudflare-one/) deployments across Access, Gateway, WARP, Tunnel, Magic WAN, DLP, CASB, posture, and identity |
-| gateway-workers | Writing and reviewing Workers invoked by the Forward action in Gateway HTTP policies |
 | cloudflare-one-migrations | Migration assessments, policy mapping, rollout plans, and gap analysis for Zscaler, Palo Alto, legacy VPN/SWG, and SASE migrations to Cloudflare One |
+| gateway-workers | Writing and reviewing Workers invoked by the Forward action in Gateway HTTP policies |
 
 ## MCP Servers
 

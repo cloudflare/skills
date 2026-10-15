@@ -47,11 +47,12 @@ Use these to avoid jumping straight to configuration. Ask only the prompts relev
 
 ### Gateway, TLS, and DLP
 
-- For writing or reviewing Workers invoked by the HTTP Forward action, use the [gateway-workers skill](../gateway-workers/SKILL.md).
 - Traffic controls: DNS categories, HTTP URL/path inspection, L4 ports/protocols, egress IP requirements, custom lists, and allow/block exceptions. Retrieve [Gateway traffic policy](https://developers.cloudflare.com/cloudflare-one/traffic-policies/index.md) docs for current selectors and order of enforcement.
 - Identity: whether Gateway policies need user or group selectors, and whether users will be authenticated through Cloudflare One Client/IdP context. Check [Gateway identity selectors](https://developers.cloudflare.com/cloudflare-one/traffic-policies/identity-selectors/index.md) and [SCIM provisioning](https://developers.cloudflare.com/cloudflare-one/team-and-resources/users/scim/index.md) when groups are involved.
 - TLS inspection: root CA deployment path, certificate-pinned applications, compliance exceptions, and FIPS requirements. Retrieve [TLS decryption](https://developers.cloudflare.com/cloudflare-one/traffic-policies/http-policies/tls-decryption/index.md) docs before enabling.
 - DLP: sensitive data types, channels to inspect, TLS inspection readiness, DLP profiles, payload logging requirements, and false-positive tolerance. Retrieve [DLP](https://developers.cloudflare.com/cloudflare-one/data-loss-prevention/index.md) docs before creating enforcement.
+
+For writing or reviewing Workers invoked by the HTTP Forward action, use the [gateway-workers skill](../gateway-workers/SKILL.md).
 
 ### CASB, Device Posture, and Risk
 
