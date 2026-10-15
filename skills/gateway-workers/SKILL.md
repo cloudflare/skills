@@ -21,7 +21,7 @@ Use the published types and context reference for field names and availability. 
 
 ## Gateway behavior
 
-- Request filtering and original request body inspection run before Forward. Blocked requests never reach the Worker. Only the first matching Forward policy runs.
+- Only the first matching Forward policy invokes a Worker. Worker invocation does not confirm successful body inspection. Follow the Forward guide's [inspection order](https://developers.cloudflare.com/cloudflare-one/traffic-controls/integrate-workers/forward-traffic/index.md#how-it-works).
 - Gateway inspects the final response, including synthetic responses. Modified request bytes are not inspected again before reaching the origin.
 - Review the Forward guide's [limitations](https://developers.cloudflare.com/cloudflare-one/traffic-controls/integrate-workers/forward-traffic/index.md#known-limitations) before choosing traffic: HTTPS requires decryption, WebSockets bypass the Worker, and matching Workers VPC traffic is dropped. Worker invocation failures fail closed.
 
