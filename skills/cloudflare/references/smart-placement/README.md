@@ -1,5 +1,7 @@
 # Cloudflare Workers Smart Placement
 
+For multiple sequential queries to one regional database in a known cloud region, prefer an explicit [Placement Hint](https://developers.cloudflare.com/workers/configuration/placement/index.md#configure-explicit-placement-hints). Follow [Hyperdrive placement setup](../hyperdrive/configuration.md#place-compute-near-the-database). Smart Placement is an alternative for unknown or multiple back-end locations; it learns from traffic and only considers locations where the Worker has already run.
+
 Automatic workload placement optimization to minimize latency by running Workers closer to backend infrastructure rather than end users.
 
 ## Core Concept
@@ -40,7 +42,7 @@ Does your Worker have a fetch handler?
          │
          Does it serve static assets with run_worker_first=true?
          ├─ Yes → Don't enable (will hurt performance)
-         └─ No → Enable Smart Placement
+         └─ No → Known single regional DB: use a region hint; otherwise evaluate Smart Placement
             │
             After 15min, check placement_status
             ├─ SUCCESS → Monitor metrics

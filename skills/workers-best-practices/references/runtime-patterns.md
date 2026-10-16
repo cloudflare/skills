@@ -181,6 +181,8 @@ async fetch(request: Request, env: Env): Promise<Response> {
 
 **Retrieve**: `/hyperdrive/` for current configuration and supported databases.
 
+For multiple sequential queries to one regional database, follow [database placement](./configuration.md#place-compute-near-regional-databases) before deployment. A Hyperdrive binding does not automatically place the Worker near its database.
+
 ---
 
 ## Code Patterns

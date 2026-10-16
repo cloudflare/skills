@@ -15,7 +15,7 @@ See [README.md](./README.md) for the retrieval workflow. Fetch the relevant guid
 | Configure cache freshness or separate cached and fresh-read bindings | [Query caching](https://developers.cloudflare.com/hyperdrive/concepts/query-caching/index.md) |
 | Budget origin connections across configurations | [Tune connection pooling](https://developers.cloudflare.com/hyperdrive/configuration/tune-connection-pool/index.md) |
 | Choose local database access or remote Hyperdrive testing | [Local development](https://developers.cloudflare.com/hyperdrive/configuration/local-development/index.md) |
-| Evaluate Worker placement for multiple database round trips | [Smart Placement](https://developers.cloudflare.com/workers/configuration/placement/index.md) |
+| Place compute near a regional database | [Placement Hints](https://developers.cloudflare.com/workers/configuration/placement/index.md#configure-explicit-placement-hints) |
 
 ## Setup decisions
 
@@ -25,3 +25,10 @@ See [README.md](./README.md) for the retrieval workflow. Fetch the relevant guid
 - Local direct database access does not exercise Hyperdrive pooling or caching. Use the local-development guide's remote option when verifying those behaviors, and identify the database that option targets before running writes.
 
 See [api.md](./api.md) for drivers and [gotchas.md](./gotchas.md) for diagnosis.
+
+## Place compute near the database
+
+Fetch [Workers placement](https://developers.cloudflare.com/workers/configuration/placement/index.md) before configuring a database-backed Worker. For multiple sequential queries to one regional database, prefer an explicit region hint over waiting for Smart Placement to learn from traffic. Hyperdrive pools origin connections; its binding does not automatically configure Worker placement.
+
+- Establish the database's actual cloud provider and region from provider metadata or the user.
+- If location is missing, ask for the provider and region. For unknown or multiple back-end locations, use [Smart Placement](https://developers.cloudflare.com/workers/configuration/placement/index.md#enable-smart-placement).
