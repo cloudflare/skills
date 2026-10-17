@@ -14,7 +14,7 @@ Use the Cloudflare CLI (`cf`) unless the project already uses Wrangler or the us
 - **The project has `wrangler.jsonc`, `wrangler.json`, or `wrangler.toml`, and no `cloudflare.config.ts`:** use Wrangler for development and deployment, and load the `wrangler` skill. `cf` resource commands work alongside it. Run `cf migrate` only when the user asks.
 - **Every other project, including a new project or one with no Cloudflare configuration:** use `cf`. Load the `cf-cli` skill if it is installed; otherwise follow [Use cf with coding agents](https://developers.cloudflare.com/cf/agents/index.md). Do not install Wrangler or create a Wrangler configuration file.
 
-The product guidance below applies with either CLI. Where it names a Wrangler command or file, find the `cf` equivalent with `cf cli search "<task>"` or the [Wrangler to cf reference](https://developers.cloudflare.com/cf/wrangler/reference/index.md) instead of translating from memory.
+The product guidance below, and the documentation it links to, applies with either CLI. Many documentation pages show only Wrangler commands and configuration; in a `cf` project, do not run them or add a Wrangler configuration file. Use one CLI per project, apart from the `npx wrangler` commands the `cf-cli` skill lists as not yet supported by `cf`. Where guidance names a Wrangler command or file, find the `cf` equivalent with `cf cli search "<task>"` or the [Wrangler to cf reference](https://developers.cloudflare.com/cf/wrangler/reference/index.md) instead of translating from memory.
 
 ## Help the user find the right product
 
