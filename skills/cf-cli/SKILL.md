@@ -35,7 +35,7 @@ cf --version
 cf auth whoami
 ```
 
-- Requires Node.js 22.18 or later. Bun is not supported.
+- Use a supported Node.js release from the [installation requirements](https://developers.cloudflare.com/cf/get-started/index.md#requirements). Bun is not supported as the runtime.
 - If another tool named `cf` is on your `PATH`, use `cloudflare` instead — the package installs both commands.
 - `cf auth login` prints a link and a one-time code, then opens the browser. On a remote machine, over SSH, or in a container, add `--no-browser` so `cf` only prints the link; approve it from another device. Add `--force` to sign in again.
 - `cf` keeps its own credentials and does not reuse a Wrangler login.
@@ -78,6 +78,12 @@ cf <command> --help                   # arguments and options (e.g. cf deploy --
 - Neither exists: use `cf`, as [Use cf with coding agents](https://developers.cloudflare.com/cf/agents/index.md) recommends. Do not install Wrangler or create a Wrangler configuration file.
 
 Product documentation often shows only Wrangler commands and `wrangler.jsonc` configuration. In a `cf` project, treat those as tasks to translate, not commands to run, and do not add a Wrangler configuration file. Use one CLI per project; the only exceptions are the commands under [Commands `cf` does not support yet](#commands-cf-does-not-support-yet). For Wrangler equivalents, use the [Wrangler to cf reference](https://developers.cloudflare.com/cf/wrangler/reference/index.md) or `cf cli search`. Do not translate Wrangler commands from memory. For the full comparison, refer to [`cf` for Wrangler users](https://developers.cloudflare.com/cf/wrangler/index.md).
+
+## New project toolchain
+
+For new Workers, follow [Deploy your first Worker](https://developers.cloudflare.com/cf/get-started/first-worker/index.md). Use the generated Vite+ scripts for checks, formatting, and Workers-runtime tests; keep `cf` responsible for development, builds, and deployment. The project installs Vite+ locally, so a global `vp` installation is optional.
+
+For existing Vite projects, follow the [Vite+ integration guidance](https://developers.cloudflare.com/workers/vite-plugin/get-started/index.md#use-vite). Preserve framework scripts and resource setup: `vp run build` runs the package script, while `vp build` runs Vite directly. Adopting Vite+ does not itself convert Wrangler configuration to cf.
 
 ## Commands `cf` does not support yet
 
