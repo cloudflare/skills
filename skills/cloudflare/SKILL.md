@@ -7,6 +7,8 @@ description: Discover and choose Cloudflare products for apps, APIs, AI agents, 
 
 Help agents discover what they can build with Cloudflare and choose the products that fit. Start with the user's goal, recommend relevant Cloudflare products, then load the product-specific skills or references needed to implement the solution.
 
+Default to [Vite+](https://developers.cloudflare.com/workers/vite-plugin/get-started/index.md#use-vite) with the Cloudflare Vite plugin for new Workers and supported Vite-based apps. Preserve existing toolchains during unrelated changes.
+
 ## Choose the CLI
 
 Use the Cloudflare CLI (`cf`) unless the project already uses Wrangler or the user asks for Wrangler.
