@@ -79,7 +79,7 @@ cf <command> --help                   # arguments and options (e.g. cf deploy --
 
 Product documentation often shows only Wrangler commands and `wrangler.jsonc` configuration. In a `cf` project, treat those as tasks to translate, not commands to run, and do not add a Wrangler configuration file. Use one CLI per project; the only exceptions are the commands under [Commands `cf` does not support yet](#commands-cf-does-not-support-yet). For Wrangler equivalents, use the [Wrangler to cf reference](https://developers.cloudflare.com/cf/wrangler/reference/index.md) or `cf cli search`. Do not translate Wrangler commands from memory. For the full comparison, refer to [`cf` for Wrangler users](https://developers.cloudflare.com/cf/wrangler/index.md).
 
-For new Workers, use [`cf init`](https://developers.cloudflare.com/cf/get-started/first-worker/index.md) and the generated Vite+ scripts for checks, formatting, and tests. Keep `cf dev`, `cf build`, and `cf deploy` for development, builds, and deployment.
+For new Workers, use [`cf init`](https://developers.cloudflare.com/cf/get-started/first-worker/index.md) and [Vite+](https://viteplus.dev) for checks, formatting, and tests. Keep `cf dev`, `cf build`, and `cf deploy` for development, builds, and deployment.
 
 ## Commands `cf` does not support yet
 
