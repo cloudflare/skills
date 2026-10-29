@@ -1,0 +1,95 @@
+skills/agents-sdk/SKILL.md
+  s_3ca0b87b5b7df0::t_c89e6ed5f08a20 203-206
+skills/agents-sdk/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_cd0eee753fb1e8 1-29
+skills/basin/SKILL.md
+  s_3ca0b87b5b7df0::t_98c75be4c9a6de 25-28
+skills/basin/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_8e0107e23ccf01 1-29
+skills/cf-cli/SKILL.md
+  s_3ca0b87b5b7df0::t_cb5bb495c7a1b1 90-93
+skills/cf-cli/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_1a31c4400b8e6c 1-29
+skills/cloudflare-email-service/SKILL.md
+  s_3ca0b87b5b7df0::t_a6203ae45182ac 74-77
+skills/cloudflare-email-service/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_c090db061ce8b8 1-29
+skills/cloudflare-one-migrations/SKILL.md
+  s_3ca0b87b5b7df0::t_fe32af73eccbd1 111-114
+skills/cloudflare-one-migrations/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_24fdcf54d105ad 1-29
+skills/cloudflare-one/SKILL.md
+  s_3ca0b87b5b7df0::t_275ee5bf8fe0cc 181-184
+skills/cloudflare-one/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_5ae647446a9a97 1-29
+skills/cloudflare/SKILL.md
+  s_3ca0b87b5b7df0::t_4b0e665a9e4f6b 152-155
+skills/cloudflare/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_be789d91d770ad 1-29
+skills/durable-objects/SKILL.md
+  s_3ca0b87b5b7df0::t_2887117053d41a 181-184
+skills/durable-objects/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_b2fe8d8baa49ba 1-29
+skills/gateway-workers/SKILL.md
+  s_3ca0b87b5b7df0::t_6221ea7a81cdb4 39-42
+skills/gateway-workers/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_aaecd401c50dc8 1-29
+skills/k2/SKILL.md
+  s_3ca0b87b5b7df0::t_a3e8b4b7bca1b9 24-27
+skills/k2/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_0db7b258d031c2 1-29
+skills/nextjs-on-cloudflare/SKILL.md
+  s_3ca0b87b5b7df0::t_f3e1af8828e145 34-37
+skills/nextjs-on-cloudflare/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_669600ab63821e 1-29
+skills/sandbox-migrate-to-next/SKILL.md
+  s_3ca0b87b5b7df0::t_ad6319b33e9c97 186-189
+skills/sandbox-migrate-to-next/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_098829aa294721 1-29
+skills/sandbox-next/SKILL.md
+  s_3ca0b87b5b7df0::t_25601767832f46 93-96
+skills/sandbox-next/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_8c9c08956ad88c 1-29
+skills/sandbox-stable/SKILL.md
+  s_3ca0b87b5b7df0::t_bef1eb92501c3b 111-114
+skills/sandbox-stable/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_81db2468a819e1 1-29
+skills/turnstile-spin/SKILL.md
+  s_3ca0b87b5b7df0::t_21697f29cf4441 337-340
+skills/turnstile-spin/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_5e427d79beff38 1-29
+skills/web-perf/SKILL.md
+  s_3ca0b87b5b7df0::t_862981aaa408f1 202-205
+skills/web-perf/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_a39924f5c7f388 1-29
+skills/workers-best-practices/SKILL.md
+  s_3ca0b87b5b7df0::t_d288eb39ecaae2 61-64
+skills/workers-best-practices/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_da6695cd2dbb62 1-29
+skills/workers-profiling/SKILL.md
+  s_3ca0b87b5b7df0::t_808002049ca6c5 45-48
+skills/workers-profiling/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_6136918512b079 1-29
+skills/wrangler/SKILL.md
+  s_3ca0b87b5b7df0::t_ea2b6100c775f9 72-75
+skills/wrangler/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_a31816f590abc4 1-29
+skills/turnstile-spin/README.md
+  s_3ca0b87b5b7df0::t_855819707cc13e 22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "0e09df4cdbd66350c9d4d3b07e888fc58b3d229b",
+  "prompts": {},
+  "sessions": {
+    "s_3ca0b87b5b7df0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "009297fa-e48f-40e5-a3ac-cb625e4fe6db",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Matt TK Taylor <matttaylor@cloudflare.com>"
+    }
+  }
+}

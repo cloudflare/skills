@@ -1,0 +1,51 @@
+skills/cloudflare/references/static-assets/README.md
+  s_ab7d09545ad14c::t_ed42f3640c507e 34-38,42-46
+skills/cloudflare/references/smart-placement/api.md
+  s_ca41e7d89c4a3c::t_7ca29a675a8a4c 113,115
+skills/cloudflare/references/pages/README.md
+  s_ab7d09545ad14c::t_7d8a27887e6f86 3-5,29-30,33-39,41,47,74
+skills/cloudflare/references/smart-placement/gotchas.md
+  s_ca41e7d89c4a3c::t_6ba952215b4569 21,27,43,45,47,49,51,53,58,62,72,170
+skills/cloudflare/references/pages/gotchas.md
+  s_ca41e7d89c4a3c::t_fbcefdbfd3b342 59-78,111,113-115
+skills/cloudflare/references/smart-placement/README.md
+  s_ca41e7d89c4a3c::t_a1a2cf6893addd 24
+skills/cloudflare/references/pages-functions/README.md
+  s_ab7d09545ad14c::t_936814755bc735 3-5,23-25,28-32,35-38,84
+skills/cloudflare/SKILL.md
+  s_ab7d09545ad14c::t_c93e7e02cd5c76 48-49
+skills/cloudflare/references/pages/patterns.md
+  s_ca41e7d89c4a3c::t_c5d6b5574d33a6 188-192,194
+skills/cloudflare/references/smart-placement/configuration.md
+  s_ca41e7d89c4a3c::t_8ae24a1c9235a8 152,154,156,158-161,164,166,171,175,186
+skills/cloudflare/references/pages/configuration.md
+  s_ca41e7d89c4a3c::t_6d5fc955b164fb 136,138,140
+skills/cloudflare/references/pages/api.md
+  s_ca41e7d89c4a3c::t_0fd3939859ed62 193,195-202
+skills/cloudflare/references/pages-functions/gotchas.md
+  s_ab7d09545ad14c::t_30bcfcc242fd5f 78-86
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "7d4537134608a9620146110b860fb935948cb441",
+  "prompts": {},
+  "sessions": {
+    "s_ab7d09545ad14c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a06c82-d029-7720-8ae8-db662eb31c10",
+        "model": "unknown"
+      },
+      "human_author": "Matt TK Taylor <matttaylor@cloudflare.com>"
+    },
+    "s_ca41e7d89c4a3c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a06ca5-2dde-7490-982f-d76b44828a1a",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Matt TK Taylor <matttaylor@cloudflare.com>"
+    }
+  }
+}

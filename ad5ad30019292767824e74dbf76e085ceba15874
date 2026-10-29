@@ -1,0 +1,19 @@
+skills/cloudflare/SKILL.md
+  s_79d1419836562e::t_3669a9e71a1826 226
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "ad5ad30019292767824e74dbf76e085ceba15874",
+  "prompts": {},
+  "sessions": {
+    "s_79d1419836562e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a06ed6-e948-7300-ba5d-b38be03eed87",
+        "model": "unknown"
+      },
+      "human_author": "Matt TK Taylor <matttaylor@cloudflare.com>"
+    }
+  }
+}

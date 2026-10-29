@@ -1,0 +1,37 @@
+skills/cloudflare/references/c3/api.md
+  s_ab7d09545ad14c::t_79ab4d705a2ffe 6,8,15-20,34-37,44,55,57-58,60-61,64-67,73
+skills/cloudflare/references/c3/patterns.md
+  s_ab7d09545ad14c::t_97e53f188daeac 7,9-10,12-13,26,28,31-32,41,47,52,57-58,60-61
+skills/turnstile-spin/SKILL.md
+  s_ca41e7d89c4a3c::t_33c402a704d851 325
+skills/cloudflare/references/c3/gotchas.md
+  s_ab7d09545ad14c::t_fd3fb905e105a9 27-31,33,57
+skills/cloudflare/references/c3/README.md
+  s_ab7d09545ad14c::t_59a69ca803c922 3,9,11-12,14-18,26-27,29-35,37-38,40-41,44,48,50
+workers-vs-pages-discrepancy-report.md
+  s_ab7d09545ad14c::t_af84aa755723d6 1-269
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "5ada0aab00d4b67095e29c091998574f74ab62f6",
+  "prompts": {},
+  "sessions": {
+    "s_ab7d09545ad14c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a06c82-d029-7720-8ae8-db662eb31c10",
+        "model": "unknown"
+      },
+      "human_author": "Matt TK Taylor <matttaylor@cloudflare.com>"
+    },
+    "s_ca41e7d89c4a3c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a06ca5-2dde-7490-982f-d76b44828a1a",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Matt TK Taylor <matttaylor@cloudflare.com>"
+    }
+  }
+}

@@ -1,0 +1,55 @@
+skills/agents-sdk/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_ae7e9432906af2 3,7-16,21-23,25,27
+skills/basin/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_86fed95a0cd244 3,7-16,21-23,25,27
+skills/cf-cli/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_8ac694e97dab08 3,7-16,21-23,25,27
+skills/cloudflare-email-service/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_8082e6f567b38d 3,7-16,21-23,25,27
+skills/cloudflare-one-migrations/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_d8148a5ca35104 3,7-16,21-23,25,27
+skills/cloudflare-one/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_19c28e3db40df0 3,7-16,21-23,25,27
+skills/cloudflare/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_26b023cbfc3fe9 3,7-16,21-23,25,27
+skills/durable-objects/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_0acb6407cc8e17 3,7-16,21-23,25,27
+skills/gateway-workers/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_006e01103d96cf 3,7-16,21-23,25,27
+skills/k2/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_ae6fa4da0dda71 3,7-16,21-23,25,27
+skills/nextjs-on-cloudflare/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_7e7c0ab99510f1 3,7-16,21-23,25,27
+skills/sandbox-migrate-to-next/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_aa48d522ddda59 3,7-16,21-23,25,27
+skills/sandbox-next/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_399316cbe4afee 3,7-16,21-23,25,27
+skills/sandbox-stable/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_75c529d041e9cf 3,7-16,21-23,25,27
+skills/turnstile-spin/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_9a9f35b361d513 3,7-16,21-23,25,27
+skills/web-perf/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_dd998bf22542bf 3,7-16,21-23,25,27
+skills/workers-best-practices/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_06531c51880f8e 3,7-16,21-23,25,27
+skills/workers-profiling/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_b3019ff43877b5 3,7-16,21-23,25,27
+skills/wrangler/references/skill-feedback.md
+  s_3ca0b87b5b7df0::t_97df2daffbe2a4 3,7-16,21-23,25,27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "29de2b2f187f5ddbcbac048d1a480298e76d619a",
+  "prompts": {},
+  "sessions": {
+    "s_3ca0b87b5b7df0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "009297fa-e48f-40e5-a3ac-cb625e4fe6db",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Matt TK Taylor <matttaylor@cloudflare.com>"
+    }
+  }
+}
