@@ -1,7 +1,7 @@
 {
   "name": "cloudflare",
   "description": "Build, test, and deploy applications on Cloudflare with platform guidance Skills and the Cloudflare MCP server.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "mcpServers": "./.mcp.json",
   "author": {
     "name": "Cloudflare",
@@ -9,6 +9,7 @@
     "url": "https://www.cloudflare.com/"
   },
   "homepage": "https://developers.cloudflare.com/",
+  "privacyPolicyUrl": "https://www.cloudflare.com/privacypolicy/",
   "repository": "https://github.com/cloudflare/skills",
   "license": "Apache-2.0",
   "keywords": [
