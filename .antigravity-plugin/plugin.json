@@ -2,7 +2,7 @@
   "$schema": "https://antigravity.google/schemas/v1/plugin.json",
   "name": "cloudflare",
   "displayName": "Cloudflare",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Build, deploy and manage apps on Cloudflare Workers, storage and AI, with platform skills and the Cloudflare API through one MCP server.",
   "logo": "icon.png",
   "suggestedPrompts": [
