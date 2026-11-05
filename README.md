@@ -69,6 +69,7 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 | cloudflare | Helps agents discover which Cloudflare products fit their needs, then find the right skills and docs |
 | basin | Building analytics workflows with Basin Pipelines, Basin Catalog, and Basin SQL; includes the Data Platform rebrand |
 | k2 | Building durable K2 Streams with HTTP or Worker producers and subscription consumers |
+| flagship | Feature flags with Flagship: the Workers binding, OpenFeature SDKs, targeting rules, percentage rollouts, and local flag stores |
 | nextjs-on-cloudflare | Next.js on Workers with vinext; routes to vinext's upstream skills and docs |
 | agents-sdk | Building stateful AI agents with state, scheduling, RPC, MCP servers, email, and streaming chat |
 | durable-objects | Stateful coordination (chat rooms, games, booking), RPC, SQLite, alarms, WebSockets |
