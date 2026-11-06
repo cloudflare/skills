@@ -78,6 +78,7 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 | cf-cli | Finding and running Cloudflare CLI (`cf`) commands, and choosing between `cf` and Wrangler |
 | wrangler | Deploying and managing Workers, KV, R2, D1, Vectorize, Queues, Workflows |
 | workers-best-practices | Writing, reviewing, or configuring production Workers |
+| workers-development | Local development and debugging with Local Explorer: binding data, traces, and logs; routes deployed-Worker debugging to observability |
 | workers-profiling | Profiling CPU usage and allocation hotspots in deployed Workers and Durable Objects |
 | cloudflare-email-service | Implementing or troubleshooting Email Sending, Email Routing, and delivery configuration |
 | turnstile-spin | Setting up, repairing, or migrating Turnstile bot verification, including server-side Siteverify |
