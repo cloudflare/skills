@@ -19,9 +19,7 @@ REFERENCES = pathlib.Path("skills/cloudflare/references")
 
 # Directories that still copy docs and are being edited by open pull requests.
 # Remove an entry once its directory is converted to a docs link table.
-ALLOWLIST = {
-    "c3",
-}
+ALLOWLIST: set[str] = set()
 
 FENCE = re.compile(r"^\s*(```|~~~)")
 

@@ -13,6 +13,7 @@ Use the Cloudflare CLI (`cf`) unless the project already uses Wrangler or the us
 
 - **The project has `wrangler.jsonc`, `wrangler.json`, or `wrangler.toml`, and no `cloudflare.config.ts`:** use Wrangler for development and deployment, and load the `wrangler` skill. `cf` resource commands work alongside it. Run `cf migrate` only when the user asks.
 - **Every other project, including a new project or one with no Cloudflare configuration:** use `cf`. Load the `cf-cli` skill if it is installed; otherwise follow [Use cf with coding agents](https://developers.cloudflare.com/cf/agents/index.md). Do not install Wrangler or create a Wrangler configuration file.
+- **A new web-framework project:** follow the `frameworks-on-cloudflare` skill. The `cf` docs do not yet cover creating framework projects, so it uses each framework's Workers guide.
 
 The product guidance below, and the documentation it links to, applies with either CLI. Many documentation pages show only Wrangler commands and configuration; in a `cf` project, do not run them or add a Wrangler configuration file. Use one CLI per project, apart from the `npx wrangler` commands the `cf-cli` skill lists as not yet supported by `cf`. Where guidance names a Wrangler command or file, find the `cf` equivalent with `cf cli search "<task>"` or the [Wrangler to cf reference](https://developers.cloudflare.com/cf/wrangler/reference/index.md) instead of translating from memory.
 
@@ -34,7 +35,8 @@ Find the row closest to the user's task. Products can appear in multiple rows, a
 | Choose the building blocks for an AI application | AI overview | Compare Cloudflare's AI services before choosing inference, retrieval, or agent tooling | [AI docs](https://developers.cloudflare.com/ai/index.md) |
 | Choose infrastructure for a customer-facing platform | Cloudflare for Platforms | Compare running customer code with serving an app on customer domains | [Platform overview](https://developers.cloudflare.com/cloudflare-for-platforms/index.md) |
 | Choose an approach to live audio and video | Realtime | Compare application SDKs, media infrastructure, and connectivity relays | [Realtime overview](https://developers.cloudflare.com/realtime/index.md) |
-| Start a Worker or framework project | C3 | Scaffold a project using the appropriate framework template | [C3](references/c3/README.md); `wrangler` skill |
+| Start a Worker project | `cf` | Create a basic Worker with `cf init` | `cf-cli` skill; [First Worker](https://developers.cloudflare.com/cf/get-started/first-worker/index.md) |
+| Build, set up, or migrate a framework app | Framework tooling + Workers | Follow the framework's Workers guide and its own agent guidance | `frameworks-on-cloudflare` skill; [Framework guides](https://developers.cloudflare.com/workers/framework-guides/index.md) |
 | Build or deploy a Next.js app on Cloudflare | vinext + Workers | Use vinext rather than OpenNext for new projects | [nextjs-on-cloudflare skill](../nextjs-on-cloudflare/SKILL.md); [Next.js docs](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/index.md) |
 | Host a new static site, SPA, or full-stack app | Workers + Workers Static Assets | Serve site files and add server-side logic where needed | [Static Assets](references/static-assets/README.md); `workers-best-practices` skill |
 | Build an API or handle webhooks | Workers | Run request handlers with access to Cloudflare services | `workers-best-practices` skill; [Workers docs](https://developers.cloudflare.com/workers/index.md) |
