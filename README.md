@@ -78,6 +78,7 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 | sandbox-migrate-to-next | Port a stable Sandbox app to `@cloudflare/sandbox@next` |
 | cf-cli | Finding and running Cloudflare CLI (`cf`) commands, and choosing between `cf` and Wrangler |
 | wrangler | Deploying and managing Workers, KV, R2, D1, Vectorize, Queues, Workflows |
+| cloudflare-app-bootstrap | Getting a new or checked-out app to a working local request: bindings, secrets, initial data, and verification |
 | workers-best-practices | Writing, reviewing, or configuring production Workers |
 | workers-development | Local development and debugging with Local Explorer: binding data, traces, and logs; routes deployed-Worker debugging to observability |
 | workers-profiling | Profiling CPU usage and allocation hotspots in deployed Workers and Durable Objects |
