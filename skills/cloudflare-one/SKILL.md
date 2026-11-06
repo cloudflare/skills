@@ -31,7 +31,8 @@ CF-Access-Client-Secret: <CLIENT_SECRET>
 - Only send the credentials to the intended Access-protected hostname. Do not forward them through cross-origin redirects. If the current request tool cannot set headers safely, use another available HTTP client that can.
 - A service token must be included by a policy with the **Service Auth** action. If the response still starts an interactive login, inspect the application and its policies; an **Allow** policy is not a substitute for **Service Auth**.
 - If no authorized service token exists, explain the prerequisite or, when account access and approval are available, create a narrowly scoped token and policy. Do not attempt to automate an interactive identity-provider login.
-- Some self-hosted applications are configured to accept the token in a single custom header instead of the default header pair. Inspect the application configuration before using that mode; do not guess the header format. In that mode, a failed request returns `401` or `403` instead of redirecting to the login page, and Access returns no `CF_Authorization` cookie, so send the header on every request.
+- Some self-hosted applications are configured to accept the token in a single custom header (for example, `Authorization`) instead of the default header pair. Inspect the application's `read_service_tokens_from_header` setting before using that mode; do not guess the header format.
+- If the organization has strict service token authentication turned on, a failed service-token request returns `401` or `403` instead of redirecting to the login page, and Access returns no `CF_Authorization` cookie, so send the token headers on every request.
 
 ## Assessment Prompts
 
