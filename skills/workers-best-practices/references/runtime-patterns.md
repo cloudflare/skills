@@ -312,17 +312,17 @@ async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response
 
 ## Development & Testing
 
-### Test with @cloudflare/vitest-pool-workers
+### Test with @cloudflare/vitest-plugin
 
 Runs tests inside the Workers runtime with real bindings. Catches issues that Node.js-based tests miss.
 
-**Known pitfall**: the Vitest pool auto-injects `nodejs_compat`, so tests pass even if your wrangler config is missing the flag. Always confirm your `wrangler.jsonc` includes `nodejs_compat` if your code depends on Node.js built-ins.
+**Known pitfall**: the Vitest integration auto-injects `nodejs_compat`, so tests pass even if your wrangler config is missing the flag. Always confirm your `wrangler.jsonc` includes `nodejs_compat` if your code depends on Node.js built-ins.
 
-**Check**: test setup uses `@cloudflare/vitest-pool-workers`. Tests cover nullable returns (e.g., KV `.get()` returning `null`).
+**Check**: test setup uses `@cloudflare/vitest-plugin` (it replaced `@cloudflare/vitest-pool-workers`; see [Migrate to Vitest plugin](https://developers.cloudflare.com/workers/testing/vitest-integration/migration-guides/migrate-to-vitest-plugin/index.md)). Tests cover nullable returns (e.g., KV `.get()` returning `null`).
 
 ```ts
 import { describe, it, expect } from "vitest";
-import { env } from "cloudflare:test";
+import { env } from "cloudflare:workers";
 
 describe("KV operations", () => {
   it("should store and retrieve a value", async () => {
