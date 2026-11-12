@@ -40,6 +40,14 @@ For marketplace installation or troubleshooting, see [VS Code's agent plugin doc
 
 Install from the Cursor Marketplace or add manually via **Settings > Rules > Add Rule > Remote Rule (Github)** with `cloudflare/skills`.
 
+### Neotask
+
+Install from [Neotask Construct](https://construct.neotask.ai/p/cloudflare):
+
+```sh
+neotask construct install cloudflare
+```
+
 ### npx skills
 
 Install using the [`npx skills`](https://skills.sh) CLI:
