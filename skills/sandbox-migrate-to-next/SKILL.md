@@ -5,6 +5,8 @@ description: Migrate Cloudflare Sandbox apps from stable @cloudflare/sandbox to 
 
 # Migrate stable → Sandbox SDK 1.0 preview (`@next`)
 
+Links to the Sandbox documentation index are starting points: follow through to the version-specific topic before relying on an API signature. Confirm the installed package exports and types.
+
 **Perform** the port. Follow the steps in order. Depth lives in docs—fetch the linked page when a step needs detail.
 
 Human guide: [Migrate](https://developers.cloudflare.com/sandbox/sdk/migrate/index.md) · [1.0 preview](https://developers.cloudflare.com/sandbox/index.md)

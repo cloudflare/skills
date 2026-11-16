@@ -43,7 +43,7 @@ Inspect the user's prompt before starting the numbered wizard. If it says the wi
 
 The user pasted the prompt. You are in a multi-step dialog. Detect what you can, ask only when you have to, confirm before every irreversible step. Each numbered moment is one agent message. Items marked **[wait for user]** require a user response.
 
-1. **Brief acknowledge.** One sentence: "I'll run Turnstile setup end to end. That's: check auth, scan the codebase, create the widget, embed it where visitor requests need verification, wire server-side siteverify, validate. Proceed?" **[wait for user]** Do NOT present a plan yet. Auth + scan come first.
+1. **Brief acknowledge.** State the requested setup scope and begin read-only auth and codebase checks. Honor existing authorization for setup; ask only for missing account, widget, or deployment decisions before dependent changes.
 
 2. **CLI check.** Spin's helper scripts use `curl` against `api.cloudflare.com`. Account enumeration requires either an explicit `$CLOUDFLARE_ACCOUNT_ID` or a user-approved canonical absolute `WRANGLER_BIN` outside the project with exact `WRANGLER_VERSION`. Never use `npx`, `pnpm exec`, a package script, a project-local binary, or an unapproved executable for a credential-bearing command. Never install Wrangler automatically during the flow.
 
@@ -128,7 +128,7 @@ The user pasted the prompt. You are in a multi-step dialog. Detect what you can,
 
 10. **Validation.** For a newly created widget, set `EXPECTED_DOMAINS_JSON` to the user-approved JSON array and run `(set +x; printf '%s' "$WIDGET_SECRET" | scripts/validate.sh --sitekey "$SITEKEY" --account-id "$ACCOUNT_ID" --expected-domains "$EXPECTED_DOMAINS_JSON")`, then unset `WIDGET_SECRET`. The validator reads the secret only from standard input and never writes it to disk or command arguments. For an existing widget, the guarded flow validates the retrieved secret before storing it. In both flows, exercise the actual protected backend with a fresh real Turnstile token, verify one successful request, then verify that replaying the token is rejected. If the backend cannot be run, report destination validation as pending and do not claim end-to-end success. **[wait for user if anything fails]**
 
-11. **Persist skill.** Ask: "Save the Spin skill to `.claude/skills/turnstile-spin/SKILL.md` so I can reuse it on follow-up tasks?" Default yes. **[wait for user]** For an agent that supports directory-based skill bundles, run `scripts/persist-skill.sh --path <bundle-directory>/SKILL.md`. For a file-oriented rules target, install the hosted `prompt.md` directly instead; do not run `persist-skill.sh`.
+11. **Persist skill only if requested.** Detect the active host's supported skill directory; do not assume `.claude/skills` or silently install a second copy. If the user requested persistence and the host supports directory bundles, run `scripts/persist-skill.sh --path <bundle-directory>/SKILL.md`. For a file-oriented rules target, install the hosted `prompt.md` directly instead; do not run `persist-skill.sh`.
 
 12. **Final report.** Print the structured summary: what was created, what was validated, what to do next.
 

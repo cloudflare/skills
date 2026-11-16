@@ -7,6 +7,8 @@ description: Build or maintain Cloudflare Sandbox apps on @cloudflare/sandbox@ne
 
 Isolated Linux environments on [Cloudflare Containers](https://developers.cloudflare.com/containers/index.md), driven from Workers.
 
+When a topic link resolves to the Sandbox index, navigate to the version-specific topic before treating it as API evidence.
+
 **Prefer preview docs and installed `@next` types over memory.** APIs change; this skill is a gate, a contract, and a retrieval map—not a full manual.
 
 We recommend **new projects** on this line. Apps still on the default package use **`sandbox-stable`**. Port only when asked, via **`sandbox-migrate-to-next`**.
