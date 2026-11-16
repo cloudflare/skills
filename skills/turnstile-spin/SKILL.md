@@ -115,7 +115,7 @@ The user pasted the prompt. You are in a multi-step dialog. Detect what you can,
      return res.status(403).send('forbidden');  // adapt to your framework
    }
    if (
-     !result.success ||
+     result.success !== true ||
      result.action !== expectedAction ||
      !expectedHostnames.has(result.hostname)
    ) {
@@ -331,7 +331,8 @@ Edge cases to surface to the user:
 | Cloudflare Pages project                       | Wire siteverify inside a Pages Function (or the equivalent for your framework). The Pages Plugin at [developers.cloudflare.com/pages/functions/plugins/turnstile](https://developers.cloudflare.com/pages/functions/plugins/turnstile/index.md) is a shortcut. |
 | Cloudflare Workers backend                     | Use the canonical fetch idiom from Step 9 inside the Worker's request handler. `fetch` to `challenges.cloudflare.com` works the same way it does in Node.                                                                             |
 | `EXPECTED_HOSTNAME` mismatch                   | Update widget domains via PUT, not PATCH (PATCH returns `10405 Method not allowed`): `curl -X PUT .../widgets/$SITEKEY -d '{"name":"...","mode":"managed","domains":[...]}'`                                                          |
-| Token expired mid-flow                         | Stop, re-run `scripts/auth-probe.sh`, prompt for fresh credentials                                                                                                                                                                    |
+| API credential expired mid-flow                | Stop, re-run `scripts/auth-probe.sh`, prompt for fresh API credentials                                                                                                                                                                    |
+| Turnstile challenge token expired or reused | Refresh the widget and obtain a new challenge token; follow [server-side validation](https://developers.cloudflare.com/turnstile/get-started/server-side-validation/index.md). Do not rotate API credentials for this case. |
 | Validation returns `invalid-input-secret`      | The secret didn't reach the backend. Re-check `TURNSTILE_SECRET` in the customer's env / secret manager. If it's a Workers backend, run `wrangler secret list` to confirm the secret is bound to the right script.                    |
 | Validation returns `invalid-input-response`    | Expected for a dummy probe token; that means the secret IS valid. validate.sh treats this as success.                                                                                                                                 |
 
