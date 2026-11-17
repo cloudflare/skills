@@ -5,10 +5,10 @@ Auth and setup. For the current permission matrix and wrangler flags, pull `http
 ## Prerequisites
 
 - R2 bucket with Basin Catalog enabled ([catalog/configuration.md](../catalog/configuration.md))
-- R2 API token: **R2 Storage Admin Read & Write** (includes Basin SQL Read), or add **Basin SQL Read** explicitly
+- R2 API token with **Basin Catalog** read, **R2 Storage Admin Read & Write**, and **Basin SQL** read permissions
 - Wrangler CLI (for CLI queries)
 
-> Open-beta limitation: R2 Storage **Admin Read & Write is required even for read-only Basin SQL queries**.
+> R2 Storage **Admin Read & Write is required even for read-only Basin SQL queries**. Verify the current permission list in [Query data](https://developers.cloudflare.com/basin-sql/query-data/index.md#authentication).
 
 ## Enable Catalog + Get Warehouse
 

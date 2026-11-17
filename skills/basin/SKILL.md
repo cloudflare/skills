@@ -5,11 +5,11 @@ description: Build and troubleshoot Cloudflare Basin analytics workflows with Ba
 
 # Cloudflare Basin
 
-Basin ingests and transforms events, manages Apache Iceberg tables in R2, and queries them with distributed SQL. Start with the [Basin overview](https://developers.cloudflare.com/basin/index.md) and retrieve the relevant current docs before implementing changes, especially for limits, pricing, permissions, and CLI syntax. While PR #33850 remains open, use the proposed pages in that PR if the new URLs have not been published.
+Basin ingests and transforms events, manages Apache Iceberg tables in R2, and queries them with distributed SQL. Start with the [Basin overview](https://developers.cloudflare.com/basin/index.md) and retrieve the relevant current docs before implementing changes, especially for limits, pricing, permissions, and CLI syntax.
 
 ## Rebrand
 
-Cloudflare Data Platform is now **Basin**. Cloudflare Pipelines, R2 Data Catalog, and R2 SQL are now **Basin Pipelines**, **Basin Catalog**, and **Basin SQL**. Existing resources and configurations continue to work. The prior Wrangler command families also continue to work: `wrangler pipelines`, `wrangler r2 bucket catalog`, and `wrangler r2 sql`. Use the new Basin commands and documentation URLs in new guidance. Legacy API identifiers and metrics names may still use the old terms; check the current docs for deprecation details. The migration is documented in [cloudflare-docs PR #33850](https://github.com/cloudflare/cloudflare-docs/pull/33850).
+Cloudflare Data Platform is now **Basin**. Cloudflare Pipelines, R2 Data Catalog, and R2 SQL are now **Basin Pipelines**, **Basin Catalog**, and **Basin SQL**. Basin and all three products are generally available. Existing resources and configurations continue to work; existing R2 Data Catalog and R2 SQL APIs continue to work but will be deprecated in the future. Use the Basin commands and documentation URLs in new guidance. Some API identifiers, permission group names, and metrics names still use the old terms; check the current docs before renaming them.
 
 ## Choose the workflow
 
@@ -19,9 +19,9 @@ Cloudflare Data Platform is now **Basin**. Cloudflare Pipelines, R2 Data Catalog
 | Manage Iceberg metadata, table maintenance, and engine access | Basin Catalog | [Catalog guide](references/catalog/README.md) | [Basin Catalog](https://developers.cloudflare.com/basin-catalog/index.md) |
 | Query Iceberg tables with analytical SQL | Basin SQL | [SQL guide](references/sql/README.md) | [Basin SQL](https://developers.cloudflare.com/basin-sql/index.md) |
 
-Typical flow: Basin Pipelines → Basin Catalog tables in R2 → Basin SQL or a compatible external engine. Begin with the [Basin getting started guide](https://developers.cloudflare.com/basin/get-started/guide/index.md) for an end-to-end setup.
+Typical flow: Basin Pipelines → Basin Catalog tables in R2 → Basin SQL or a compatible external engine. Begin with the [Basin getting started guide](https://developers.cloudflare.com/basin/get-started/guide/index.md) for an end-to-end setup. For cross-product cost estimates, use [Basin pricing](https://developers.cloudflare.com/basin/platform/pricing/index.md).
 
-The proposed Wrangler command families are `wrangler basin pipelines`, `wrangler basin catalog`, and `wrangler basin sql`. Basin SQL uses `WRANGLER_BASIN_SQL_AUTH_TOKEN`; its REST query path is `/basin-sql/query/{BUCKET}`. Check the installed Wrangler version and current reference pages before running commands because the migration is ongoing.
+The Wrangler command families are `wrangler basin pipelines`, `wrangler basin catalog`, and `wrangler basin sql`. Basin SQL uses `WRANGLER_BASIN_SQL_AUTH_TOKEN`; its REST query path is `/basin-sql/query/{BUCKET}`. If a `wrangler basin` command is not recognized, update Wrangler before falling back to the legacy command families.
 
 ## Skill feedback
 
