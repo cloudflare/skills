@@ -41,6 +41,7 @@ done
 
 PROJECT_ROOT="$(pwd -P)"
 TARGET_DIR="$(python3 -I -c 'import os,sys; print(os.path.realpath(os.path.abspath(sys.argv[1])))' "$(dirname "$PATH_ARG")")"
+# Containment prevents a skill path from escaping the user's project root.
 if [[ "$TARGET_DIR" != "$PROJECT_ROOT" && "$TARGET_DIR" != "$PROJECT_ROOT/"* ]]; then
   echo "persist-skill: target must be inside the current project" >&2
   echo '{"status":"error","reason":"target_outside_project"}'
