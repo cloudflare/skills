@@ -48,6 +48,14 @@ Install using the [`npx skills`](https://skills.sh) CLI:
 npx skills add https://github.com/cloudflare/skills
 ```
 
+### GitHub CLI
+
+Install using [`gh skill`](https://cli.github.com/manual/gh_skill) from the GitHub CLI:
+
+```
+gh skill install cloudflare/skills
+```
+
 ### Clone / Copy
 
 Clone this repo and copy the skill folders into the appropriate directory for your agent:
