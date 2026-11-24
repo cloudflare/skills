@@ -70,24 +70,8 @@ async email(message, env, ctx) {
 }
 ```
 
-Using `message.reply()` with MIME (more control, requires `mimetext` + `nodejs_compat`):
-
-```typescript
-import { EmailMessage } from "cloudflare:email";
-import { createMimeMessage } from "mimetext";
-
-async email(message, env, ctx) {
-  const msg = createMimeMessage();
-  const messageId = message.headers.get("Message-ID");
-  if (messageId) msg.setHeader("In-Reply-To", messageId);
-  msg.setSender({ name: "Support", addr: "support@yourdomain.com" });
-  msg.setRecipient(message.from);
-  msg.setSubject("Re: " + (message.headers.get("subject") || ""));
-  msg.addMessage({ contentType: "text/plain", data: "Thanks for reaching out!" });
-
-  await message.reply(new EmailMessage("support@yourdomain.com", message.from, msg.asRaw()));
-}
-```
+For raw MIME, use the [official `message.reply()` example](https://developers.cloudflare.com/email-service/api/route-emails/email-handler/index.md#reply-with-a-raw-mime-message).
+It covers `mimetext`, the `nodejs_compat` flag, and the `In-Reply-To` and `References` threading headers.
 
 ## Parsing Emails
 
