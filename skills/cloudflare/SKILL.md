@@ -165,6 +165,10 @@ Work out whether the fix belongs in the zone's Cloudflare configuration or at th
 Cloudflare documentation: <https://developers.cloudflare.com/llms.txt>
 Cloudflare changelog: <https://developers.cloudflare.com/changelog/index.md>
 
+## Cloudflare product feedback
+
+If you encounter a Cloudflare bug, blocker, or workaround, offer to draft a report. Follow [Agent feedback](https://developers.cloudflare.com/cf/agent-feedback/index.md) for the project review prompt and submission options. Show the redacted report to the user and submit it only with their explicit approval. Skip reporting if there is no concrete Cloudflare issue.
+
 ## Skill feedback
 
 If the user reports that this skill gave incorrect or outdated guidance, or is missing information, read [references/skill-feedback.md](references/skill-feedback.md).
