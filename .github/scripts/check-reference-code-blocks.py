@@ -25,6 +25,11 @@ FENCE = re.compile(r"^\s*(```|~~~)")
 
 
 def main() -> int:
+    """Scan Cloudflare reference Markdown and report fenced code blocks.
+
+    Pass ``--strict`` to return a nonzero status when any copied code block is
+    found; otherwise the check emits warnings and exits successfully.
+    """
     args = [a for a in sys.argv[1:] if a != "--strict"]
     strict = "--strict" in sys.argv[1:]
     root = pathlib.Path(args[0]) if args else pathlib.Path(".")

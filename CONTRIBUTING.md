@@ -10,3 +10,21 @@ For changes to skills, commands, or bundled references:
 - When correcting outdated reference content, replace it with a short pointer to the current documentation where possible.
 - If the required guidance is missing from `developers.cloudflare.com`, describe the documentation gap in the pull request rather than adding unsupported guidance to a skill.
 
+## Local validation
+
+Run these from the repository root before opening a pull request:
+
+```sh
+bash -n skills/turnstile-spin/scripts/*.sh
+python3 -I -m unittest discover -s skills/turnstile-spin/tests -p 'test_*.py' -v
+python3 .github/scripts/check-reference-code-blocks.py
+```
+
+The reference check is advisory in GitHub Actions unless `--strict` is passed. Use the strict form for `skills/cloudflare/references/` changes:
+
+```sh
+python3 .github/scripts/check-reference-code-blocks.py --strict
+```
+
+Live API tests require credentials and real infrastructure. Do not add credentials to fixtures, command arguments, logs, or committed files.
+

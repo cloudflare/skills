@@ -91,6 +91,37 @@ Skills are contextual and auto-loaded based on your conversation. When a request
 | cloudflare-one-migrations | Migration assessments, policy mapping, rollout plans, and gap analysis for Zscaler, Palo Alto, legacy VPN/SWG, and SASE migrations to Cloudflare One |
 | gateway-workers | Writing and reviewing Workers invoked by the Forward action in Gateway HTTP policies |
 
+## Repository layout
+
+- `skills/<skill-name>/SKILL.md` contains the skill instructions loaded by agents.
+- `skills/<skill-name>/references/` contains skill-specific supporting guides and examples.
+- `skills/<skill-name>/scripts/` contains executable helpers for skills that provide API or setup workflows.
+- `.claude-plugin/`, `.cursor-plugin/`, `.codex-plugin/`, `.antigravity-plugin/`, and `.agents/plugins/` contain client plugin manifests.
+- `.github/scripts/` contains repository documentation and reference checks.
+- `.github/workflows/` runs the repository's GitHub Actions checks.
+- `plugin.json`, `mcp.json`, `mcp_config.json`, and `.mcp.json` describe the plugin and MCP server configuration.
+
+## Local validation
+
+From the repository root:
+
+```sh
+# Check Cloudflare reference files for copied fenced code blocks.
+python3 .github/scripts/check-reference-code-blocks.py
+
+# Run the Turnstile skill's offline persistence regression tests.
+python3 -I -m unittest discover -s skills/turnstile-spin/tests -p 'test_*.py' -v
+
+# Check shell syntax for the executable Turnstile scripts.
+bash -n skills/turnstile-spin/scripts/*.sh
+```
+
+Pass `--strict` to make copied code blocks fail locally:
+
+```sh
+python3 .github/scripts/check-reference-code-blocks.py --strict
+```
+
 ## MCP Servers
 
 This plugin includes Cloudflare's main [remote MCP server](https://developers.cloudflare.com/agents/model-context-protocol/cloudflare/servers-for-cloudflare/) for enhanced functionality:
