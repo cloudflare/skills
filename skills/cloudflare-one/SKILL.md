@@ -7,6 +7,8 @@ description: Design, configure, troubleshoot, or review Cloudflare One Zero Trus
 
 Before citing limits, settings, API fields, category IDs, or exact UI paths, retrieve current information from the [Cloudflare One docs](https://developers.cloudflare.com/cloudflare-one/index.md), the Cloudflare docs MCP server, or the Cloudflare API schema.
 
+For DNS/application inventory and planning a migration of self-hosted HTTP login surfaces behind Access, use the `identity-gated-edge-migration` skill. Keep VPN, SWG, and SASE vendor migrations in `cloudflare-one-migrations`.
+
 ## Workflow
 
 1. Classify the ask: architecture, configuration, troubleshooting, migration, or review.
