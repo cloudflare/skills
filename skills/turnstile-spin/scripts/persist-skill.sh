@@ -39,9 +39,22 @@ for command_name in git python3; do
   }
 done
 
-PROJECT_ROOT="$(pwd -P)"
-TARGET_DIR="$(python3 -I -c 'import os,sys; print(os.path.realpath(os.path.abspath(sys.argv[1])))' "$(dirname "$PATH_ARG")")"
-if [[ "$TARGET_DIR" != "$PROJECT_ROOT" && "$TARGET_DIR" != "$PROJECT_ROOT/"* ]]; then
+# Resolve both paths with Python: Git Bash and native Windows Python use
+# different path spellings for the same directory.
+if ! TARGET_DIR="$(python3 -I -c '
+import os
+import sys
+
+root = os.path.normcase(os.path.realpath(os.getcwd()))
+target = os.path.realpath(os.path.abspath(sys.argv[1]))
+try:
+    inside = os.path.commonpath([root, os.path.normcase(target)]) == root
+except ValueError:
+    inside = False
+if not inside:
+    raise SystemExit(1)
+print(target)
+' "$(dirname "$PATH_ARG")")"; then
   echo "persist-skill: target must be inside the current project" >&2
   echo '{"status":"error","reason":"target_outside_project"}'
   exit 1
